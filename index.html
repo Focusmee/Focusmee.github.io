@@ -603,42 +603,52 @@
       
         
           
-            <p>在克隆github上面的Next主题的时候遇到问题</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone --branch v5.1.2 https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+            <h3 id="在克隆github上面的Next主题的时候遇到问题"><a href="#在克隆github上面的Next主题的时候遇到问题" class="headerlink" title="在克隆github上面的Next主题的时候遇到问题"></a>在克隆github上面的Next主题的时候遇到问题</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone --branch v5.1.2 https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
 
-<p>问题</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal: unable to access &#x27; &#x27;: Failed to connect to github.com port 443 after 21058 ms: Couldn&#x27;t connect to server，</span><br></pre></td></tr></table></figure>
 
 <p>如果你使用VPN，你可以尝试<code>git config --global http.proxy http://127.0.0.1:7890</code>（7890是你的vpn端口）和<code>git config --global https.proxy https://127.0.0.1:7890</code>。<br>如果没有，你可以尝试<code>git config --global unset http.proxy</code>和<code>git config --global unset https.proxy</code>。</p>
-<p>hexo主题切换可能出现的错误<br>1.1上传时出现error：spawn failed…问题<br>方法一<br>git bash 进入博客根目录</p>
-<p>rm -rf .deploy_git&#x2F; &#x2F;&#x2F;删除提交内容文件夹</p>
-<p>git config –global core.autocrlf false &#x2F;&#x2F;执行</p>
-<p>hexo clean</p>
-<p>hexo g</p>
-<p>hexo d</p>
-<p>方法二<br>修改 _config.yml 文件，将配置地址http方式切换成ssh方式</p>
-<p>git bash 进入博客根目录</p>
-<p>vim _config.yml &#x2F;&#x2F;删除git提交内容文件夹</p>
+<p>hexo主题切换可能出现的错误</p>
+<h3 id="1-1上传时出现error：spawn-failed…问题"><a href="#1-1上传时出现error：spawn-failed…问题" class="headerlink" title="1.1上传时出现error：spawn failed…问题"></a>1.1上传时出现error：spawn failed…问题</h3><h4 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h4><figure class="highlight plaintext"><figcaption><span>bash 进入博客根目录</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rm -rf .deploy_git/ //删除提交内容文件夹</span><br><span class="line"></span><br><span class="line">git config --global core.autocrlf false //执行</span><br><span class="line"></span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h4><p>修改 _config.yml 文件，将配置地址http方式切换成ssh方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git bash 进入博客根目录</span><br><span class="line"></span><br><span class="line">vim _config.yml //删除git提交内容文件夹</span><br></pre></td></tr></table></figure>
+
+
+
 <p>修改最后一行内容</p>
-<p>deploy：</p>
-<p>type：git</p>
-<p>repository：<a href="mailto:&#x67;&#105;&#116;&#64;&#x67;&#x69;&#116;&#104;&#117;&#x62;&#x2e;&#x63;&#111;&#x6d;">&#x67;&#105;&#116;&#64;&#x67;&#x69;&#116;&#104;&#117;&#x62;&#x2e;&#x63;&#111;&#x6d;</a>:Uninfo&#x2F;github用户名.github用户名.io.git</p>
-<p>branch：master</p>
-<p>hexo clean</p>
-<p>hexo g</p>
-<p>hexo d</p>
-<p>1.2运行后博客页面为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends ‘layout.swig‘ %&#125; &#123;% import ‘macro/post.swig‘ as post_template %&#125;</span><br></pre></td></tr></table></figure>
-<p>问题<br>原因是hexo5.0后swig被删除，需自己手动安装</p>
-<p>npm i hexo-renderer-swig</p>
-<p>1.3绑定域名失效<br>方法一：<br>只要在source 目录添加一个新文件CNAME就好</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">deploy：</span><br><span class="line"></span><br><span class="line">type：git</span><br><span class="line"></span><br><span class="line">repository：git@github.com:Uninfo/github用户名.github用户名.io.git</span><br><span class="line"></span><br><span class="line">branch：master</span><br><span class="line"></span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="1-2运行后博客页面为"><a href="#1-2运行后博客页面为" class="headerlink" title="1.2运行后博客页面为"></a>1.2运行后博客页面为</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends ‘layout.swig‘ %&#125; &#123;% import ‘macro/post.swig‘ as post_template %&#125;</span><br><span class="line">原因是hexo5.0后swig被删除，需自己手动安装npm i hexo-renderer-swig</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="1-3绑定域名失效"><a href="#1-3绑定域名失效" class="headerlink" title="1.3绑定域名失效"></a>1.3绑定域名失效</h3><h4 id="方法一-1"><a href="#方法一-1" class="headerlink" title="方法一"></a>方法一</h4><p>只要在source 目录添加一个新文件CNAME就好</p>
 <p>CNAME –不带任何后缀，内容为域名</p>
-<p>方法二：<br>安装插件</p>
+<h4 id="方法二-1"><a href="#方法二-1" class="headerlink" title="方法二"></a>方法二</h4><p>安装插件</p>
 <p>npm install hexo-generator-cname –save 之后在_config.yml中添加一条</p>
 <p>Plugins:</p>
 <p>hexo-generator-cname 当第一个方法不能用时，应该是把方法二里面的插件也安装啦，两个有冲突，只需要执行</p>
 <p>npm uninstall hexo-generator-cname –save</p>
-<p><img src="C:\Users\Jinju\blog\source\images\image-20250102224301122.png" alt="image-20250102224301122"></p>
+<h3 id="上传github但没有显示"><a href="#上传github但没有显示" class="headerlink" title="上传github但没有显示"></a>上传github但没有显示</h3><h4 id="解决方案概览"><a href="#解决方案概览" class="headerlink" title="解决方案概览"></a>解决方案概览</h4><ol>
+<li>确认你的Hexo环境已正确设置。</li>
+<li>确保你的GitHub仓库设置正确。</li>
+<li>使用正确的命令来生成并部署你的网站。</li>
+<li>检查GitHub Pages的设置。</li>
+<li>清除浏览器缓存。</li>
+</ol>
+<h4 id="详细步骤"><a href="#详细步骤" class="headerlink" title="详细步骤"></a>详细步骤</h4><p>第一种：清浏览器缓存试试</p>
+<p>清除一下浏览器缓存试试，例如Chrome清除缓存的快捷键是Ctrl+Shift+Delete,之后Enter(回车)。 再或者换个浏览器试试，很多时候是本地缓存造成的！</p>
+<p>第二种：删除.deploy_git</p>
+<p> 重新hexo clean    hexo g -d  </p>
+<p>第三种</p>
+<p>Shift+F5刷新</p>
+<p>第四种   </p>
+<p>打开github页面仓库，进入settings界面</p>
+<p>设置Branch分支，通常是<code>master</code>或<code>main</code>。</p>
 
           
         
