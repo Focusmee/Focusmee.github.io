@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -108,7 +108,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '',
-    scheme: 'Muse',
+    scheme: 'Gemini',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
@@ -693,6 +693,16 @@
 <p>Plugins:</p>
 <p>hexo-generator-cname 当第一个方法不能用时，应该是把方法二里面的插件也安装啦，两个有冲突，只需要执行</p>
 <p>npm uninstall hexo-generator-cname –save</p>
+<h3 id="hexo-d命令报错-ERROR-Deployer-not-found-git"><a href="#hexo-d命令报错-ERROR-Deployer-not-found-git" class="headerlink" title="hexo d命令报错 ERROR Deployer not found: git"></a>hexo d命令报错 ERROR Deployer not found: git</h3><p>问题描述<br>我已经在站点配置文件中写入了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:lanlan2017/lanlan2017.github.io.git  # Github pages地址</span><br><span class="line">  branch: master</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>但是执行，hexo d报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ERROR Deployer not found: git</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>解决方案<br>这是因为没安装hexo-deployer-git插件，在站点目录下输入下面的插件安装就好了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后在使用Hexo d命令就可以推送了。</p>
 <h3 id="上传github但没有显示"><a href="#上传github但没有显示" class="headerlink" title="上传github但没有显示"></a>上传github但没有显示</h3><h4 id="解决方案概览"><a href="#解决方案概览" class="headerlink" title="解决方案概览"></a>解决方案概览</h4><ol>
 <li>确认你的Hexo环境已正确设置。</li>
 <li>确保你的GitHub仓库设置正确。</li>
@@ -983,7 +993,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Gemini
   </a>
 </div>
 
@@ -1062,6 +1072,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
 
   
     <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
