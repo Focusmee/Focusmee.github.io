@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="刷题记录 取余法则 （S1+S2）%b &#x3D; （S1%b+S2%b）%b， S1S2%b&#x3D;(S1%B)(S2%b)%b 快排912. 排序数组 - 力扣（LeetCode） 面试题 17.09. 第 k 个数 - 力扣（LeetCode） 剑指 Offer 21. 调整数组顺序使奇数位于偶数前面 - 力扣（LeetCode） 75. 颜色分类 - 力扣（LeetCode） 11.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2025/02/04/%E3%80%90Leetcode%E5%88%B7%E9%A2%98%E3%80%912023%E5%B9%B4-2024%E5%B9%B4/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="刷题记录 取余法则 （S1+S2）%b &#x3D; （S1%b+S2%b）%b， S1S2%b&#x3D;(S1%B)(S2%b)%b 快排912. 排序数组 - 力扣（LeetCode） 面试题 17.09. 第 k 个数 - 力扣（LeetCode） 剑指 Offer 21. 调整数组顺序使奇数位于偶数前面 - 力扣（LeetCode） 75. 颜色分类 - 力扣（LeetCode） 11.">
+<meta property="og:locale">
+<meta property="og:image" content="c:\Users\%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1\AppData\Roaming\Typora\typora-user-images\image-20230521214542409.png">
+<meta property="og:image" content="c:\Users\%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1\AppData\Roaming\Typora\typora-user-images\image-20230521214718737.png">
+<meta property="og:image" content="c:\Users\%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1\AppData\Roaming\Typora\typora-user-images\image-20230521215114876.png">
+<meta property="og:image" content="c:\Users\%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1\AppData\Roaming\Typora\typora-user-images\image-20230521215155647.png">
+<meta property="og:image" content="c:\Users\%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1\AppData\Roaming\Typora\typora-user-images\image-20230521215724388.png">
+<meta property="og:image" content="c:\Users\%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1\AppData\Roaming\Typora\typora-user-images\image-20230521215737643.png">
+<meta property="og:image" content="c:\Users\%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1\AppData\Roaming\Typora\typora-user-images\image-20230523113105976.png">
+<meta property="og:image" content="c:\Users\%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1\AppData\Roaming\Typora\typora-user-images\image-20221009152502346.png">
+<meta property="article:published_time" content="2025-02-04T07:57:04.721Z">
+<meta property="article:modified_time" content="2025-02-04T07:52:44.007Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:\Users\%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1\AppData\Roaming\Typora\typora-user-images\image-20230521214542409.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2025/02/04/【Leetcode刷题】2023年-2024年/"/>
+
+
+
+
+
+  <title> | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/04/%E3%80%90Leetcode%E5%88%B7%E9%A2%98%E3%80%912023%E5%B9%B4-2024%E5%B9%B4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-04T15:57:04+08:00">
+                2025-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>刷题记录</p>
+<p>取余法则</p>
+<p>（S1+S2）%b &#x3D; （S1%b+S2%b）%b， S1<em>S2%b&#x3D;(S1%B)</em>(S2%b)%b</p>
+<h2 id="快排"><a href="#快排" class="headerlink" title="快排"></a>快排</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sort-an-array/">912. 排序数组 - 力扣（LeetCode）</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/get-kth-magic-number-lcci/">面试题 17.09. 第 k 个数 - 力扣（LeetCode）</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/">剑指 Offer 21. 调整数组顺序使奇数位于偶数前面 - 力扣（LeetCode）</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sort-colors/">75. 颜色分类 - 力扣（LeetCode）</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/container-with-most-water/comments/">11. 盛最多水的容器 - 力扣（LeetCode）</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/">https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/median-of-two-sorted-arrays/">4. 寻找两个正序数组的中位数 - 力扣（LeetCode）</a></p>
+<p>第一种做法：时间复杂度O(m+n)，简单来说就是将两个数组合并成一个数组然后找到中位数相应的位置进行求解。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line"></span><br><span class="line">    double findMedianSortedArrays(vector&lt;int&gt;&amp; nums1, vector&lt;int&gt;&amp; nums2) &#123;</span><br><span class="line">        float tmp[2010];</span><br><span class="line">        int i=0,j=0,k=0;</span><br><span class="line">        int l=nums1.size()+nums2.size();</span><br><span class="line"></span><br><span class="line">        while(i&lt;nums1.size()&amp;&amp;j&lt;nums2.size())</span><br><span class="line">        &#123;</span><br><span class="line">            if(nums1[i]&lt;nums2[j]) tmp[k++]=nums1[i++];</span><br><span class="line">            else tmp[k++]=nums2[j++];</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        while(i&lt;nums1.size())</span><br><span class="line">        &#123;</span><br><span class="line">            tmp[k++]=nums1[i++];</span><br><span class="line">        &#125;</span><br><span class="line">        while(j&lt;nums2.size()) tmp[k++]=nums2[j++];</span><br><span class="line">     </span><br><span class="line">        if(l%2==0) return (tmp[l/2]+tmp[l/2-1])/2;</span><br><span class="line">        return tmp[l/2]; </span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>第二种做法：二分查找</p>
+<p>中位数：在只有一个有序数组的时候，中位数把数组分割成两个部分。</p>
+<p>根据定义，分数组长度为奇数和偶数讨论</p>
+<p>数组长度为奇数时，中位数有1个，不妨把中位数分到左边数组。</p>
+<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521214542409.png" alt="image-20230521214542409" style="zoom: 50%;" />
+
+<p>在两个有序数组的时候，仍然可以把两个数组分割成两个部分。</p>
+<p>我们使用一条分割线把两个数组分别分割成两部分：</p>
+<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521214718737.png" alt="image-20230521214718737" style="zoom:50%;" />
+
+<p>如果左边有5个元素，右边有4个元素，也就是说当两个数组的元素个数之和为奇数的时候，左边最大的就是中位数。</p>
+<p>当两个数组的元素个数之和为偶数的时候，左右两边元素个数相等，由左边最大的和右边最小的求和&#x2F;2得到</p>
+<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521215114876.png" alt="image-20230521215114876" style="zoom:67%;" />
+
+<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521215155647.png" alt="image-20230521215155647" style="zoom:67%;" />
+
+<p>所以我们通过二分查找的方法不断找到符合两个条件的分割线位置</p>
+<p>特殊情况：</p>
+<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521215724388.png" alt="image-20230521215724388" style="zoom:50%;" />
+
+<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521215737643.png" alt="image-20230521215737643" style="zoom:50%;" />
+
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/search-in-rotated-sorted-array-ii/">https://leetcode.cn/problems/search-in-rotated-sorted-array-ii/</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/search-in-rotated-sorted-array/">https://leetcode.cn/problems/search-in-rotated-sorted-array/</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/guess-number-higher-or-lower/">https://leetcode.cn/problems/guess-number-higher-or-lower/</a></p>
+<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h2 id="前缀和和差分"><a href="#前缀和和差分" class="headerlink" title="前缀和和差分"></a>前缀和和差分</h2><p><img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230523113105976.png" alt="image-20230523113105976"></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-vowel-strings-in-ranges/">2559. 统计范围内的元音字符串数 - 力扣（LeetCode）</a></p>
+<p>这题还能预处理和二分查找</p>
+<h2 id="贪心-Hash"><a href="#贪心-Hash" class="headerlink" title="贪心+Hash"></a>贪心+Hash</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/largest-values-from-labels/">1090. 受标签影响的最大值 - 力扣（LeetCode）</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-consecutive-sequence/">128. 最长连续序列</a></p>
+<h2 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h2><h3 id="一刷"><a href="#一刷" class="headerlink" title="一刷"></a>一刷</h3><p>贪心问题实质就是找到什么情况是局部最优，通过多个局部最优得到全局最优</p>
+<ol>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/">122. 买卖股票的最佳时机 II</a>【<strong>最终利润是可以分解的，那么本题就很容易了！」</strong></p>
+<p>如果分解呢？</p>
+<p>假如第0天买入，第3天卖出，那么利润为：prices[3] - prices[0]。</p>
+<p>相当于(prices[3] - prices[2]) + (prices[2] - prices[1]) + (prices[1] - prices[0])。</p>
+<p><strong>「此时就是把利润分解为每天为单位的维度，而不是从0天到第3天整体去考虑！」</strong></p>
+<p>那么根据prices可以得到每天的利润序列：(prices[i] - prices[i - 1])…..(prices[1] - prices[0])。</p>
+<p>我们关注了每天的利润，选取正利润是局部最优，以此达到得到最大利润的整体最优</p>
+</li>
+<li><p>在跳跃游戏I中，⼀个数组看能否跳到终点，其实就是看我们从起点到终点所拓展的最大范围，不要拘泥于只看每步能跳的位置，而是它能跳的位置能够为总的能跳跃的空间范围所作出的贡献，即能否扩大这个范围，使其最后范围大于或等于整个数组长度</p>
+</li>
+<li><p>跳跃游戏II中题目已经给出一定可以到达终点，那么为了步数最少，<strong>局部最优</strong>是每次跳的时候，在当前的位置可以跳的范围内选择下次能跳最远位置的点跳，这样保证每一步都是最远的，以此达到整体最优。</p>
+</li>
+<li><p>加油站问题首先是直到经过这个站能加多少油（经过的站的花费与站点加油的差），只要确定最后能剩下油，就说明一定可以绕一圈，只要找到那一个点就可以。然后一层循环，如果累加是负的，说明在这个范围内不可以作为起始点，就以下一个为起点继续</p>
+</li>
+<li><p>分发糖果和根据身⾼重建队列都是<strong>有两个标准</strong>，做法是先完成一个标准，之后再完成另一个标准，根据圣身高重建队列有个点就是排序的顺序，由大到小有好处是再按照第二个标准插入时候（前面有多少个比数大或者相等），就可以通过插入的状况来判定，因为已经插入的都是比此时的数要大，只要找到现在插入的位置即可，有点像dp数组的思想，通过之前的情况就可以很好的为接下来的操作埋下伏笔。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/non-overlapping-intervals/">435. 无重叠区间</a>的算法就是排课算法，在教室里上尽可能多的的课就是选择早下课的课程先上，然后再选择不冲突且下课最早的课程上（选课先根据结束课程早晚来排序）。可谓是真正的贪心。而<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-number-of-arrows-to-burst-balloons/">452. 用最少数量的箭引爆气球</a>就用下面这个来排序，按照end来排正序从小到大，然后想一下牛电灯那个题，想要用少的箭，就要用尽量用区间结尾去引爆气球，这样就可以引爆局部最多，以此到整体最多。</p>
+<p>ps：<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_51627418/article/details/121246105">(37条消息) qsort()中cmp函数_不专业码农的博客-CSDN博客_qsort函数cmp</a></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">cmp</span><span class="params">(<span class="type">const</span> <span class="type">void</span>* a,<span class="type">const</span> <span class="type">void</span>* b)</span></span><br><span class="line">&#123;   </span><br><span class="line">    <span class="keyword">if</span> ((*(<span class="type">int</span>**)a)[<span class="number">0</span>] == (*(<span class="type">int</span>**)b)[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">return</span> (*(<span class="type">int</span>**)a)[<span class="number">1</span>] &gt; (*(<span class="type">int</span>**)b)[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">return</span> (*(<span class="type">int</span>**)a)[<span class="number">1</span>] &gt; (*(<span class="type">int</span>**)b)[<span class="number">1</span>];</span><br><span class="line">&#125; </span><br><span class="line">leetcode申请内存</span><br><span class="line">*returnSize=peopleSize;</span><br><span class="line">*returnColumnSizes=<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)*peopleSize);</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;peopleSize;i++)</span><br><span class="line">&#123;</span><br><span class="line">    (*returnColumnSizes)[i]=<span class="number">2</span>;</span><br><span class="line">    <span class="built_in">queue</span>[i]=<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)*<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/merge-intervals/">56. 合并区间</a>问题就是注意区间的性质，当按照区间起点的大小排序后，区间性质就是如果这两个区间可以合并，说明前区间的终止位置比后区间的起始位置大于或等于。</p>
+<p>如果满足这个性质条件，则这个数组就可以向前扩展（注意遍历时候数组看上一个区间），这时候注意一个细节：当前区间的终止位置比后区间的终止位置大的时候要取而代之；</p>
+<p>当不满足这个性质条件，则目前遍历到的区间与上一个区间无法合并，上一个区间就可以加入到结果区间里。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Return an array of arrays of size *returnSize.</span></span><br><span class="line"><span class="comment"> * The sizes of the arrays are returned as *returnColumnSizes array.</span></span><br><span class="line"><span class="comment"> * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="type">int</span> <span class="title function_">cmp</span><span class="params">(<span class="type">const</span> <span class="type">void</span>* a,<span class="type">const</span> <span class="type">void</span>* b)</span></span><br><span class="line">&#123;   </span><br><span class="line">    <span class="keyword">if</span> ((*(<span class="type">int</span>**)a)[<span class="number">0</span>] == (*(<span class="type">int</span>**)b)[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">return</span> (*(<span class="type">int</span>**)a)[<span class="number">1</span>] &gt; (*(<span class="type">int</span>**)b)[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">return</span> (*(<span class="type">int</span>**)a)[<span class="number">0</span>] &gt; (*(<span class="type">int</span>**)b)[<span class="number">0</span>];</span><br><span class="line">&#125; </span><br><span class="line"><span class="type">int</span>** <span class="title function_">merge</span><span class="params">(<span class="type">int</span>** intervals, <span class="type">int</span> intervalsSize, <span class="type">int</span>* intervalsColSize, <span class="type">int</span>* returnSize, <span class="type">int</span>** returnColumnSizes)</span>&#123;</span><br><span class="line">     <span class="type">int</span> **<span class="built_in">queue</span>=(<span class="type">int</span> **)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span> *)*intervalsSize);</span><br><span class="line">    *returnSize=<span class="number">0</span>;</span><br><span class="line">    *returnColumnSizes=<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)*intervalsSize);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;intervalsSize;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        (*returnColumnSizes)[i]=<span class="number">2</span>;</span><br><span class="line">        <span class="built_in">queue</span>[i]=<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)*<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(intervalsSize==<span class="number">1</span>) &#123;</span><br><span class="line">    *returnSize=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> intervals;</span><br><span class="line">    &#125;</span><br><span class="line">    qsort(intervals,intervalsSize,<span class="keyword">sizeof</span>(<span class="type">int</span>*),cmp);</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> n=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;intervalsSize;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(intervals[i][<span class="number">0</span>]&lt;=intervals[i<span class="number">-1</span>][<span class="number">1</span>]) intervals[i][<span class="number">0</span>]=intervals[i<span class="number">-1</span>][<span class="number">0</span>],intervals[i][<span class="number">1</span>]=intervals[i][<span class="number">1</span>]&gt;intervals[i<span class="number">-1</span>][<span class="number">1</span>]?intervals[i][<span class="number">1</span>]:intervals[i<span class="number">-1</span>][<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">queue</span>[(*returnSize)][<span class="number">0</span>]=intervals[i<span class="number">-1</span>][<span class="number">0</span>],<span class="built_in">queue</span>[(*returnSize)][<span class="number">1</span>]=intervals[i<span class="number">-1</span>][<span class="number">1</span>],*returnSize+=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(i==intervalsSize<span class="number">-1</span>) <span class="built_in">queue</span>[(*returnSize)][<span class="number">0</span>]=intervals[i][<span class="number">0</span>],<span class="built_in">queue</span>[(*returnSize)][<span class="number">1</span>]=intervals[i][<span class="number">1</span>],*returnSize+=<span class="number">1</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,*returnSize);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">queue</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/set-intersection-size-at-least-two/">757. 设置交集大小至少为2</a>区间交集问题，面对这一问题首先要排序，按集合起点排序还是按集合终点排序，因为集合散乱没有规律性，选择最少的数是哪些无法从之前所选的情况去判定。而排好序能让我们从规律的集合排序中找出局部最优，即每次选都选一个数尽可能可以满足之后的集合，这样就可以有效减少后面的集合为了满足条件选新的数，那么这个数一定是在后面的集合的区间中存在，而当我们按照起点大小排序，当要选择可以使集合满足条件的数的时候，尽可能选区间末端的数。当然，这题其实最简便的方法就是把条件一一列出，当下个区间有我选的两个数时候，判断情况，然后更新替换上去。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/lemonade-change/">860. 柠檬水找零</a>这题的贪心体现在找零情况上，找零情况是有限的，每次找零尽量少用5美元，因为5美元是找零最需要的，10美元需要5美元找零，20美元也要5美元来找，所有只有在找20美元少用5美元找零就最好。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/partition-labels/">763. 划分字母区间</a>想要划分最多，且满足要求，先统计每个出现的字母最后一次出现的位置，再遍历一遍即可得到结果。肯定的是一段字母区间中的所有字母中一定有一个字母为这一段结尾，且这个字母的最后一次出现的位置都比这一段字母区间中的其他字母最后一次出现的位置都要远。通过之前统计每个字母最后一次出现的位置，就可以边遍历，边查找此时这一段中哪个字母的位置最远，当且到达这个最远位置时，就可以划分一段了。</p>
+</li>
+</ol>
+<p>总结：关于区间问题，首先要排序，怎么排序根据区间性质和题目要求，然后列情况，实现效果。</p>
+<h3 id="二刷"><a href="#二刷" class="headerlink" title="二刷"></a>二刷</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/wiggle-subsequence/">376. 摆动序列</a></p>
+<p><strong>摆动序列</strong> 的 <strong>最长子序列的长度</strong> 取决于子序列峰&#x2F;谷的个数，</p>
+<p>峰谷交错，其实就是摆动序列。</p>
+<p>从一个局部最优能推到全局最优才是贪心算法的核心。</p>
+<p>上坡和下坡中间的都不需要。</p>
+<p>判断<code>nums[i]</code>算不算里面的时候其实就是判断前面的差值<code>nums[i]-nums[i-1]</code>和后面的差值<code>nums[i+1]-nums[i]</code>是否是异号的。</p>
+<p>这时候会发现前面两个和后面两个很难确定算不算合法长度里。</p>
+<p>这时候我们其实可以假定前有一个平地。</p>
+<p><img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20221009152502346.png" alt="image-20221009152502346"></p>
+<p><code>curDiff</code>此时是16 而<code>preDiff</code>此时是0</p>
+<p>此时如果要算上1，就不仅仅要满足<code>curDiff&lt;0&amp;&amp;preDiff&gt;0||curDiff&gt;0&amp;&amp;preDiff&lt;0</code></p>
+<p>把preDiff此时&#x3D;&#x3D;0算进去。</p>
+<p>那要是中间有<code>preDiff=0</code> 那岂不是也会算进去 比如 3 1 1 3</p>
+<p>是的，前面的是不是平的并不会影响取 第二个1 第一个1根本没取，因为要求了<code>curDiff</code>不能等于0</p>
+<p>最后从0~numSize-1算的是除了最后一个的左边的峰值，加上右边的。</p>
+<p>总结：result初始为1（默认最右⾯有⼀个峰值），此时curDiff &gt; 0 &amp;&amp; preDiff &lt;&#x3D; 0，那么 result++（计算了左⾯的峰值），最后得到的result就是2（峰值个数为2即摆动序列⻓度为2）</p>
+<h6 id="53-最大子数组和"><a href="#53-最大子数组和" class="headerlink" title="53. 最大子数组和"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-subarray/">53. 最大子数组和</a></h6><p>如果连续子数组之和开始变负数，无论后面是什么数，与后面的数加上后相当于“拖累”了后面的数，也就是后面的数如果加上前面连续子数组（负数）会比原来更加小，所以需要从nums[i+1]从新开始算连续子数组之和。此时先判断是否比ans要大，然后再将cur重置为0。（这个顺序很重要）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">int maxSubArray(int* nums, int numsSize)&#123;</span><br><span class="line">    int ans=INT_MIN;</span><br><span class="line">    int cur=0;</span><br><span class="line">    for(int i=0;i&lt;numsSize;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cur+=nums[i];</span><br><span class="line">        </span><br><span class="line">        if(ans&lt;cur) ans=cur;</span><br><span class="line">        if(cur&lt;0) cur=0;</span><br><span class="line">    &#125; </span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="贪心-优先队列"><a href="#贪心-优先队列" class="headerlink" title="贪心+优先队列"></a>贪心+优先队列</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/course-schedule-iii/description/?envType=daily-question&envId=2023-09-11">630. 课程表 III - 力扣（LeetCode）</a></p>
+<h2 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/surrounded-regions/">130. 被围绕的区域</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/">2316. 统计无向图中无法互相到达点对数 - 力扣（LeetCode）</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/satisfiability-of-equality-equations/">990. 等式方程的可满足性 - 力扣（LeetCode）</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-consecutive-sequence/">128. 最长连续序列 - 力扣（LeetCode）</a> </p>
+<p>考察并查集的集合数量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int find(int x)</span><br><span class="line"> &#123;</span><br><span class="line">     if(p[x]==x) return x;</span><br><span class="line">     return p[x]=find(p[x]);</span><br><span class="line"> &#125;</span><br><span class="line"> void unionset(int a,int b)</span><br><span class="line"> &#123;</span><br><span class="line">     if(find(a)!=find(b)) sizep[find(b)]+=sizep[find(a)];</span><br><span class="line">     p[find(a)]=find(b);</span><br><span class="line"> &#125;</span><br><span class="line">//注意只有并查集的根节点保存的sizep才是有效的表示了集合大小</span><br></pre></td></tr></table></figure>
+
+
+
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/accounts-merge/submissions/">721. 账户合并 - 力扣（LeetCode）</a></p>
+<p>对于字符串数组vector<string>去重，有以下三种方法（准确的是两种吧）：</p>
+<p>（一）先排序、后去重</p>
+<p>采用sort函数 （头文件#include <algorithm>）  —— 这时候vector容器元素是从小到大排序好的<br>采用unique函数（头文件#include <algorithm>） —— 将容器中重复的元素放到vector的尾部，返回指向第一个重复元素的迭代器<br>采用vector自带的erase函数（头文件#include <vector>） —— 删除vector中的一段元素<br>具体代码如下↓</p>
+<p>void DeleteDuplicated(vector<string> &amp;name)<br>{<br>    sort(name.begin(), name.end());<br>    name.erase(unique(name.begin(), name.end()), name.end());<br>}<br>（二）利用set、unordered_set容器</p>
+<p>因为这两个容器的关键字是唯一的<br>因此以元素是否能在unordered_set容器中插入成功作为判断依据<br>如果插入成功 就将该值赋给迭代器指向的下一个值 并将判断迭代器下移一位<br>具体代码如下↓</p>
+<p>void remove(vector<string> &amp;str)<br>{<br>    vector<string>::iterator itr &#x3D; str.begin();<br>    unordered_set<string> s;<br>    for (auto curr &#x3D; str.begin(); curr !&#x3D; str.end(); ++curr)<br>    {<br>        if (s.insert(*curr).second)&#x2F;&#x2F;判断是否能插入成功<br>        {<br>            *itr++ &#x3D; *curr;&#x2F;&#x2F;如果成功 就将当前的值赋给到当前迭代器的下一位<br>        }<br>    }<br>    str.erase(itr, str.end());&#x2F;&#x2F;循环完一遍后 当前迭代器的位置就是字段唯一值的末尾<br>}<br>（三）同样利用set、unordered_set容器</p>
+<p>如果不是一定要用vector容器来装载字符串 可以考虑直接用set、unordered_set容器来存储！</p>
+<p>目前从时间复杂度的角度上来说，第二种方法应该是最快的，其时间复杂度为O(n)。</p>
+<p>会继续补充，找到效率最快、最高的方法….<br>————————————————<br>版权声明：本文为CSDN博主「PRPRY」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/lpy369369/article/details/87868580">https://blog.csdn.net/lpy369369/article/details/87868580</a></p>
+<h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/magnetic-force-between-two-balls/solution/">1552. 两球之间的磁力 题解 - 力扣（LeetCode）</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-tastiness-of-candy-basket/">2517. 礼盒的最大甜蜜度 - 力扣（LeetCode）</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-vowel-strings-in-ranges/">2559. 统计范围内的元音字符串数 - 力扣（LeetCode）</a></p>
+<p>这题还能用前缀和</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximize-the-minimum-powered-city/">2528. 最大化城市的最小供电站数目 - 力扣（LeetCode）</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/compare-strings-by-frequency-of-the-smallest-character/submissions/">1170. 比较字符串最小字母出现频次 - 力扣（LeetCode）</a></p>
+<h2 id="深搜"><a href="#深搜" class="headerlink" title="深搜"></a>深搜</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/tiling-a-rectangle-with-the-fewest-squares/">1240. 铺瓷砖 - 力扣（LeetCode）</a></p>
+<h2 id="图论"><a href="#图论" class="headerlink" title="图论"></a>图论</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/modify-graph-edge-weights/">2699. 修改图中的边权 - 力扣（LeetCode）</a></p>
+<p>找一条可以从起点到终点的一条路径，然后把其他能修改的边全部封死，之后这个路径如果能修改就把它修改成target，之后再去判断是否有比这个路径更短的，如果没有就是了。</p>
+<h2 id="数学"><a href="#数学" class="headerlink" title="数学"></a>数学</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/circle-and-rectangle-overlapping/">1401. 圆和矩形是否有重叠</a></p>
+<p>题解：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/24251545">(41 封私信 &#x2F; 80 条消息) 怎样判断平面上一个矩形和一个圆形是否有重叠？ - 知乎 (zhihu.com)</a></p>
+<h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-subarray-sum-with-one-deletion/solution/jiao-ni-yi-bu-bu-si-kao-dong-tai-gui-hua-hzz6/">教你一步步思考动态规划！（Python&#x2F;Java&#x2F;C++&#x2F;Go） - 删除一次得到子数组最大和 - 力扣（LeetCode）</a></p>
+<ol>
+<li><p>寻找子问题（从暴力的思路中寻找，枚举子数组的左右端点以及要删除的元素，保留枚举子数组的右端点的想法继续优化，得到原问题变成如果子数组的右端点为i，且最多删除一个数，子数组元素和的最大值是什么？</p>
+</li>
+<li><p>原问题就可以拆开为两个问题：</p>
+<ul>
+<li><p>第一个问题：如果子数组右端点为num[i]，且不能删除数字，子数组元素和的最大值是多少？</p>
+<ul>
+<li>情况一：左边无数字（就是左边不要）子数组为这个数字本身</li>
+<li>情况二：左边是连续的子数组，右端点为num[i-1]，且不能删除数字</li>
+</ul>
+</li>
+<li><p>第二个问题：如果子数组右端点为i，且已经删除了数字，子数组元素和的最大值是多少？</p>
+<ul>
+<li>情况一：如果删除这个右端点，说明子数组为前面的连续子数组，且不能删除数字</li>
+<li>情况二：如果删除是前面的数字，也就是变成如果子数组的右端点num[i-1],已经删除了数字，子数组元素和的最大值</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2025/01/03/2025.01.03%20%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%92%8CGitHub%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%90%8C%E6%AD%A5%EF%BC%88%E5%8D%9A%E5%AE%A2%EF%BC%89/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2025/02/04/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E6%8E%92"><span class="nav-number">1.</span> <span class="nav-text">快排</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text">链表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%BC%80%E5%92%8C%E5%92%8C%E5%B7%AE%E5%88%86"><span class="nav-number">3.</span> <span class="nav-text">前缀和和差分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%AA%E5%BF%83-Hash"><span class="nav-number">4.</span> <span class="nav-text">贪心+Hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">贪心算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E5%88%B7"><span class="nav-number">5.1.</span> <span class="nav-text">一刷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%88%B7"><span class="nav-number">5.2.</span> <span class="nav-text">二刷</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#53-%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C"><span class="nav-number">5.2.0.0.1.</span> <span class="nav-text">53. 最大子数组和</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%AA%E5%BF%83-%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97"><span class="nav-number">5.3.</span> <span class="nav-text">贪心+优先队列</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E6%9F%A5%E9%9B%86"><span class="nav-number">6.</span> <span class="nav-text">并查集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="nav-number">7.</span> <span class="nav-text">二分查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E6%90%9C"><span class="nav-number">8.</span> <span class="nav-text">深搜</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E8%AE%BA"><span class="nav-number">9.</span> <span class="nav-text">图论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6"><span class="nav-number">10.</span> <span class="nav-text">数学</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">11.</span> <span class="nav-text">动态规划</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

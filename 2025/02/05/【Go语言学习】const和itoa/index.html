@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="const和itoaconst 用于定义常量，定义之后不能修改，不能再次赋值，在程序运行期间不会改变。 定义一个常量1const pi &#x3D; 3.1415926  批量声明常量12345const (   statusOk &#x3D; 200   notFound &#x3D; 404   serverError &#x3D; 500)  批量声明常量时，如果某一行没有写&#x3D;，那么就和上一行一致12345const (">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2025/02/05/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91const%E5%92%8Citoa/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="const和itoaconst 用于定义常量，定义之后不能修改，不能再次赋值，在程序运行期间不会改变。 定义一个常量1const pi &#x3D; 3.1415926  批量声明常量12345const (   statusOk &#x3D; 200   notFound &#x3D; 404   serverError &#x3D; 500)  批量声明常量时，如果某一行没有写&#x3D;，那么就和上一行一致12345const (">
+<meta property="og:locale">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/08f340a4fef847949e36c1c2997fae35~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="article:published_time" content="2025-02-05T04:49:24.141Z">
+<meta property="article:modified_time" content="2025-02-05T05:10:31.653Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/08f340a4fef847949e36c1c2997fae35~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2025/02/05/【Go语言学习】const和itoa/"/>
+
+
+
+
+
+  <title> | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/05/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91const%E5%92%8Citoa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-05T12:49:24+08:00">
+                2025-02-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="const和itoa"><a href="#const和itoa" class="headerlink" title="const和itoa"></a>const和itoa</h1><p><strong>const 用于定义常量，定义之后不能修改，不能再次赋值，在程序运行期间不会改变。</strong></p>
+<h1 id="定义一个常量"><a href="#定义一个常量" class="headerlink" title="定义一个常量"></a>定义一个常量</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> pi = <span class="number">3.1415926</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="批量声明常量"><a href="#批量声明常量" class="headerlink" title="批量声明常量"></a>批量声明常量</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">   statusOk = <span class="number">200</span></span><br><span class="line">   notFound = <span class="number">404</span></span><br><span class="line">   serverError = <span class="number">500</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h1 id="批量声明常量时，如果某一行没有写-，那么就和上一行一致"><a href="#批量声明常量时，如果某一行没有写-，那么就和上一行一致" class="headerlink" title="批量声明常量时，如果某一行没有写&#x3D;，那么就和上一行一致"></a>批量声明常量时，如果某一行没有写&#x3D;，那么就和上一行一致</h1><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">   n1 = <span class="number">100</span></span><br><span class="line">   n2</span><br><span class="line">   n3</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：n1 n2 n3 都是100</p>
+<h1 id="iota"><a href="#iota" class="headerlink" title="iota"></a>iota</h1><ol>
+<li>在const关键字出现时将被重置为0；</li>
+<li>const中每增加一行常量声明，将使 iota 计数一次</li>
+<li>我iota的理解就是类似枚举</li>
+</ol>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">const</span> (</span><br><span class="line">   a1 = <span class="literal">iota</span> <span class="comment">//0</span></span><br><span class="line">   a2</span><br><span class="line">   a3</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：a1:0 a2:1 a3:2</p>
+<h2 id="iota面试题1"><a href="#iota面试题1" class="headerlink" title="iota面试题1"></a>iota面试题1</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span>  <span class="keyword">const</span> (</span><br><span class="line">   b1 = <span class="literal">iota</span> <span class="comment">//0</span></span><br><span class="line">   b2        <span class="comment">//1</span></span><br><span class="line">   _         <span class="comment">//2</span></span><br><span class="line">   b3        <span class="comment">//3</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><strong>分析：_也占了一行，所以_的值相当于是2，打印b3的值为3</strong></p>
+<h2 id="iota面试题2：插队情况-1"><a href="#iota面试题2：插队情况-1" class="headerlink" title="iota面试题2：插队情况(1)"></a>iota面试题2：插队情况(1)</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span>  <span class="keyword">const</span> (</span><br><span class="line">   c1 = <span class="literal">iota</span> <span class="comment">//0</span></span><br><span class="line">   c2 = <span class="number">100</span>  <span class="comment">//100</span></span><br><span class="line">   c3        <span class="comment">//100</span></span><br><span class="line">   c4        <span class="comment">//100</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><strong>分析：c1&#x3D;iota，所以c1的值为0很好理解；因为c2&#x3D;100，而c3、c4没有&#x3D;，所以和c2的值保持一致都是100</strong></p>
+<h2 id="iota面试题3：插队情况-2"><a href="#iota面试题3：插队情况-2" class="headerlink" title="iota面试题3：插队情况(2)"></a>iota面试题3：插队情况(2)</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">const</span> (</span><br><span class="line">   d1 = <span class="literal">iota</span> <span class="comment">//0</span></span><br><span class="line">   d2 = <span class="number">100</span>  <span class="comment">//100</span></span><br><span class="line">   d3 = <span class="literal">iota</span> <span class="comment">//2</span></span><br><span class="line">   d4        <span class="comment">//3</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><strong>分析：d3的值为2可能出乎有些同学的意料，有的同学可能觉得d3的值为0，其实不是的。这道题其实就是为了让d3继续使用iota的方式设置值。 或者这么讲：在面试题2中怎么设置让c3不为100，而是继续按照iota赋值，让c3&#x3D;2呢？面试题3就给出了答案。</strong></p>
+<h2 id="多个常量声明在一行"><a href="#多个常量声明在一行" class="headerlink" title="多个常量声明在一行"></a>多个常量声明在一行</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">const</span> (</span><br><span class="line">   d1, d2 = <span class="literal">iota</span> + <span class="number">1</span>, <span class="literal">iota</span> + <span class="number">2</span> <span class="comment">//1 2</span></span><br><span class="line">   d3, d4 = <span class="literal">iota</span> + <span class="number">1</span>, <span class="literal">iota</span> + <span class="number">2</span> <span class="comment">//2 3</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><strong>分析：其实很好理解，第一行的iota值为0，第二行的iota值为1，再执行加法运算就是注释中标注的结果了</strong></p>
+<h1 id="iota应用实例"><a href="#iota应用实例" class="headerlink" title="iota应用实例"></a>iota应用实例</h1><h3 id="1-基本枚举"><a href="#1-基本枚举" class="headerlink" title="1. 基本枚举"></a><strong>1. 基本枚举</strong></h3><p>定义一组自增的枚举常量：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const (</span><br><span class="line">    Pending = iota // 0</span><br><span class="line">    Active         // 1</span><br><span class="line">    Done           // 2</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-结合表达式"><a href="#2-结合表达式" class="headerlink" title="2. 结合表达式"></a><strong>2. 结合表达式</strong></h3><p>生成带有偏移或运算的常量：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    A = <span class="literal">iota</span> + <span class="number">1</span>   <span class="comment">// 1</span></span><br><span class="line">    B              <span class="comment">// 2</span></span><br><span class="line">    C              <span class="comment">// 3</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结合位运算（权限控制）</span></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    Read  = <span class="number">1</span> &lt;&lt; <span class="literal">iota</span> <span class="comment">// 1 (0b001)</span></span><br><span class="line">    Write             <span class="comment">// 2 (0b010)</span></span><br><span class="line">    Exec              <span class="comment">// 4 (0b100)</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-跳过特定值"><a href="#3-跳过特定值" class="headerlink" title="3. 跳过特定值"></a><strong>3. 跳过特定值</strong></h3><p>使用<code>_</code>忽略某些值：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    Apple = <span class="literal">iota</span> <span class="comment">// 0</span></span><br><span class="line">    Banana       <span class="comment">// 1</span></span><br><span class="line">    _            <span class="comment">// 2（跳过）</span></span><br><span class="line">    Cherry       <span class="comment">// 3</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-文件大小单位"><a href="#4-文件大小单位" class="headerlink" title="4. 文件大小单位"></a><strong>4. 文件大小单位</strong></h3><p>生成按指数增长的常量（如KB、MB）：</p>
+<p>定义数量级</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">const</span> (</span><br><span class="line">   _  = <span class="literal">iota</span></span><br><span class="line">   KB = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>)</span><br><span class="line">   MB = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>)</span><br><span class="line">   GB = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>)</span><br><span class="line">   TB = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>)</span><br><span class="line">   PB = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">KB: <span class="number">1024</span></span><br><span class="line">MB: <span class="number">1048576</span></span><br><span class="line">GB: <span class="number">1073741824</span></span><br><span class="line">TB: <span class="number">1099511627776</span></span><br><span class="line">PB: <span class="number">1125899906842624</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="更进一步"><a href="#更进一步" class="headerlink" title="更进一步"></a>更进一步</h5><p>猜一下下面代码段的输出结果是什么？</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">const</span> (</span><br><span class="line">   _  = <span class="literal">iota</span></span><br><span class="line">   KB = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>)</span><br><span class="line">   MB</span><br><span class="line">   GB</span><br><span class="line">   TB</span><br><span class="line">   PB</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>打印结果和上面是一样的：</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/08f340a4fef847949e36c1c2997fae35~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp" alt="image.png"></p>
+<h3 id="5-索引常量"><a href="#5-索引常量" class="headerlink" title="5. 索引常量"></a><strong>5. 索引常量</strong></h3><p>为数组或结构体字段生成索引：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    Name = <span class="literal">iota</span> <span class="comment">// 0</span></span><br><span class="line">    Age         <span class="comment">// 1</span></span><br><span class="line">    Email       <span class="comment">// 2</span></span><br><span class="line">    NumFields   <span class="comment">// 3（字段总数）</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> user [NumFields]<span class="type">string</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-多常量分组"><a href="#6-多常量分组" class="headerlink" title="6. 多常量分组"></a><strong>6. 多常量分组</strong></h3><p>不同<code>const</code>块中的<code>iota</code>独立计数：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ( <span class="comment">// 分组1</span></span><br><span class="line">    GroupA = <span class="literal">iota</span> <span class="comment">// 0</span></span><br><span class="line">    GroupB        <span class="comment">// 1</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ( <span class="comment">// 分组2</span></span><br><span class="line">    GroupX = <span class="literal">iota</span> <span class="comment">// 0</span></span><br><span class="line">    GroupY        <span class="comment">// 1</span></span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="7-字符串枚举"><a href="#7-字符串枚举" class="headerlink" title="7. 字符串枚举"></a><strong>7. 字符串枚举</strong></h3><p>结合字符串方法生成可读枚举：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Status <span class="type">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    Pending Status = <span class="literal">iota</span></span><br><span class="line">    Active</span><br><span class="line">    Completed</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s Status)</span></span> String() <span class="type">string</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> [...]<span class="type">string</span>&#123;<span class="string">&quot;Pending&quot;</span>, <span class="string">&quot;Active&quot;</span>, <span class="string">&quot;Completed&quot;</span>&#125;[s]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="8-复杂表达式"><a href="#8-复杂表达式" class="headerlink" title="8. 复杂表达式"></a><strong>8. 复杂表达式</strong></h3><p>同一行声明多个常量：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    A, B = <span class="literal">iota</span>, <span class="literal">iota</span> * <span class="number">2</span> <span class="comment">// A=0, B=0</span></span><br><span class="line">    C, D                  <span class="comment">// C=1, D=2</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a><strong>注意事项</strong></h3><ul>
+<li><p><code>iota</code>在<code>const</code>块中从0开始，每行递增，<strong>无论是否显式使用</strong>。</p>
+</li>
+<li><p>中断<code>iota</code>后需显式恢复：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    A = <span class="literal">iota</span>    <span class="comment">// 0</span></span><br><span class="line">    B           <span class="comment">// 1</span></span><br><span class="line">    C = <span class="number">100</span>     <span class="comment">// 100（显式赋值）</span></span><br><span class="line">    D = <span class="literal">iota</span>    <span class="comment">// 3（继续递增）</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>定义常量使用<code>const</code>关键字，定义之后不能修改，不能再次赋值，在程序运行期间不会改变。</p>
+<p><code>iota</code>是go语言中很特殊的设定，<code>iota</code>主要用于简化自增常量的声明，适合枚举、位掩码、索引等场景。使用时需注意其递增规则，避免因中断或复杂表达式导致意外结果。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2025/02/04/%E3%80%90%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E3%80%91Acwing%E7%9A%84%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2025/02/05/%E3%80%90Go%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E3%80%91/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#const%E5%92%8Citoa"><span class="nav-number">1.</span> <span class="nav-text">const和itoa</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%E5%B8%B8%E9%87%8F"><span class="nav-number">2.</span> <span class="nav-text">定义一个常量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E5%A3%B0%E6%98%8E%E5%B8%B8%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">批量声明常量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E5%A3%B0%E6%98%8E%E5%B8%B8%E9%87%8F%E6%97%B6%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%9F%90%E4%B8%80%E8%A1%8C%E6%B2%A1%E6%9C%89%E5%86%99-%EF%BC%8C%E9%82%A3%E4%B9%88%E5%B0%B1%E5%92%8C%E4%B8%8A%E4%B8%80%E8%A1%8C%E4%B8%80%E8%87%B4"><span class="nav-number">4.</span> <span class="nav-text">批量声明常量时，如果某一行没有写&#x3D;，那么就和上一行一致</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#iota"><span class="nav-number">5.</span> <span class="nav-text">iota</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#iota%E9%9D%A2%E8%AF%95%E9%A2%981"><span class="nav-number">5.1.</span> <span class="nav-text">iota面试题1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iota%E9%9D%A2%E8%AF%95%E9%A2%982%EF%BC%9A%E6%8F%92%E9%98%9F%E6%83%85%E5%86%B5-1"><span class="nav-number">5.2.</span> <span class="nav-text">iota面试题2：插队情况(1)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iota%E9%9D%A2%E8%AF%95%E9%A2%983%EF%BC%9A%E6%8F%92%E9%98%9F%E6%83%85%E5%86%B5-2"><span class="nav-number">5.3.</span> <span class="nav-text">iota面试题3：插队情况(2)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E4%B8%AA%E5%B8%B8%E9%87%8F%E5%A3%B0%E6%98%8E%E5%9C%A8%E4%B8%80%E8%A1%8C"><span class="nav-number">5.4.</span> <span class="nav-text">多个常量声明在一行</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#iota%E5%BA%94%E7%94%A8%E5%AE%9E%E4%BE%8B"><span class="nav-number">6.</span> <span class="nav-text">iota应用实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%9F%BA%E6%9C%AC%E6%9E%9A%E4%B8%BE"><span class="nav-number">6.0.1.</span> <span class="nav-text">1. 基本枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BB%93%E5%90%88%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">6.0.2.</span> <span class="nav-text">2. 结合表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%B7%B3%E8%BF%87%E7%89%B9%E5%AE%9A%E5%80%BC"><span class="nav-number">6.0.3.</span> <span class="nav-text">3. 跳过特定值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%96%87%E4%BB%B6%E5%A4%A7%E5%B0%8F%E5%8D%95%E4%BD%8D"><span class="nav-number">6.0.4.</span> <span class="nav-text">4. 文件大小单位</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9B%B4%E8%BF%9B%E4%B8%80%E6%AD%A5"><span class="nav-number">6.0.4.0.1.</span> <span class="nav-text">更进一步</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%B4%A2%E5%BC%95%E5%B8%B8%E9%87%8F"><span class="nav-number">6.0.5.</span> <span class="nav-text">5. 索引常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%A4%9A%E5%B8%B8%E9%87%8F%E5%88%86%E7%BB%84"><span class="nav-number">6.0.6.</span> <span class="nav-text">6. 多常量分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9E%9A%E4%B8%BE"><span class="nav-number">6.0.7.</span> <span class="nav-text">7. 字符串枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E5%A4%8D%E6%9D%82%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">6.0.8.</span> <span class="nav-text">8. 复杂表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">6.0.9.</span> <span class="nav-text">注意事项</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
