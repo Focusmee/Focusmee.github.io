@@ -94,17 +94,23 @@
 
 
 
-<meta name="description" content="title:映射12345678910111213141516171819202122package mainimport ( 	&quot;strings&quot;	&quot;golang.org&#x2F;x&#x2F;tour&#x2F;wc&quot;	&quot;fmt&quot;)func WordCount(s string) map[string]int &#123;	fmt.Println(s)	wor">
+<meta name="description" content="一、GOPATH的概念 GOPATH 是 Go 语言中使用的一个环境变量，它使用绝对路径提供项目的工作目录（也称为工作区）。 工作目录是一个工程开发的相对参考目录，好比当你要在公司编写一套服务器代码，你的工位所包含的桌面、计算机及椅子就是你的工作区。 工作区的概念与工作目录的概念也是类似的。如果不使用工作目录的概念，在多人开发时，每个人有一套自己的目录结构，读取配置文件的位置不统一， 输出的二进制">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/2025/02/07/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91%E6%98%A0%E5%B0%84%E7%BB%83%E4%B9%A0/index.html">
+<meta property="og:url" content="http://example.com/2025/02/14/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91GOPATH/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="title:映射12345678910111213141516171819202122package mainimport ( 	&quot;strings&quot;	&quot;golang.org&#x2F;x&#x2F;tour&#x2F;wc&quot;	&quot;fmt&quot;)func WordCount(s string) map[string]int &#123;	fmt.Println(s)	wor">
+<meta property="og:description" content="一、GOPATH的概念 GOPATH 是 Go 语言中使用的一个环境变量，它使用绝对路径提供项目的工作目录（也称为工作区）。 工作目录是一个工程开发的相对参考目录，好比当你要在公司编写一套服务器代码，你的工位所包含的桌面、计算机及椅子就是你的工作区。 工作区的概念与工作目录的概念也是类似的。如果不使用工作目录的概念，在多人开发时，每个人有一套自己的目录结构，读取配置文件的位置不统一， 输出的二进制">
 <meta property="og:locale">
-<meta property="article:published_time" content="2025-02-07T11:20:27.015Z">
-<meta property="article:modified_time" content="2025-02-08T00:38:30.439Z">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/907091/202008/907091-20200810145305229-244770147.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/907091/202011/907091-20201102150001647-651359307.png">
+<meta property="og:image" content="https://assets.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://assets.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/907091/202011/907091-20201102150212911-986971053.png">
+<meta property="article:published_time" content="2025-02-14T14:28:52.450Z">
+<meta property="article:modified_time" content="2025-02-14T14:28:52.639Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img2020.cnblogs.com/blog/907091/202008/907091-20200810145305229-244770147.png">
 
 
 
@@ -133,7 +139,7 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2025/02/07/【Go语言学习】映射练习/"/>
+  <link rel="canonical" href="http://example.com/2025/02/14/【Go语言学习】GOPATH/"/>
 
 
 
@@ -262,7 +268,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/07/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91%E6%98%A0%E5%B0%84%E7%BB%83%E4%B9%A0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/14/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91GOPATH/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -291,8 +297,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-07T19:20:27+08:00">
-                2025-02-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-14T22:28:52+08:00">
+                2025-02-14
               </time>
             
 
@@ -329,12 +335,42 @@
       
 
       
-        <hr>
-<h2 id="title-映射"><a href="#title-映射" class="headerlink" title="title:映射"></a>title:映射</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"> 	<span class="string">&quot;strings&quot;</span></span><br><span class="line">	<span class="string">&quot;golang.org/x/tour/wc&quot;</span></span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WordCount</span><span class="params">(s <span class="type">string</span>)</span></span> <span class="keyword">map</span>[<span class="type">string</span>]<span class="type">int</span> &#123;</span><br><span class="line">	fmt.Println(s)</span><br><span class="line">	words:=strings.Fields(s)</span><br><span class="line">	m := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">int</span>)</span><br><span class="line">	<span class="keyword">for</span> _,word:= <span class="keyword">range</span> words &#123;</span><br><span class="line">		m[word]++</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> m</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	wc.Test(WordCount)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        <p><strong>一、GOPATH的概念</strong></p>
+<p>GOPATH 是 Go 语言中使用的一个环境变量，它使用绝对路径提供项目的<strong>工作目录（</strong>也称为<strong>工作区）</strong>。</p>
+<p>工作目录是一个工程开发的相对参考目录，好比当你要在公司编写一套服务器代码，你的工位所包含的桌面、计算机及椅子就是你的工作区。</p>
+<p>工作区的概念与工作目录的概念也是类似的。如果不使用工作目录的概念，在多人开发时，每个人有一套自己的目录结构，读取配置文件的位置不统一，</p>
+<p>输出的二进制运行文件也不统一，这样会导致开发的标准不统一，影响开发效率。</p>
+<p>GOPATH 适合处理大量 Go语言源码、多个包组合而成的复杂工程。</p>
+<p>从 Go 1.8 版本开始，Go 开发包在安装完成后，将 GOPATH 赋予了一个默认的目录，参见下表</p>
+<p><img src="https://img2020.cnblogs.com/blog/907091/202008/907091-20200810145305229-244770147.png" alt="img"></p>
+<p>可以通过go env命令查看Go的环境变量，我使用的mac效果如下（安装后，更改过）</p>
+<p><img src="https://img2020.cnblogs.com/blog/907091/202011/907091-20201102150001647-651359307.png" alt="img"></p>
+<p><strong>二、GOPATH的使用</strong></p>
+<p><code>GOPATH</code>目录一般为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$HOME/go</span><br><span class="line">  --bin      # 存放编译后的可执行文件</span><br><span class="line">  --pkg      # 依赖包编译后的*.a文件</span><br><span class="line">  --src      # 存放源码文件，以代码包为组织形式</span><br></pre></td></tr></table></figure>
 
+<p>如下是一个完整的Go项目的开发目录：</p>
+<p><a href="javascript:void(0);"><img src="https://assets.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">my-go                 // my-go为GOPATH目录</span><br><span class="line">  -- bin</span><br><span class="line">     -- myApp1        // 编译生成</span><br><span class="line">     -- myApp2        // 编译生成</span><br><span class="line">     -- myApp3        // 编译生成</span><br><span class="line">  -- pkg                             依赖包编译后的*.a文件//</span><br><span class="line">  -- src</span><br><span class="line">     -- MyApp1        // 项目1</span><br><span class="line">        -- models</span><br><span class="line">        -- controllers</span><br><span class="line">        -- others</span><br><span class="line">        -- main.go </span><br><span class="line">     -- MyApp2        // 项目2</span><br><span class="line">        -- models</span><br><span class="line">        -- controllers</span><br><span class="line">        -- others</span><br><span class="line">        -- main.go </span><br></pre></td></tr></table></figure>
 
+<p><a href="javascript:void(0);"><img src="https://assets.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
+<p>设置GOPATH后，工程中使用 <strong>import的根目录是GOPATH中的src目录</strong></p>
+<p>GOPATH为&#x2F;Users&#x2F;lxxxxxk&#x2F;GolandProjects，工程为&#x2F;Users&#x2F;lxxxxxk&#x2F;Desktop&#x2F;my-go&#x2F;src&#x2F;MyApp1</p>
+<p>那么MyApp1中使用import导入本地包的时候，这样写：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import &quot;MyApp1/models&quot;  // models为包名</span><br></pre></td></tr></table></figure>
 
-
+<p>也就是说，<strong>GOPATH下必须要有src目录</strong>，不然import导包的时候会找不到</p>
+<p>import导包规则：</p>
+<p>　　1、先去GOROOT&#x2F;src&#x2F;路径下找   &#x2F;usr&#x2F;local&#x2F;go&#x2F;src&#x2F;MyApp1 (系统环境变量 $GOROOT，即使用go env命令显示的GOROOT)</p>
+<p>　　2、如果1没有，就去Project GOPATH&#x2F;src&#x2F;路径下找   &#x2F;Users&#x2F;lxxxxxk&#x2F;Desktop&#x2F;my-go&#x2F;src&#x2F;MyApp1</p>
+<p>　　3、如果2还没找到，就去Global GOPATH路径下找   &#x2F;Users&#x2F;lxxxxxk&#x2F;GolandProjects（系统环境变量 $GOPATH，即使用go env命令显示的GOPATH）</p>
+<p><strong>三、GoLand设置GOPATH</strong></p>
+<p><img src="https://img2020.cnblogs.com/blog/907091/202011/907091-20201102150212911-986971053.png" alt="img"></p>
+<p>图中的 Global GOPATH 代表全局 GOPATH，一般来源于系统环境变量中的 GOPATH；</p>
+<p>Project GOPATH 代表项目所使用的 GOPATH，该设置会被保存在工作目录的 <strong>.idea</strong>目录下，不会被设置到环境变量的 GOPATH 中，但会在编译时使用到这个目录。</p>
+<p>建议在开发时填写项目 GOPATH，<strong>每一个项目尽量只设置一个 GOPATH，不使用多个 GOPATH 和全局的 GOPATH</strong>。</p>
+<p>否则可能会出现如下麻烦：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">将某项目代码保存在 /home/davy/projectA 目录下，将该目录设置为 GOPATH。</span><br><span class="line">随着开发进行，需要再次获取一份工程项目的源码，此时源码保存在 /home/davy/projectB 目录下，</span><br><span class="line">如果此时需要编译 projectB 目录的项目，但开发者忘记设置 GOPATH 而直接使用命令行编译，</span><br><span class="line">则当前的 GOPATH 指向的是 /home/davy/projectA 目录，而不是开发者编译时期望的 projectB 目录。</span><br><span class="line">编译完成后，开发者就会将错误的工程版本发布到外网。</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -358,8 +394,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2025/02/07/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91nil%E5%88%87%E7%89%87%E4%B8%8E%E7%A9%BA%E5%88%87%E7%89%87%EF%BC%9A%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E6%8C%87%E5%8D%97/" rel="next" title="Go语言中的nil切片与空切片：深入解析与实际应用指南">
-                <i class="fa fa-chevron-left"></i> Go语言中的nil切片与空切片：深入解析与实际应用指南
+              <a href="/2025/02/14/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20VSCode%20%E4%B8%AD%E7%9A%84%20Code%20Runner%20%E6%8F%92%E4%BB%B6%E6%89%A7%E8%A1%8C%20golang%20%E4%BB%A3%E7%A0%81/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
               </a>
             
           </div>
@@ -367,10 +403,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2025/02/14/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20VSCode%20%E4%B8%AD%E7%9A%84%20Code%20Runner%20%E6%8F%92%E4%BB%B6%E6%89%A7%E8%A1%8C%20golang%20%E4%BB%A3%E7%A0%81/" rel="prev" title="">
-                 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -422,17 +454,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -476,22 +499,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#title-%E6%98%A0%E5%B0%84"><span class="nav-number">1.</span> <span class="nav-text">title:映射</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
