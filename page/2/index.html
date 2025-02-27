@@ -260,6 +260,338 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/14/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91GOPATH/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/02/14/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91GOPATH/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-14T22:28:52+08:00">
+                2025-02-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>一、GOPATH的概念</strong></p>
+<p>GOPATH 是 Go 语言中使用的一个环境变量，它使用绝对路径提供项目的<strong>工作目录（</strong>也称为<strong>工作区）</strong>。</p>
+<p>工作目录是一个工程开发的相对参考目录，好比当你要在公司编写一套服务器代码，你的工位所包含的桌面、计算机及椅子就是你的工作区。</p>
+<p>工作区的概念与工作目录的概念也是类似的。如果不使用工作目录的概念，在多人开发时，每个人有一套自己的目录结构，读取配置文件的位置不统一，</p>
+<p>输出的二进制运行文件也不统一，这样会导致开发的标准不统一，影响开发效率。</p>
+<p>GOPATH 适合处理大量 Go语言源码、多个包组合而成的复杂工程。</p>
+<p>从 Go 1.8 版本开始，Go 开发包在安装完成后，将 GOPATH 赋予了一个默认的目录，参见下表</p>
+<p><img src="https://img2020.cnblogs.com/blog/907091/202008/907091-20200810145305229-244770147.png" alt="img"></p>
+<p>可以通过go env命令查看Go的环境变量，我使用的mac效果如下（安装后，更改过）</p>
+<p><img src="https://img2020.cnblogs.com/blog/907091/202011/907091-20201102150001647-651359307.png" alt="img"></p>
+<p><strong>二、GOPATH的使用</strong></p>
+<p><code>GOPATH</code>目录一般为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$HOME/go</span><br><span class="line">  --bin      # 存放编译后的可执行文件</span><br><span class="line">  --pkg      # 依赖包编译后的*.a文件</span><br><span class="line">  --src      # 存放源码文件，以代码包为组织形式</span><br></pre></td></tr></table></figure>
+
+<p>如下是一个完整的Go项目的开发目录：</p>
+<p><a href="javascript:void(0);"><img src="https://assets.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">my-go                 // my-go为GOPATH目录</span><br><span class="line">  -- bin</span><br><span class="line">     -- myApp1        // 编译生成</span><br><span class="line">     -- myApp2        // 编译生成</span><br><span class="line">     -- myApp3        // 编译生成</span><br><span class="line">  -- pkg                             依赖包编译后的*.a文件//</span><br><span class="line">  -- src</span><br><span class="line">     -- MyApp1        // 项目1</span><br><span class="line">        -- models</span><br><span class="line">        -- controllers</span><br><span class="line">        -- others</span><br><span class="line">        -- main.go </span><br><span class="line">     -- MyApp2        // 项目2</span><br><span class="line">        -- models</span><br><span class="line">        -- controllers</span><br><span class="line">        -- others</span><br><span class="line">        -- main.go </span><br></pre></td></tr></table></figure>
+
+<p><a href="javascript:void(0);"><img src="https://assets.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
+<p>设置GOPATH后，工程中使用 <strong>import的根目录是GOPATH中的src目录</strong></p>
+<p>GOPATH为&#x2F;Users&#x2F;lxxxxxk&#x2F;GolandProjects，工程为&#x2F;Users&#x2F;lxxxxxk&#x2F;Desktop&#x2F;my-go&#x2F;src&#x2F;MyApp1</p>
+<p>那么MyApp1中使用import导入本地包的时候，这样写：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import &quot;MyApp1/models&quot;  // models为包名</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，<strong>GOPATH下必须要有src目录</strong>，不然import导包的时候会找不到</p>
+<p>import导包规则：</p>
+<p>　　1、先去GOROOT&#x2F;src&#x2F;路径下找   &#x2F;usr&#x2F;local&#x2F;go&#x2F;src&#x2F;MyApp1 (系统环境变量 $GOROOT，即使用go env命令显示的GOROOT)</p>
+<p>　　2、如果1没有，就去Project GOPATH&#x2F;src&#x2F;路径下找   &#x2F;Users&#x2F;lxxxxxk&#x2F;Desktop&#x2F;my-go&#x2F;src&#x2F;MyApp1</p>
+<p>　　3、如果2还没找到，就去Global GOPATH路径下找   &#x2F;Users&#x2F;lxxxxxk&#x2F;GolandProjects（系统环境变量 $GOPATH，即使用go env命令显示的GOPATH）</p>
+<p><strong>三、GoLand设置GOPATH</strong></p>
+<p><img src="https://img2020.cnblogs.com/blog/907091/202011/907091-20201102150212911-986971053.png" alt="img"></p>
+<p>图中的 Global GOPATH 代表全局 GOPATH，一般来源于系统环境变量中的 GOPATH；</p>
+<p>Project GOPATH 代表项目所使用的 GOPATH，该设置会被保存在工作目录的 <strong>.idea</strong>目录下，不会被设置到环境变量的 GOPATH 中，但会在编译时使用到这个目录。</p>
+<p>建议在开发时填写项目 GOPATH，<strong>每一个项目尽量只设置一个 GOPATH，不使用多个 GOPATH 和全局的 GOPATH</strong>。</p>
+<p>否则可能会出现如下麻烦：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">将某项目代码保存在 /home/davy/projectA 目录下，将该目录设置为 GOPATH。</span><br><span class="line">随着开发进行，需要再次获取一份工程项目的源码，此时源码保存在 /home/davy/projectB 目录下，</span><br><span class="line">如果此时需要编译 projectB 目录的项目，但开发者忘记设置 GOPATH 而直接使用命令行编译，</span><br><span class="line">则当前的 GOPATH 指向的是 /home/davy/projectA 目录，而不是开发者编译时期望的 projectB 目录。</span><br><span class="line">编译完成后，开发者就会将错误的工程版本发布到外网。</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/14/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20VSCode%20%E4%B8%AD%E7%9A%84%20Code%20Runner%20%E6%8F%92%E4%BB%B6%E6%89%A7%E8%A1%8C%20golang%20%E4%BB%A3%E7%A0%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/02/14/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20VSCode%20%E4%B8%AD%E7%9A%84%20Code%20Runner%20%E6%8F%92%E4%BB%B6%E6%89%A7%E8%A1%8C%20golang%20%E4%BB%A3%E7%A0%81/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-14T18:22:31+08:00">
+                2025-02-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<p>title:如何使用 VSCode 中的 Code Runner 插件执行 golang 代码</p>
+<hr>
+<p>project 的文档结如下</p>
+<p>mylab<br>   |—- main.go<br>   |—- test.go</p>
+<p>main.go</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	test()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>test.go</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="built_in">println</span>(<span class="string">&quot;in test&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner">Code Runner 插件的 Doc 地址</a>中<br>找到如下 Configuration 的配置说明</p>
+<blockquote>
+<p>Configuration<br>Make sure the executor PATH of each language is set in the environment variable. You could also add entry into code-runner.executorMap to set the executor PATH. e.g. To set the executor PATH for ruby, php and html:</p>
+</blockquote>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code-runner.executorMap&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;javascript&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;php&quot;</span><span class="punctuation">:</span> <span class="string">&quot;C:\\php\\php.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;python&quot;</span><span class="punctuation">:</span> <span class="string">&quot;python&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;perl&quot;</span><span class="punctuation">:</span> <span class="string">&quot;perl&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ruby&quot;</span><span class="punctuation">:</span> <span class="string">&quot;C:\\Ruby23-x64\\bin\\ruby.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;go&quot;</span><span class="punctuation">:</span> <span class="string">&quot;go run&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;html&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\&quot;C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe\&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;java&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cd $dir &amp;&amp; javac $fileName &amp;&amp; java $fileNameWithoutExt&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;c&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cd $dir &amp;&amp; gcc $fileName -o $fileNameWithoutExt &amp;&amp; $dir$fileNameWithoutExt&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Supported customized parameters</p>
+<ul>
+<li>$workspaceRoot: The path of the folder opened in VS Code</li>
+<li>$dir: The directory of the code file being run</li>
+<li>$dirWithoutTrailingSlash: The directory of the code file being run without a trailing slash</li>
+<li>$fullFileName: The full name of the code file being run</li>
+<li>$fileName: The base name of the code file being run, that is the file without the directory</li>
+<li>$fileNameWithoutExt: The base name of the code file being run without its extension</li>
+<li>$driveLetter: The drive letter of the code file being run (Windows only)</li>
+<li>$pythonPath: The path of Python interpreter (set by Python: Select Interpreter command)</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Please take care of the back slash and the space in file path of the executor</p>
+<p>Back slash: please use <br>If there ares spaces in file path, please use “ to surround your file path</p>
+</blockquote>
+<blockquote>
+<p>You could set the executor per filename glob:</p>
+</blockquote>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code-runner.executorMapByGlob&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;pom.xml&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cd $dir &amp;&amp; mvn clean package&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;*.test.js&quot;</span><span class="punctuation">:</span> <span class="string">&quot;tap&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;*.js&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到 go 的执行命令默认配置成了 go run, 并且默认执行当前打开的文件。 所以需要利用$dir 这个变量 run 整个 main 包所涉及到的所有文件。并且可以正则匹配文件名。</p>
+<p>查看一下 go run 这个命令的参数解释，由于众所周知的原因，我们只能上国内的<a target="_blank" rel="noopener" href="https://golang.google.cn/cmd/go/#hdr-Compile_and_run_Go_program">替代官网</a>。</p>
+<blockquote>
+<p>Compile and run Go program Usage:</p>
+<p>go run [build flags][-exec xprog] package [arguments…] Run compiles and runs the named main Go package. Typically the package is specified as a list of .go source files, but it may also be an import path, file system path, or pattern matching a single known package, as in <strong>‘go run .’</strong> or ‘go run my&#x2F;cmd’.</p>
+<p>By default, ‘go run’ runs the compiled binary directly: ‘a.out arguments…’. If the -exec flag is given, ‘go run’ invokes the binary using xprog:</p>
+<p>‘xprog a.out arguments…’. If the -exec flag is not given, GOOS or GOARCH is different from the system default, and a program named go*$GOOS*$GOARCH_exec can be found on the current search path, ‘go run’ invokes the binary using that program, for example ‘go_nacl_386_exec a.out arguments…’. This allows execution of cross-compiled programs when a simulator or other execution method is available.</p>
+<p>The exit status of Run is not the exit status of the compiled binary.</p>
+<p>For more about build flags, see ‘go help build’. For more about specifying packages, see ‘go help packages’.</p>
+</blockquote>
+<p>找到了，使用<code>go run .</code> 来跑整个 package 的。</p>
+<p>在 VSCode 的.vscode 目录下创建 settings.json 文件</p>
+<p>自定义这个 project 的用户配置如下</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code-runner.executorMap&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;go&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cd $dir &amp;&amp; go run .&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;code-runner.executorMapByGlob&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;$dir\\*.go&quot;</span><span class="punctuation">:</span> <span class="string">&quot;go&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>点击 Cdoe Runner 在 VSCode GUI 界面提供的 RUN 按钮</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[Running] cd &quot;d:\Users\polar\go\src\mylab\&quot; &amp;&amp; go run .</span><br><span class="line">in test</span><br><span class="line"></span><br><span class="line">[Done] exited with code=0 in 3.564 seconds</span><br></pre></td></tr></table></figure>
+
+<p>OK!</p>
+<p>当然也可以用 VSCode Debug 的 launch.json 来配置，但是那是 debug 模式，并不是 go run。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/07/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91%E6%98%A0%E5%B0%84%E7%BB%83%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -870,6 +1202,14 @@
           
             <hr>
 <h2 id="title-Go语言学习打卡"><a href="#title-Go语言学习打卡" class="headerlink" title="title:Go语言学习打卡"></a>title:Go语言学习打卡</h2><p><img src="https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/xuexiluxian/go-7.jpg" alt="Go 语言的学习路线图"></p>
+<ul>
+<li><input disabled="" type="checkbox"> 每天刷十道算法</li>
+<li><input disabled="" type="checkbox"> 月底做完一个gin项目</li>
+<li><input disabled="" type="checkbox"> 计网八股</li>
+<li><input disabled="" type="checkbox"> 数据库八股</li>
+<li><input disabled="" type="checkbox"> go八股星球八股+手动面经整理+面试整理+小林Coding</li>
+<li><input disabled="" type="checkbox"> java数据库搭建（26日）</li>
+</ul>
 
           
         
@@ -1881,807 +2221,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/04/%E3%80%90Leetcode%E5%88%B7%E9%A2%98%E3%80%912023%E5%B9%B4-2024%E5%B9%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/02/04/%E3%80%90Leetcode%E5%88%B7%E9%A2%98%E3%80%912023%E5%B9%B4-2024%E5%B9%B4/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-04T15:57:04+08:00">
-                2025-02-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>刷题记录</p>
-<p>取余法则</p>
-<p>（S1+S2）%b &#x3D; （S1%b+S2%b）%b， S1<em>S2%b&#x3D;(S1%B)</em>(S2%b)%b</p>
-<h2 id="快排"><a href="#快排" class="headerlink" title="快排"></a>快排</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sort-an-array/">912. 排序数组 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/get-kth-magic-number-lcci/">面试题 17.09. 第 k 个数 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/">剑指 Offer 21. 调整数组顺序使奇数位于偶数前面 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sort-colors/">75. 颜色分类 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/container-with-most-water/comments/">11. 盛最多水的容器 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/">https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/median-of-two-sorted-arrays/">4. 寻找两个正序数组的中位数 - 力扣（LeetCode）</a></p>
-<p>第一种做法：时间复杂度O(m+n)，简单来说就是将两个数组合并成一个数组然后找到中位数相应的位置进行求解。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line"></span><br><span class="line">    double findMedianSortedArrays(vector&lt;int&gt;&amp; nums1, vector&lt;int&gt;&amp; nums2) &#123;</span><br><span class="line">        float tmp[2010];</span><br><span class="line">        int i=0,j=0,k=0;</span><br><span class="line">        int l=nums1.size()+nums2.size();</span><br><span class="line"></span><br><span class="line">        while(i&lt;nums1.size()&amp;&amp;j&lt;nums2.size())</span><br><span class="line">        &#123;</span><br><span class="line">            if(nums1[i]&lt;nums2[j]) tmp[k++]=nums1[i++];</span><br><span class="line">            else tmp[k++]=nums2[j++];</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        while(i&lt;nums1.size())</span><br><span class="line">        &#123;</span><br><span class="line">            tmp[k++]=nums1[i++];</span><br><span class="line">        &#125;</span><br><span class="line">        while(j&lt;nums2.size()) tmp[k++]=nums2[j++];</span><br><span class="line">     </span><br><span class="line">        if(l%2==0) return (tmp[l/2]+tmp[l/2-1])/2;</span><br><span class="line">        return tmp[l/2]; </span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>第二种做法：二分查找</p>
-<p>中位数：在只有一个有序数组的时候，中位数把数组分割成两个部分。</p>
-<p>根据定义，分数组长度为奇数和偶数讨论</p>
-<p>数组长度为奇数时，中位数有1个，不妨把中位数分到左边数组。</p>
-<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521214542409.png" alt="image-20230521214542409" style="zoom: 50%;" />
-
-<p>在两个有序数组的时候，仍然可以把两个数组分割成两个部分。</p>
-<p>我们使用一条分割线把两个数组分别分割成两部分：</p>
-<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521214718737.png" alt="image-20230521214718737" style="zoom:50%;" />
-
-<p>如果左边有5个元素，右边有4个元素，也就是说当两个数组的元素个数之和为奇数的时候，左边最大的就是中位数。</p>
-<p>当两个数组的元素个数之和为偶数的时候，左右两边元素个数相等，由左边最大的和右边最小的求和&#x2F;2得到</p>
-<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521215114876.png" alt="image-20230521215114876" style="zoom:67%;" />
-
-<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521215155647.png" alt="image-20230521215155647" style="zoom:67%;" />
-
-<p>所以我们通过二分查找的方法不断找到符合两个条件的分割线位置</p>
-<p>特殊情况：</p>
-<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521215724388.png" alt="image-20230521215724388" style="zoom:50%;" />
-
-<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521215737643.png" alt="image-20230521215737643" style="zoom:50%;" />
-
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/search-in-rotated-sorted-array-ii/">https://leetcode.cn/problems/search-in-rotated-sorted-array-ii/</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/search-in-rotated-sorted-array/">https://leetcode.cn/problems/search-in-rotated-sorted-array/</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/guess-number-higher-or-lower/">https://leetcode.cn/problems/guess-number-higher-or-lower/</a></p>
-<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h2 id="前缀和和差分"><a href="#前缀和和差分" class="headerlink" title="前缀和和差分"></a>前缀和和差分</h2><p><img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230523113105976.png" alt="image-20230523113105976"></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-vowel-strings-in-ranges/">2559. 统计范围内的元音字符串数 - 力扣（LeetCode）</a></p>
-<p>这题还能预处理和二分查找</p>
-<h2 id="贪心-Hash"><a href="#贪心-Hash" class="headerlink" title="贪心+Hash"></a>贪心+Hash</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/largest-values-from-labels/">1090. 受标签影响的最大值 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-consecutive-sequence/">128. 最长连续序列</a></p>
-<h2 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h2><h3 id="一刷"><a href="#一刷" class="headerlink" title="一刷"></a>一刷</h3><p>贪心问题实质就是找到什么情况是局部最优，通过多个局部最优得到全局最优</p>
-<ol>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/">122. 买卖股票的最佳时机 II</a>【<strong>最终利润是可以分解的，那么本题就很容易了！」</strong></p>
-<p>如果分解呢？</p>
-<p>假如第0天买入，第3天卖出，那么利润为：prices[3] - prices[0]。</p>
-<p>相当于(prices[3] - prices[2]) + (prices[2] - prices[1]) + (prices[1] - prices[0])。</p>
-<p><strong>「此时就是把利润分解为每天为单位的维度，而不是从0天到第3天整体去考虑！」</strong></p>
-<p>那么根据prices可以得到每天的利润序列：(prices[i] - prices[i - 1])…..(prices[1] - prices[0])。</p>
-<p>我们关注了每天的利润，选取正利润是局部最优，以此达到得到最大利润的整体最优</p>
-</li>
-<li><p>在跳跃游戏I中，⼀个数组看能否跳到终点，其实就是看我们从起点到终点所拓展的最大范围，不要拘泥于只看每步能跳的位置，而是它能跳的位置能够为总的能跳跃的空间范围所作出的贡献，即能否扩大这个范围，使其最后范围大于或等于整个数组长度</p>
-</li>
-<li><p>跳跃游戏II中题目已经给出一定可以到达终点，那么为了步数最少，<strong>局部最优</strong>是每次跳的时候，在当前的位置可以跳的范围内选择下次能跳最远位置的点跳，这样保证每一步都是最远的，以此达到整体最优。</p>
-</li>
-<li><p>加油站问题首先是直到经过这个站能加多少油（经过的站的花费与站点加油的差），只要确定最后能剩下油，就说明一定可以绕一圈，只要找到那一个点就可以。然后一层循环，如果累加是负的，说明在这个范围内不可以作为起始点，就以下一个为起点继续</p>
-</li>
-<li><p>分发糖果和根据身⾼重建队列都是<strong>有两个标准</strong>，做法是先完成一个标准，之后再完成另一个标准，根据圣身高重建队列有个点就是排序的顺序，由大到小有好处是再按照第二个标准插入时候（前面有多少个比数大或者相等），就可以通过插入的状况来判定，因为已经插入的都是比此时的数要大，只要找到现在插入的位置即可，有点像dp数组的思想，通过之前的情况就可以很好的为接下来的操作埋下伏笔。</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/non-overlapping-intervals/">435. 无重叠区间</a>的算法就是排课算法，在教室里上尽可能多的的课就是选择早下课的课程先上，然后再选择不冲突且下课最早的课程上（选课先根据结束课程早晚来排序）。可谓是真正的贪心。而<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-number-of-arrows-to-burst-balloons/">452. 用最少数量的箭引爆气球</a>就用下面这个来排序，按照end来排正序从小到大，然后想一下牛电灯那个题，想要用少的箭，就要用尽量用区间结尾去引爆气球，这样就可以引爆局部最多，以此到整体最多。</p>
-<p>ps：<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_51627418/article/details/121246105">(37条消息) qsort()中cmp函数_不专业码农的博客-CSDN博客_qsort函数cmp</a></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">cmp</span><span class="params">(<span class="type">const</span> <span class="type">void</span>* a,<span class="type">const</span> <span class="type">void</span>* b)</span></span><br><span class="line">&#123;   </span><br><span class="line">    <span class="keyword">if</span> ((*(<span class="type">int</span>**)a)[<span class="number">0</span>] == (*(<span class="type">int</span>**)b)[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">return</span> (*(<span class="type">int</span>**)a)[<span class="number">1</span>] &gt; (*(<span class="type">int</span>**)b)[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">return</span> (*(<span class="type">int</span>**)a)[<span class="number">1</span>] &gt; (*(<span class="type">int</span>**)b)[<span class="number">1</span>];</span><br><span class="line">&#125; </span><br><span class="line">leetcode申请内存</span><br><span class="line">*returnSize=peopleSize;</span><br><span class="line">*returnColumnSizes=<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)*peopleSize);</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;peopleSize;i++)</span><br><span class="line">&#123;</span><br><span class="line">    (*returnColumnSizes)[i]=<span class="number">2</span>;</span><br><span class="line">    <span class="built_in">queue</span>[i]=<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)*<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/merge-intervals/">56. 合并区间</a>问题就是注意区间的性质，当按照区间起点的大小排序后，区间性质就是如果这两个区间可以合并，说明前区间的终止位置比后区间的起始位置大于或等于。</p>
-<p>如果满足这个性质条件，则这个数组就可以向前扩展（注意遍历时候数组看上一个区间），这时候注意一个细节：当前区间的终止位置比后区间的终止位置大的时候要取而代之；</p>
-<p>当不满足这个性质条件，则目前遍历到的区间与上一个区间无法合并，上一个区间就可以加入到结果区间里。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Return an array of arrays of size *returnSize.</span></span><br><span class="line"><span class="comment"> * The sizes of the arrays are returned as *returnColumnSizes array.</span></span><br><span class="line"><span class="comment"> * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="type">int</span> <span class="title function_">cmp</span><span class="params">(<span class="type">const</span> <span class="type">void</span>* a,<span class="type">const</span> <span class="type">void</span>* b)</span></span><br><span class="line">&#123;   </span><br><span class="line">    <span class="keyword">if</span> ((*(<span class="type">int</span>**)a)[<span class="number">0</span>] == (*(<span class="type">int</span>**)b)[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">return</span> (*(<span class="type">int</span>**)a)[<span class="number">1</span>] &gt; (*(<span class="type">int</span>**)b)[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">return</span> (*(<span class="type">int</span>**)a)[<span class="number">0</span>] &gt; (*(<span class="type">int</span>**)b)[<span class="number">0</span>];</span><br><span class="line">&#125; </span><br><span class="line"><span class="type">int</span>** <span class="title function_">merge</span><span class="params">(<span class="type">int</span>** intervals, <span class="type">int</span> intervalsSize, <span class="type">int</span>* intervalsColSize, <span class="type">int</span>* returnSize, <span class="type">int</span>** returnColumnSizes)</span>&#123;</span><br><span class="line">     <span class="type">int</span> **<span class="built_in">queue</span>=(<span class="type">int</span> **)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span> *)*intervalsSize);</span><br><span class="line">    *returnSize=<span class="number">0</span>;</span><br><span class="line">    *returnColumnSizes=<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)*intervalsSize);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;intervalsSize;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        (*returnColumnSizes)[i]=<span class="number">2</span>;</span><br><span class="line">        <span class="built_in">queue</span>[i]=<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)*<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(intervalsSize==<span class="number">1</span>) &#123;</span><br><span class="line">    *returnSize=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> intervals;</span><br><span class="line">    &#125;</span><br><span class="line">    qsort(intervals,intervalsSize,<span class="keyword">sizeof</span>(<span class="type">int</span>*),cmp);</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> n=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;intervalsSize;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(intervals[i][<span class="number">0</span>]&lt;=intervals[i<span class="number">-1</span>][<span class="number">1</span>]) intervals[i][<span class="number">0</span>]=intervals[i<span class="number">-1</span>][<span class="number">0</span>],intervals[i][<span class="number">1</span>]=intervals[i][<span class="number">1</span>]&gt;intervals[i<span class="number">-1</span>][<span class="number">1</span>]?intervals[i][<span class="number">1</span>]:intervals[i<span class="number">-1</span>][<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">queue</span>[(*returnSize)][<span class="number">0</span>]=intervals[i<span class="number">-1</span>][<span class="number">0</span>],<span class="built_in">queue</span>[(*returnSize)][<span class="number">1</span>]=intervals[i<span class="number">-1</span>][<span class="number">1</span>],*returnSize+=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(i==intervalsSize<span class="number">-1</span>) <span class="built_in">queue</span>[(*returnSize)][<span class="number">0</span>]=intervals[i][<span class="number">0</span>],<span class="built_in">queue</span>[(*returnSize)][<span class="number">1</span>]=intervals[i][<span class="number">1</span>],*returnSize+=<span class="number">1</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,*returnSize);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">queue</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/set-intersection-size-at-least-two/">757. 设置交集大小至少为2</a>区间交集问题，面对这一问题首先要排序，按集合起点排序还是按集合终点排序，因为集合散乱没有规律性，选择最少的数是哪些无法从之前所选的情况去判定。而排好序能让我们从规律的集合排序中找出局部最优，即每次选都选一个数尽可能可以满足之后的集合，这样就可以有效减少后面的集合为了满足条件选新的数，那么这个数一定是在后面的集合的区间中存在，而当我们按照起点大小排序，当要选择可以使集合满足条件的数的时候，尽可能选区间末端的数。当然，这题其实最简便的方法就是把条件一一列出，当下个区间有我选的两个数时候，判断情况，然后更新替换上去。</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/lemonade-change/">860. 柠檬水找零</a>这题的贪心体现在找零情况上，找零情况是有限的，每次找零尽量少用5美元，因为5美元是找零最需要的，10美元需要5美元找零，20美元也要5美元来找，所有只有在找20美元少用5美元找零就最好。</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/partition-labels/">763. 划分字母区间</a>想要划分最多，且满足要求，先统计每个出现的字母最后一次出现的位置，再遍历一遍即可得到结果。肯定的是一段字母区间中的所有字母中一定有一个字母为这一段结尾，且这个字母的最后一次出现的位置都比这一段字母区间中的其他字母最后一次出现的位置都要远。通过之前统计每个字母最后一次出现的位置，就可以边遍历，边查找此时这一段中哪个字母的位置最远，当且到达这个最远位置时，就可以划分一段了。</p>
-</li>
-</ol>
-<p>总结：关于区间问题，首先要排序，怎么排序根据区间性质和题目要求，然后列情况，实现效果。</p>
-<h3 id="二刷"><a href="#二刷" class="headerlink" title="二刷"></a>二刷</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/wiggle-subsequence/">376. 摆动序列</a></p>
-<p><strong>摆动序列</strong> 的 <strong>最长子序列的长度</strong> 取决于子序列峰&#x2F;谷的个数，</p>
-<p>峰谷交错，其实就是摆动序列。</p>
-<p>从一个局部最优能推到全局最优才是贪心算法的核心。</p>
-<p>上坡和下坡中间的都不需要。</p>
-<p>判断<code>nums[i]</code>算不算里面的时候其实就是判断前面的差值<code>nums[i]-nums[i-1]</code>和后面的差值<code>nums[i+1]-nums[i]</code>是否是异号的。</p>
-<p>这时候会发现前面两个和后面两个很难确定算不算合法长度里。</p>
-<p>这时候我们其实可以假定前有一个平地。</p>
-<p><img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20221009152502346.png" alt="image-20221009152502346"></p>
-<p><code>curDiff</code>此时是16 而<code>preDiff</code>此时是0</p>
-<p>此时如果要算上1，就不仅仅要满足<code>curDiff&lt;0&amp;&amp;preDiff&gt;0||curDiff&gt;0&amp;&amp;preDiff&lt;0</code></p>
-<p>把preDiff此时&#x3D;&#x3D;0算进去。</p>
-<p>那要是中间有<code>preDiff=0</code> 那岂不是也会算进去 比如 3 1 1 3</p>
-<p>是的，前面的是不是平的并不会影响取 第二个1 第一个1根本没取，因为要求了<code>curDiff</code>不能等于0</p>
-<p>最后从0~numSize-1算的是除了最后一个的左边的峰值，加上右边的。</p>
-<p>总结：result初始为1（默认最右⾯有⼀个峰值），此时curDiff &gt; 0 &amp;&amp; preDiff &lt;&#x3D; 0，那么 result++（计算了左⾯的峰值），最后得到的result就是2（峰值个数为2即摆动序列⻓度为2）</p>
-<h6 id="53-最大子数组和"><a href="#53-最大子数组和" class="headerlink" title="53. 最大子数组和"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-subarray/">53. 最大子数组和</a></h6><p>如果连续子数组之和开始变负数，无论后面是什么数，与后面的数加上后相当于“拖累”了后面的数，也就是后面的数如果加上前面连续子数组（负数）会比原来更加小，所以需要从nums[i+1]从新开始算连续子数组之和。此时先判断是否比ans要大，然后再将cur重置为0。（这个顺序很重要）。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">int maxSubArray(int* nums, int numsSize)&#123;</span><br><span class="line">    int ans=INT_MIN;</span><br><span class="line">    int cur=0;</span><br><span class="line">    for(int i=0;i&lt;numsSize;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cur+=nums[i];</span><br><span class="line">        </span><br><span class="line">        if(ans&lt;cur) ans=cur;</span><br><span class="line">        if(cur&lt;0) cur=0;</span><br><span class="line">    &#125; </span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="贪心-优先队列"><a href="#贪心-优先队列" class="headerlink" title="贪心+优先队列"></a>贪心+优先队列</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/course-schedule-iii/description/?envType=daily-question&envId=2023-09-11">630. 课程表 III - 力扣（LeetCode）</a></p>
-<h2 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/surrounded-regions/">130. 被围绕的区域</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/">2316. 统计无向图中无法互相到达点对数 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/satisfiability-of-equality-equations/">990. 等式方程的可满足性 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-consecutive-sequence/">128. 最长连续序列 - 力扣（LeetCode）</a> </p>
-<p>考察并查集的集合数量</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int find(int x)</span><br><span class="line"> &#123;</span><br><span class="line">     if(p[x]==x) return x;</span><br><span class="line">     return p[x]=find(p[x]);</span><br><span class="line"> &#125;</span><br><span class="line"> void unionset(int a,int b)</span><br><span class="line"> &#123;</span><br><span class="line">     if(find(a)!=find(b)) sizep[find(b)]+=sizep[find(a)];</span><br><span class="line">     p[find(a)]=find(b);</span><br><span class="line"> &#125;</span><br><span class="line">//注意只有并查集的根节点保存的sizep才是有效的表示了集合大小</span><br></pre></td></tr></table></figure>
-
-
-
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/accounts-merge/submissions/">721. 账户合并 - 力扣（LeetCode）</a></p>
-<p>对于字符串数组vector<string>去重，有以下三种方法（准确的是两种吧）：</p>
-<p>（一）先排序、后去重</p>
-<p>采用sort函数 （头文件#include <algorithm>）  —— 这时候vector容器元素是从小到大排序好的<br>采用unique函数（头文件#include <algorithm>） —— 将容器中重复的元素放到vector的尾部，返回指向第一个重复元素的迭代器<br>采用vector自带的erase函数（头文件#include <vector>） —— 删除vector中的一段元素<br>具体代码如下↓</p>
-<p>void DeleteDuplicated(vector<string> &amp;name)<br>{<br>    sort(name.begin(), name.end());<br>    name.erase(unique(name.begin(), name.end()), name.end());<br>}<br>（二）利用set、unordered_set容器</p>
-<p>因为这两个容器的关键字是唯一的<br>因此以元素是否能在unordered_set容器中插入成功作为判断依据<br>如果插入成功 就将该值赋给迭代器指向的下一个值 并将判断迭代器下移一位<br>具体代码如下↓</p>
-<p>void remove(vector<string> &amp;str)<br>{<br>    vector<string>::iterator itr &#x3D; str.begin();<br>    unordered_set<string> s;<br>    for (auto curr &#x3D; str.begin(); curr !&#x3D; str.end(); ++curr)<br>    {<br>        if (s.insert(*curr).second)&#x2F;&#x2F;判断是否能插入成功<br>        {<br>            *itr++ &#x3D; *curr;&#x2F;&#x2F;如果成功 就将当前的值赋给到当前迭代器的下一位<br>        }<br>    }<br>    str.erase(itr, str.end());&#x2F;&#x2F;循环完一遍后 当前迭代器的位置就是字段唯一值的末尾<br>}<br>（三）同样利用set、unordered_set容器</p>
-<p>如果不是一定要用vector容器来装载字符串 可以考虑直接用set、unordered_set容器来存储！</p>
-<p>目前从时间复杂度的角度上来说，第二种方法应该是最快的，其时间复杂度为O(n)。</p>
-<p>会继续补充，找到效率最快、最高的方法….<br>————————————————<br>版权声明：本文为CSDN博主「PRPRY」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/lpy369369/article/details/87868580">https://blog.csdn.net/lpy369369/article/details/87868580</a></p>
-<h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/magnetic-force-between-two-balls/solution/">1552. 两球之间的磁力 题解 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-tastiness-of-candy-basket/">2517. 礼盒的最大甜蜜度 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-vowel-strings-in-ranges/">2559. 统计范围内的元音字符串数 - 力扣（LeetCode）</a></p>
-<p>这题还能用前缀和</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximize-the-minimum-powered-city/">2528. 最大化城市的最小供电站数目 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/compare-strings-by-frequency-of-the-smallest-character/submissions/">1170. 比较字符串最小字母出现频次 - 力扣（LeetCode）</a></p>
-<h2 id="深搜"><a href="#深搜" class="headerlink" title="深搜"></a>深搜</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/tiling-a-rectangle-with-the-fewest-squares/">1240. 铺瓷砖 - 力扣（LeetCode）</a></p>
-<h2 id="图论"><a href="#图论" class="headerlink" title="图论"></a>图论</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/modify-graph-edge-weights/">2699. 修改图中的边权 - 力扣（LeetCode）</a></p>
-<p>找一条可以从起点到终点的一条路径，然后把其他能修改的边全部封死，之后这个路径如果能修改就把它修改成target，之后再去判断是否有比这个路径更短的，如果没有就是了。</p>
-<h2 id="数学"><a href="#数学" class="headerlink" title="数学"></a>数学</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/circle-and-rectangle-overlapping/">1401. 圆和矩形是否有重叠</a></p>
-<p>题解：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/24251545">(41 封私信 &#x2F; 80 条消息) 怎样判断平面上一个矩形和一个圆形是否有重叠？ - 知乎 (zhihu.com)</a></p>
-<h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-subarray-sum-with-one-deletion/solution/jiao-ni-yi-bu-bu-si-kao-dong-tai-gui-hua-hzz6/">教你一步步思考动态规划！（Python&#x2F;Java&#x2F;C++&#x2F;Go） - 删除一次得到子数组最大和 - 力扣（LeetCode）</a></p>
-<ol>
-<li><p>寻找子问题（从暴力的思路中寻找，枚举子数组的左右端点以及要删除的元素，保留枚举子数组的右端点的想法继续优化，得到原问题变成如果子数组的右端点为i，且最多删除一个数，子数组元素和的最大值是什么？</p>
-</li>
-<li><p>原问题就可以拆开为两个问题：</p>
-<ul>
-<li><p>第一个问题：如果子数组右端点为num[i]，且不能删除数字，子数组元素和的最大值是多少？</p>
-<ul>
-<li>情况一：左边无数字（就是左边不要）子数组为这个数字本身</li>
-<li>情况二：左边是连续的子数组，右端点为num[i-1]，且不能删除数字</li>
-</ul>
-</li>
-<li><p>第二个问题：如果子数组右端点为i，且已经删除了数字，子数组元素和的最大值是多少？</p>
-<ul>
-<li>情况一：如果删除这个右端点，说明子数组为前面的连续子数组，且不能删除数字</li>
-<li>情况二：如果删除是前面的数字，也就是变成如果子数组的右端点num[i-1],已经删除了数字，子数组元素和的最大值</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/01/%E3%80%90Leetcode%E5%88%B7%E9%A2%98%E3%80%912025%E5%B9%B4%E5%A4%87%E6%88%98%E6%98%A5%E6%8B%9B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/02/01/%E3%80%90Leetcode%E5%88%B7%E9%A2%98%E3%80%912025%E5%B9%B4%E5%A4%87%E6%88%98%E6%98%A5%E6%8B%9B/" itemprop="url">【Leetcode刷题】2025年备战春招.md</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-01T20:41:49+08:00">
-                2025-02-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="数据结构目录"><a href="#数据结构目录" class="headerlink" title="数据结构目录"></a>数据结构目录</h1><table>
-<thead>
-<tr>
-<th>数据结构</th>
-<th>变种</th>
-<th>相关题目</th>
-<th>讲解文章</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>顺序线性表：向量</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>单链表</td>
-<td>1. 双向链表 2. 静态链表 3. 对称矩阵 4. 稀疏矩阵</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>哈希表</td>
-<td>1. 散列函数 2. 解决碰撞&#x2F;填充因子</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>栈和队列</td>
-<td>1. 广义栈 2. 双端队列</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>队列</td>
-<td>1. 链表实现 2. 循环数组实现 3. 双端队列</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>字符串</td>
-<td>1. KMP算法 2. 有限状态自动机 3. 模式匹配有限状态自动机 4. BM 模式匹配算法 5. BM-KMP 算法 6. BF 算法</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>树</td>
-<td>1. 二叉树 2. 并查集 3. Huffman 树</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>数组实现的堆</td>
-<td>1. 极大堆和极小堆 2. 极大极小堆 3. 双端堆 4. d 叉堆</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>树实现的堆</td>
-<td>1. 左堆 2. 扁堆 3. 二项式堆 4. 斐波那契堆 5. 配对堆</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>查找</td>
-<td>1. 哈希表 2. 跳跃表 3. 排序二叉树 4. AVL 树 5. B 树 &#x2F; B+ 树 &#x2F; B* 树 6. AA 树 7. 红黑树 8. 排序二叉堆 9. Splay 树 10. 双链树 11. Trie 树 12. R 树</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>——————————————–</td>
-<td>——————————————————————————————–</td>
-<td>—————————</td>
-<td>———————————–</td>
-</tr>
-</tbody></table>
-<h1 id="算法目录"><a href="#算法目录" class="headerlink" title="算法目录"></a>算法目录</h1><table>
-<thead>
-<tr>
-<th>算法</th>
-<th>具体类型</th>
-<th>相关题目</th>
-<th>讲解文章</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>排序算法</td>
-<td>1. 冒泡排序 2. 插入排序 3. 选择排序 4. 希尔 Shell 排序 5. 快速排序 6. 归并排序 7. 堆排序 8. 线性排序算法 9. 自省排序 10. 间接排序 11. 计数排序 12. 基数排序 13. 桶排序 14. 外部排序 - k 路归并败者树 15. 外部排序 - 最佳归并树</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>递归与分治</td>
-<td></td>
-<td>1. 二分搜索&#x2F;查找 2. 大整数的乘法 3. Strassen 矩阵乘法 4. 棋盘覆盖 5. 合并排序 6. 快速排序 7. 线性时间选择 8. 最接近点对问题 9. 循环赛日程表</td>
-<td></td>
-</tr>
-<tr>
-<td>动态规划</td>
-<td></td>
-<td>1. 矩阵连乘问题 2. 最长公共子序列 3. 最大子段和 4. 凸多边形最优三角剖分 5. 多边形游戏 6. 图像压缩 7. 电路布线 8. 流水作业调度 9. 0-1 背包问题&#x2F;背包九讲 10. 最优二叉搜索树 11. 动态规划加速原理 12. 树型 DP</td>
-<td></td>
-</tr>
-<tr>
-<td>贪心</td>
-<td></td>
-<td>1. 活动安排问题 2. 最优装载 3. 哈夫曼编码 4. 单源最短路径 5. 最小生成树 6. 多机调度问题</td>
-<td></td>
-</tr>
-<tr>
-<td>回溯法</td>
-<td></td>
-<td>1. 装载问题 2. 批处理作业调度 3. 符号三角形问题 4. n 后问题 5. 0-1 背包问题 6. 最大团问题 7. 图的 m 着色问题 8. 旅行售货员问题 9. 圆排列问题 10. 电路板排列问题 11. 连续邮资问题</td>
-<td></td>
-</tr>
-<tr>
-<td>搜索</td>
-<td>1. 枚举 2. DFS 3. BFS 4. 启发式搜索</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>随机化</td>
-<td>1. 随机数 2. 数值随机化算法 3. Sherwood 舍伍德算法 4. Las Vegas 拉斯维加斯算法 5. Monte Carlo 蒙特卡罗算法</td>
-<td>1. 计算 π 值 2. 计算定积分 3. 解非线性方程组 4. 线性时间选择算法 5. 跳跃表 6. n 后问题 7. 整数因子分解 8. 主元素问题 9. 素数测试</td>
-<td></td>
-</tr>
-<tr>
-<td>图论</td>
-<td>1. 遍历 DFS &#x2F; BFS 2. AOV &#x2F; AOE 网络 3. Kruskal 算法(最小生成树) 4. Prim 算法(最小生成树) 5. Boruvka 算法(最小生成树) 6. Dijkstra 算法(单源最短路径) 7. Bellman-Ford 算法(单源最短路径) 8. SPFA 算法(单源最短路径) 9. Floyd 算法(多源最短路径) 10. Johnson 算法(多源最短路径) 11. Fleury 算法(欧拉回路) 12. Ford-Fulkerson 算法(最大网络流增广路) 13. Edmonds-Karp 算法(最大网络流) 14. Dinic 算法(最大网络流) 15. 一般预流推进算法 16. 最高标号预流推进 HLPP 算法 17. Primal-Dual 原始对偶算法(最小费用流)18. Kosaraju 算法(有向图强连通分量) 19. Tarjan 算法(有向图强连通分量) 20. Gabow 算法(有向图强连通分量) 21. 匈牙利算法(二分图匹配) 22. Hopcroft－Karp 算法(二分图匹配) 23. kuhn munkras 算法(二分图最佳匹配) 24. Edmonds’ Blossom-Contraction 算法(一般图匹配)</td>
-<td>1. 图遍历 2. 有向图和无向图的强弱连通性 3. 割点&#x2F;割边 3. AOV 网络和拓扑排序 4. AOE 网络和关键路径 5. 最小代价生成树&#x2F;次小生成树 6. 最短路径问题&#x2F;第 K 短路问题 7. 最大网络流问题 8. 最小费用流问题 9. 图着色问题 10. 差分约束系统 11. 欧拉回路 12. 中国邮递员问题 13. 汉密尔顿回路 14. 最佳边割集&#x2F;最佳点割集&#x2F;最小边割集&#x2F;最小点割集&#x2F;最小路径覆盖&#x2F;最小点集覆盖 15. 边覆盖集 16. 二分图完美匹配和最大匹配问题 17. 仙人掌图 18. 弦图 19. 稳定婚姻问题 20. 最大团问题</td>
-<td></td>
-</tr>
-<tr>
-<td>数论</td>
-<td></td>
-<td>1. 最大公约数 2. 最小公倍数 3. 分解质因数 4. 素数判定 5. 进制转换 6. 高精度计算 7. 整除问题 8. 同余问题 9. 欧拉函数 10. 扩展欧几里得 11. 置换群 12. 母函数 13. 离散变换 14. 康托展开 15. 矩阵 16. 向量 17. 线性方程组 18. 线性规划</td>
-<td></td>
-</tr>
-<tr>
-<td>几何</td>
-<td></td>
-<td>1. 凸包 - Gift wrapping 2. 凸包 - Graham scan 3. 线段问题 4. 多边形和多面体相关问题</td>
-<td></td>
-</tr>
-<tr>
-<td>NP 完全</td>
-<td>1. 计算模型 2. P 类与 NP 类问题 3. NP 完全问题 4. NP 完全问题的近似算法</td>
-<td>1. 随机存取机 RAM 2. 随机存取存储程序机 RASP 3. 图灵机 4. 非确定性图灵机 5. P 类与 NP 类语言 6. 多项式时间验证 7. 多项式时间变换 8. Cook定理 9. 合取范式的可满足性问题 CNF-SAT 10. 3 元合取范式的可满足性问题 3-SAT 11. 团问题 CLIQUE 12. 顶点覆盖问题 VERTEX-COVER 13. 子集和问题 SUBSET-SUM 14. 哈密顿回路问题 HAM-CYCLE 15. 旅行售货员问题 TSP 16. 顶点覆盖问题的近似算法 17. 旅行售货员问题近似算法 18. 具有三角不等式性质的旅行售货员问题 19. 一般的旅行售货员问题 20. 集合覆盖问题的近似算法 21. 子集和问题的近似算法 22. 子集和问题的指数时间算法 23. 子集和问题的多项式时间近似格式</td>
-<td></td>
-</tr>
-<tr>
-<td>—-</td>
-<td>——————————————————————————–</td>
-<td>————————————————————–</td>
-<td>—</td>
-</tr>
-</tbody></table>
-<p>要找到数组中的多数元素（出现次数大于 <code>⌊n/2⌋</code> 的元素），可以使用 <strong>Boyer-Moore 投票算法</strong>。该算法的时间复杂度为 <code>O(n)</code>，空间复杂度为 <code>O(1)</code>，非常高效。</p>
-<hr>
-<h3 id="Boyer-Moore-投票算法"><a href="#Boyer-Moore-投票算法" class="headerlink" title="Boyer-Moore 投票算法"></a><strong>Boyer-Moore 投票算法</strong></h3><p>算法的核心思想是：</p>
-<ol>
-<li>维护一个候选元素 <code>candidate</code> 和一个计数器 <code>count</code>。</li>
-<li>遍历数组：<ul>
-<li>如果 <code>count</code> 为 0，则将当前元素设为候选元素 <code>candidate</code>。</li>
-<li>如果当前元素等于 <code>candidate</code>，则 <code>count++</code>。</li>
-<li>否则，<code>count--</code>。</li>
-</ul>
-</li>
-<li>最终剩下的 <code>candidate</code> 就是多数元素。</li>
-</ol>
-<p><strong>Boyer-Moore 投票算法</strong> 中的“抵消”是一个关键概念，理解它可以帮助你更好地掌握这个算法的核心思想。下面我会用一个简单的例子来解释“抵消”是如何工作的。</p>
-<hr>
-<h3 id="抵消的核心思想"><a href="#抵消的核心思想" class="headerlink" title="抵消的核心思想"></a><strong>抵消的核心思想</strong></h3><ol>
-<li><p><strong>候选元素</strong>：</p>
-<ul>
-<li>我们维护一个候选元素 <code>candidate</code>，假设它是多数元素。</li>
-<li>同时维护一个计数器 <code>count</code>，表示当前候选元素的“支持度”。</li>
-</ul>
-</li>
-<li><p><strong>抵消规则</strong>：</p>
-<ul>
-<li>如果当前元素等于 <code>candidate</code>，说明它支持候选元素，<code>count++</code>。</li>
-<li>如果当前元素不等于 <code>candidate</code>，说明它反对候选元素，<code>count--</code>。</li>
-<li>如果 <code>count</code> 减到 0，说明当前的候选元素可能不是多数元素，需要重新选择候选元素。</li>
-</ul>
-</li>
-<li><p><strong>最终结果</strong>：</p>
-<ul>
-<li>由于多数元素的数量超过 <code>⌊n/2⌋</code>，即使其他元素与多数元素“抵消”，最终剩下的仍然是多数元素。</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h3 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a><strong>举例说明</strong></h3><p>假设数组为 <code>[2, 2, 1, 1, 1, 2, 2]</code>，其中 <code>2</code> 是多数元素（出现 4 次，超过 <code>⌊7/2⌋ = 3</code>）。</p>
-<h4 id="初始化："><a href="#初始化：" class="headerlink" title="初始化："></a>初始化：</h4><ul>
-<li><code>candidate = 2</code>（数组的第一个元素）。</li>
-<li><code>count = 1</code>。</li>
-</ul>
-<h4 id="遍历过程："><a href="#遍历过程：" class="headerlink" title="遍历过程："></a>遍历过程：</h4><ol>
-<li><p><strong>第 1 个元素：2</strong></p>
-<ul>
-<li>当前元素 <code>2</code> 等于 <code>candidate</code>，<code>count++</code>。</li>
-<li>状态：<code>candidate = 2</code>，<code>count = 2</code>。</li>
-</ul>
-</li>
-<li><p><strong>第 2 个元素：2</strong></p>
-<ul>
-<li>当前元素 <code>2</code> 等于 <code>candidate</code>，<code>count++</code>。</li>
-<li>状态：<code>candidate = 2</code>，<code>count = 3</code>。</li>
-</ul>
-</li>
-<li><p><strong>第 3 个元素：1</strong></p>
-<ul>
-<li>当前元素 <code>1</code> 不等于 <code>candidate</code>，<code>count--</code>。</li>
-<li>状态：<code>candidate = 2</code>，<code>count = 2</code>。</li>
-</ul>
-</li>
-<li><p><strong>第 4 个元素：1</strong></p>
-<ul>
-<li>当前元素 <code>1</code> 不等于 <code>candidate</code>，<code>count--</code>。</li>
-<li>状态：<code>candidate = 2</code>，<code>count = 1</code>。</li>
-</ul>
-</li>
-<li><p><strong>第 5 个元素：1</strong></p>
-<ul>
-<li>当前元素 <code>1</code> 不等于 <code>candidate</code>，<code>count--</code>。</li>
-<li>状态：<code>candidate = 2</code>，<code>count = 0</code>。</li>
-</ul>
-</li>
-<li><p><strong>第 6 个元素：2</strong></p>
-<ul>
-<li><code>count</code> 为 0，更新 <code>candidate</code> 为当前元素 <code>2</code>，<code>count = 1</code>。</li>
-<li>状态：<code>candidate = 2</code>，<code>count = 1</code>。</li>
-</ul>
-</li>
-<li><p><strong>第 7 个元素：2</strong></p>
-<ul>
-<li>当前元素 <code>2</code> 等于 <code>candidate</code>，<code>count++</code>。</li>
-<li>状态：<code>candidate = 2</code>，<code>count = 2</code>。</li>
-</ul>
-</li>
-</ol>
-<h4 id="最终结果："><a href="#最终结果：" class="headerlink" title="最终结果："></a>最终结果：</h4><ul>
-<li><code>candidate = 2</code>，即多数元素。</li>
-</ul>
-<hr>
-<h3 id="抵消的直观理解"><a href="#抵消的直观理解" class="headerlink" title="抵消的直观理解"></a><strong>抵消的直观理解</strong></h3><ul>
-<li><p><strong>支持与反对</strong>：</p>
-<ul>
-<li>每次遇到与 <code>candidate</code> 相同的元素，相当于给 <code>candidate</code> 投一票（<code>count++</code>）。</li>
-<li>每次遇到与 <code>candidate</code> 不同的元素，相当于反对 <code>candidate</code> 一票（<code>count--</code>）。</li>
-</ul>
-</li>
-<li><p><strong>多数元素的优势</strong>：</p>
-<ul>
-<li>由于多数元素的数量超过 <code>⌊n/2⌋</code>，即使其他元素联合起来反对，多数元素的“票数”仍然会多于反对票。</li>
-<li>例如，在上面的例子中：<ul>
-<li><code>2</code> 出现了 4 次，支持票为 4。</li>
-<li>其他元素出现了 3 次，反对票为 3。</li>
-<li>最终 <code>2</code> 的票数为 <code>4 - 3 = 1</code>，仍然是正数。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="为什么最终剩下的-candidate-是多数元素？"><a href="#为什么最终剩下的-candidate-是多数元素？" class="headerlink" title="为什么最终剩下的 candidate 是多数元素？"></a><strong>为什么最终剩下的 <code>candidate</code> 是多数元素？</strong></h3><ol>
-<li><p><strong>假设</strong>：</p>
-<ul>
-<li>如果 <code>candidate</code> 不是多数元素，那么它的票数会被其他元素“抵消”掉，最终 <code>count</code> 会减到 0。</li>
-<li>如果 <code>candidate</code> 是多数元素，即使被部分反对，最终 <code>count</code> 仍然会大于 0。</li>
-</ul>
-</li>
-<li><p><strong>数学保证</strong>：</p>
-<ul>
-<li>多数元素的数量超过 <code>⌊n/2⌋</code>，因此它的票数一定多于其他元素的总票数。</li>
-<li>即使其他元素联合起来反对，多数元素的票数仍然会胜出。</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><ul>
-<li><strong>抵消</strong> 是 Boyer-Moore 投票算法的核心思想，通过支持与反对的动态平衡，最终找到多数元素。</li>
-<li>这个算法的优点是高效（时间复杂度 <code>O(n)</code>，空间复杂度 <code>O(1)</code>），适合处理大规模数据。</li>
-<li>如果你理解了“抵消”的概念，就能轻松掌握这个算法的精髓！</li>
-</ul>
-<ol>
-<li><strong>初始化</strong>：<ul>
-<li>用一个变量 <code>minPrice</code> 记录当前的最低价格。</li>
-<li>用一个变量 <code>maxProfit</code> 记录当前的最大利润。</li>
-</ul>
-</li>
-<li><strong>遍历数组</strong>：<ul>
-<li>对于每一天的价格：<ul>
-<li>如果当前价格比 <code>minPrice</code> 更低，更新 <code>minPrice</code>。</li>
-<li>否则，计算当前价格与 <code>minPrice</code> 的差值，如果这个差值大于 <code>maxProfit</code>，更新 <code>maxProfit</code>。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>返回结果</strong>：<ul>
-<li>最终 <code>maxProfit</code> 就是最大利润。</li>
-</ul>
-</li>
-</ol>
-<h1 id="贪心问题跳跃游戏"><a href="#贪心问题跳跃游戏" class="headerlink" title="贪心问题跳跃游戏"></a>贪心问题跳跃游戏</h1><p>通过贪心算法来解决。我们可以维护一个变量 <code>max_reach</code>，表示当前能够到达的最远位置。遍历数组时，更新 <code>max_reach</code>，并检查是否能够到达或超过最后一个下标。</p>
-<h3 id="具体步骤："><a href="#具体步骤：" class="headerlink" title="具体步骤："></a>具体步骤：</h3><ol>
-<li>初始化 <code>max_reach</code> 为 0，表示当前能够到达的最远位置。</li>
-<li>遍历数组 <code>nums</code>，对于每个位置 <code>i</code>：<ul>
-<li>如果 <code>i &gt; max_reach</code>，说明无法到达当前位置，直接返回 <code>false</code>。</li>
-<li>更新 <code>max_reach</code> 为 <code>max(max_reach, i + nums[i])</code>，表示从当前位置能够跳跃到的最远位置。</li>
-<li>如果 <code>max_reach</code> 已经大于或等于最后一个下标，返回 <code>true</code>。</li>
-</ul>
-</li>
-<li>如果遍历结束后还没有返回 <code>true</code>，则返回 <code>false</code>。</li>
-</ol>
-<h1 id="贪心问题跳跃游戏-1"><a href="#贪心问题跳跃游戏-1" class="headerlink" title="贪心问题跳跃游戏"></a>贪心问题跳跃游戏</h1><h3 id="关键思想"><a href="#关键思想" class="headerlink" title="关键思想"></a><strong>关键思想</strong></h3><ul>
-<li>**<code>current_end</code>**：表示当前跳跃能到达的最远位置。</li>
-<li>**<code>max_far</code>**：表示从当前位置到<code>current_end</code>之间，所有位置能跳到的最远位置。</li>
-<li>**<code>jumps</code>**：记录跳跃的次数。</li>
-</ul>
-<p>当我们遍历数组时，每次到达<code>current_end</code>时，意味着我们已经用尽了当前跳跃的范围，必须进行一次新的跳跃，才能继续前进。</p>
-<h3 id="为什么遍历到current-end表示需要进行一次跳跃？"><a href="#为什么遍历到current-end表示需要进行一次跳跃？" class="headerlink" title="为什么遍历到current_end表示需要进行一次跳跃？"></a><strong>为什么遍历到<code>current_end</code>表示需要进行一次跳跃？</strong></h3><ol>
-<li><strong>跳跃的范围</strong>：<ul>
-<li>假设我们从位置<code>i</code>开始跳跃，跳跃的范围是<code>[i, i + nums[i]]</code>。</li>
-<li>在这个范围内，我们可以选择跳到任意一个位置。</li>
-</ul>
-</li>
-<li><strong>贪心策略</strong>：<ul>
-<li>为了最小化跳跃次数，我们希望每次跳跃都尽可能跳得更远。</li>
-<li>因此，在当前位置到<code>current_end</code>之间，我们会不断更新<code>max_far</code>，记录从这些位置能跳到的最远位置。</li>
-</ul>
-</li>
-<li><strong>到达<code>current_end</code>时的意义</strong>：<ul>
-<li>当我们遍历到<code>current_end</code>时，意味着我们已经用尽了当前跳跃的范围。</li>
-<li>此时，我们必须进行一次新的跳跃，才能继续前进。</li>
-<li>新的跳跃范围是从<code>current_end</code>到<code>max_far</code>。</li>
-</ul>
-</li>
-</ol>
-<h3 id="换个理解"><a href="#换个理解" class="headerlink" title="换个理解"></a>换个理解</h3><ol>
-<li><strong><code>current_end</code>是当前跳跃的边界</strong>：<ul>
-<li>在遍历数组时，<code>current_end</code>表示当前跳跃能到达的最远位置。</li>
-<li>在<code>current_end</code>之前的所有位置，都可以通过当前跳跃到达。</li>
-</ul>
-</li>
-<li><strong><code>max_far</code>是下一步跳跃的最远范围</strong>：<ul>
-<li>在遍历到<code>current_end</code>之前，我们会不断更新<code>max_far</code>，记录从当前位置到<code>current_end</code>之间所有位置能跳到的最远位置。</li>
-<li>这个<code>max_far</code>就是下一步跳跃的边界。</li>
-</ul>
-</li>
-<li><strong>到达<code>current_end</code>时表示需要一次新的跳跃</strong>：<ul>
-<li>当遍历到<code>current_end</code>时，表示我们已经用尽了当前跳跃的范围。</li>
-<li>此时，必须进行一次新的跳跃（<code>jumps++</code>），才能继续前进。</li>
-<li>新的跳跃范围是从<code>current_end</code>到<code>max_far</code>。</li>
-</ul>
-</li>
-<li>**更新<code>current_end</code>为<code>max_far</code>**：<ul>
-<li>每次跳跃后，<code>current_end</code>更新为<code>max_far</code>，表示新的跳跃边界。</li>
-<li>这样，我们就可以继续遍历数组，直到到达最后一个位置。</li>
-</ul>
-</li>
-</ol>
-<h1 id="除自身以外元素的乘积"><a href="#除自身以外元素的乘积" class="headerlink" title="除自身以外元素的乘积"></a>除自身以外元素的乘积</h1><ol>
-<li><strong>初始化结果数组</strong>：<ul>
-<li>使用 <code>make</code> 创建一个长度为 <code>n</code> 的切片 <code>answer</code>，用于存储结果。</li>
-</ul>
-</li>
-<li><strong>计算前缀积</strong>：<ul>
-<li>从左到右遍历数组，计算每个位置左边所有元素的乘积，并存储在 <code>answer</code> 中。</li>
-<li><code>prefix</code> 变量用于累乘左边的元素。</li>
-</ul>
-</li>
-<li><strong>计算后缀积并更新结果</strong>：<ul>
-<li>从右到左遍历数组，计算每个位置右边所有元素的乘积，并将其与 <code>answer</code> 中的值相乘。</li>
-<li><code>suffix</code> 变量用于累乘右边的元素。</li>
-</ul>
-</li>
-<li><strong>返回结果</strong>：<ul>
-<li>最终返回 <code>answer</code> 切片。</li>
-</ul>
-</li>
-</ol>
-<ul>
-<li><strong>前缀积</strong>：对于数组中的每个元素 <code>nums[i]</code>，前缀积是它左边所有元素的乘积。<br>例如，数组 <code>[a, b, c, d]</code> 中，<code>c</code> 的前缀积是 <code>a * b</code>。</li>
-<li><strong>后缀积</strong>：对于 <code>nums[i]</code>，后缀积是它右边所有元素的乘积。<br>例如，<code>b</code> 的后缀积是 <code>c * d</code>。</li>
-</ul>
-<p>最终结果 <code>answer[i] = 前缀积[i] * 后缀积[i]</code>。这种方法避免了除法，同时满足时间复杂度 <code>O(n)</code> 和空间复杂度 <code>O(1)</code>（输出数组不计入空间）。</p>
-<h1 id="贪心问题加油站"><a href="#贪心问题加油站" class="headerlink" title="贪心问题加油站"></a>贪心问题加油站</h1><ol>
-<li><strong>总油量检查</strong>：<ul>
-<li>计算 <code>gas[i] - cost[i]</code> 的总和 <code>totalTank</code>。</li>
-<li>如果 <code>totalTank &lt; 0</code>，说明总油量不足以绕环路行驶一周，直接返回 <code>-1</code>。</li>
-</ul>
-</li>
-<li><strong>贪心选择起点</strong>：<ul>
-<li>遍历每个加油站，计算净油量 <code>margin = gas[i] - cost[i]</code>。</li>
-<li>维护当前油箱的剩余油量 <code>currentTank</code>。</li>
-<li>如果 <code>currentTank &lt; 0</code>，说明从当前起点无法继续前进，将起点设为下一个加油站，并重置 <code>currentTank</code>。</li>
-</ul>
-</li>
-<li><strong>返回结果</strong>：<ul>
-<li>如果遍历结束后 <code>totalTank &gt;= 0</code>，说明存在解，返回起点 <code>start</code>。</li>
-<li>否则返回 <code>-1</code>。</li>
-</ul>
-</li>
-</ol>
-<h1 id="数论"><a href="#数论" class="headerlink" title="数论"></a>数论</h1><h2 id="LCR-072-x-的平方根：牛顿迭代法"><a href="#LCR-072-x-的平方根：牛顿迭代法" class="headerlink" title="LCR 072. x 的平方根：牛顿迭代法"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/jJ0w9p/">LCR 072. x 的平方根</a>：牛顿迭代法</h2><p>泰勒展开第二项进行运算</p>
-<p><img src="C:\Users\Jinju\blog\source\images\image-20250206133342150.png" alt="image-20250206133342150"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">  toleration := 0.001</span><br><span class="line">x0 := float64(1.0)</span><br><span class="line">for &#123;</span><br><span class="line"></span><br><span class="line">	x1 :=float64(x0 - (x0*x0-float64(x))/(2*x0)) </span><br><span class="line">	</span><br><span class="line">	if diff := x1 - x0; diff &lt; toleration &amp;&amp; -diff &lt; toleration &#123;</span><br><span class="line">		break</span><br><span class="line">		&#125;</span><br><span class="line">		x0 = x1</span><br><span class="line">	&#125;</span><br><span class="line">       result:=int(x0)</span><br><span class="line">	if result*result &gt; x &#123;</span><br><span class="line">	    return result - 1</span><br><span class="line">    &#125;</span><br><span class="line">	return result</span><br></pre></td></tr></table></figure>
-
-<p>参考链接：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1px4y127PD/?spm_id_from=333.1391.0.0&vd_source=9a75a4b5f792c3cd3b921c00fec104bb">https://www.bilibili.com/video/BV1px4y127PD/?spm_id_from=333.1391.0.0&amp;vd_source=9a75a4b5f792c3cd3b921c00fec104bb</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2732,7 +2271,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

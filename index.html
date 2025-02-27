@@ -260,7 +260,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/23/%E3%80%90Gin%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E3%80%91%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/26/%E3%80%90Tomcat%E6%9C%8D%E5%8A%A1%E5%99%A8%E3%80%91tomcat%20%E6%97%A5%E5%BF%97%E8%AF%A6%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -279,7 +279,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2025/02/23/%E3%80%90Gin%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E3%80%91%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2025/02/26/%E3%80%90Tomcat%E6%9C%8D%E5%8A%A1%E5%99%A8%E3%80%91tomcat%20%E6%97%A5%E5%BF%97%E8%AF%A6%E8%A7%A3/" itemprop="url">未命名</a></h1>
         
 
         <div class="post-meta">
@@ -291,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-23T16:43:49+08:00">
-                2025-02-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-26T21:29:36+08:00">
+                2025-02-26
               </time>
             
 
@@ -331,21 +331,356 @@
       
         
           
-            <h2 id="购物外部开发进阶实战笔记"><a href="#购物外部开发进阶实战笔记" class="headerlink" title="购物外部开发进阶实战笔记"></a>购物外部开发进阶实战笔记</h2><p>本文介绍了购物外部开发进阶实战的相关内容，包括框架源码解析、数据库连接、脚手架搭建及项目实战等。</p>
-<h3 id="知识点1：框架源码解析"><a href="#知识点1：框架源码解析" class="headerlink" title="知识点1：框架源码解析"></a>知识点1：框架源码解析</h3><ul>
-<li>深入解析购物框架源码，理解其内部机制。 &gt; 原文引用：第一部分就是正框架的一个源码解析。</li>
+            <h2 id="1-tomcat-日志详解"><a href="#1-tomcat-日志详解" class="headerlink" title="1 tomcat 日志详解"></a>1 tomcat 日志详解</h2><h3 id="1-1-tomcat-日志配置文件"><a href="#1-1-tomcat-日志配置文件" class="headerlink" title="1.1 tomcat 日志配置文件"></a>1.1 tomcat 日志配置文件</h3><p>　　<strong>tomcat 对应日志的配置文件</strong>：tomcat目录下的&#x2F;conf&#x2F;logging.properties。</p>
+<p>　　<strong>tomcat 的日志等级有：</strong>日志输出级别：SEVERE (最高级别) &gt; WARNING &gt; INFO &gt; CONFIG &gt; FINE &gt; FINER(精心) &gt; FINEST (所有内容,最低级别)</p>
+<p>　　<strong>tomcat 有五类日志 ：</strong>catalina、localhost、manager、admin、host-manager</p>
+<p>　　&#x2F;conf&#x2F;logging.properties 配置文件：</p>
+<p><img src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="img"> View Code</p>
+<h3 id="1-2-tomcat-日志文件详解"><a href="#1-2-tomcat-日志文件详解" class="headerlink" title="1.2 tomcat 日志文件详解"></a>1.2 tomcat 日志文件详解</h3><p>　<strong>tomcat 有五类日志 ：</strong>catalina、localhost、manager、admin、host-manager</p>
+<h4 id="1-2-1-catalina-out-："><a href="#1-2-1-catalina-out-：" class="headerlink" title="1.2.1 catalina.out ："></a>1.2.1 catalina.out ：</h4><p>catalina.out即标准输出和标准出错，所有输出到这两个位置的都会进入catalina.out，这里包含tomcat运行自己输出的日志以及应用里向console输出的日志。默认这个日志文件是不会进行自动切割的，我们需要借助其他工具进行切割（注意：catalina.out文件如果过大会影响）</p>
+<p><img src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="img"> View Code</p>
+<h4 id="1-2-2-catalina-YYYY-MM-DD-log"><a href="#1-2-2-catalina-YYYY-MM-DD-log" class="headerlink" title="1.2.2 catalina.YYYY-MM-DD.log"></a>1.2.2 catalina.YYYY-MM-DD.log</h4><p>　catalina.{yyyy-MM-dd}.log是tomcat自己运行的一些日志，这些日志还会输出到catalina.out，但是应用向console输出的日志不会输出到catalina.{yyyy-MM-dd}.log,它是tomcat的启动和暂停时的运行日志，<strong>注意，它和catalina.out是里面的内容是不一样的。</strong></p>
+<p><img src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="img"> View Code</p>
+<h4 id="1-2-3-localhost-YYYY-MM-DD-log"><a href="#1-2-3-localhost-YYYY-MM-DD-log" class="headerlink" title="**1.2.3 localhost.**YYYY-MM-DD.log"></a>**1.2.3 localhost.**YYYY-MM-DD.log</h4><p>　localhost.{yyyy-MM-dd}.log主要是应用初始化(listener, filter, servlet)未处理的异常最后被tomcat捕获而输出的日志,它也是包含tomcat的启动和暂停时的运行日志,但它没有catalina.2018-09-19.log 日志全。它只是记录了部分日志。</p>
+<p><img src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="img"> View Code</p>
+<h4 id="1-2-4-localhost-access-log-YYYY-MM-DD-txt"><a href="#1-2-4-localhost-access-log-YYYY-MM-DD-txt" class="headerlink" title="1.2.4 localhost_access_log**.**YYYY-MM-DD.txt"></a>1.2.4 localhost_access_log**.**YYYY-MM-DD.txt</h4><p>　localhost_access_log.2018-09-19.txt：这个是访问tomcat的日志，请求时间和资源，状态码都有记录。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET / HTTP/1.1&quot; 200 11286</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET /tomcat.css HTTP/1.1&quot; 200 5581</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET /tomcat.png HTTP/1.1&quot; 200 5103</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET /bg-button.png HTTP/1.1&quot; 200 713</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET /bg-nav.png HTTP/1.1&quot; 200 1401</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET /asf-logo-wide.svg HTTP/1.1&quot; 200 27235</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET /bg-middle.png HTTP/1.1&quot; 200 1918</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET /bg-upper.png HTTP/1.1&quot; 200 3103</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:14 -0400] &quot;GET / HTTP/1.1&quot; 200 11286</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:14 -0400] &quot;GET /favicon.ico HTTP/1.1&quot; 200 21630</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:16 -0400] &quot;GET / HTTP/1.1&quot; 200 11286</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:16 -0400] &quot;GET /favicon.ico HTTP/1.1&quot; 200 21630</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:21 -0400] &quot;GET / HTTP/1.1&quot; 200 11286</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:21 -0400] &quot;GET /favicon.ico HTTP/1.1&quot; 200 21630</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:28 -0400] &quot;GET /docs/setup.html HTTP/1.1&quot; 200 14470</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:28 -0400] &quot;GET /docs/images/docs-stylesheet.css HTTP/1.1&quot; 200 5780</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:28 -0400] &quot;GET /docs/images/tomcat.png HTTP/1.1&quot; 200 5103</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:28 -0400] &quot;GET /docs/images/asf-logo.svg HTTP/1.1&quot; 200 20486</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:28 -0400] &quot;GET /docs/images/fonts/fonts.css HTTP/1.1&quot; 200 1943</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:29 -0400] &quot;GET /docs/images/fonts/OpenSans400.woff HTTP/1.1&quot; 200 21956</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:29 -0400] &quot;GET /docs/images/fonts/OpenSans700.woff HTTP/1.1&quot; 200 22748</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:29 -0400] &quot;GET /docs/images/fonts/OpenSans600.woff HTTP/1.1&quot; 200 22604</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-5-host-manager-YYYY-MM-DD-log"><a href="#1-2-5-host-manager-YYYY-MM-DD-log" class="headerlink" title="1.2.5 host-manager.YYYY-MM-DD.log"></a>1.2.5 host-manager.YYYY-MM-DD.log</h4><p>  host-manager.2018-09-19.log：这个估计是放tomcat的自带的manager项目的日志信息的，未看到有什么重要的日志信息。</p>
+<h4 id="1-2-6-manager-YYYY-MM-DD-log"><a href="#1-2-6-manager-YYYY-MM-DD-log" class="headerlink" title="1.2.6 manager.YYYY-MM-DD.log"></a><strong>1.2.6 manager.YYYY-MM-DD.log</strong></h4><p>　 manager.2018-09-19.log ：　这个是tomcat manager项目专有的日志文件.</p>
+<h3 id="1-3-tomcat-日志文件切割"><a href="#1-3-tomcat-日志文件切割" class="headerlink" title="1.3 tomcat 日志文件切割"></a>1.3 tomcat 日志文件切割</h3><p>　　tomcat 的 catalina.out 文件tomcat 是不会进行日志切割的，当这个文件大于2G 时，会影响tomcat的运行。那么我们需要对这个文件进行日志切割，切割的方法有很多种：</p>
+<p>　　第一种：</p>
+<p>　　通过系统自带的切割工具：logrotate来进行切割。</p>
+<p>　　第二种:</p>
+<p>　　使用logj4进行切割日志。</p>
+<p>　　第三种：</p>
+<p>　　使用用cronolog分割tomcat的catalina.out文件 </p>
+<p>　　以上三种方法见：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/happy-king/p/9193401.html">https://www.cnblogs.com/happy-king/p/9193401.html</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/26/%E3%80%90SpringBoot%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E3%80%91@Configuration%E6%B2%A1%E7%94%9F%E6%95%88%E5%8F%AF%E8%83%BD%E7%9A%84%E5%8E%9F%E5%9B%A0%20&%20%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/02/26/%E3%80%90SpringBoot%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E3%80%91@Configuration%E6%B2%A1%E7%94%9F%E6%95%88%E5%8F%AF%E8%83%BD%E7%9A%84%E5%8E%9F%E5%9B%A0%20&%20%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-26T13:59:15+08:00">
+                2025-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>title: SpringBoot中@Configuration没有生效</p>
+<ul>
+<li><p><code>@Configuration</code> 没有生效，可能的原因如下：</p>
+<h3 id="🔍-可能的原因-解决方案"><a href="#🔍-可能的原因-解决方案" class="headerlink" title="🔍 可能的原因 &amp; 解决方案"></a><strong>🔍 可能的原因 &amp; 解决方案</strong></h3><hr>
+<h3 id="1️⃣-Configuration-所在的包不在-Spring-Boot-扫描范围内"><a href="#1️⃣-Configuration-所在的包不在-Spring-Boot-扫描范围内" class="headerlink" title="1️⃣ @Configuration 所在的包不在 Spring Boot 扫描范围内"></a><strong>1️⃣ <code>@Configuration</code> 所在的包不在 Spring Boot 扫描范围内</strong></h3><p><strong>问题</strong>：<br> Spring Boot 只会自动扫描<strong>启动类</strong>所在包及其<strong>子包</strong>，如果你的 <code>@Configuration</code> 类在其他包中，就不会被加载。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li><p><strong>方法 1：</strong> 把 <code>@Configuration</code> 类放在 <code>@SpringBootApplication</code> 类的<strong>同级或子包</strong>内。</p>
+</li>
+<li><p>方法 2：</p>
+<p> 在 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication</span><br></pre></td></tr></table></figure>
+
+<p> 上添加 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@ComponentScan</span><br></pre></td></tr></table></figure>
+
+<p> 指定包路径：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@ComponentScan(basePackages = &#123;&quot;com.example.config&quot;&#125;)</span> <span class="comment">// 指定你的 @Configuration 类所在包</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Application</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SpringApplication.run(Application.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h3 id="知识点2：数据库连接"><a href="#知识点2：数据库连接" class="headerlink" title="知识点2：数据库连接"></a>知识点2：数据库连接</h3><ul>
-<li>使用database&#x2F;sql标准库或ready-go库连接MySQL，支持哨兵、主从模式。</li>
-<li>使用标准库或第三方库连接Redis。 &gt; 原文引用：连接my和red is啊，这些我们常见的模块。第一个就是我们连接my的话呢，我们通常会用到呃构语言内置的database SQL这个标准库啊，当然呢，我们在这个课程中呢，还会向大家介绍功能啊，比我们常见的ready go啊，可能更稍微强大一点，它支持我们的哨兵模式，还有我们的主从模式啊等等等。</li>
+<hr>
+<h3 id="2️⃣-Configuration-类没有被-Spring-管理"><a href="#2️⃣-Configuration-类没有被-Spring-管理" class="headerlink" title="2️⃣ @Configuration 类没有被 Spring 管理"></a><strong>2️⃣ <code>@Configuration</code> 类没有被 Spring 管理</strong></h3><p><strong>问题</strong>：<br> <code>@Configuration</code> 需要被 Spring 容器管理，否则不会生效。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>确保 <strong>没有</strong> 用 <code>new</code> 手动创建 <code>@Configuration</code> 类对象。</li>
+<li>确保 <code>@ComponentScan</code> 的扫描路径<strong>包含</strong> <code>@Configuration</code> 类的包。</li>
 </ul>
-<h3 id="知识点3：脚手架搭建"><a href="#知识点3：脚手架搭建" class="headerlink" title="知识点3：脚手架搭建"></a>知识点3：脚手架搭建</h3><ul>
-<li>搭建现代购物语言web项目通用脚手架，包括日志库、配置管理、优雅关机与平滑重启方案。 &gt; 原文引用：搭建购物外部开发脚手架啊，就是带领大家手把手的。带你搭建一套现代购物语言，在企业中开发web项目的话，一个一套比较通用的脚手架。日志库的一个使用由Uber啊开源的一个非常优秀的一个高性能的日志库啊，这样的一个使用呃，第二个部分呢就是viper啊，一个比较出名的购物语言配置管理的一个神器啊就是。viper这个库我们要学习一下，第三个呢。就是我们购外部项目，我们做外部项目肯定会遇到一些呃升级呀呃或者一些。那么我们怎么样去实现优雅关机和平滑重启呢。</li>
+<p><strong>错误示例 ❌：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">ThreadPoolConfig</span> <span class="variable">config</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ThreadPoolConfig</span>(); <span class="comment">// ❌ 这样不会交给 Spring 管理</span></span><br><span class="line">    <span class="type">ExecutorService</span> <span class="variable">executorService</span> <span class="operator">=</span> config.taskExecutor();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>正确示例 ✅：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Application</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SpringApplication.run(Application.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3️⃣-你使用的是-Bean-但-Configuration-没有生效"><a href="#3️⃣-你使用的是-Bean-但-Configuration-没有生效" class="headerlink" title="3️⃣ 你使用的是 @Bean 但 @Configuration 没有生效"></a><strong>3️⃣ 你使用的是 <code>@Bean</code> 但 <code>@Configuration</code> 没有生效</strong></h3><p>如果 <code>@Configuration</code> 失效，<code>@Bean</code> 方法不会被调用。</p>
+<p><strong>测试是否生效的方法</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestService</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ExecutorService executorService;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(executorService); <span class="comment">// 如果是 null，说明 @Configuration 没生效</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果 <code>executorService</code> 为 <code>null</code>，请检查是否符合 <strong>第 1 条 和 第 2 条</strong> 规则。</p>
+<hr>
+<h3 id="4️⃣-可能是-EnableXXX-相关的-Spring-组件未开启"><a href="#4️⃣-可能是-EnableXXX-相关的-Spring-组件未开启" class="headerlink" title="4️⃣ 可能是 @EnableXXX 相关的 Spring 组件未开启"></a><strong>4️⃣ 可能是 <code>@EnableXXX</code> 相关的 Spring 组件未开启</strong></h3><p>如果你的 <code>@Configuration</code> 里使用了 <code>@EnableXXX</code>（比如 <code>@EnableTransactionManagement</code>、<code>@EnableScheduling</code> 等），可能需要手动开启：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableTransactionManagement</span> <span class="comment">// 开启事务管理</span></span><br><span class="line"><span class="meta">@EnableScheduling</span> <span class="comment">// 开启定时任务</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Application</span> &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5️⃣-Configuration-可能被-Spring-Boot-禁用了"><a href="#5️⃣-Configuration-可能被-Spring-Boot-禁用了" class="headerlink" title="5️⃣ @Configuration 可能被 Spring Boot 禁用了"></a><strong>5️⃣ <code>@Configuration</code> 可能被 Spring Boot 禁用了</strong></h3><p>如果 <code>spring.main.allow-bean-definition-overriding</code> 设为 <code>false</code>，可能会影响 <code>@Configuration</code> 的生效。<br> <strong>解决方案</strong>：在 <code>application.yml</code> 中添加：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">main:</span></span><br><span class="line">    <span class="attr">allow-bean-definition-overriding:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="🚀-结论"><a href="#🚀-结论" class="headerlink" title="🚀 结论"></a><strong>🚀 结论</strong></h3><p>如果 <code>@Configuration</code> 没生效，先按顺序检查： ✅ <strong>包扫描范围</strong> (<code>@ComponentScan</code>)<br> ✅ <strong>不要用 <code>new</code> 手动创建</strong><br> ✅ <strong>检查 <code>@Bean</code> 方法是否返回 null</strong><br> ✅ <strong>是否需要 <code>@EnableXXX</code></strong><br> ✅ <strong>检查 <code>application.yml</code> 配置</strong></p>
+</li>
 </ul>
-<h3 id="知识点4：项目实战"><a href="#知识点4：项目实战" class="headerlink" title="知识点4：项目实战"></a>知识点4：项目实战</h3><ul>
-<li>实现仿Reddit论坛项目，涉及分布式ID生成、JWT认证、业务逻辑及投票功能。</li>
-<li>使用Docker及Docker Compose搭建开发环境，讲解代码发布与项目部署。 &gt; 原文引用：我们实现的是一个仿reddit论坛的这样一个项目啊，在这个项目中呢，我们将学到哪些东西呢。呃，分布式ID生成啊，基于水化算法的一个实现，还有前后端分类项目里面用应用比较广泛的一个gwt认证啊，我们会讲解一下gwt是什么，它的原理是什么，以及我们怎么样去编写。一个比较通用的一个gwt认证的一个中间件呃，第三部分呢，就是基于my我们实现一个主要的业务逻辑，第四个呢，就是基于red is实现一个投票的一个。当然呢，我们在开发中呢，可能会涉及到啊，基于docker去开发一个搭建开发环境的这样一个呃场景啊，以及docker compose的一些使用。以及代码开发完了之后呢，我们可能会去需要去发布到线上，对吧。</li>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/25/%E3%80%90Mini-Spring%E3%80%91Spring%E9%A1%B9%E7%9B%AE%E5%BF%AB%E9%80%9F%E5%AD%A6%E4%B9%A0%EF%BC%883%E5%A4%A9%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/02/25/%E3%80%90Mini-Spring%E3%80%91Spring%E9%A1%B9%E7%9B%AE%E5%BF%AB%E9%80%9F%E5%AD%A6%E4%B9%A0%EF%BC%883%E5%A4%A9%EF%BC%89/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-25T14:57:03+08:00">
+                2025-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="【Mini-Spring】Spring项目快速学习（3天）"><a href="#【Mini-Spring】Spring项目快速学习（3天）" class="headerlink" title="【Mini-Spring】Spring项目快速学习（3天）"></a>【Mini-Spring】Spring项目快速学习（3天）</h1><h2 id="第一章-IOC基础"><a href="#第一章-IOC基础" class="headerlink" title="第一章 IOC基础"></a>第一章 IOC基础</h2><p>使用IOC容器解决同类服务灵活切换问题</p>
+<p><strong>依赖注入（Dependency Injection, DI）</strong> 是一种 <strong>设计模式</strong>，用于<strong>管理类与其依赖对象之间的关系</strong>。它的核心思想是<strong>将依赖项（对象）从外部传递给需要它的类，而不是在类内部创建或查找依赖项</strong>。这样可以降低代码的耦合度，提高可测试性和可维护性。</p>
+<p>✅ <strong>使用依赖注入</strong></p>
+<p><strong>依赖注入的做法是：</strong></p>
+<ul>
+<li><strong>不在类内部创建依赖，而是从外部提供</strong>（注入）。</li>
+<li><strong>可以使用接口，让依赖可替换</strong>，增强灵活性。</li>
 </ul>
+<h2 id="🎯-总结"><a href="#🎯-总结" class="headerlink" title="🎯 总结"></a>🎯 <strong>总结</strong></h2><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>适用场景</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>构造函数注入</strong></td>
+<td>依赖对象必须在创建时提供</td>
+<td>代码清晰、解耦、便于单元测试</td>
+<td>可能导致构造函数参数过多</td>
+</tr>
+<tr>
+<td><strong>方法注入</strong></td>
+<td>只在某些方法调用时需要依赖</td>
+<td>灵活、减少长期依赖</td>
+<td>依赖关系不明显</td>
+</tr>
+<tr>
+<td><strong>属性注入</strong></td>
+<td>依赖可以动态修改</td>
+<td>适用于框架（如 Spring）</td>
+<td>Go 里较少使用，容易导致全局状态问题</td>
+</tr>
+</tbody></table>
+<p>💡</p>
 
           
         
@@ -1029,6 +1364,23 @@
             <h1 id="并发编程学习"><a href="#并发编程学习" class="headerlink" title="并发编程学习"></a>并发编程学习</h1><p>同步就是按照某个特定顺序进行操作</p>
 <p>同步关系:进程之间的操作事件存在时序关系，比如先后关系，我们在真题会遇到这种说法”操作C必须在操作 A、B之后完成”，也就是在告诉你这里有一个同步关系，需要你用信号量去定义。</p>
 <p>并发就是在一个时间段内完成一系列任务（比如在一个时间段内你给两个人聊天）</p>
+<p>异步：执行时互不影响，执行时没有先后顺序</p>
+<p>同步：执行时有一定的次序关系</p>
+<p>什么条件下用同步？</p>
+<pre><code>   比如向银行ATM取钱时，客户端同时有两个线程向服务器发起取钱请求，第一个线程读出还有2000，取走了1000，将数据更改为余额还有一千；第二个线程，在第一个线程取钱前也读到还有2000，取走1000后，仍然将数据改成1000，这就造成了数据的不一致性。
+</code></pre>
+<p>同步的前提条件：</p>
+<p>1.有多个线程</p>
+<p>2.需要访问数据</p>
+<p>3.涉及对数据的修改工作</p>
+<p><img src="C:\Users\Jinju\blog\source\images\image-20250227005636972.png" alt="image-20250227005636972"></p>
+<p>可以看出来同步是阻塞的，会等待结束</p>
+<p><img src="C:\Users\Jinju\blog\source\images\image-20250227005715232.png" alt="image-20250227005715232"></p>
+<p>异步的就不会阻塞，直接调用立马返回继续处理parsefile函数，通过回调函数来说明读取完成。</p>
+<p>什么情况下用同步?<br>什么情况下用异步?<br>有什么差异?<br>RPC接口同步异步?</p>
+<p>【3分钟彻底理解回调函数】 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1cW421N7P2/?share_source=copy_web&vd_source=654a4e361961dcce96893993981165f5">https://www.bilibili.com/video/BV1cW421N7P2/?share_source=copy_web&amp;vd_source=654a4e361961dcce96893993981165f5</a></p>
+<p>回调函数就是为了实现我能够在调用不同包的函数的时候，我想在一个包下的函数funcA里面执行另一个包下的函数funcB，我想让funcB在funcA进行调用，这时候就要在funcA传参，参数为函数，这样就可以在funcA里面调用funcB</p>
+<p>【程序中的同步和异步到底是什么？】 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1MC411a7rY/?share_source=copy_web&vd_source=654a4e361961dcce96893993981165f5">https://www.bilibili.com/video/BV1MC411a7rY/?share_source=copy_web&amp;vd_source=654a4e361961dcce96893993981165f5</a></p>
 <p>如何在实际运行中迭代需求</p>
 <p>如何设计需求 结合技术高并发高可用性</p>
 <p>结合需求</p>
@@ -1565,338 +1917,6 @@ for v := range ch &#123; // 直到 ch 关闭后，才退出循环
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/14/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91GOPATH/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/02/14/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91GOPATH/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-14T22:28:52+08:00">
-                2025-02-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>一、GOPATH的概念</strong></p>
-<p>GOPATH 是 Go 语言中使用的一个环境变量，它使用绝对路径提供项目的<strong>工作目录（</strong>也称为<strong>工作区）</strong>。</p>
-<p>工作目录是一个工程开发的相对参考目录，好比当你要在公司编写一套服务器代码，你的工位所包含的桌面、计算机及椅子就是你的工作区。</p>
-<p>工作区的概念与工作目录的概念也是类似的。如果不使用工作目录的概念，在多人开发时，每个人有一套自己的目录结构，读取配置文件的位置不统一，</p>
-<p>输出的二进制运行文件也不统一，这样会导致开发的标准不统一，影响开发效率。</p>
-<p>GOPATH 适合处理大量 Go语言源码、多个包组合而成的复杂工程。</p>
-<p>从 Go 1.8 版本开始，Go 开发包在安装完成后，将 GOPATH 赋予了一个默认的目录，参见下表</p>
-<p><img src="https://img2020.cnblogs.com/blog/907091/202008/907091-20200810145305229-244770147.png" alt="img"></p>
-<p>可以通过go env命令查看Go的环境变量，我使用的mac效果如下（安装后，更改过）</p>
-<p><img src="https://img2020.cnblogs.com/blog/907091/202011/907091-20201102150001647-651359307.png" alt="img"></p>
-<p><strong>二、GOPATH的使用</strong></p>
-<p><code>GOPATH</code>目录一般为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$HOME/go</span><br><span class="line">  --bin      # 存放编译后的可执行文件</span><br><span class="line">  --pkg      # 依赖包编译后的*.a文件</span><br><span class="line">  --src      # 存放源码文件，以代码包为组织形式</span><br></pre></td></tr></table></figure>
-
-<p>如下是一个完整的Go项目的开发目录：</p>
-<p><a href="javascript:void(0);"><img src="https://assets.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">my-go                 // my-go为GOPATH目录</span><br><span class="line">  -- bin</span><br><span class="line">     -- myApp1        // 编译生成</span><br><span class="line">     -- myApp2        // 编译生成</span><br><span class="line">     -- myApp3        // 编译生成</span><br><span class="line">  -- pkg                             依赖包编译后的*.a文件//</span><br><span class="line">  -- src</span><br><span class="line">     -- MyApp1        // 项目1</span><br><span class="line">        -- models</span><br><span class="line">        -- controllers</span><br><span class="line">        -- others</span><br><span class="line">        -- main.go </span><br><span class="line">     -- MyApp2        // 项目2</span><br><span class="line">        -- models</span><br><span class="line">        -- controllers</span><br><span class="line">        -- others</span><br><span class="line">        -- main.go </span><br></pre></td></tr></table></figure>
-
-<p><a href="javascript:void(0);"><img src="https://assets.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
-<p>设置GOPATH后，工程中使用 <strong>import的根目录是GOPATH中的src目录</strong></p>
-<p>GOPATH为&#x2F;Users&#x2F;lxxxxxk&#x2F;GolandProjects，工程为&#x2F;Users&#x2F;lxxxxxk&#x2F;Desktop&#x2F;my-go&#x2F;src&#x2F;MyApp1</p>
-<p>那么MyApp1中使用import导入本地包的时候，这样写：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import &quot;MyApp1/models&quot;  // models为包名</span><br></pre></td></tr></table></figure>
-
-<p>也就是说，<strong>GOPATH下必须要有src目录</strong>，不然import导包的时候会找不到</p>
-<p>import导包规则：</p>
-<p>　　1、先去GOROOT&#x2F;src&#x2F;路径下找   &#x2F;usr&#x2F;local&#x2F;go&#x2F;src&#x2F;MyApp1 (系统环境变量 $GOROOT，即使用go env命令显示的GOROOT)</p>
-<p>　　2、如果1没有，就去Project GOPATH&#x2F;src&#x2F;路径下找   &#x2F;Users&#x2F;lxxxxxk&#x2F;Desktop&#x2F;my-go&#x2F;src&#x2F;MyApp1</p>
-<p>　　3、如果2还没找到，就去Global GOPATH路径下找   &#x2F;Users&#x2F;lxxxxxk&#x2F;GolandProjects（系统环境变量 $GOPATH，即使用go env命令显示的GOPATH）</p>
-<p><strong>三、GoLand设置GOPATH</strong></p>
-<p><img src="https://img2020.cnblogs.com/blog/907091/202011/907091-20201102150212911-986971053.png" alt="img"></p>
-<p>图中的 Global GOPATH 代表全局 GOPATH，一般来源于系统环境变量中的 GOPATH；</p>
-<p>Project GOPATH 代表项目所使用的 GOPATH，该设置会被保存在工作目录的 <strong>.idea</strong>目录下，不会被设置到环境变量的 GOPATH 中，但会在编译时使用到这个目录。</p>
-<p>建议在开发时填写项目 GOPATH，<strong>每一个项目尽量只设置一个 GOPATH，不使用多个 GOPATH 和全局的 GOPATH</strong>。</p>
-<p>否则可能会出现如下麻烦：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">将某项目代码保存在 /home/davy/projectA 目录下，将该目录设置为 GOPATH。</span><br><span class="line">随着开发进行，需要再次获取一份工程项目的源码，此时源码保存在 /home/davy/projectB 目录下，</span><br><span class="line">如果此时需要编译 projectB 目录的项目，但开发者忘记设置 GOPATH 而直接使用命令行编译，</span><br><span class="line">则当前的 GOPATH 指向的是 /home/davy/projectA 目录，而不是开发者编译时期望的 projectB 目录。</span><br><span class="line">编译完成后，开发者就会将错误的工程版本发布到外网。</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/14/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20VSCode%20%E4%B8%AD%E7%9A%84%20Code%20Runner%20%E6%8F%92%E4%BB%B6%E6%89%A7%E8%A1%8C%20golang%20%E4%BB%A3%E7%A0%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/02/14/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20VSCode%20%E4%B8%AD%E7%9A%84%20Code%20Runner%20%E6%8F%92%E4%BB%B6%E6%89%A7%E8%A1%8C%20golang%20%E4%BB%A3%E7%A0%81/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-14T18:22:31+08:00">
-                2025-02-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-<p>title:如何使用 VSCode 中的 Code Runner 插件执行 golang 代码</p>
-<hr>
-<p>project 的文档结如下</p>
-<p>mylab<br>   |—- main.go<br>   |—- test.go</p>
-<p>main.go</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	test()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>test.go</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="built_in">println</span>(<span class="string">&quot;in test&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner">Code Runner 插件的 Doc 地址</a>中<br>找到如下 Configuration 的配置说明</p>
-<blockquote>
-<p>Configuration<br>Make sure the executor PATH of each language is set in the environment variable. You could also add entry into code-runner.executorMap to set the executor PATH. e.g. To set the executor PATH for ruby, php and html:</p>
-</blockquote>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code-runner.executorMap&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;javascript&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;php&quot;</span><span class="punctuation">:</span> <span class="string">&quot;C:\\php\\php.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;python&quot;</span><span class="punctuation">:</span> <span class="string">&quot;python&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;perl&quot;</span><span class="punctuation">:</span> <span class="string">&quot;perl&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ruby&quot;</span><span class="punctuation">:</span> <span class="string">&quot;C:\\Ruby23-x64\\bin\\ruby.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;go&quot;</span><span class="punctuation">:</span> <span class="string">&quot;go run&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;html&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\&quot;C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe\&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;java&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cd $dir &amp;&amp; javac $fileName &amp;&amp; java $fileNameWithoutExt&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;c&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cd $dir &amp;&amp; gcc $fileName -o $fileNameWithoutExt &amp;&amp; $dir$fileNameWithoutExt&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Supported customized parameters</p>
-<ul>
-<li>$workspaceRoot: The path of the folder opened in VS Code</li>
-<li>$dir: The directory of the code file being run</li>
-<li>$dirWithoutTrailingSlash: The directory of the code file being run without a trailing slash</li>
-<li>$fullFileName: The full name of the code file being run</li>
-<li>$fileName: The base name of the code file being run, that is the file without the directory</li>
-<li>$fileNameWithoutExt: The base name of the code file being run without its extension</li>
-<li>$driveLetter: The drive letter of the code file being run (Windows only)</li>
-<li>$pythonPath: The path of Python interpreter (set by Python: Select Interpreter command)</li>
-</ul>
-</blockquote>
-<blockquote>
-<p>Please take care of the back slash and the space in file path of the executor</p>
-<p>Back slash: please use <br>If there ares spaces in file path, please use “ to surround your file path</p>
-</blockquote>
-<blockquote>
-<p>You could set the executor per filename glob:</p>
-</blockquote>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code-runner.executorMapByGlob&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;pom.xml&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cd $dir &amp;&amp; mvn clean package&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;*.test.js&quot;</span><span class="punctuation">:</span> <span class="string">&quot;tap&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;*.js&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>可以看到 go 的执行命令默认配置成了 go run, 并且默认执行当前打开的文件。 所以需要利用$dir 这个变量 run 整个 main 包所涉及到的所有文件。并且可以正则匹配文件名。</p>
-<p>查看一下 go run 这个命令的参数解释，由于众所周知的原因，我们只能上国内的<a target="_blank" rel="noopener" href="https://golang.google.cn/cmd/go/#hdr-Compile_and_run_Go_program">替代官网</a>。</p>
-<blockquote>
-<p>Compile and run Go program Usage:</p>
-<p>go run [build flags][-exec xprog] package [arguments…] Run compiles and runs the named main Go package. Typically the package is specified as a list of .go source files, but it may also be an import path, file system path, or pattern matching a single known package, as in <strong>‘go run .’</strong> or ‘go run my&#x2F;cmd’.</p>
-<p>By default, ‘go run’ runs the compiled binary directly: ‘a.out arguments…’. If the -exec flag is given, ‘go run’ invokes the binary using xprog:</p>
-<p>‘xprog a.out arguments…’. If the -exec flag is not given, GOOS or GOARCH is different from the system default, and a program named go*$GOOS*$GOARCH_exec can be found on the current search path, ‘go run’ invokes the binary using that program, for example ‘go_nacl_386_exec a.out arguments…’. This allows execution of cross-compiled programs when a simulator or other execution method is available.</p>
-<p>The exit status of Run is not the exit status of the compiled binary.</p>
-<p>For more about build flags, see ‘go help build’. For more about specifying packages, see ‘go help packages’.</p>
-</blockquote>
-<p>找到了，使用<code>go run .</code> 来跑整个 package 的。</p>
-<p>在 VSCode 的.vscode 目录下创建 settings.json 文件</p>
-<p>自定义这个 project 的用户配置如下</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code-runner.executorMap&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;go&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cd $dir &amp;&amp; go run .&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;code-runner.executorMapByGlob&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;$dir\\*.go&quot;</span><span class="punctuation">:</span> <span class="string">&quot;go&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>点击 Cdoe Runner 在 VSCode GUI 界面提供的 RUN 按钮</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[Running] cd &quot;d:\Users\polar\go\src\mylab\&quot; &amp;&amp; go run .</span><br><span class="line">in test</span><br><span class="line"></span><br><span class="line">[Done] exited with code=0 in 3.564 seconds</span><br></pre></td></tr></table></figure>
-
-<p>OK!</p>
-<p>当然也可以用 VSCode Debug 的 launch.json 来配置，但是那是 debug 模式，并不是 go run。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1947,7 +1967,7 @@ for v := range ch &#123; // 直到 ch 关闭后，才退出循环
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
