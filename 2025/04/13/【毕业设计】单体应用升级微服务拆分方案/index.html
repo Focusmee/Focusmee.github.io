@@ -102,7 +102,7 @@
 <meta property="og:description" content="我先了解一下您的应用结构，以便给出适合的微服务改造建议。 Ran tool Ran tool Read file: app_order&#x2F;pom.xml Ran tool Ran tool Read file: app_order&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;jf3q&#x2F;order&#x2F;AppOrderApplicat">
 <meta property="og:locale">
 <meta property="article:published_time" content="2025-04-13T12:11:02.261Z">
-<meta property="article:modified_time" content="2025-04-14T07:21:15.446Z">
+<meta property="article:modified_time" content="2025-04-19T16:31:34.297Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -814,6 +814,211 @@
 <li><p>描述: 测试订单服务调用用户服务获取用户信息</p>
 </li>
 </ul>
+<h1 id="Sa-token引入"><a href="#Sa-token引入" class="headerlink" title="Sa-token引入"></a>Sa-token引入</h1><p>使用Postman测试Sa-Token认证系统需要进行以下步骤：</p>
+<h2 id="1-测试注册功能"><a href="#1-测试注册功能" class="headerlink" title="1. 测试注册功能"></a>1. 测试注册功能</h2><ol>
+<li>打开Postman</li>
+<li>创建一个新的POST请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/register</code></li>
+<li>选择Headers选项卡，添加头部：<ul>
+<li>Key: <code>Content-Type</code></li>
+<li>Value: <code>application/json</code></li>
+</ul>
+</li>
+<li>选择Body选项卡，选择raw，然后选择JSON格式</li>
+<li>输入注册信息：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;testuser&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;password123&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;测试用户&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;role&quot;</span><span class="punctuation">:</span> <span class="string">&quot;user&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;email&quot;</span><span class="punctuation">:</span> <span class="string">&quot;test@example.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;phone&quot;</span><span class="punctuation">:</span> <span class="string">&quot;13800138000&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li>点击Send发送请求</li>
+<li>检查响应，应该返回成功信息和用户数据（不含密码）</li>
+</ol>
+<h2 id="2-测试登录功能"><a href="#2-测试登录功能" class="headerlink" title="2. 测试登录功能"></a>2. 测试登录功能</h2><ol>
+<li><p>创建一个新的POST请求</p>
+</li>
+<li><p>设置请求URL为 <code>http://localhost:9999/login</code></p>
+</li>
+<li><p>在Headers中添加：</p>
+<ul>
+<li>Key: <code>Content-Type</code></li>
+<li>Value: <code>application/json</code></li>
+</ul>
+</li>
+<li><p>在Body中输入：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;testuser&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;password123&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>点击Send发送请求</p>
+</li>
+<li><p>检查响应，应该包含：</p>
+<ul>
+<li>用户信息</li>
+<li>tokenName (通常是”Authorization”)</li>
+<li>tokenValue (JWT令牌值)</li>
+</ul>
+</li>
+<li><p><strong>重要：复制响应中的tokenName和tokenValue，后续请求需要使用</strong></p>
+</li>
+</ol>
+<h2 id="3-使用token获取用户信息"><a href="#3-使用token获取用户信息" class="headerlink" title="3. 使用token获取用户信息"></a>3. 使用token获取用户信息</h2><ol>
+<li>创建一个新的GET请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/api/user/info</code></li>
+<li>在Headers中添加从登录响应获取的token：<ul>
+<li>Key: <code>Authorization</code> (使用tokenName的值)</li>
+<li>Value: 登录响应中的tokenValue值</li>
+</ul>
+</li>
+<li>点击Send发送请求</li>
+<li>检查响应，应该返回当前登录用户的详细信息</li>
+</ol>
+<h2 id="4-测试权限控制"><a href="#4-测试权限控制" class="headerlink" title="4. 测试权限控制"></a>4. 测试权限控制</h2><h3 id="4-1-测试管理员角色的接口"><a href="#4-1-测试管理员角色的接口" class="headerlink" title="4.1 测试管理员角色的接口"></a>4.1 测试管理员角色的接口</h3><ol>
+<li>创建一个新的GET请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/api/admin/users</code> (假设这是一个管理员接口)</li>
+<li>在Headers中添加token</li>
+<li>点击Send发送请求</li>
+<li>如果使用的是普通用户token，应该返回权限不足的错误</li>
+<li>如果使用的是管理员token，应该能够正常访问</li>
+</ol>
+<h3 id="4-2-测试摄影师角色的接口"><a href="#4-2-测试摄影师角色的接口" class="headerlink" title="4.2 测试摄影师角色的接口"></a>4.2 测试摄影师角色的接口</h3><ol>
+<li>创建一个新的GET请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/api/photographer/profile</code> (假设这是一个摄影师接口)</li>
+<li>在Headers中添加token</li>
+<li>发送请求并检查响应</li>
+</ol>
+<h2 id="5-测试退出登录"><a href="#5-测试退出登录" class="headerlink" title="5. 测试退出登录"></a>5. 测试退出登录</h2><ol>
+<li>创建一个新的POST请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/logout</code></li>
+<li>在Headers中添加token</li>
+<li>点击Send发送请求</li>
+<li>检查响应，应该返回退出成功的信息</li>
+<li>然后再尝试使用同一个token访问需要登录的接口，应该会返回”未登录”的错误</li>
+</ol>
+<h2 id="6-使用Postman的Collection和Environment功能"><a href="#6-使用Postman的Collection和Environment功能" class="headerlink" title="6. 使用Postman的Collection和Environment功能"></a>6. 使用Postman的Collection和Environment功能</h2><p>为了更方便地测试，可以使用Postman的集合和环境变量：</p>
+<ol>
+<li><p>创建一个新的环境，命名为”Sa-Token测试”</p>
+</li>
+<li><p>添加以下环境变量：</p>
+<ul>
+<li><code>baseUrl</code>: <code>http://localhost:9999</code></li>
+<li><code>token</code>: 空值(登录后自动填充)</li>
+</ul>
+</li>
+<li><p>创建一个新的Collection，命名为”用户认证测试”</p>
+</li>
+<li><p>在Collection中创建上述所有请求，并使用环境变量，如：</p>
+<ul>
+<li>登录URL: <code>&#123;&#123;baseUrl&#125;&#125;/login</code></li>
+<li>用户信息URL: <code>&#123;&#123;baseUrl&#125;&#125;/api/user/info</code></li>
+<li>授权Header: <code>Authorization: &#123;&#123;token&#125;&#125;</code></li>
+</ul>
+</li>
+<li><p>在登录请求的Tests选项卡中添加以下JavaScript代码，自动保存token：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pm.<span class="property">response</span>.<span class="property">code</span> === <span class="number">200</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> jsonData = pm.<span class="property">response</span>.<span class="title function_">json</span>();</span><br><span class="line">    <span class="keyword">if</span> (jsonData.<span class="property">code</span> === <span class="string">&quot;200&quot;</span> &amp;&amp; jsonData.<span class="property">data</span> &amp;&amp; jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>) &#123;</span><br><span class="line">        pm.<span class="property">environment</span>.<span class="title function_">set</span>(<span class="string">&quot;token&quot;</span>, jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Token saved to environment variable&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="7-测试无效或过期token"><a href="#7-测试无效或过期token" class="headerlink" title="7. 测试无效或过期token"></a>7. 测试无效或过期token</h2><ol>
+<li>创建一个需要登录的请求，如获取用户信息</li>
+<li>在Headers中添加一个无效的token值</li>
+<li>发送请求，应该返回未登录或token无效的错误</li>
+</ol>
+<h2 id="8-调试技巧"><a href="#8-调试技巧" class="headerlink" title="8. 调试技巧"></a>8. 调试技巧</h2><ol>
+<li>使用Postman控制台查看请求和响应的详细信息</li>
+<li>检查服务器端日志，特别是与Sa-Token相关的日志</li>
+<li>如果遇到问题，可以在Postman中使用预请求脚本进行调试</li>
+</ol>
+<h2 id="9-常见问题及解决方案"><a href="#9-常见问题及解决方案" class="headerlink" title="9. 常见问题及解决方案"></a>9. 常见问题及解决方案</h2><ol>
+<li><strong>CORS错误</strong>：确保网关的CorsConfig正确配置并暴露了Authorization头</li>
+<li><strong>token不生效</strong>：检查token名称和值是否正确，以及请求URL是否正确</li>
+<li><strong>token过期</strong>：尝试重新登录获取新的token</li>
+<li><strong>权限错误</strong>：检查用户角色和接口要求的权限是否匹配</li>
+</ol>
+<p>通过以上步骤，你可以全面测试Sa-Token认证系统的功能，确保用户注册、登录、权限控制和注销功能都正常工作。</p>
+<p>在Postman中测试头像上传功能的详细步骤如下：</p>
+<h2 id="步骤1-用户登录获取Token"><a href="#步骤1-用户登录获取Token" class="headerlink" title="步骤1: 用户登录获取Token"></a>步骤1: 用户登录获取Token</h2><ol>
+<li>打开Postman，创建一个新的POST请求</li>
+<li>设置URL: <code>http://localhost:9999/login</code></li>
+<li>选择Body选项卡，选择raw，格式为JSON</li>
+<li>输入登录信息：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;testuser&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;password123&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li>发送请求</li>
+<li>从响应中获取Sa-Token的token值，记录下来：<ul>
+<li>tokenName (通常是”Authorization”)</li>
+<li>tokenValue (后续请求需要使用)</li>
+</ul>
+</li>
+</ol>
+<h2 id="步骤2-设置头像上传请求"><a href="#步骤2-设置头像上传请求" class="headerlink" title="步骤2: 设置头像上传请求"></a>步骤2: 设置头像上传请求</h2><ol>
+<li><p>创建一个新的POST请求</p>
+</li>
+<li><p>设置URL: <code>http://localhost:9999/api/uploadAvatar</code></p>
+</li>
+<li><p>添加Header：</p>
+<ul>
+<li>Key: <code>Authorization</code> (或者登录响应中的tokenName值)</li>
+<li>Value: 登录响应中的tokenValue值</li>
+</ul>
+</li>
+<li><p>选择Body选项卡，选择form-data</p>
+</li>
+<li><p>添加一个键值对：</p>
+<ul>
+<li>Key: <code>avatar</code></li>
+<li>在Key右侧下拉菜单选择File类型</li>
+<li>Value: 点击”Select Files”按钮，选择一个本地图片文件（如.jpg, .png）</li>
+</ul>
+</li>
+</ol>
+<h2 id="步骤3-发送请求并检查响应"><a href="#步骤3-发送请求并检查响应" class="headerlink" title="步骤3: 发送请求并检查响应"></a>步骤3: 发送请求并检查响应</h2><ol>
+<li>点击Send发送请求</li>
+<li>如果成功，应该收到类似以下的响应：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="string">&quot;200&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;msg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;请求成功&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://yourserver:9999/file/view/someuniquefilename.jpg&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="步骤4-测试头像预览和查看"><a href="#步骤4-测试头像预览和查看" class="headerlink" title="步骤4: 测试头像预览和查看"></a>步骤4: 测试头像预览和查看</h2><h3 id="测试当前用户头像预览："><a href="#测试当前用户头像预览：" class="headerlink" title="测试当前用户头像预览："></a>测试当前用户头像预览：</h3><ol>
+<li>创建一个新的GET请求</li>
+<li>设置URL: <code>http://localhost:9999/api/avatar/my/preview</code></li>
+<li>添加Header（使用与上传相同的token）</li>
+<li>发送请求并检查返回的预览URL</li>
+</ol>
+<h3 id="测试头像下载："><a href="#测试头像下载：" class="headerlink" title="测试头像下载："></a>测试头像下载：</h3><ol>
+<li>创建一个新的GET请求</li>
+<li>设置URL: <code>http://localhost:9999/api/avatar/&#123;userId&#125;</code> (将{userId}替换为实际用户ID)</li>
+<li>添加Header（使用与上传相同的token）</li>
+<li>发送请求，获取下载链接</li>
+<li>在浏览器中访问下载链接验证文件是否可以下载</li>
+</ol>
+<h2 id="使用Postman中的Environment变量（可选但推荐）"><a href="#使用Postman中的Environment变量（可选但推荐）" class="headerlink" title="使用Postman中的Environment变量（可选但推荐）"></a>使用Postman中的Environment变量（可选但推荐）</h2><p>为了更便捷地进行测试，您可以设置Postman环境变量：</p>
+<ol>
+<li><p>在Postman右上角点击”No Environment”下拉菜单，然后点击”New”</p>
+</li>
+<li><p>创建一个名为”微服务测试”的环境</p>
+</li>
+<li><p>添加以下变量：</p>
+<ul>
+<li><code>baseUrl</code>: <code>http://localhost:9999</code></li>
+<li><code>token</code>: 空值(登录后自动填充)</li>
+</ul>
+</li>
+<li><p>点击”Save”保存环境</p>
+</li>
+<li><p>在登录请求的Tests选项卡中添加以下代码，以便在登录时自动保存token：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pm.<span class="property">response</span>.<span class="property">code</span> === <span class="number">200</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> jsonData = pm.<span class="property">response</span>.<span class="title function_">json</span>();</span><br><span class="line">    <span class="keyword">if</span> (jsonData.<span class="property">code</span> === <span class="string">&quot;200&quot;</span> &amp;&amp; jsonData.<span class="property">data</span>) &#123;</span><br><span class="line">        pm.<span class="property">environment</span>.<span class="title function_">set</span>(<span class="string">&quot;token&quot;</span>, jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Token saved: &quot;</span> + jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后所有请求都可以使用环境变量：</p>
+<ul>
+<li>URL: <code>&#123;&#123;baseUrl&#125;&#125;/api/uploadAvatar</code></li>
+<li>Headers: <code>Authorization: &#123;&#123;token&#125;&#125;</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="常见问题排查"><a href="#常见问题排查" class="headerlink" title="常见问题排查"></a>常见问题排查</h2><p>如果上传过程中遇到问题，请检查以下几点：</p>
+<ol>
+<li><p><strong>Token问题：</strong> 确保已正确设置了Authorization头部，且token值有效。您可以再次登录获取新token测试。</p>
+</li>
+<li><p><strong>文件大小：</strong> 确保上传的文件不超过配置的大小限制（在application.yml中配置的multipart大小）。</p>
+</li>
+<li><p><strong>Content-Type：</strong> 确保使用的是form-data方式，而不是binary或其他方式，否则服务器可能无法正确解析文件。</p>
+</li>
+<li><p><strong>文件格式：</strong> 确保上传的是图片文件（code中校验了文件类型必须以image&#x2F;开头）。</p>
+</li>
+<li><p><strong>网络问题：</strong> 检查网关服务和用户服务是否正常运行，可以通过访问一些简单的接口（如&#x2F;）来确认。</p>
+</li>
+<li><p><strong>跨域问题：</strong> 如果在实际前端应用中测试，可能会遇到跨域问题，确保网关的CORS配置正确。</p>
+</li>
+<li><p><strong>日志检查：</strong> 查看服务器日志，特别注意与文件上传相关的异常信息。</p>
+</li>
+</ol>
+<p>通过以上步骤，您应该能够在Postman中成功测试头像上传功能，并验证整个流程是否正常工作。</p>
 
       
     </div>
@@ -847,6 +1052,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2025/04/20/%E3%80%90MinIO%E3%80%91%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -923,7 +1132,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -962,7 +1171,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%8B%86%E5%88%86%E6%96%B9%E6%A1%88"><span class="nav-number">1.</span> <span class="nav-text">微服务拆分方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%A2%86%E5%9F%9F%E6%8B%86%E5%88%86"><span class="nav-number">1.1.</span> <span class="nav-text">1. 领域拆分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E5%8D%87%E7%BA%A7"><span class="nav-number">1.2.</span> <span class="nav-text">2. 技术架构升级</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E6%96%BD%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">具体实施步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD"><span class="nav-number">2.1.</span> <span class="nav-text">1. 搭建基础设施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA%E5%85%AC%E5%85%B1%E6%A8%A1%E5%9D%97"><span class="nav-number">2.2.</span> <span class="nav-text">2. 创建公共模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%8B%86%E5%88%86%E4%B8%9A%E5%8A%A1%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.3.</span> <span class="nav-text">3. 拆分业务服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%B0%83%E6%95%B4%E6%9C%8D%E5%8A%A1%E9%97%B4%E9%80%9A%E4%BF%A1"><span class="nav-number">2.4.</span> <span class="nav-text">4. 调整服务间通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%AE%89%E5%85%A8%E8%AE%A4%E8%AF%81%E6%94%B9%E9%80%A0"><span class="nav-number">2.5.</span> <span class="nav-text">5. 安全认证改造</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%9B%91%E6%8E%A7"><span class="nav-number">2.6.</span> <span class="nav-text">6. 部署与监控</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text">迁移注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E5%A4%A9%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E8%AE%A1%E5%88%92"><span class="nav-number">4.</span> <span class="nav-text">3天微服务框架搭建计划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC1%E5%A4%A9%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA"><span class="nav-number">4.1.</span> <span class="nav-text">第1天：基础设施搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC2%E5%A4%A9%EF%BC%9A%E6%A0%B8%E5%BF%83%E6%9C%8D%E5%8A%A1%E6%8B%86%E5%88%86"><span class="nav-number">4.2.</span> <span class="nav-text">第2天：核心服务拆分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC3%E5%A4%A9%EF%BC%9A%E7%BD%91%E5%85%B3%E5%92%8C%E6%9C%8D%E5%8A%A1%E9%9B%86%E6%88%90"><span class="nav-number">4.3.</span> <span class="nav-text">第3天：网关和服务集成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%85%B3%E9%94%AE%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5"><span class="nav-number">5.</span> <span class="nav-text">快速实现的关键代码片段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%BD%91%E5%85%B3%E9%85%8D%E7%BD%AE%EF%BC%88ssc-gateway%EF%BC%89"><span class="nav-number">5.1.</span> <span class="nav-text">1. 网关配置（ssc-gateway）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1%EF%BC%88ssc-user%EF%BC%89"><span class="nav-number">5.2.</span> <span class="nav-text">2. 用户服务（ssc-user）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%AE%A2%E5%8D%95%E6%9C%8D%E5%8A%A1%EF%BC%88ssc-order%EF%BC%89"><span class="nav-number">5.3.</span> <span class="nav-text">3. 订单服务（ssc-order）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1Feign%E5%AE%A2%E6%88%B7%E7%AB%AF%EF%BC%88%E5%9C%A8ssc-order%E4%B8%AD%EF%BC%89"><span class="nav-number">5.4.</span> <span class="nav-text">4. 用户服务Feign客户端（在ssc-order中）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%AE%80%E5%8C%96%E7%89%88%E6%9C%AC%E7%9A%84%E8%AE%A2%E5%8D%95%E6%9C%8D%E5%8A%A1%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.5.</span> <span class="nav-text">5. 简化版本的订单服务实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%BB%BA%E8%AE%AE"><span class="nav-number">6.</span> <span class="nav-text">实现建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%BD%91%E5%85%B3%E9%85%8D%E7%BD%AE%E7%9A%84%E7%89%B9%E6%AE%8A%E8%B7%AF%E7%94%B1"><span class="nav-number">6.1.</span> <span class="nav-text">一、网关配置的特殊路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1%E6%8E%A5%E5%8F%A3-%E9%80%9A%E8%BF%87%E7%BD%91%E5%85%B3%E8%AE%BF%E9%97%AE%E9%9C%80%E6%B7%BB%E5%8A%A0%E5%89%8D%E7%BC%80-api"><span class="nav-number">6.2.</span> <span class="nav-text">二、用户服务接口 (通过网关访问需添加前缀 &#x2F;api)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%AE%A2%E5%8D%95%E6%9C%8D%E5%8A%A1%E6%8E%A5%E5%8F%A3-%E9%80%9A%E8%BF%87%E7%BD%91%E5%85%B3%E8%AE%BF%E9%97%AE%E9%9C%80%E6%B7%BB%E5%8A%A0%E5%89%8D%E7%BC%80-api"><span class="nav-number">6.3.</span> <span class="nav-text">三、订单服务接口 (通过网关访问需添加前缀 &#x2F;api)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%B5%8B%E8%AF%95%E6%8E%A5%E5%8F%A3"><span class="nav-number">6.4.</span> <span class="nav-text">四、测试接口</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%8B%86%E5%88%86%E6%96%B9%E6%A1%88"><span class="nav-number">1.</span> <span class="nav-text">微服务拆分方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%A2%86%E5%9F%9F%E6%8B%86%E5%88%86"><span class="nav-number">1.1.</span> <span class="nav-text">1. 领域拆分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E5%8D%87%E7%BA%A7"><span class="nav-number">1.2.</span> <span class="nav-text">2. 技术架构升级</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E6%96%BD%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">具体实施步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD"><span class="nav-number">2.1.</span> <span class="nav-text">1. 搭建基础设施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA%E5%85%AC%E5%85%B1%E6%A8%A1%E5%9D%97"><span class="nav-number">2.2.</span> <span class="nav-text">2. 创建公共模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%8B%86%E5%88%86%E4%B8%9A%E5%8A%A1%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.3.</span> <span class="nav-text">3. 拆分业务服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%B0%83%E6%95%B4%E6%9C%8D%E5%8A%A1%E9%97%B4%E9%80%9A%E4%BF%A1"><span class="nav-number">2.4.</span> <span class="nav-text">4. 调整服务间通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%AE%89%E5%85%A8%E8%AE%A4%E8%AF%81%E6%94%B9%E9%80%A0"><span class="nav-number">2.5.</span> <span class="nav-text">5. 安全认证改造</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%9B%91%E6%8E%A7"><span class="nav-number">2.6.</span> <span class="nav-text">6. 部署与监控</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text">迁移注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E5%A4%A9%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E8%AE%A1%E5%88%92"><span class="nav-number">4.</span> <span class="nav-text">3天微服务框架搭建计划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC1%E5%A4%A9%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA"><span class="nav-number">4.1.</span> <span class="nav-text">第1天：基础设施搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC2%E5%A4%A9%EF%BC%9A%E6%A0%B8%E5%BF%83%E6%9C%8D%E5%8A%A1%E6%8B%86%E5%88%86"><span class="nav-number">4.2.</span> <span class="nav-text">第2天：核心服务拆分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC3%E5%A4%A9%EF%BC%9A%E7%BD%91%E5%85%B3%E5%92%8C%E6%9C%8D%E5%8A%A1%E9%9B%86%E6%88%90"><span class="nav-number">4.3.</span> <span class="nav-text">第3天：网关和服务集成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%85%B3%E9%94%AE%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5"><span class="nav-number">5.</span> <span class="nav-text">快速实现的关键代码片段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%BD%91%E5%85%B3%E9%85%8D%E7%BD%AE%EF%BC%88ssc-gateway%EF%BC%89"><span class="nav-number">5.1.</span> <span class="nav-text">1. 网关配置（ssc-gateway）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1%EF%BC%88ssc-user%EF%BC%89"><span class="nav-number">5.2.</span> <span class="nav-text">2. 用户服务（ssc-user）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%AE%A2%E5%8D%95%E6%9C%8D%E5%8A%A1%EF%BC%88ssc-order%EF%BC%89"><span class="nav-number">5.3.</span> <span class="nav-text">3. 订单服务（ssc-order）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1Feign%E5%AE%A2%E6%88%B7%E7%AB%AF%EF%BC%88%E5%9C%A8ssc-order%E4%B8%AD%EF%BC%89"><span class="nav-number">5.4.</span> <span class="nav-text">4. 用户服务Feign客户端（在ssc-order中）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%AE%80%E5%8C%96%E7%89%88%E6%9C%AC%E7%9A%84%E8%AE%A2%E5%8D%95%E6%9C%8D%E5%8A%A1%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.5.</span> <span class="nav-text">5. 简化版本的订单服务实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%BB%BA%E8%AE%AE"><span class="nav-number">6.</span> <span class="nav-text">实现建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%BD%91%E5%85%B3%E9%85%8D%E7%BD%AE%E7%9A%84%E7%89%B9%E6%AE%8A%E8%B7%AF%E7%94%B1"><span class="nav-number">6.1.</span> <span class="nav-text">一、网关配置的特殊路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1%E6%8E%A5%E5%8F%A3-%E9%80%9A%E8%BF%87%E7%BD%91%E5%85%B3%E8%AE%BF%E9%97%AE%E9%9C%80%E6%B7%BB%E5%8A%A0%E5%89%8D%E7%BC%80-api"><span class="nav-number">6.2.</span> <span class="nav-text">二、用户服务接口 (通过网关访问需添加前缀 &#x2F;api)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%AE%A2%E5%8D%95%E6%9C%8D%E5%8A%A1%E6%8E%A5%E5%8F%A3-%E9%80%9A%E8%BF%87%E7%BD%91%E5%85%B3%E8%AE%BF%E9%97%AE%E9%9C%80%E6%B7%BB%E5%8A%A0%E5%89%8D%E7%BC%80-api"><span class="nav-number">6.3.</span> <span class="nav-text">三、订单服务接口 (通过网关访问需添加前缀 &#x2F;api)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%B5%8B%E8%AF%95%E6%8E%A5%E5%8F%A3"><span class="nav-number">6.4.</span> <span class="nav-text">四、测试接口</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sa-token%E5%BC%95%E5%85%A5"><span class="nav-number"></span> <span class="nav-text">Sa-token引入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%B5%8B%E8%AF%95%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">1. 测试注册功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%B5%8B%E8%AF%95%E7%99%BB%E5%BD%95%E5%8A%9F%E8%83%BD"><span class="nav-number">2.</span> <span class="nav-text">2. 测试登录功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8token%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"><span class="nav-number">3.</span> <span class="nav-text">3. 使用token获取用户信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%B5%8B%E8%AF%95%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">4. 测试权限控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E6%B5%8B%E8%AF%95%E7%AE%A1%E7%90%86%E5%91%98%E8%A7%92%E8%89%B2%E7%9A%84%E6%8E%A5%E5%8F%A3"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 测试管理员角色的接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E6%B5%8B%E8%AF%95%E6%91%84%E5%BD%B1%E5%B8%88%E8%A7%92%E8%89%B2%E7%9A%84%E6%8E%A5%E5%8F%A3"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 测试摄影师角色的接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%B5%8B%E8%AF%95%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95"><span class="nav-number">5.</span> <span class="nav-text">5. 测试退出登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E4%BD%BF%E7%94%A8Postman%E7%9A%84Collection%E5%92%8CEnvironment%E5%8A%9F%E8%83%BD"><span class="nav-number">6.</span> <span class="nav-text">6. 使用Postman的Collection和Environment功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E6%B5%8B%E8%AF%95%E6%97%A0%E6%95%88%E6%88%96%E8%BF%87%E6%9C%9Ftoken"><span class="nav-number">7.</span> <span class="nav-text">7. 测试无效或过期token</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7"><span class="nav-number">8.</span> <span class="nav-text">8. 调试技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">9.</span> <span class="nav-text">9. 常见问题及解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A41-%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96Token"><span class="nav-number">10.</span> <span class="nav-text">步骤1: 用户登录获取Token</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A42-%E8%AE%BE%E7%BD%AE%E5%A4%B4%E5%83%8F%E4%B8%8A%E4%BC%A0%E8%AF%B7%E6%B1%82"><span class="nav-number">11.</span> <span class="nav-text">步骤2: 设置头像上传请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A43-%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82%E5%B9%B6%E6%A3%80%E6%9F%A5%E5%93%8D%E5%BA%94"><span class="nav-number">12.</span> <span class="nav-text">步骤3: 发送请求并检查响应</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A44-%E6%B5%8B%E8%AF%95%E5%A4%B4%E5%83%8F%E9%A2%84%E8%A7%88%E5%92%8C%E6%9F%A5%E7%9C%8B"><span class="nav-number">13.</span> <span class="nav-text">步骤4: 测试头像预览和查看</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E5%A4%B4%E5%83%8F%E9%A2%84%E8%A7%88%EF%BC%9A"><span class="nav-number">13.1.</span> <span class="nav-text">测试当前用户头像预览：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%A4%B4%E5%83%8F%E4%B8%8B%E8%BD%BD%EF%BC%9A"><span class="nav-number">13.2.</span> <span class="nav-text">测试头像下载：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Postman%E4%B8%AD%E7%9A%84Environment%E5%8F%98%E9%87%8F%EF%BC%88%E5%8F%AF%E9%80%89%E4%BD%86%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="nav-number">14.</span> <span class="nav-text">使用Postman中的Environment变量（可选但推荐）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="nav-number">15.</span> <span class="nav-text">常见问题排查</span></a></li></ol></div>
             
 
           </div>

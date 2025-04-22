@@ -260,6 +260,166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/20/%E3%80%90MinIO%E3%80%91%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/04/20/%E3%80%90MinIO%E3%80%91%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1%E5%99%A8/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-04-20T23:40:33+08:00">
+                2025-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本文主要记录一下<code>docker</code>如何安装和启动<code>minio</code>，先看一下成功启动的步骤：</p>
+<p>首先下载相关镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bash 代码解读复制代码# 搜索minio镜像</span><br><span class="line">docker search minio</span><br><span class="line"><span class="comment"># 下载minio/minio</span></span><br><span class="line">docker pull minio/minio</span><br></pre></td></tr></table></figure>
+
+<p>创建文件挂载目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bash 代码解读复制代码<span class="built_in">sudo</span> <span class="built_in">mkdir</span> /opt/docker/minio/miniodata</span><br><span class="line"><span class="comment"># 提供可写的权限，否则启动时会出现如下错误</span></span><br><span class="line"><span class="comment"># unable to use the drive /data:file access denied: Invalid arguments specified</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 777 /opt/docker/minio/miniodata</span><br></pre></td></tr></table></figure>
+
+<p>启动：<code>minio</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bash 代码解读复制代码docker run \</span><br><span class="line">-p 9000:9000 \</span><br><span class="line">-p 5001:5001 \</span><br><span class="line">-v /opt/docker/minio/miniodata:/data \</span><br><span class="line">-e <span class="string">&quot;ROOT_ACCESS_KEY=minioadmin&quot;</span> \</span><br><span class="line">-e <span class="string">&quot;ROOT_SECRET_KEY=minioadmin&quot;</span> \</span><br><span class="line">-d minio/minio server /data --console-address <span class="string">&quot;:5001&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>命令说明：</p>
+<blockquote>
+<ol>
+<li>docker run：启动程序</li>
+<li>-p：指定端口号 9000: 是minio默认的端口号</li>
+<li>-v：指定挂载目录，这是因为如果不指定，当容器被删除之后容器的数据将会丢失。</li>
+<li>-e：指定环境变量，这里是指定了<code>minio dashboard</code>的登录账号和密码。</li>
+<li>-d：后台运行 <code>minio/minio</code> 是我们下载的镜像，server &#x2F;data 是minio的命令指定文件存放的目录。–console-address：指定<code>minio dashbord</code>的端口号。有时在命令后面还会看见 -address参数，该参数指定的是<code>minio s3 api</code> 的端口号。</li>
+</ol>
+</blockquote>
+<p>启动后便可通过<code>docker logs containerId</code>的方式查看<code>log</code>，如果在电脑上安装了<code>docker desktop</code>也可以在容器的<code>logs</code>看到如下信息：</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac95d11aebfb4b2da2e919370801086f~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1484&h=594&s=411864&e=jpg&b=fcfcfc" alt="WechatIMG9.jpg"></p>
+<p>其中<code>s3-api</code>这个地址就可以配置在springboot项目的<code>yaml</code>中，进行文件上传操作。如下所示：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">yml</span> <span class="string">代码解读复制代码minio:</span></span><br><span class="line">  <span class="attr">endpoint:</span> <span class="string">http://127.0.0.1:9000</span></span><br><span class="line">  <span class="attr">accessKey:</span> <span class="string">minioadmin</span></span><br><span class="line">  <span class="attr">secretKey:</span> <span class="string">minioadmin</span></span><br><span class="line">  <span class="attr">bucketName:</span> <span class="string">minio-first-bucket</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">servlet:</span></span><br><span class="line">    <span class="attr">multipart:</span></span><br><span class="line">      <span class="attr">max-file-size:</span> <span class="string">10MB</span></span><br><span class="line">      <span class="attr">max-request-size:</span> <span class="string">100MB</span></span><br></pre></td></tr></table></figure>
+
+<p>下面的内容就是记录一下踩坑的过程：</p>
+<blockquote>
+<ul>
+<li>本人首先是成功安装启动后，通过<code>spring boot</code>项目上传文件后，文件上传成功但是我的挂载目录本没有这个文件。</li>
+<li>接着从docker官网了解到文件应该是会在挂载目录的，但是由于不知道如何排查这个问题，就将该容器删除，打算重新启动一个容器试一下【大坑】</li>
+<li>在删除之后，按照同样的方式启动，容器就无法启动出现如下信息的错误：<code>unable to rename xxx</code>和<code>unable to use the drive /data:file access denied</code>。</li>
+<li>接着在网上搜寻一番，有的人说是因为之前安装过，不能指定相同的目录，于是呼：换一个目录，失败，删掉之前的目录重新启动，失败！换版本失败！包括但不限于<code>stack overflow</code>或者官网给定的解决方法。 最后在打算放弃的关头：执行了<code>chmod 777 挂载目录</code>，重启成功，不仅重启成功通过<code>java</code>上传文件，在该目录下也有了备份。</li>
+<li>ps: 整个过程大概耗费了三个小时，</li>
+</ul>
+</blockquote>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://link.juejin.cn/?target=https://stackoverflow.com/questions/72332735/minio-permission-denied">sof:inio-permission-denied</a></li>
+<li><a href="https://link.juejin.cn/?target=https://blog.csdn.net/DCTANT/article/details/129861486">解决minio启动报ERROR Unable to use the drive ** found backend type fs, expected xl or xl-single</a></li>
+<li><a href="https://link.juejin.cn/?target=https://min.io/docs/minio/macos/index.html">MinIO Object Storage for MacOS</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/13/%E3%80%90%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E3%80%91%E5%8D%95%E4%BD%93%E5%BA%94%E7%94%A8%E5%8D%87%E7%BA%A7%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%8B%86%E5%88%86%E6%96%B9%E6%A1%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -816,6 +976,211 @@
 <li><p>描述: 测试订单服务调用用户服务获取用户信息</p>
 </li>
 </ul>
+<h1 id="Sa-token引入"><a href="#Sa-token引入" class="headerlink" title="Sa-token引入"></a>Sa-token引入</h1><p>使用Postman测试Sa-Token认证系统需要进行以下步骤：</p>
+<h2 id="1-测试注册功能"><a href="#1-测试注册功能" class="headerlink" title="1. 测试注册功能"></a>1. 测试注册功能</h2><ol>
+<li>打开Postman</li>
+<li>创建一个新的POST请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/register</code></li>
+<li>选择Headers选项卡，添加头部：<ul>
+<li>Key: <code>Content-Type</code></li>
+<li>Value: <code>application/json</code></li>
+</ul>
+</li>
+<li>选择Body选项卡，选择raw，然后选择JSON格式</li>
+<li>输入注册信息：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;testuser&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;password123&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;测试用户&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;role&quot;</span><span class="punctuation">:</span> <span class="string">&quot;user&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;email&quot;</span><span class="punctuation">:</span> <span class="string">&quot;test@example.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;phone&quot;</span><span class="punctuation">:</span> <span class="string">&quot;13800138000&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li>点击Send发送请求</li>
+<li>检查响应，应该返回成功信息和用户数据（不含密码）</li>
+</ol>
+<h2 id="2-测试登录功能"><a href="#2-测试登录功能" class="headerlink" title="2. 测试登录功能"></a>2. 测试登录功能</h2><ol>
+<li><p>创建一个新的POST请求</p>
+</li>
+<li><p>设置请求URL为 <code>http://localhost:9999/login</code></p>
+</li>
+<li><p>在Headers中添加：</p>
+<ul>
+<li>Key: <code>Content-Type</code></li>
+<li>Value: <code>application/json</code></li>
+</ul>
+</li>
+<li><p>在Body中输入：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;testuser&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;password123&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>点击Send发送请求</p>
+</li>
+<li><p>检查响应，应该包含：</p>
+<ul>
+<li>用户信息</li>
+<li>tokenName (通常是”Authorization”)</li>
+<li>tokenValue (JWT令牌值)</li>
+</ul>
+</li>
+<li><p><strong>重要：复制响应中的tokenName和tokenValue，后续请求需要使用</strong></p>
+</li>
+</ol>
+<h2 id="3-使用token获取用户信息"><a href="#3-使用token获取用户信息" class="headerlink" title="3. 使用token获取用户信息"></a>3. 使用token获取用户信息</h2><ol>
+<li>创建一个新的GET请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/api/user/info</code></li>
+<li>在Headers中添加从登录响应获取的token：<ul>
+<li>Key: <code>Authorization</code> (使用tokenName的值)</li>
+<li>Value: 登录响应中的tokenValue值</li>
+</ul>
+</li>
+<li>点击Send发送请求</li>
+<li>检查响应，应该返回当前登录用户的详细信息</li>
+</ol>
+<h2 id="4-测试权限控制"><a href="#4-测试权限控制" class="headerlink" title="4. 测试权限控制"></a>4. 测试权限控制</h2><h3 id="4-1-测试管理员角色的接口"><a href="#4-1-测试管理员角色的接口" class="headerlink" title="4.1 测试管理员角色的接口"></a>4.1 测试管理员角色的接口</h3><ol>
+<li>创建一个新的GET请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/api/admin/users</code> (假设这是一个管理员接口)</li>
+<li>在Headers中添加token</li>
+<li>点击Send发送请求</li>
+<li>如果使用的是普通用户token，应该返回权限不足的错误</li>
+<li>如果使用的是管理员token，应该能够正常访问</li>
+</ol>
+<h3 id="4-2-测试摄影师角色的接口"><a href="#4-2-测试摄影师角色的接口" class="headerlink" title="4.2 测试摄影师角色的接口"></a>4.2 测试摄影师角色的接口</h3><ol>
+<li>创建一个新的GET请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/api/photographer/profile</code> (假设这是一个摄影师接口)</li>
+<li>在Headers中添加token</li>
+<li>发送请求并检查响应</li>
+</ol>
+<h2 id="5-测试退出登录"><a href="#5-测试退出登录" class="headerlink" title="5. 测试退出登录"></a>5. 测试退出登录</h2><ol>
+<li>创建一个新的POST请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/logout</code></li>
+<li>在Headers中添加token</li>
+<li>点击Send发送请求</li>
+<li>检查响应，应该返回退出成功的信息</li>
+<li>然后再尝试使用同一个token访问需要登录的接口，应该会返回”未登录”的错误</li>
+</ol>
+<h2 id="6-使用Postman的Collection和Environment功能"><a href="#6-使用Postman的Collection和Environment功能" class="headerlink" title="6. 使用Postman的Collection和Environment功能"></a>6. 使用Postman的Collection和Environment功能</h2><p>为了更方便地测试，可以使用Postman的集合和环境变量：</p>
+<ol>
+<li><p>创建一个新的环境，命名为”Sa-Token测试”</p>
+</li>
+<li><p>添加以下环境变量：</p>
+<ul>
+<li><code>baseUrl</code>: <code>http://localhost:9999</code></li>
+<li><code>token</code>: 空值(登录后自动填充)</li>
+</ul>
+</li>
+<li><p>创建一个新的Collection，命名为”用户认证测试”</p>
+</li>
+<li><p>在Collection中创建上述所有请求，并使用环境变量，如：</p>
+<ul>
+<li>登录URL: <code>&#123;&#123;baseUrl&#125;&#125;/login</code></li>
+<li>用户信息URL: <code>&#123;&#123;baseUrl&#125;&#125;/api/user/info</code></li>
+<li>授权Header: <code>Authorization: &#123;&#123;token&#125;&#125;</code></li>
+</ul>
+</li>
+<li><p>在登录请求的Tests选项卡中添加以下JavaScript代码，自动保存token：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pm.<span class="property">response</span>.<span class="property">code</span> === <span class="number">200</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> jsonData = pm.<span class="property">response</span>.<span class="title function_">json</span>();</span><br><span class="line">    <span class="keyword">if</span> (jsonData.<span class="property">code</span> === <span class="string">&quot;200&quot;</span> &amp;&amp; jsonData.<span class="property">data</span> &amp;&amp; jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>) &#123;</span><br><span class="line">        pm.<span class="property">environment</span>.<span class="title function_">set</span>(<span class="string">&quot;token&quot;</span>, jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Token saved to environment variable&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="7-测试无效或过期token"><a href="#7-测试无效或过期token" class="headerlink" title="7. 测试无效或过期token"></a>7. 测试无效或过期token</h2><ol>
+<li>创建一个需要登录的请求，如获取用户信息</li>
+<li>在Headers中添加一个无效的token值</li>
+<li>发送请求，应该返回未登录或token无效的错误</li>
+</ol>
+<h2 id="8-调试技巧"><a href="#8-调试技巧" class="headerlink" title="8. 调试技巧"></a>8. 调试技巧</h2><ol>
+<li>使用Postman控制台查看请求和响应的详细信息</li>
+<li>检查服务器端日志，特别是与Sa-Token相关的日志</li>
+<li>如果遇到问题，可以在Postman中使用预请求脚本进行调试</li>
+</ol>
+<h2 id="9-常见问题及解决方案"><a href="#9-常见问题及解决方案" class="headerlink" title="9. 常见问题及解决方案"></a>9. 常见问题及解决方案</h2><ol>
+<li><strong>CORS错误</strong>：确保网关的CorsConfig正确配置并暴露了Authorization头</li>
+<li><strong>token不生效</strong>：检查token名称和值是否正确，以及请求URL是否正确</li>
+<li><strong>token过期</strong>：尝试重新登录获取新的token</li>
+<li><strong>权限错误</strong>：检查用户角色和接口要求的权限是否匹配</li>
+</ol>
+<p>通过以上步骤，你可以全面测试Sa-Token认证系统的功能，确保用户注册、登录、权限控制和注销功能都正常工作。</p>
+<p>在Postman中测试头像上传功能的详细步骤如下：</p>
+<h2 id="步骤1-用户登录获取Token"><a href="#步骤1-用户登录获取Token" class="headerlink" title="步骤1: 用户登录获取Token"></a>步骤1: 用户登录获取Token</h2><ol>
+<li>打开Postman，创建一个新的POST请求</li>
+<li>设置URL: <code>http://localhost:9999/login</code></li>
+<li>选择Body选项卡，选择raw，格式为JSON</li>
+<li>输入登录信息：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;testuser&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;password123&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li>发送请求</li>
+<li>从响应中获取Sa-Token的token值，记录下来：<ul>
+<li>tokenName (通常是”Authorization”)</li>
+<li>tokenValue (后续请求需要使用)</li>
+</ul>
+</li>
+</ol>
+<h2 id="步骤2-设置头像上传请求"><a href="#步骤2-设置头像上传请求" class="headerlink" title="步骤2: 设置头像上传请求"></a>步骤2: 设置头像上传请求</h2><ol>
+<li><p>创建一个新的POST请求</p>
+</li>
+<li><p>设置URL: <code>http://localhost:9999/api/uploadAvatar</code></p>
+</li>
+<li><p>添加Header：</p>
+<ul>
+<li>Key: <code>Authorization</code> (或者登录响应中的tokenName值)</li>
+<li>Value: 登录响应中的tokenValue值</li>
+</ul>
+</li>
+<li><p>选择Body选项卡，选择form-data</p>
+</li>
+<li><p>添加一个键值对：</p>
+<ul>
+<li>Key: <code>avatar</code></li>
+<li>在Key右侧下拉菜单选择File类型</li>
+<li>Value: 点击”Select Files”按钮，选择一个本地图片文件（如.jpg, .png）</li>
+</ul>
+</li>
+</ol>
+<h2 id="步骤3-发送请求并检查响应"><a href="#步骤3-发送请求并检查响应" class="headerlink" title="步骤3: 发送请求并检查响应"></a>步骤3: 发送请求并检查响应</h2><ol>
+<li>点击Send发送请求</li>
+<li>如果成功，应该收到类似以下的响应：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="string">&quot;200&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;msg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;请求成功&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://yourserver:9999/file/view/someuniquefilename.jpg&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="步骤4-测试头像预览和查看"><a href="#步骤4-测试头像预览和查看" class="headerlink" title="步骤4: 测试头像预览和查看"></a>步骤4: 测试头像预览和查看</h2><h3 id="测试当前用户头像预览："><a href="#测试当前用户头像预览：" class="headerlink" title="测试当前用户头像预览："></a>测试当前用户头像预览：</h3><ol>
+<li>创建一个新的GET请求</li>
+<li>设置URL: <code>http://localhost:9999/api/avatar/my/preview</code></li>
+<li>添加Header（使用与上传相同的token）</li>
+<li>发送请求并检查返回的预览URL</li>
+</ol>
+<h3 id="测试头像下载："><a href="#测试头像下载：" class="headerlink" title="测试头像下载："></a>测试头像下载：</h3><ol>
+<li>创建一个新的GET请求</li>
+<li>设置URL: <code>http://localhost:9999/api/avatar/&#123;userId&#125;</code> (将{userId}替换为实际用户ID)</li>
+<li>添加Header（使用与上传相同的token）</li>
+<li>发送请求，获取下载链接</li>
+<li>在浏览器中访问下载链接验证文件是否可以下载</li>
+</ol>
+<h2 id="使用Postman中的Environment变量（可选但推荐）"><a href="#使用Postman中的Environment变量（可选但推荐）" class="headerlink" title="使用Postman中的Environment变量（可选但推荐）"></a>使用Postman中的Environment变量（可选但推荐）</h2><p>为了更便捷地进行测试，您可以设置Postman环境变量：</p>
+<ol>
+<li><p>在Postman右上角点击”No Environment”下拉菜单，然后点击”New”</p>
+</li>
+<li><p>创建一个名为”微服务测试”的环境</p>
+</li>
+<li><p>添加以下变量：</p>
+<ul>
+<li><code>baseUrl</code>: <code>http://localhost:9999</code></li>
+<li><code>token</code>: 空值(登录后自动填充)</li>
+</ul>
+</li>
+<li><p>点击”Save”保存环境</p>
+</li>
+<li><p>在登录请求的Tests选项卡中添加以下代码，以便在登录时自动保存token：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pm.<span class="property">response</span>.<span class="property">code</span> === <span class="number">200</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> jsonData = pm.<span class="property">response</span>.<span class="title function_">json</span>();</span><br><span class="line">    <span class="keyword">if</span> (jsonData.<span class="property">code</span> === <span class="string">&quot;200&quot;</span> &amp;&amp; jsonData.<span class="property">data</span>) &#123;</span><br><span class="line">        pm.<span class="property">environment</span>.<span class="title function_">set</span>(<span class="string">&quot;token&quot;</span>, jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Token saved: &quot;</span> + jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后所有请求都可以使用环境变量：</p>
+<ul>
+<li>URL: <code>&#123;&#123;baseUrl&#125;&#125;/api/uploadAvatar</code></li>
+<li>Headers: <code>Authorization: &#123;&#123;token&#125;&#125;</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="常见问题排查"><a href="#常见问题排查" class="headerlink" title="常见问题排查"></a>常见问题排查</h2><p>如果上传过程中遇到问题，请检查以下几点：</p>
+<ol>
+<li><p><strong>Token问题：</strong> 确保已正确设置了Authorization头部，且token值有效。您可以再次登录获取新token测试。</p>
+</li>
+<li><p><strong>文件大小：</strong> 确保上传的文件不超过配置的大小限制（在application.yml中配置的multipart大小）。</p>
+</li>
+<li><p><strong>Content-Type：</strong> 确保使用的是form-data方式，而不是binary或其他方式，否则服务器可能无法正确解析文件。</p>
+</li>
+<li><p><strong>文件格式：</strong> 确保上传的是图片文件（code中校验了文件类型必须以image&#x2F;开头）。</p>
+</li>
+<li><p><strong>网络问题：</strong> 检查网关服务和用户服务是否正常运行，可以通过访问一些简单的接口（如&#x2F;）来确认。</p>
+</li>
+<li><p><strong>跨域问题：</strong> 如果在实际前端应用中测试，可能会遇到跨域问题，确保网关的CORS配置正确。</p>
+</li>
+<li><p><strong>日志检查：</strong> 查看服务器日志，特别注意与文件上传相关的异常信息。</p>
+</li>
+</ol>
+<p>通过以上步骤，您应该能够在Postman中成功测试头像上传功能，并验证整个流程是否正常工作。</p>
 
           
         
@@ -1364,14 +1729,14 @@
             <p>微信开发者工具 SSH key认证 推送、拉取GitHub项目<br>因为从2021年8月14日之后，使用git对github进行身份验证操作的时候不再接受使用账号密码形式clone和push代码，今天就琢磨了下ssh key的方式来上传下拉代码，要注意的细节还是有的所以记录一下。</p>
 <p>1.下载安装、配置git。<br>git官网地址<a target="_blank" rel="noopener" href="https://git-scm.com/%EF%BC%8C%E5%AE%89%E8%A3%85%E5%AE%8C%E5%90%8E%E8%AE%B0%E5%BE%97%E8%AE%BE%E7%BD%AE%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%E5%9C%B0%E5%9D%80%EF%BC%88GitHub%E6%88%96%E8%80%85gitee%E7%9A%84%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%EF%BC%89%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95%E7%99%BE%E5%BA%A6%E3%80%82">https://git-scm.com/，安装完后记得设置用户名和邮箱地址（GitHub或者gitee的用户名和邮箱）具体方法百度。</a></p>
 <p>2.生成SSH Key<br>右键桌面进入Git Bash Here终端</p>
-<p>输入ssh-keygen -t ed25519 -C “<a href="mailto:&#121;&#x6f;&#x75;&#114;&#95;&#x65;&#109;&#97;&#x69;&#x6c;&#64;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#99;&#111;&#109;">&#121;&#x6f;&#x75;&#114;&#95;&#x65;&#109;&#97;&#x69;&#x6c;&#64;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#99;&#111;&#109;</a>” ( <a href="mailto:&#121;&#x6f;&#x75;&#114;&#95;&#101;&#109;&#x61;&#105;&#108;&#64;&#x65;&#120;&#97;&#109;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#121;&#x6f;&#x75;&#114;&#95;&#101;&#109;&#x61;&#105;&#108;&#64;&#x65;&#120;&#97;&#109;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a>是你GitHub的邮箱),连续回车3次</p>
+<p>输入ssh-keygen -t ed25519 -C “<a href="mailto:&#121;&#x6f;&#x75;&#114;&#x5f;&#x65;&#x6d;&#97;&#105;&#108;&#64;&#101;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#46;&#x63;&#111;&#x6d;">&#121;&#x6f;&#x75;&#114;&#x5f;&#x65;&#x6d;&#97;&#105;&#108;&#64;&#101;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#46;&#x63;&#111;&#x6d;</a>” ( <a href="mailto:&#121;&#x6f;&#x75;&#x72;&#95;&#x65;&#x6d;&#97;&#105;&#x6c;&#x40;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#46;&#99;&#111;&#109;">&#121;&#x6f;&#x75;&#x72;&#95;&#x65;&#x6d;&#97;&#105;&#x6c;&#x40;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#46;&#99;&#111;&#109;</a>是你GitHub的邮箱),连续回车3次</p>
 <p>注意：因密钥安全性问题 GitHub 自 2022 年 3 月 15 日起不再支持 DSA 密钥 (ssh-dss)。</p>
 <p>之前使用如下命令生成的密钥对无效：</p>
-<p>ssh-keygen -t rsa -C “<a href="mailto:&#x79;&#x6f;&#x75;&#114;&#95;&#x65;&#109;&#97;&#105;&#x6c;&#64;&#101;&#x78;&#x61;&#x6d;&#x70;&#108;&#x65;&#x2e;&#99;&#x6f;&#x6d;">&#x79;&#x6f;&#x75;&#114;&#95;&#x65;&#109;&#97;&#105;&#x6c;&#64;&#101;&#x78;&#x61;&#x6d;&#x70;&#108;&#x65;&#x2e;&#99;&#x6f;&#x6d;</a>”</p>
+<p>ssh-keygen -t rsa -C “<a href="mailto:&#x79;&#111;&#117;&#114;&#95;&#x65;&#109;&#x61;&#105;&#x6c;&#x40;&#101;&#120;&#97;&#x6d;&#112;&#108;&#x65;&#46;&#x63;&#x6f;&#109;">&#x79;&#111;&#117;&#114;&#95;&#x65;&#109;&#x61;&#105;&#x6c;&#x40;&#101;&#120;&#97;&#x6d;&#112;&#108;&#x65;&#46;&#x63;&#x6f;&#109;</a>”</p>
 <p>于是用下面的方法重新生成，这样生成的文件会自动保存在，C:\Users\帅气陈.ssh目录下（这个路径不能有中文‘帅气陈’卡了我半天，可以将.ssh剪切到纯英文目录）</p>
-<p>ssh-keygen -t ed25519 -C “<a href="mailto:&#x79;&#111;&#x75;&#x72;&#95;&#101;&#109;&#x61;&#105;&#x6c;&#64;&#x65;&#120;&#x61;&#109;&#112;&#108;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#x79;&#111;&#x75;&#x72;&#95;&#101;&#109;&#x61;&#105;&#x6c;&#64;&#x65;&#120;&#x61;&#109;&#112;&#108;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a>”</p>
+<p>ssh-keygen -t ed25519 -C “<a href="mailto:&#121;&#x6f;&#x75;&#114;&#x5f;&#101;&#109;&#97;&#x69;&#x6c;&#x40;&#101;&#x78;&#x61;&#109;&#x70;&#108;&#101;&#46;&#99;&#111;&#x6d;">&#121;&#x6f;&#x75;&#114;&#x5f;&#101;&#109;&#97;&#x69;&#x6c;&#x40;&#101;&#x78;&#x61;&#109;&#x70;&#108;&#101;&#46;&#99;&#111;&#x6d;</a>”</p>
 <p>该目录下会生成两个文件，id_ed25519.pub为公钥，id_ed25519为私钥。</p>
-<p>输入 ssh -T <a href="mailto:&#x67;&#105;&#x74;&#x40;&#103;&#x69;&#x74;&#x68;&#117;&#98;&#x2e;&#99;&#111;&#109;">&#x67;&#105;&#x74;&#x40;&#103;&#x69;&#x74;&#x68;&#117;&#98;&#x2e;&#99;&#111;&#109;</a>回车，因为是第一次流程提示输入yes回车。这里的-T区分大小写。如果返回【Hi ***! You’ve successfully authenticated, but GitHub does not provide shell access.】 说明配置成功</p>
+<p>输入 ssh -T <a href="mailto:&#103;&#x69;&#x74;&#x40;&#103;&#x69;&#x74;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#x6d;">&#103;&#x69;&#x74;&#x40;&#103;&#x69;&#x74;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#x6d;</a>回车，因为是第一次流程提示输入yes回车。这里的-T区分大小写。如果返回【Hi ***! You’ve successfully authenticated, but GitHub does not provide shell access.】 说明配置成功</p>
 <p>右键id_ed25519.pub选择记事本打开全选复制里面内容</p>
 <p>打开GitHub点击右上角头像——Settings——SSH and GPG keys——New SSH key</p>
 <p>title给key命名，key里面粘贴刚刚复制的id_ed25519.pub中的内容——Add SSH key成功之后返回上级页面会出现一个key。</p>
@@ -2109,141 +2474,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/20/%E3%80%90Gin%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E3%80%91%E5%85%B3%E4%BA%8EGin%E6%A1%86%E6%9E%B6%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/02/20/%E3%80%90Gin%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E3%80%91%E5%85%B3%E4%BA%8EGin%E6%A1%86%E6%9E%B6%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%E9%97%AE%E9%A2%98/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-20T21:33:05+08:00">
-                2025-02-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="title-关于Gin框架中间件的执行顺序问题"><a href="#title-关于Gin框架中间件的执行顺序问题" class="headerlink" title="title:关于Gin框架中间件的执行顺序问题"></a>title:关于Gin框架中间件的执行顺序问题</h1><p>代码如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="comment">// lesson18 中间件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 属于handlerFunc类型</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">indexHandler</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">	c.JSON(http.StatusOK, gin.H&#123;</span><br><span class="line">		<span class="string">&quot;msg&quot;</span>: <span class="string">&quot;index&quot;</span>,</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个中间件m1 用来计时</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">m1</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">&quot;m1 in&quot;</span>)</span><br><span class="line">	start := time.Now()</span><br><span class="line">	c.Next() <span class="comment">// 继续执行后续的函数</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;m1 out&quot;</span>, time.Since(start))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个中间件m2 用来测试c.Abort()</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">m2</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">&quot;m2 in&quot;</span>)</span><br><span class="line">	c.Abort() <span class="comment">// 终止执行后续的函数,但是m2和m1的out还是会执行的</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;m2 out&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">m3</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">&quot;m3 in&quot;</span>)</span><br><span class="line">	c.JSON(http.StatusOK, gin.H&#123;</span><br><span class="line">		<span class="string">&quot;msg&quot;</span>: <span class="string">&quot;m3&quot;</span>,</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line"></span><br><span class="line">	r.Use(m1, m2)</span><br><span class="line">	r.GET(<span class="string">&quot;/index&quot;</span>, indexHandler)</span><br><span class="line">	<span class="comment">// 遇到全局都需要m1中间件,则使用Use方法,这样不需要每个路由都写m1,m1只作用后面的函数，且执行顺序在最前，如果改变执行顺序</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// r.GET(&quot;/index&quot;, m1, indexHandler)</span></span><br><span class="line">	r.GET(<span class="string">&quot;/hello&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">		c.JSON(http.StatusOK, gin.H&#123;</span><br><span class="line">			<span class="string">&quot;msg&quot;</span>: <span class="string">&quot;hello&quot;</span>,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;)</span><br><span class="line">	r.GET(<span class="string">&quot;/test&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">		c.JSON(http.StatusOK, gin.H&#123;</span><br><span class="line">			<span class="string">&quot;msg&quot;</span>: <span class="string">&quot;test&quot;</span>,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;)</span><br><span class="line">	r.Run(<span class="string">&quot;:8080&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<p>在 Gin 中（以及大多数类似框架中），中间件的执行顺序是根据<strong>注册的顺序</strong>来确定的，具体来说：</p>
-<ol>
-<li><strong>全局中间件</strong><br>使用 <code>r.Use()</code> 注册的中间件会被添加到所有路由的处理链中。无论你在后续注册哪条路由，只要是在全局中间件之后注册的，这些路由都会在进入具体的路由处理函数之前先执行全局中间件。<br><strong>注意</strong>：如果你在调用 <code>r.Use()</code> 之后再注册路由，那么这些路由会包含该全局中间件；反之，之前注册的路由可能不包含后续添加的全局中间件。</li>
-<li><strong>路由组中间件</strong><br>当你为某个路由组（例如通过 <code>r.Group(&quot;/path&quot;)</code> 得到的组）调用 <code>group.Use()</code> 时，这些中间件会在全局中间件执行之后，再依照它们的注册顺序加入到该组的处理链中。<br>最终的执行链顺序是：<br><strong>全局中间件（按照注册顺序） → 路由组中间件（按照注册顺序） → 具体的路由处理函数</strong></li>
-<li><strong>如何改变这种顺序？</strong><br>由于全局中间件始终会在路由组中间件之前执行，这是 Gin 的设计决定，无法直接通过简单的 API 调用改变。如果你希望局部（路由组）中间件的逻辑在某些全局中间件之前执行，有以下几种思路：<ul>
-<li><strong>调整中间件注册的位置</strong>：可以将原本全局中间件的逻辑提取出来，放在一个单独的中间件中，然后在需要特定顺序的路由组中单独使用，而不是作为全局中间件。这样你可以完全控制顺序。</li>
-<li><strong>组合中间件</strong>：将需要前置执行的逻辑与局部中间件组合到一起，统一在路由组内注册，从而覆盖全局中间件默认的顺序。</li>
-</ul>
-</li>
-</ol>
-<p>总之，默认情况下，全局中间件的顺序是固定在所有路由之前，无法直接与路由组中间件进行“交叉排序”。如果业务上确实需要特定的执行顺序，就需要在设计时将相关中间件统一注册到同一个级别中，或者调整注册的时机与位置。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2294,7 +2524,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2502,3 +2732,4 @@
 
 </body>
 </html>
+>
