@@ -94,11 +94,15 @@
 
 
 
-<meta property="og:type" content="website">
+<meta name="description" content="使用 Sa-Token 的全局过滤器解决跨域问题（三种方式全版）在 web 开发中，跨域绝对是比较折磨新同学的一个问题，本文将讲解三种常见的跨域情形，并讲解如何使用 Sa-Token 框架解决跨域问题。 什么情况下会发生跨域简单理解，就是你在 A 域名下的页面，去调用 B 域名的接口，浏览器感觉你这次调用可能是不安全的请求行为，于是它需要用 cors 安全策略来确认一下这个请求是由用户真实的意愿发">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/page/4/index.html">
+<meta property="og:url" content="http://example.com/2025/04/25/%E3%80%90Sa-Token%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E3%80%91%E4%BD%BF%E7%94%A8%20Sa-Token%20%E7%9A%84%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%EF%BC%88%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%85%A8%E7%89%88%EF%BC%89/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="使用 Sa-Token 的全局过滤器解决跨域问题（三种方式全版）在 web 开发中，跨域绝对是比较折磨新同学的一个问题，本文将讲解三种常见的跨域情形，并讲解如何使用 Sa-Token 框架解决跨域问题。 什么情况下会发生跨域简单理解，就是你在 A 域名下的页面，去调用 B 域名的接口，浏览器感觉你这次调用可能是不安全的请求行为，于是它需要用 cors 安全策略来确认一下这个请求是由用户真实的意愿发">
 <meta property="og:locale">
+<meta property="article:published_time" content="2025-04-25T08:53:55.942Z">
+<meta property="article:modified_time" content="2025-04-25T08:53:56.874Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -129,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/archives/page/4/"/>
+  <link rel="canonical" href="http://example.com/2025/04/25/【Sa-Token框架学习】使用 Sa-Token 的全局过滤器解决跨域问题（三种方式全版）/"/>
 
 
 
 
 
-  <title>归档 | Hexo</title>
+  <title> | Hexo</title>
   
 
 
@@ -160,7 +164,7 @@
     
   
 
-  <div class="container sidebar-position-left  page-archive  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -244,225 +248,149 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
-        
-        
-         
-        
-        OK! 目前共计 35 篇日志。 继续努力。
-      </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/25/%E3%80%90Sa-Token%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E3%80%91%E4%BD%BF%E7%94%A8%20Sa-Token%20%E7%9A%84%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%EF%BC%88%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%85%A8%E7%89%88%EF%BC%89/">
 
-      
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
 
         
         
+          <h1 class="post-title" itemprop="name headline"></h1>
         
 
-        
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-04-25T16:53:55+08:00">
+                2025-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-          <div class="collection-title">
-            <h2 class="archive-year motion-element" id="archive-year-2025">2025</h2>
-          </div>
-        
-        
 
-        
+          
+            
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2025/02/01/%E3%80%90Leetcode%E5%88%B7%E9%A2%98%E3%80%912025%E5%B9%B4%E5%A4%87%E6%88%98%E6%98%A5%E6%8B%9B/" itemprop="url">
-              
-                <span itemprop="name">【Leetcode刷题】2025年备战春招.md</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2025-02-01T20:41:49+08:00"
-              content="2025-02-01" >
-          02-01
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+          
 
+        </div>
+      </header>
+    
 
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2025/01/03/2025.01.03%20%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%92%8CGitHub%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%90%8C%E6%AD%A5%EF%BC%88%E5%8D%9A%E5%AE%A2%EF%BC%89/" itemprop="url">
-              
-                <span itemprop="name">未命名</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2025-01-03T16:32:46+08:00"
-              content="2025-01-03" >
-          01-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2025/01/02/2025.01.02%20%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%B1%9E%E4%BA%8E%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/" itemprop="url">
-              
-                <span itemprop="name">【2025.01.02】开始搭建个人博客</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2025-01-02T18:05:30+08:00"
-              content="2025-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <h1 id="使用-Sa-Token-的全局过滤器解决跨域问题（三种方式全版）"><a href="#使用-Sa-Token-的全局过滤器解决跨域问题（三种方式全版）" class="headerlink" title="使用 Sa-Token 的全局过滤器解决跨域问题（三种方式全版）"></a>使用 Sa-Token 的全局过滤器解决跨域问题（三种方式全版）</h1><p>在 web 开发中，跨域绝对是比较折磨新同学的一个问题，本文将讲解三种常见的跨域情形，并讲解如何使用 Sa-Token 框架解决跨域问题。</p>
+<h3 id="什么情况下会发生跨域"><a href="#什么情况下会发生跨域" class="headerlink" title="什么情况下会发生跨域"></a>什么情况下会发生跨域</h3><p>简单理解，就是你在 A 域名下的页面，去调用 B 域名的接口，浏览器感觉你这次调用可能是不安全的请求行为，于是它需要用 cors 安全策略来确认一下这个请求是由用户真实的意愿发出的，而不是被 csrf 伪造请求攻击偷偷发送的。（这么说只是为了方便大家理解，不是特别严谨，实际上同域名下部分情形也会出现跨域问题）</p>
+<p>请仔细理解上面这段话，因为它说明了两点：</p>
+<ul>
+<li>跨域不是后端接口对前端浏览器的限制，而是前端浏览器对用户的限制。</li>
+<li>跨域不是在保护后端接口免受攻击，而是浏览器在保护用户，避免用户发送自己不想发送的请求。</li>
+</ul>
+<p>请一定要记住上面跨域的本质，明白了症状和原因，我们才能对症下药。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_34905631/article/details/140277487">https://blog.csdn.net/qq_34905631/article/details/140277487</a></p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2025/01/02/2025.01.02%20%E8%AE%B0%E5%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%9A%84%E5%9D%91/" itemprop="url">
-              
-                <span itemprop="name">【2025.01.02】记录搭建博客时候的坑</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2025-01-02T17:05:14+08:00"
-              content="2025-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2025/01/02/hello-world/" itemprop="url">
-              
-                <span itemprop="name">Hello World</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2025-01-02T15:16:10+08:00"
-              content="2025-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2025/04/24/%E3%80%90AI%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0%E3%80%91Cursor%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8C%97/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/page/3/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/3/">3</a><span class="page-number current">4</span>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -470,6 +398,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -490,8 +422,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -535,6 +476,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Sa-Token-%E7%9A%84%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%EF%BC%88%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%85%A8%E7%89%88%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">使用 Sa-Token 的全局过滤器解决跨域问题（三种方式全版）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E4%BC%9A%E5%8F%91%E7%94%9F%E8%B7%A8%E5%9F%9F"><span class="nav-number">1.0.1.</span> <span class="nav-text">什么情况下会发生跨域</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -655,11 +612,9 @@
 
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
 
 
   
