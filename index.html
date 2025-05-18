@@ -260,6 +260,235 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/05/17/%E3%80%90Unity%E5%AD%A6%E4%B9%A0%E3%80%91Unity%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/05/17/%E3%80%90Unity%E5%AD%A6%E4%B9%A0%E3%80%91Unity%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-05-17T22:16:44+08:00">
+                2025-05-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="【Unity学习】Unity开发规范"><a href="#【Unity学习】Unity开发规范" class="headerlink" title="【Unity学习】Unity开发规范"></a>【Unity学习】Unity开发规范</h1><h1 id="Unity操作指南"><a href="#Unity操作指南" class="headerlink" title="Unity操作指南"></a>Unity操作指南</h1><h2 id="基础操作规范"><a href="#基础操作规范" class="headerlink" title="基础操作规范"></a>基础操作规范</h2><h3 id="1-场景操作"><a href="#1-场景操作" class="headerlink" title="1. 场景操作"></a>1. 场景操作</h3><ul>
+<li>创建新场景：<ol>
+<li>在Project窗口中右键 → Create → Scene</li>
+<li>将新场景保存到 <code>Assets/Scenes</code> 目录下</li>
+<li>在Build Settings中添加场景（File → Build Settings）</li>
+</ol>
+</li>
+</ul>
+<h3 id="2-预制体-Prefab-操作"><a href="#2-预制体-Prefab-操作" class="headerlink" title="2. 预制体(Prefab)操作"></a>2. 预制体(Prefab)操作</h3><ul>
+<li>创建预制体：<ol>
+<li>在Hierarchy窗口中创建&#x2F;设计好游戏对象</li>
+<li>将对象拖拽到Project窗口的 <code>Assets/Prefabs</code> 目录中</li>
+<li>预制体会显示为蓝色，表示创建成功</li>
+</ol>
+</li>
+</ul>
+<h3 id="3-脚本添加"><a href="#3-脚本添加" class="headerlink" title="3. 脚本添加"></a>3. 脚本添加</h3><ul>
+<li>添加新脚本：<ol>
+<li>在Project窗口中右键 → Create → C# Script</li>
+<li>将脚本保存到对应的 <code>Assets/Script/[模块名]</code> 目录下</li>
+<li>将脚本拖拽到Hierarchy中的目标游戏对象上</li>
+<li>在Inspector中设置脚本的公共变量</li>
+</ol>
+</li>
+</ul>
+<h3 id="4-组件操作"><a href="#4-组件操作" class="headerlink" title="4. 组件操作"></a>4. 组件操作</h3><ul>
+<li>添加组件：<ol>
+<li>选中游戏对象</li>
+<li>在Inspector窗口点击”Add Component”</li>
+<li>搜索并选择需要的组件</li>
+<li>在Inspector中配置组件参数</li>
+</ol>
+</li>
+</ul>
+<h2 id="常见功能实现指南"><a href="#常见功能实现指南" class="headerlink" title="常见功能实现指南"></a>常见功能实现指南</h2><h3 id="1-角色移动功能"><a href="#1-角色移动功能" class="headerlink" title="1. 角色移动功能"></a>1. 角色移动功能</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 Assets/Script/Player/PlayerMovement.cs 中实现</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PlayerMovement</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> moveSpeed = <span class="number">5f</span>;</span><br><span class="line">    <span class="keyword">private</span> Rigidbody2D rb;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 获取刚体组件</span></span><br><span class="line">        rb = GetComponent&lt;Rigidbody2D&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实现步骤：</p>
+<ol>
+<li>创建角色游戏对象（Hierarchy → 2D Object → Sprite）</li>
+<li>添加Rigidbody2D组件（Inspector → Add Component → Rigidbody2D）</li>
+<li>添加Collider2D组件（Inspector → Add Component → Box Collider 2D）</li>
+<li>创建并添加移动脚本</li>
+<li>在Inspector中设置moveSpeed值</li>
+</ol>
+<h3 id="2-动画系统设置"><a href="#2-动画系统设置" class="headerlink" title="2. 动画系统设置"></a>2. 动画系统设置</h3><p>实现步骤：</p>
+<ol>
+<li>创建动画文件夹：<code>Assets/Animations/[角色名]</code></li>
+<li>导入精灵图：<ul>
+<li>将图片文件放入 <code>Assets/Sprites</code> 目录</li>
+<li>选择图片，在Inspector中设置：<ul>
+<li>Texture Type: Sprite (2D and UI)</li>
+<li>Sprite Mode: Multiple (如果是精灵图集)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>创建动画器：<ul>
+<li>选中角色，添加Animator组件</li>
+<li>在Project窗口创建Animator Controller</li>
+<li>将Controller拖拽到角色的Animator组件上</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-UI系统实现"><a href="#3-UI系统实现" class="headerlink" title="3. UI系统实现"></a>3. UI系统实现</h3><p>实现步骤：</p>
+<ol>
+<li>创建Canvas：<ul>
+<li>Hierarchy → UI → Canvas</li>
+<li>确保有EventSystem</li>
+</ul>
+</li>
+<li>添加UI元素：<ul>
+<li>在Canvas下右键 → UI → 选择需要的UI元素</li>
+</ul>
+</li>
+<li>创建UI脚本：<ul>
+<li>在 <code>Assets/Script/UI</code> 目录下创建脚本</li>
+<li>将脚本挂载到对应UI元素上</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-场景切换"><a href="#4-场景切换" class="headerlink" title="4. 场景切换"></a>4. 场景切换</h3><p>实现步骤：</p>
+<ol>
+<li>确保所有场景都在Build Settings中</li>
+<li>创建切换脚本：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 Assets/Script/Transition/SceneLoader.cs 中实现</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SceneLoader</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">LoadScene</span>(<span class="params"><span class="built_in">string</span> sceneName</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        SceneManager.LoadScene(sceneName);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>在UI按钮上添加点击事件：<ul>
+<li>选择按钮</li>
+<li>在Inspector中找到Button组件</li>
+<li>点击 “+” 添加OnClick事件</li>
+<li>拖拽包含SceneLoader脚本的对象</li>
+<li>选择LoadScene函数</li>
+</ul>
+</li>
+</ol>
+<h2 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h2><ol>
+<li>使用Debug.Log()输出信息：<ul>
+<li>在Console窗口查看输出</li>
+<li>使用不同颜色区分日志级别：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Debug.Log(<span class="string">&quot;普通信息&quot;</span>);</span><br><span class="line">Debug.LogWarning(<span class="string">&quot;警告信息&quot;</span>);</span><br><span class="line">Debug.LogError(<span class="string">&quot;错误信息&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>使用Scene视图工具：<ul>
+<li>使用Gizmos可视化碰撞器和路径</li>
+<li>使用Scene窗口顶部的2D&#x2F;3D切换按钮</li>
+</ul>
+</li>
+</ol>
+<h2 id="性能优化建议"><a href="#性能优化建议" class="headerlink" title="性能优化建议"></a>性能优化建议</h2><ol>
+<li>使用对象池而不是频繁创建销毁对象</li>
+<li>合理使用协程(Coroutine)处理延时任务</li>
+<li>避免在Update中进行复杂计算</li>
+</ol>
+<p>请在开发时参考此指南，确保按步骤实现功能。如有疑问，可以查看Unity官方文档或咨询有经验的开发者。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/25/%E3%80%90Sa-Token%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E3%80%91%E4%BD%BF%E7%94%A8%20Sa-Token%20%E7%9A%84%E5%85%A8%E5%B1%80%E8%BF%87%E6%BB%A4%E5%99%A8%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%EF%BC%88%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%85%A8%E7%89%88%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -340,131 +569,6 @@
 </ul>
 <p>请一定要记住上面跨域的本质，明白了症状和原因，我们才能对症下药。</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_34905631/article/details/140277487">https://blog.csdn.net/qq_34905631/article/details/140277487</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/24/%E3%80%90AI%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0%E3%80%91Cursor%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8C%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/04/24/%E3%80%90AI%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0%E3%80%91Cursor%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8C%97/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-04-24T20:26:46+08:00">
-                2025-04-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Cursor使用指北"><a href="#Cursor使用指北" class="headerlink" title="Cursor使用指北"></a>Cursor使用指北</h1><h2 id="Rules-for-AI"><a href="#Rules-for-AI" class="headerlink" title="Rules for AI"></a>Rules for AI</h2><p>前置提示词</p>
-<h2 id="Codebase-Indexing"><a href="#Codebase-Indexing" class="headerlink" title="Codebase Indexing"></a>Codebase Indexing</h2><p>在初始化项目的时候用于检索项目，可以理解为 cursor 的代码上下文索引，在对话的时候会进行检索关联的代码</p>
-<h2 id="MCP"><a href="#MCP" class="headerlink" title="MCP"></a>MCP</h2><p>让 cursor 支持调用工具的能力，详情后面会出文章描述</p>
-<h2 id="Docs"><a href="#Docs" class="headerlink" title="Docs"></a>Docs</h2><p>可以将公司的开发文档或者当前使用框架的文档放入进来，这样可以达到规范开发，并且在对话进行引用</p>
-<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><h3 id="代码审查"><a href="#代码审查" class="headerlink" title="代码审查"></a>代码审查</h3><p>@git 可以让 cursor 进行审查代码，该方式比通过 提交 pr 后使用 LLM 进行审查好太多。</p>
-<h3 id="前端页面生成"><a href="#前端页面生成" class="headerlink" title="前端页面生成"></a>前端页面生成</h3><h3 id="生成多种方案"><a href="#生成多种方案" class="headerlink" title="生成多种方案"></a>生成多种方案</h3><p>给 cursor 提出多种方案的提示词，cursor 会同时给出多种修改方案建议，此时说明自己需要哪种方案，则会直接进行修改。</p>
 
           
         
@@ -2281,14 +2385,14 @@
             <p>微信开发者工具 SSH key认证 推送、拉取GitHub项目<br>因为从2021年8月14日之后，使用git对github进行身份验证操作的时候不再接受使用账号密码形式clone和push代码，今天就琢磨了下ssh key的方式来上传下拉代码，要注意的细节还是有的所以记录一下。</p>
 <p>1.下载安装、配置git。<br>git官网地址<a target="_blank" rel="noopener" href="https://git-scm.com/%EF%BC%8C%E5%AE%89%E8%A3%85%E5%AE%8C%E5%90%8E%E8%AE%B0%E5%BE%97%E8%AE%BE%E7%BD%AE%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%E5%9C%B0%E5%9D%80%EF%BC%88GitHub%E6%88%96%E8%80%85gitee%E7%9A%84%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%EF%BC%89%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95%E7%99%BE%E5%BA%A6%E3%80%82">https://git-scm.com/，安装完后记得设置用户名和邮箱地址（GitHub或者gitee的用户名和邮箱）具体方法百度。</a></p>
 <p>2.生成SSH Key<br>右键桌面进入Git Bash Here终端</p>
-<p>输入ssh-keygen -t ed25519 -C “<a href="mailto:&#x79;&#111;&#x75;&#x72;&#x5f;&#x65;&#x6d;&#97;&#105;&#108;&#x40;&#101;&#x78;&#97;&#109;&#112;&#108;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#x79;&#111;&#x75;&#x72;&#x5f;&#x65;&#x6d;&#97;&#105;&#108;&#x40;&#101;&#x78;&#97;&#109;&#112;&#108;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a>” ( <a href="mailto:&#121;&#111;&#x75;&#114;&#x5f;&#x65;&#109;&#97;&#105;&#108;&#64;&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#111;&#109;">&#121;&#111;&#x75;&#114;&#x5f;&#x65;&#109;&#97;&#105;&#108;&#64;&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#111;&#109;</a>是你GitHub的邮箱),连续回车3次</p>
+<p>输入ssh-keygen -t ed25519 -C “<a href="mailto:&#x79;&#111;&#x75;&#x72;&#x5f;&#101;&#109;&#97;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#109;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#109;">&#x79;&#111;&#x75;&#x72;&#x5f;&#101;&#109;&#97;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#109;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#109;</a>” ( <a href="mailto:&#x79;&#x6f;&#117;&#114;&#x5f;&#x65;&#x6d;&#97;&#x69;&#x6c;&#x40;&#101;&#x78;&#x61;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#x79;&#x6f;&#117;&#114;&#x5f;&#x65;&#x6d;&#97;&#x69;&#x6c;&#x40;&#101;&#x78;&#x61;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a>是你GitHub的邮箱),连续回车3次</p>
 <p>注意：因密钥安全性问题 GitHub 自 2022 年 3 月 15 日起不再支持 DSA 密钥 (ssh-dss)。</p>
 <p>之前使用如下命令生成的密钥对无效：</p>
-<p>ssh-keygen -t rsa -C “<a href="mailto:&#x79;&#111;&#117;&#114;&#x5f;&#x65;&#x6d;&#x61;&#105;&#x6c;&#64;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#x79;&#111;&#117;&#114;&#x5f;&#x65;&#x6d;&#x61;&#105;&#x6c;&#64;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#x2e;&#x63;&#x6f;&#109;</a>”</p>
+<p>ssh-keygen -t rsa -C “<a href="mailto:&#121;&#111;&#x75;&#114;&#x5f;&#x65;&#109;&#97;&#105;&#x6c;&#x40;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#x63;&#111;&#109;">&#121;&#111;&#x75;&#114;&#x5f;&#x65;&#109;&#97;&#105;&#x6c;&#x40;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#x63;&#111;&#109;</a>”</p>
 <p>于是用下面的方法重新生成，这样生成的文件会自动保存在，C:\Users\帅气陈.ssh目录下（这个路径不能有中文‘帅气陈’卡了我半天，可以将.ssh剪切到纯英文目录）</p>
-<p>ssh-keygen -t ed25519 -C “<a href="mailto:&#121;&#111;&#117;&#114;&#x5f;&#101;&#x6d;&#x61;&#x69;&#108;&#x40;&#101;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#x63;&#111;&#109;">&#121;&#111;&#117;&#114;&#x5f;&#101;&#x6d;&#x61;&#x69;&#108;&#x40;&#101;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#x63;&#111;&#109;</a>”</p>
+<p>ssh-keygen -t ed25519 -C “<a href="mailto:&#x79;&#x6f;&#117;&#x72;&#95;&#x65;&#x6d;&#97;&#105;&#x6c;&#x40;&#x65;&#x78;&#97;&#109;&#112;&#108;&#101;&#x2e;&#x63;&#111;&#109;">&#x79;&#x6f;&#117;&#x72;&#95;&#x65;&#x6d;&#97;&#105;&#x6c;&#x40;&#x65;&#x78;&#97;&#109;&#112;&#108;&#101;&#x2e;&#x63;&#111;&#109;</a>”</p>
 <p>该目录下会生成两个文件，id_ed25519.pub为公钥，id_ed25519为私钥。</p>
-<p>输入 ssh -T <a href="mailto:&#103;&#105;&#x74;&#64;&#x67;&#105;&#116;&#x68;&#x75;&#98;&#x2e;&#x63;&#x6f;&#x6d;">&#103;&#105;&#x74;&#64;&#x67;&#105;&#116;&#x68;&#x75;&#98;&#x2e;&#x63;&#x6f;&#x6d;</a>回车，因为是第一次流程提示输入yes回车。这里的-T区分大小写。如果返回【Hi ***! You’ve successfully authenticated, but GitHub does not provide shell access.】 说明配置成功</p>
+<p>输入 ssh -T <a href="mailto:&#x67;&#105;&#x74;&#x40;&#103;&#x69;&#116;&#x68;&#x75;&#x62;&#46;&#99;&#x6f;&#109;">&#x67;&#105;&#x74;&#x40;&#103;&#x69;&#116;&#x68;&#x75;&#x62;&#46;&#99;&#x6f;&#109;</a>回车，因为是第一次流程提示输入yes回车。这里的-T区分大小写。如果返回【Hi ***! You’ve successfully authenticated, but GitHub does not provide shell access.】 说明配置成功</p>
 <p>右键id_ed25519.pub选择记事本打开全选复制里面内容</p>
 <p>打开GitHub点击右上角头像——Settings——SSH and GPG keys——New SSH key</p>
 <p>title给key命名，key里面粘贴刚刚复制的id_ed25519.pub中的内容——Add SSH key成功之后返回上级页面会出现一个key。</p>
