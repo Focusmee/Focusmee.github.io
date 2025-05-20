@@ -260,6 +260,368 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/17/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91Channel%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E6%80%9D%E8%80%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/02/17/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91Channel%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E6%80%9D%E8%80%83/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-17T17:07:12+08:00">
+                2025-02-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Title：Channel的一系列思考"><a href="#Title：Channel的一系列思考" class="headerlink" title="Title：Channel的一系列思考"></a>Title：Channel的一系列思考</h1><hr>
+<h2 id="自动关闭or手动关闭（close）？"><a href="#自动关闭or手动关闭（close）？" class="headerlink" title="自动关闭or手动关闭（close）？"></a>自动关闭or手动关闭（close）？</h2><p>​	学习goroutine和channel的时候发现deadlock，deadlock出现的原因基本就是通道有人生产放入但无取出的操作，就像田径比赛中的4x100接力赛，想要完成交棒必须有一个能够接棒的运动员，否则只能等待。简单来说就是无缓冲的通道必须有至少一个接收方才能发送成功。</p>
+<p>​	修复好后就对channel通道的关闭产生疑问，什么时候通道会自动关闭，或者需要手动关闭（close）？</p>
+<p>经过查阅资料，得知：<strong>一个通道值是可以被垃圾回收掉的。通道通常由发送方执行关闭操作，并且只有在接收方明确等待通道关闭的信号时才需要执行关闭操作。</strong>它和<strong>关闭文件</strong>不一样，通常在结束操作之后关闭文件是必须要做的，<strong>但关闭通道不是必须的。</strong></p>
+<p>关闭后的通道有以下特点：</p>
+<ol>
+<li>对一个关闭的通道再发送值就会导致 panic。</li>
+<li>对一个关闭的通道进行接收会一直获取值直到通道为空。</li>
+<li>对一个关闭的并且没有值的通道执行接收操作会得到对应类型的零值。</li>
+<li>关闭一个已经关闭的通道会导致 panic。</li>
+</ol>
+<p>也就是说close在go中是立即执行， 立即关闭通道。</p>
+<p><strong>close(ch) 不会清空通道，也不会等待通道中的值被取完。</strong><br><strong>关闭后，通道仍然可以被读取，但不能再写入，</strong>否则会导致panic（向已关闭的通道发送数据）。<br>读取者可以继续从已关闭的通道读取剩余的值，<strong>当通道为空时，ok 变量会变为 false</strong>（即 v, ok :&#x3D; &lt;-ch，ok为false写退出逻辑）。</p>
+<p>那么我通过观察测试，得出来的初步推论满足取出的次数等于小于存入的次数，那么就不需要自己用close，否则就要在存入后直接close是吗，还有就是如果close之后还能开启吗？</p>
+<p>不过后面考虑到这几种情况产生：</p>
+<ol>
+<li><p><strong>生产者</strong> 关闭通道，以通知消费者 <strong>不再有新数据</strong>，避免消费者一直阻塞等待的情况，</p>
+<ul>
+<li><pre><code>package main
+
+import &quot;fmt&quot;
+
+func main() &#123;
+    ch := make(chan int)
+
+    // 生产者 goroutine
+    go func() &#123;
+        for i := 0; i &lt; 5; i++ &#123;
+            ch &lt;- i
+        &#125;
+        close(ch) // 关闭通道，通知消费者
+    &#125;()
+
+    // 消费者读取数据
+    for v := range ch &#123;
+        fmt.Println(v)
+    &#125;
+&#125;
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">     </span><br><span class="line"></span><br><span class="line">2. **多个消费者时，避免 `panic: send on closed channel`**</span><br><span class="line"></span><br><span class="line">   - 如果一个生产者向通道发送数据，而多个消费者读取数据，关闭通道可以确保所有消费者都能正确退出。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+package main
+
+import (
+    &quot;fmt&quot;
+    &quot;sync&quot;
+)
+
+func main() &#123;
+    ch := make(chan int)
+    var wg sync.WaitGroup
+
+    // 启动 3 个消费者
+    for i := 0; i &lt; 3; i++ &#123;
+        wg.Add(1)
+        go func(id int) &#123;
+            defer wg.Done()
+            for v := range ch &#123;
+                fmt.Printf(&quot;Worker %d received %d\n&quot;, id, v)
+            &#125;
+        &#125;(i)
+    &#125;
+
+    // 生产者发送数据
+    for i := 0; i &lt; 10; i++ &#123;
+        ch &lt;- i
+    &#125;
+    close(ch) // 关闭通道，通知所有消费者
+
+    wg.Wait() // 等待所有消费者完成
+&#125;
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">同时 关闭通道的注意事项告诉我们不能向已关闭的通道发送数据，在关闭 nil 通道会 `panic`，以及`close` 只能由发送方调用，那么就明晰了，只要我们能确保从channel中取数据的次数是有限并小于或等于存的次数，而不是for range或无限循环就可以</span><br><span class="line"></span><br><span class="line">这里要**注意：**目前Go语言中并没有提供一个不对通道进行读取操作就能判断通道是否被关闭的方法。不能简单的通过`len(ch)`操作来判断通道是否被关闭。</span><br><span class="line"></span><br><span class="line">## **`range` 遍历通道的底层逻辑**</span><br><span class="line"></span><br><span class="line">​	对于 `range ch`：</span><br><span class="line"></span><br><span class="line">1. **从 `ch` 取出数据**。</span><br><span class="line">2. **如果 `ch` 关闭且取完数据，退出循环**。</span><br><span class="line">3. **如果 `ch` 仍然有数据，继续遍历**。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<p>package main</p>
+<p>import “fmt”</p>
+<p>func main() {<br>    ch :&#x3D; make(chan int, 3)</p>
+<pre><code>go func() &#123;
+    ch &lt;- 10
+    ch &lt;- 20
+    ch &lt;- 30
+    close(ch) // 关闭通道,这里不close会无限阻塞！！！
+&#125;()
+
+for v := range ch &#123; // 直到 ch 关闭后，才退出循环
+    fmt.Println(v)
+&#125;
+</code></pre>
+<p>}</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">底层逻辑就像：</span><br><span class="line"></span><br><span class="line">```go</span><br><span class="line">for &#123;</span><br><span class="line">    v, ok := &lt;-ch</span><br><span class="line">    if !ok &#123; // 通道关闭，退出循环</span><br><span class="line">        break</span><br><span class="line">    &#125;</span><br><span class="line">    // 继续处理数据</span><br><span class="line">    fmt.Println(v)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>len(ch)</code> 只适用于 <strong>缓冲通道（buffered channel）</strong>，表示当前通道的元素个数，但：</p>
+<ul>
+<li>**<code>len(ch)</code> 不能用于 <code>range</code>**，因为 <code>range</code> 需要不断读取新数据。</li>
+<li><strong><code>len(ch)</code> 不能检测通道是否关闭</strong>，所以 <code>range</code> 依赖 <code>close(ch)</code> 退出。</li>
+</ul>
+<h3 id="示例："><a href="#示例：" class="headerlink" title="示例："></a><strong>示例：</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go复制编辑ch := make(chan int, 3)</span><br><span class="line">ch &lt;- 1</span><br><span class="line">ch &lt;- 2</span><br><span class="line">fmt.Println(len(ch)) // ✅ 2，通道里有两个数据</span><br></pre></td></tr></table></figure>
+
+<p>但：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go复制编辑for i := 0; i &lt; len(ch); i++ &#123; // ❌ 不能这样遍历通道！</span><br><span class="line">    fmt.Println(&lt;-ch)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种方式<strong>不适用于通道</strong>，因为 <code>len(ch)</code> 可能在 <code>receive</code> 时动态变化。</p>
+<p>提一嘴：</p>
+<p>在<code>range</code> 遍历<code>slice/map</code> 的底层,<code>range</code> <strong>是基于 <code>len()</code> 计算的</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">arr := []int&#123;1, 2, 3&#125;</span><br><span class="line">for i := 0; i &lt; len(arr); i++ &#123; // ✅ 等价于 `range`</span><br><span class="line">    fmt.Println(arr[i])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>🔹 <strong><code>range</code> 遍历通道不会使用 <code>len(ch)</code>，而是依赖 <code>close(ch)</code> 退出</strong>。<br>🔹 <strong>如果 <code>ch</code> 没有 <code>close()</code>，<code>range</code> 会阻塞</strong>。<br>🔹 <strong>通道不能像 <code>slice/map</code> 那样用 <code>len()</code> 遍历</strong>。<br>🔹 <strong>如果 <code>range</code> 不能用，手动 <code>ok := &lt;-ch</code> 方式检测通道是否关闭</strong>。</p>
+<h3 id="range-遍历通道的正确用法"><a href="#range-遍历通道的正确用法" class="headerlink" title="range 遍历通道的正确用法"></a><strong><code>range</code> 遍历通道的正确用法</strong></h3><p>✅ <strong>方式 1：必须 <code>close(ch)</code></strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span>复制编辑<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">        ch &lt;- i</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">close</span>(ch) <span class="comment">// 关闭通道，保证 `range` 能退出</span></span><br><span class="line">&#125;()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> v := <span class="keyword">range</span> ch &#123; <span class="comment">// `range` 依赖 `close` 才能结束</span></span><br><span class="line">    fmt.Println(v)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>✅ <strong>方式 2：手动检查 <code>ok</code></strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span>复制编辑<span class="keyword">for</span> &#123;</span><br><span class="line">    v, ok := &lt;-ch</span><br><span class="line">    <span class="keyword">if</span> !ok &#123;</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(v)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>🚫 <strong>错误方式：用 <code>len(ch)</code> 遍历</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span>复制编辑<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(ch); i++ &#123; <span class="comment">// ❌ 错误，`len(ch)` 不能用来遍历通道</span></span><br><span class="line">    fmt.Println(&lt;-ch)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="close总结："><a href="#close总结：" class="headerlink" title="close总结："></a>close总结：</h2><h3 id="1-何时不需要-close？"><a href="#1-何时不需要-close？" class="headerlink" title="1. 何时不需要 close？"></a><strong>1. 何时不需要 <code>close</code>？</strong></h3><p>只要 <strong>接收次数</strong>（<code>receive</code>） <strong>等于小于</strong> <strong>发送次数</strong>（<code>send</code>），就**不需要手动 <code>close</code>**，因为：</p>
+<ul>
+<li><code>receive</code> 取数据后不会再阻塞。</li>
+<li><code>receive</code> 没有使用 <code>range</code> 依赖 <code>close</code> 才能退出。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">            ch &lt;- i <span class="comment">// 发送 5 次</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">        fmt.Println(&lt;-ch) <span class="comment">// 接收 5 次，匹配</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>✅ 这里不需要 <code>close(ch)</code>，程序不会死锁。</strong></p>
+<hr>
+<h3 id="2-何时必须-close？"><a href="#2-何时必须-close？" class="headerlink" title="2. 何时必须 close？"></a><strong>2. 何时必须 <code>close</code>？</strong></h3><p>如果 <code>receive</code> 的次数<strong>不固定</strong>，或者使用了 <code>range</code> 读取通道，就必须 <code>close</code>，否则：</p>
+<ul>
+<li><code>range ch</code> 会<strong>无限等待</strong>，导致死锁。</li>
+<li>其他 goroutine 可能无法正确退出。</li>
+</ul>
+<p><strong>示例（必须 <code>close</code>）：</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">            ch &lt;- i</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">close</span>(ch) <span class="comment">// 生产者完成后关闭通道</span></span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> v := <span class="keyword">range</span> ch &#123; <span class="comment">// 依赖 close(ch) 才能退出</span></span><br><span class="line">        fmt.Println(v)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>✅ <code>close(ch)</code> 让 <code>range</code> 退出，防止死锁。</strong></p>
+<hr>
+<h3 id="3-close-之后还能开启吗？"><a href="#3-close-之后还能开启吗？" class="headerlink" title="3. close 之后还能开启吗？"></a><strong>3. <code>close</code> 之后还能开启吗？</strong></h3><p>🚫 <strong>不能！关闭通道后不能重新开启！</strong></p>
+<ul>
+<li>关闭通道后，任何写入 (<code>ch &lt;- x</code>) 都会 <strong>panic</strong>。</li>
+<li>但仍然可以<strong>继续读取</strong> <strong>已缓冲的数据</strong>（如果是缓冲通道）。</li>
+</ul>
+<h4 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a><strong>示例：</strong></h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    ch &lt;- <span class="number">10</span></span><br><span class="line">    ch &lt;- <span class="number">20</span></span><br><span class="line">    <span class="built_in">close</span>(ch) <span class="comment">// 关闭通道</span></span><br><span class="line"></span><br><span class="line">    fmt.Println(&lt;-ch) <span class="comment">// ✅ 还能取数据：10</span></span><br><span class="line">    fmt.Println(&lt;-ch) <span class="comment">// ✅ 还能取数据：20</span></span><br><span class="line">    fmt.Println(&lt;-ch) <span class="comment">// ❌ 取不到新数据，返回零值 0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>⚠️ <code>ch &lt;- 30</code> 这种写入会 <code>panic</code>！</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ch &lt;- <span class="number">30</span>  <span class="comment">// ❌ panic: send on closed channel</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="4-close-后的-receive-规则"><a href="#4-close-后的-receive-规则" class="headerlink" title="4. close 后的 receive 规则"></a><strong>4. <code>close</code> 后的 <code>receive</code> 规则</strong></h3><ul>
+<li>关闭后<strong>仍然可以接收</strong> <strong>已发送但未取走的数据</strong>（只有带缓存的通道）。</li>
+<li>取完后，<strong>继续取会返回通道类型的零值</strong>（<code>int</code> 类型返回 <code>0</code>，<code>string</code> 返回 <code>&quot;&quot;</code>）。</li>
+<li><code>ok := &lt;-ch</code> 方式可以<strong>检查通道是否关闭</strong>。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    ch &lt;- <span class="number">10</span></span><br><span class="line">    ch &lt;- <span class="number">20</span></span><br><span class="line">    <span class="built_in">close</span>(ch) <span class="comment">// 关闭通道</span></span><br><span class="line"></span><br><span class="line">    v, ok := &lt;-ch</span><br><span class="line">    fmt.Println(v, ok) <span class="comment">// ✅ 10, true</span></span><br><span class="line"></span><br><span class="line">    v, ok = &lt;-ch</span><br><span class="line">    fmt.Println(v, ok) <span class="comment">// ✅ 20, true</span></span><br><span class="line"></span><br><span class="line">    v, ok = &lt;-ch</span><br><span class="line">    fmt.Println(v, ok) <span class="comment">// ❌ 0, false（通道已关闭）</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-close-的最佳实践"><a href="#5-close-的最佳实践" class="headerlink" title="5. close 的最佳实践"></a><strong>5. <code>close</code> 的最佳实践</strong></h3><ul>
+<li>**单个 <code>sender</code>，多个 <code>receiver</code><strong>：</strong>必须 <code>close(ch)</code>**。</li>
+<li>**多个 <code>sender</code>，单个 <code>receiver</code><strong>：</strong>不能随便 <code>close(ch)</code>**，否则会 <code>panic</code>。</li>
+<li>**多个 <code>sender</code>，多个 <code>receiver</code><strong>：</strong>需要 <code>sync.WaitGroup</code> 或 <code>sync.Once</code> 控制 <code>close(ch)</code>。</li>
+</ul>
+<hr>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a><strong>结论</strong></h3><p>✅ <strong>不需要 <code>close</code>：</strong></p>
+<ul>
+<li><code>send</code> 次数 &#x3D; <code>receive</code> 次数。</li>
+<li>只用 <code>&lt;-ch</code> 读取 <strong>固定次数</strong>。</li>
+</ul>
+<p>✅ <strong>必须 <code>close</code>：</strong></p>
+<ul>
+<li><code>range ch</code> 读取通道。</li>
+<li><code>receive</code> 需要判断何时退出。</li>
+<li><code>多个 goroutine</code> 需要通知通道已结束。</li>
+</ul>
+<p>🚫 <strong>不能 <code>close</code> 之后再打开</strong></p>
+<ul>
+<li>关闭后<strong>还能读取</strong>，但<strong>不能写入</strong>，否则 <code>panic</code>。</li>
+</ul>
+<h2 id="Channal中阻塞行为"><a href="#Channal中阻塞行为" class="headerlink" title="Channal中阻塞行为"></a>Channal中阻塞行为</h2><h3 id="1-发送操作-ch"><a href="#1-发送操作-ch" class="headerlink" title="1. 发送操作 (ch &lt;- &quot;job result&quot;) 的阻塞行为"></a><strong>1. 发送操作 (<code>ch &lt;- &quot;job result&quot;</code>) 的阻塞行为</strong></h3><p>Go 语言的通道（channel）有两种：</p>
+<ul>
+<li><strong>无缓冲通道</strong>（<code>ch := make(chan string)</code>）：发送操作 <code>ch &lt;- value</code> <strong>必须等到有接收者</strong>，否则阻塞。</li>
+<li><strong>带缓冲通道</strong>（<code>ch := make(chan string, 1)</code>）：如果缓冲区未满，发送不会阻塞；如果缓冲区满了，发送仍然会阻塞。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">go复制编辑ch := make(chan string) // 无缓冲通道</span><br><span class="line">go func() &#123;</span><br><span class="line">    time.Sleep(3 * time.Second)</span><br><span class="line">    ch &lt;- &quot;job result&quot; // 没有接收者，阻塞！</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>ch &lt;- &quot;job result&quot;</code> 这行代码会尝试把 <code>&quot;job result&quot;</code> 放入通道。</li>
+<li><strong>因为 <code>ch</code> 是无缓冲通道</strong>，它<strong>必须</strong>等到有 <code>&lt;- ch</code> 取出数据，才能完成发送操作，否则<strong>goroutine 卡在这里，不会往下执行</strong>。</li>
+<li>如果 <code>demo2()</code> 的 <code>select</code> 语句选择了超时 <code>case &lt;-time.After(1 * time.Second)</code> 并 <code>return</code>，那么 <code>ch</code> <strong>再也没有接收者</strong>，<code>ch &lt;- &quot;job result&quot;</code> <strong>永远不会成功，导致 goroutine 永远阻塞</strong>。</li>
+</ul>
+<hr>
+<h3 id="2-为什么-ch"><a href="#2-为什么-ch" class="headerlink" title="2. 为什么 ch &lt;- &quot;job result&quot; 不能先执行，再等待消费？"></a><strong>2. 为什么 <code>ch &lt;- &quot;job result&quot;</code> 不能先执行，再等待消费？</strong></h3><p>很多人误以为 <code>ch &lt;- &quot;job result&quot;</code> <strong>会先放入通道，然后阻塞等待消费</strong>，但事实并非如此！</p>
+<p>在 Go 语言中，<strong>无缓冲通道的本质是同步的</strong>：</p>
+<ul>
+<li><p>发送者和接收者必须匹配</p>
+<p>，否则发送&#x2F;接收操作会阻塞：</p>
+<ul>
+<li><code>ch &lt;- value</code> <strong>必须等到 <code>value := &lt;-ch</code> 发生时，才能完成发送</strong>。</li>
+<li><code>&lt;-ch</code> <strong>必须等到 <code>ch &lt;- value</code> 发生时，才能完成接收</strong>。</li>
+</ul>
+</li>
+</ul>
+<p><strong>示例代码演示这个特性：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    ch := make(chan int) // 无缓冲通道</span><br><span class="line">    go func() &#123;</span><br><span class="line">        fmt.Println(&quot;准备发送数据&quot;)</span><br><span class="line">        ch &lt;- 42 // 这里会阻塞，直到 main goroutine 读取数据</span><br><span class="line">        fmt.Println(&quot;发送完成&quot;) // 这行不会执行，除非 main 读取通道</span><br><span class="line">    &#125;()</span><br><span class="line">    </span><br><span class="line">    time.Sleep(2 * time.Second) // 故意延迟 2 秒</span><br><span class="line">    fmt.Println(&quot;准备接收数据&quot;)</span><br><span class="line">    value := &lt;-ch // 这里 main goroutine 接收数据</span><br><span class="line">    fmt.Println(&quot;接收到数据:&quot;, value)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>输出：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">准备发送数据</span><br><span class="line">（等待2秒）</span><br><span class="line">准备接收数据</span><br><span class="line">接收到数据: 42</span><br><span class="line">发送完成</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>“准备发送数据” 先打印</strong>，但 <code>ch &lt;- 42</code> <strong>阻塞住了 goroutine</strong>，直到 <code>value := &lt;-ch</code> 执行，发送才完成。</li>
+<li><code>ch &lt;- 42</code> <strong>不会提前放到通道里，而是等到接收者出现才一起执行</strong>。</li>
+</ul>
+<hr>
+<h3 id="3-ch"><a href="#3-ch" class="headerlink" title="3. ch &lt;- value 为什么没有存入无缓冲通道？"></a><strong>3. <code>ch &lt;- value</code> 为什么没有存入无缓冲通道？</strong></h3><p>Go 语言的 <strong>无缓冲通道就是同步通信机制</strong>，不像队列或者消息队列那样<strong>存值</strong>：</p>
+<ul>
+<li><strong>通道并不存数据</strong>，它只是一个传输机制。</li>
+<li><code>ch &lt;- value</code> 只有当 <code>value := &lt;-ch</code> 同时发生时，数据才能被真正传递。</li>
+<li>如果接收者不存在，<code>ch &lt;- value</code> <strong>会一直阻塞，而不是先存进去再等待消费</strong>。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><ol>
+<li><p><strong>无缓冲通道的 <code>ch &lt;- value</code> 必须有 <code>&lt;-ch</code> 同时执行，否则会阻塞</strong>。</p>
+</li>
+<li><p><strong>阻塞不是等待消费，而是直接阻塞在 <code>ch &lt;-</code> 这一行</strong>，直到有接收者。</p>
+</li>
+<li><p><strong>如果 <code>select</code> 选择超时分支，goroutine 仍然执行 <code>ch &lt;- value</code>，但没有接收者，导致永久阻塞</strong>。</p>
+</li>
+<li><p>解决方案</p>
+<p>：</p>
+<ul>
+<li>用 <strong>带缓冲通道</strong></li>
+<li>在 <code>select</code> 中使用 <code>default</code></li>
+<li>用 <code>context.WithTimeout</code> 避免超时阻塞</li>
+</ul>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/14/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91GOPATH/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2097,276 +2459,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/04/%E3%80%90Leetcode%E5%88%B7%E9%A2%98%E3%80%912023%E5%B9%B4-2024%E5%B9%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/02/04/%E3%80%90Leetcode%E5%88%B7%E9%A2%98%E3%80%912023%E5%B9%B4-2024%E5%B9%B4/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-04T15:57:04+08:00">
-                2025-02-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>刷题记录</p>
-<p>取余法则</p>
-<p>（S1+S2）%b &#x3D; （S1%b+S2%b）%b， S1<em>S2%b&#x3D;(S1%B)</em>(S2%b)%b</p>
-<h2 id="快排"><a href="#快排" class="headerlink" title="快排"></a>快排</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sort-an-array/">912. 排序数组 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/get-kth-magic-number-lcci/">面试题 17.09. 第 k 个数 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/">剑指 Offer 21. 调整数组顺序使奇数位于偶数前面 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sort-colors/">75. 颜色分类 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/container-with-most-water/comments/">11. 盛最多水的容器 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/">https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/median-of-two-sorted-arrays/">4. 寻找两个正序数组的中位数 - 力扣（LeetCode）</a></p>
-<p>第一种做法：时间复杂度O(m+n)，简单来说就是将两个数组合并成一个数组然后找到中位数相应的位置进行求解。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line"></span><br><span class="line">    double findMedianSortedArrays(vector&lt;int&gt;&amp; nums1, vector&lt;int&gt;&amp; nums2) &#123;</span><br><span class="line">        float tmp[2010];</span><br><span class="line">        int i=0,j=0,k=0;</span><br><span class="line">        int l=nums1.size()+nums2.size();</span><br><span class="line"></span><br><span class="line">        while(i&lt;nums1.size()&amp;&amp;j&lt;nums2.size())</span><br><span class="line">        &#123;</span><br><span class="line">            if(nums1[i]&lt;nums2[j]) tmp[k++]=nums1[i++];</span><br><span class="line">            else tmp[k++]=nums2[j++];</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        while(i&lt;nums1.size())</span><br><span class="line">        &#123;</span><br><span class="line">            tmp[k++]=nums1[i++];</span><br><span class="line">        &#125;</span><br><span class="line">        while(j&lt;nums2.size()) tmp[k++]=nums2[j++];</span><br><span class="line">     </span><br><span class="line">        if(l%2==0) return (tmp[l/2]+tmp[l/2-1])/2;</span><br><span class="line">        return tmp[l/2]; </span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>第二种做法：二分查找</p>
-<p>中位数：在只有一个有序数组的时候，中位数把数组分割成两个部分。</p>
-<p>根据定义，分数组长度为奇数和偶数讨论</p>
-<p>数组长度为奇数时，中位数有1个，不妨把中位数分到左边数组。</p>
-<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521214542409.png" alt="image-20230521214542409" style="zoom: 50%;" />
-
-<p>在两个有序数组的时候，仍然可以把两个数组分割成两个部分。</p>
-<p>我们使用一条分割线把两个数组分别分割成两部分：</p>
-<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521214718737.png" alt="image-20230521214718737" style="zoom:50%;" />
-
-<p>如果左边有5个元素，右边有4个元素，也就是说当两个数组的元素个数之和为奇数的时候，左边最大的就是中位数。</p>
-<p>当两个数组的元素个数之和为偶数的时候，左右两边元素个数相等，由左边最大的和右边最小的求和&#x2F;2得到</p>
-<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521215114876.png" alt="image-20230521215114876" style="zoom:67%;" />
-
-<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521215155647.png" alt="image-20230521215155647" style="zoom:67%;" />
-
-<p>所以我们通过二分查找的方法不断找到符合两个条件的分割线位置</p>
-<p>特殊情况：</p>
-<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521215724388.png" alt="image-20230521215724388" style="zoom:50%;" />
-
-<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230521215737643.png" alt="image-20230521215737643" style="zoom:50%;" />
-
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/search-in-rotated-sorted-array-ii/">https://leetcode.cn/problems/search-in-rotated-sorted-array-ii/</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/search-in-rotated-sorted-array/">https://leetcode.cn/problems/search-in-rotated-sorted-array/</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/guess-number-higher-or-lower/">https://leetcode.cn/problems/guess-number-higher-or-lower/</a></p>
-<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h2 id="前缀和和差分"><a href="#前缀和和差分" class="headerlink" title="前缀和和差分"></a>前缀和和差分</h2><p><img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20230523113105976.png" alt="image-20230523113105976"></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-vowel-strings-in-ranges/">2559. 统计范围内的元音字符串数 - 力扣（LeetCode）</a></p>
-<p>这题还能预处理和二分查找</p>
-<h2 id="贪心-Hash"><a href="#贪心-Hash" class="headerlink" title="贪心+Hash"></a>贪心+Hash</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/largest-values-from-labels/">1090. 受标签影响的最大值 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-consecutive-sequence/">128. 最长连续序列</a></p>
-<h2 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h2><h3 id="一刷"><a href="#一刷" class="headerlink" title="一刷"></a>一刷</h3><p>贪心问题实质就是找到什么情况是局部最优，通过多个局部最优得到全局最优</p>
-<ol>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/">122. 买卖股票的最佳时机 II</a>【<strong>最终利润是可以分解的，那么本题就很容易了！」</strong></p>
-<p>如果分解呢？</p>
-<p>假如第0天买入，第3天卖出，那么利润为：prices[3] - prices[0]。</p>
-<p>相当于(prices[3] - prices[2]) + (prices[2] - prices[1]) + (prices[1] - prices[0])。</p>
-<p><strong>「此时就是把利润分解为每天为单位的维度，而不是从0天到第3天整体去考虑！」</strong></p>
-<p>那么根据prices可以得到每天的利润序列：(prices[i] - prices[i - 1])…..(prices[1] - prices[0])。</p>
-<p>我们关注了每天的利润，选取正利润是局部最优，以此达到得到最大利润的整体最优</p>
-</li>
-<li><p>在跳跃游戏I中，⼀个数组看能否跳到终点，其实就是看我们从起点到终点所拓展的最大范围，不要拘泥于只看每步能跳的位置，而是它能跳的位置能够为总的能跳跃的空间范围所作出的贡献，即能否扩大这个范围，使其最后范围大于或等于整个数组长度</p>
-</li>
-<li><p>跳跃游戏II中题目已经给出一定可以到达终点，那么为了步数最少，<strong>局部最优</strong>是每次跳的时候，在当前的位置可以跳的范围内选择下次能跳最远位置的点跳，这样保证每一步都是最远的，以此达到整体最优。</p>
-</li>
-<li><p>加油站问题首先是直到经过这个站能加多少油（经过的站的花费与站点加油的差），只要确定最后能剩下油，就说明一定可以绕一圈，只要找到那一个点就可以。然后一层循环，如果累加是负的，说明在这个范围内不可以作为起始点，就以下一个为起点继续</p>
-</li>
-<li><p>分发糖果和根据身⾼重建队列都是<strong>有两个标准</strong>，做法是先完成一个标准，之后再完成另一个标准，根据圣身高重建队列有个点就是排序的顺序，由大到小有好处是再按照第二个标准插入时候（前面有多少个比数大或者相等），就可以通过插入的状况来判定，因为已经插入的都是比此时的数要大，只要找到现在插入的位置即可，有点像dp数组的思想，通过之前的情况就可以很好的为接下来的操作埋下伏笔。</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/non-overlapping-intervals/">435. 无重叠区间</a>的算法就是排课算法，在教室里上尽可能多的的课就是选择早下课的课程先上，然后再选择不冲突且下课最早的课程上（选课先根据结束课程早晚来排序）。可谓是真正的贪心。而<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-number-of-arrows-to-burst-balloons/">452. 用最少数量的箭引爆气球</a>就用下面这个来排序，按照end来排正序从小到大，然后想一下牛电灯那个题，想要用少的箭，就要用尽量用区间结尾去引爆气球，这样就可以引爆局部最多，以此到整体最多。</p>
-<p>ps：<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_51627418/article/details/121246105">(37条消息) qsort()中cmp函数_不专业码农的博客-CSDN博客_qsort函数cmp</a></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">cmp</span><span class="params">(<span class="type">const</span> <span class="type">void</span>* a,<span class="type">const</span> <span class="type">void</span>* b)</span></span><br><span class="line">&#123;   </span><br><span class="line">    <span class="keyword">if</span> ((*(<span class="type">int</span>**)a)[<span class="number">0</span>] == (*(<span class="type">int</span>**)b)[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">return</span> (*(<span class="type">int</span>**)a)[<span class="number">1</span>] &gt; (*(<span class="type">int</span>**)b)[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">return</span> (*(<span class="type">int</span>**)a)[<span class="number">1</span>] &gt; (*(<span class="type">int</span>**)b)[<span class="number">1</span>];</span><br><span class="line">&#125; </span><br><span class="line">leetcode申请内存</span><br><span class="line">*returnSize=peopleSize;</span><br><span class="line">*returnColumnSizes=<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)*peopleSize);</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;peopleSize;i++)</span><br><span class="line">&#123;</span><br><span class="line">    (*returnColumnSizes)[i]=<span class="number">2</span>;</span><br><span class="line">    <span class="built_in">queue</span>[i]=<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)*<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/merge-intervals/">56. 合并区间</a>问题就是注意区间的性质，当按照区间起点的大小排序后，区间性质就是如果这两个区间可以合并，说明前区间的终止位置比后区间的起始位置大于或等于。</p>
-<p>如果满足这个性质条件，则这个数组就可以向前扩展（注意遍历时候数组看上一个区间），这时候注意一个细节：当前区间的终止位置比后区间的终止位置大的时候要取而代之；</p>
-<p>当不满足这个性质条件，则目前遍历到的区间与上一个区间无法合并，上一个区间就可以加入到结果区间里。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Return an array of arrays of size *returnSize.</span></span><br><span class="line"><span class="comment"> * The sizes of the arrays are returned as *returnColumnSizes array.</span></span><br><span class="line"><span class="comment"> * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="type">int</span> <span class="title function_">cmp</span><span class="params">(<span class="type">const</span> <span class="type">void</span>* a,<span class="type">const</span> <span class="type">void</span>* b)</span></span><br><span class="line">&#123;   </span><br><span class="line">    <span class="keyword">if</span> ((*(<span class="type">int</span>**)a)[<span class="number">0</span>] == (*(<span class="type">int</span>**)b)[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">return</span> (*(<span class="type">int</span>**)a)[<span class="number">1</span>] &gt; (*(<span class="type">int</span>**)b)[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">return</span> (*(<span class="type">int</span>**)a)[<span class="number">0</span>] &gt; (*(<span class="type">int</span>**)b)[<span class="number">0</span>];</span><br><span class="line">&#125; </span><br><span class="line"><span class="type">int</span>** <span class="title function_">merge</span><span class="params">(<span class="type">int</span>** intervals, <span class="type">int</span> intervalsSize, <span class="type">int</span>* intervalsColSize, <span class="type">int</span>* returnSize, <span class="type">int</span>** returnColumnSizes)</span>&#123;</span><br><span class="line">     <span class="type">int</span> **<span class="built_in">queue</span>=(<span class="type">int</span> **)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span> *)*intervalsSize);</span><br><span class="line">    *returnSize=<span class="number">0</span>;</span><br><span class="line">    *returnColumnSizes=<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)*intervalsSize);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;intervalsSize;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        (*returnColumnSizes)[i]=<span class="number">2</span>;</span><br><span class="line">        <span class="built_in">queue</span>[i]=<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>)*<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(intervalsSize==<span class="number">1</span>) &#123;</span><br><span class="line">    *returnSize=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> intervals;</span><br><span class="line">    &#125;</span><br><span class="line">    qsort(intervals,intervalsSize,<span class="keyword">sizeof</span>(<span class="type">int</span>*),cmp);</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> n=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;intervalsSize;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(intervals[i][<span class="number">0</span>]&lt;=intervals[i<span class="number">-1</span>][<span class="number">1</span>]) intervals[i][<span class="number">0</span>]=intervals[i<span class="number">-1</span>][<span class="number">0</span>],intervals[i][<span class="number">1</span>]=intervals[i][<span class="number">1</span>]&gt;intervals[i<span class="number">-1</span>][<span class="number">1</span>]?intervals[i][<span class="number">1</span>]:intervals[i<span class="number">-1</span>][<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">queue</span>[(*returnSize)][<span class="number">0</span>]=intervals[i<span class="number">-1</span>][<span class="number">0</span>],<span class="built_in">queue</span>[(*returnSize)][<span class="number">1</span>]=intervals[i<span class="number">-1</span>][<span class="number">1</span>],*returnSize+=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(i==intervalsSize<span class="number">-1</span>) <span class="built_in">queue</span>[(*returnSize)][<span class="number">0</span>]=intervals[i][<span class="number">0</span>],<span class="built_in">queue</span>[(*returnSize)][<span class="number">1</span>]=intervals[i][<span class="number">1</span>],*returnSize+=<span class="number">1</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,*returnSize);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">queue</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/set-intersection-size-at-least-two/">757. 设置交集大小至少为2</a>区间交集问题，面对这一问题首先要排序，按集合起点排序还是按集合终点排序，因为集合散乱没有规律性，选择最少的数是哪些无法从之前所选的情况去判定。而排好序能让我们从规律的集合排序中找出局部最优，即每次选都选一个数尽可能可以满足之后的集合，这样就可以有效减少后面的集合为了满足条件选新的数，那么这个数一定是在后面的集合的区间中存在，而当我们按照起点大小排序，当要选择可以使集合满足条件的数的时候，尽可能选区间末端的数。当然，这题其实最简便的方法就是把条件一一列出，当下个区间有我选的两个数时候，判断情况，然后更新替换上去。</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/lemonade-change/">860. 柠檬水找零</a>这题的贪心体现在找零情况上，找零情况是有限的，每次找零尽量少用5美元，因为5美元是找零最需要的，10美元需要5美元找零，20美元也要5美元来找，所有只有在找20美元少用5美元找零就最好。</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/partition-labels/">763. 划分字母区间</a>想要划分最多，且满足要求，先统计每个出现的字母最后一次出现的位置，再遍历一遍即可得到结果。肯定的是一段字母区间中的所有字母中一定有一个字母为这一段结尾，且这个字母的最后一次出现的位置都比这一段字母区间中的其他字母最后一次出现的位置都要远。通过之前统计每个字母最后一次出现的位置，就可以边遍历，边查找此时这一段中哪个字母的位置最远，当且到达这个最远位置时，就可以划分一段了。</p>
-</li>
-</ol>
-<p>总结：关于区间问题，首先要排序，怎么排序根据区间性质和题目要求，然后列情况，实现效果。</p>
-<h3 id="二刷"><a href="#二刷" class="headerlink" title="二刷"></a>二刷</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/wiggle-subsequence/">376. 摆动序列</a></p>
-<p><strong>摆动序列</strong> 的 <strong>最长子序列的长度</strong> 取决于子序列峰&#x2F;谷的个数，</p>
-<p>峰谷交错，其实就是摆动序列。</p>
-<p>从一个局部最优能推到全局最优才是贪心算法的核心。</p>
-<p>上坡和下坡中间的都不需要。</p>
-<p>判断<code>nums[i]</code>算不算里面的时候其实就是判断前面的差值<code>nums[i]-nums[i-1]</code>和后面的差值<code>nums[i+1]-nums[i]</code>是否是异号的。</p>
-<p>这时候会发现前面两个和后面两个很难确定算不算合法长度里。</p>
-<p>这时候我们其实可以假定前有一个平地。</p>
-<p><img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20221009152502346.png" alt="image-20221009152502346"></p>
-<p><code>curDiff</code>此时是16 而<code>preDiff</code>此时是0</p>
-<p>此时如果要算上1，就不仅仅要满足<code>curDiff&lt;0&amp;&amp;preDiff&gt;0||curDiff&gt;0&amp;&amp;preDiff&lt;0</code></p>
-<p>把preDiff此时&#x3D;&#x3D;0算进去。</p>
-<p>那要是中间有<code>preDiff=0</code> 那岂不是也会算进去 比如 3 1 1 3</p>
-<p>是的，前面的是不是平的并不会影响取 第二个1 第一个1根本没取，因为要求了<code>curDiff</code>不能等于0</p>
-<p>最后从0~numSize-1算的是除了最后一个的左边的峰值，加上右边的。</p>
-<p>总结：result初始为1（默认最右⾯有⼀个峰值），此时curDiff &gt; 0 &amp;&amp; preDiff &lt;&#x3D; 0，那么 result++（计算了左⾯的峰值），最后得到的result就是2（峰值个数为2即摆动序列⻓度为2）</p>
-<h6 id="53-最大子数组和"><a href="#53-最大子数组和" class="headerlink" title="53. 最大子数组和"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-subarray/">53. 最大子数组和</a></h6><p>如果连续子数组之和开始变负数，无论后面是什么数，与后面的数加上后相当于“拖累”了后面的数，也就是后面的数如果加上前面连续子数组（负数）会比原来更加小，所以需要从nums[i+1]从新开始算连续子数组之和。此时先判断是否比ans要大，然后再将cur重置为0。（这个顺序很重要）。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">int maxSubArray(int* nums, int numsSize)&#123;</span><br><span class="line">    int ans=INT_MIN;</span><br><span class="line">    int cur=0;</span><br><span class="line">    for(int i=0;i&lt;numsSize;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cur+=nums[i];</span><br><span class="line">        </span><br><span class="line">        if(ans&lt;cur) ans=cur;</span><br><span class="line">        if(cur&lt;0) cur=0;</span><br><span class="line">    &#125; </span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="贪心-优先队列"><a href="#贪心-优先队列" class="headerlink" title="贪心+优先队列"></a>贪心+优先队列</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/course-schedule-iii/description/?envType=daily-question&envId=2023-09-11">630. 课程表 III - 力扣（LeetCode）</a></p>
-<h2 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/surrounded-regions/">130. 被围绕的区域</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/">2316. 统计无向图中无法互相到达点对数 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/satisfiability-of-equality-equations/">990. 等式方程的可满足性 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-consecutive-sequence/">128. 最长连续序列 - 力扣（LeetCode）</a> </p>
-<p>考察并查集的集合数量</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">int find(int x)</span><br><span class="line"> &#123;</span><br><span class="line">     if(p[x]==x) return x;</span><br><span class="line">     return p[x]=find(p[x]);</span><br><span class="line"> &#125;</span><br><span class="line"> void unionset(int a,int b)</span><br><span class="line"> &#123;</span><br><span class="line">     if(find(a)!=find(b)) sizep[find(b)]+=sizep[find(a)];</span><br><span class="line">     p[find(a)]=find(b);</span><br><span class="line"> &#125;</span><br><span class="line">//注意只有并查集的根节点保存的sizep才是有效的表示了集合大小</span><br></pre></td></tr></table></figure>
-
-
-
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/accounts-merge/submissions/">721. 账户合并 - 力扣（LeetCode）</a></p>
-<p>对于字符串数组vector<string>去重，有以下三种方法（准确的是两种吧）：</p>
-<p>（一）先排序、后去重</p>
-<p>采用sort函数 （头文件#include <algorithm>）  —— 这时候vector容器元素是从小到大排序好的<br>采用unique函数（头文件#include <algorithm>） —— 将容器中重复的元素放到vector的尾部，返回指向第一个重复元素的迭代器<br>采用vector自带的erase函数（头文件#include <vector>） —— 删除vector中的一段元素<br>具体代码如下↓</p>
-<p>void DeleteDuplicated(vector<string> &amp;name)<br>{<br>    sort(name.begin(), name.end());<br>    name.erase(unique(name.begin(), name.end()), name.end());<br>}<br>（二）利用set、unordered_set容器</p>
-<p>因为这两个容器的关键字是唯一的<br>因此以元素是否能在unordered_set容器中插入成功作为判断依据<br>如果插入成功 就将该值赋给迭代器指向的下一个值 并将判断迭代器下移一位<br>具体代码如下↓</p>
-<p>void remove(vector<string> &amp;str)<br>{<br>    vector<string>::iterator itr &#x3D; str.begin();<br>    unordered_set<string> s;<br>    for (auto curr &#x3D; str.begin(); curr !&#x3D; str.end(); ++curr)<br>    {<br>        if (s.insert(*curr).second)&#x2F;&#x2F;判断是否能插入成功<br>        {<br>            *itr++ &#x3D; *curr;&#x2F;&#x2F;如果成功 就将当前的值赋给到当前迭代器的下一位<br>        }<br>    }<br>    str.erase(itr, str.end());&#x2F;&#x2F;循环完一遍后 当前迭代器的位置就是字段唯一值的末尾<br>}<br>（三）同样利用set、unordered_set容器</p>
-<p>如果不是一定要用vector容器来装载字符串 可以考虑直接用set、unordered_set容器来存储！</p>
-<p>目前从时间复杂度的角度上来说，第二种方法应该是最快的，其时间复杂度为O(n)。</p>
-<p>会继续补充，找到效率最快、最高的方法….<br>————————————————<br>版权声明：本文为CSDN博主「PRPRY」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/lpy369369/article/details/87868580">https://blog.csdn.net/lpy369369/article/details/87868580</a></p>
-<h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/magnetic-force-between-two-balls/solution/">1552. 两球之间的磁力 题解 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-tastiness-of-candy-basket/">2517. 礼盒的最大甜蜜度 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-vowel-strings-in-ranges/">2559. 统计范围内的元音字符串数 - 力扣（LeetCode）</a></p>
-<p>这题还能用前缀和</p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximize-the-minimum-powered-city/">2528. 最大化城市的最小供电站数目 - 力扣（LeetCode）</a></p>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/compare-strings-by-frequency-of-the-smallest-character/submissions/">1170. 比较字符串最小字母出现频次 - 力扣（LeetCode）</a></p>
-<h2 id="深搜"><a href="#深搜" class="headerlink" title="深搜"></a>深搜</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/tiling-a-rectangle-with-the-fewest-squares/">1240. 铺瓷砖 - 力扣（LeetCode）</a></p>
-<h2 id="图论"><a href="#图论" class="headerlink" title="图论"></a>图论</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/modify-graph-edge-weights/">2699. 修改图中的边权 - 力扣（LeetCode）</a></p>
-<p>找一条可以从起点到终点的一条路径，然后把其他能修改的边全部封死，之后这个路径如果能修改就把它修改成target，之后再去判断是否有比这个路径更短的，如果没有就是了。</p>
-<h2 id="数学"><a href="#数学" class="headerlink" title="数学"></a>数学</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/circle-and-rectangle-overlapping/">1401. 圆和矩形是否有重叠</a></p>
-<p>题解：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/24251545">(41 封私信 &#x2F; 80 条消息) 怎样判断平面上一个矩形和一个圆形是否有重叠？ - 知乎 (zhihu.com)</a></p>
-<h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-subarray-sum-with-one-deletion/solution/jiao-ni-yi-bu-bu-si-kao-dong-tai-gui-hua-hzz6/">教你一步步思考动态规划！（Python&#x2F;Java&#x2F;C++&#x2F;Go） - 删除一次得到子数组最大和 - 力扣（LeetCode）</a></p>
-<ol>
-<li><p>寻找子问题（从暴力的思路中寻找，枚举子数组的左右端点以及要删除的元素，保留枚举子数组的右端点的想法继续优化，得到原问题变成如果子数组的右端点为i，且最多删除一个数，子数组元素和的最大值是什么？</p>
-</li>
-<li><p>原问题就可以拆开为两个问题：</p>
-<ul>
-<li><p>第一个问题：如果子数组右端点为num[i]，且不能删除数字，子数组元素和的最大值是多少？</p>
-<ul>
-<li>情况一：左边无数字（就是左边不要）子数组为这个数字本身</li>
-<li>情况二：左边是连续的子数组，右端点为num[i-1]，且不能删除数字</li>
-</ul>
-</li>
-<li><p>第二个问题：如果子数组右端点为i，且已经删除了数字，子数组元素和的最大值是多少？</p>
-<ul>
-<li>情况一：如果删除这个右端点，说明子数组为前面的连续子数组，且不能删除数字</li>
-<li>情况二：如果删除是前面的数字，也就是变成如果子数组的右端点num[i-1],已经删除了数字，子数组元素和的最大值</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2417,7 +2509,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

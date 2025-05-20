@@ -260,6 +260,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/05/19/%E3%80%90Docker%E5%AD%A6%E4%B9%A0%E3%80%91WSL%E3%80%81Docker%20%E8%BF%81%E7%A7%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/05/19/%E3%80%90Docker%E5%AD%A6%E4%B9%A0%E3%80%91WSL%E3%80%81Docker%20%E8%BF%81%E7%A7%BB/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-05-19T23:07:43+08:00">
+                2025-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="WSL、Docker-迁移"><a href="#WSL、Docker-迁移" class="headerlink" title="WSL、Docker 迁移"></a>WSL、Docker 迁移</h1><p>Windows WSL Docker 默认安装路径在C盘的，导致岌岌可危的C盘空间😱更加吃紧，一不小心就要出现👇这种情况了</p>
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815143048352-1440225869.png" alt="image"></p>
+<p>接下来我们一起迁移它们吧</p>
+<h2 id="迁移-WSL"><a href="#迁移-WSL" class="headerlink" title="迁移 WSL"></a>迁移 WSL</h2><p>WSL2 默认安装在 C 盘，我们可以通过以下步骤迁移安装位置<br>通过以下命令列出已安装的 Linux 发行版：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl -l -v</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815145222644-1202975402.png" alt="image"><br>可以看到已安装了 Ubuntu，其运行状态为：Stopped</p>
+<h3 id="导出分发版"><a href="#导出分发版" class="headerlink" title="导出分发版"></a>导出分发版</h3><p>如果运行状态为 Running，需先通过以下命令关闭：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --shutdown</span><br></pre></td></tr></table></figure>
+
+<p>然后我们通过以下命令将 Ubuntu 导出为 tar 文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --export Ubuntu d:\wsl\Ubuntu.tar</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815145856500-292128290.png" alt="image"></p>
+<blockquote>
+<p>⚠️<br>wsl –export <Distribution Name> <FileName><br><code>&lt;Distribution Name&gt;</code> 为目标 Linux 发行版的名称，我安装的为： <code>Ubuntu</code><br><code>&lt;FileName&gt;</code> 为导出的文件名，这里我导出到 <code>d:\wsl\Ubuntu.tar</code><br>当然可以是任意位置</p>
+</blockquote>
+<h3 id="注销并卸载"><a href="#注销并卸载" class="headerlink" title="注销并卸载"></a>注销并卸载</h3><p>然后注销并卸载 Ubuntu</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --unregister Ubuntu</span><br></pre></td></tr></table></figure>
+
+<p>这时候可以执行验证是否完成注销并卸载<br><code>wsl -l -v</code></p>
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815160735996-160221150.png" alt="image"></p>
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815160813251-615510379.png" alt="image"></p>
+<p>👍完美，符合预期！！！</p>
+<h3 id="导入安装"><a href="#导入安装" class="headerlink" title="导入安装"></a>导入安装</h3><p>将 Ubuntu 从新位置导入：<br><code>wsl --import Ubuntu d:\wsl\Ubuntu d:\wsl\Ubuntu.tar</code><br>再次查看已安装的 Linux 发行版<br><code>wsl -l -v</code><br><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815161553829-1503338969.png" alt="image"></p>
+<p>设置默认用户<br><code>Ubuntu config --default-user bigroc</code></p>
+<blockquote>
+<p>⚠️<br><DistributionName> config –default-user <Username><br><code>&lt;DistributionName&gt;</code> 为目标 Linux 发行版的名称，我安装的为： <code>Ubuntu</code>，命令里要写为：<code>Ubuntu</code><br>假如你的是<code>Ubuntu-22.04</code>，命令里要写为：<code>Ubuntu2204</code><br><code>&lt;Username&gt;</code> 为 WSL 发行版中存在的用户名，在设置 Linux 用户名和密码时我创建的用户为：<code>bigroc</code> ，所以命令里的 <code>&lt;Username&gt;</code> 这里就为：<code>bigroc</code></p>
+</blockquote>
+<h2 id="迁移-docker-desktop-data-和-docker-desktop"><a href="#迁移-docker-desktop-data-和-docker-desktop" class="headerlink" title="迁移 docker-desktop-data 和 docker-desktop"></a>迁移 docker-desktop-data 和 docker-desktop</h2><p>Docker Desktop 会创建两个发行版：<code>docker-desktop-data</code> 和 <code>docker-desktop</code>，它们的默认位置在 <code>C:\Users\&lt;你电脑的用户名&gt;\AppData\Local\Docker\wsl</code>，我们同样可以参考上面导入导出 <code>Ubuntu</code> 的过程将<code>docker-desktop-data</code> 和 <code>docker-desktop</code> 迁移到其他位置</p>
+<p>过程一致⬇️</p>
+<h3 id="导出"><a href="#导出" class="headerlink" title="导出"></a>导出</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wsl --export docker-desktop-data d:\wsl\docker-desktop-data.tar`</span><br><span class="line">`wsl --export docker-desktop-data d:\wsl\docker-desktop.tar</span><br></pre></td></tr></table></figure>
+
+<h3 id="注销卸载"><a href="#注销卸载" class="headerlink" title="注销卸载"></a>注销卸载</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wsl --unregister docker-desktop-data`</span><br><span class="line">`wsl --unregister docker-desktop</span><br></pre></td></tr></table></figure>
+
+<h3 id="导入安装-1"><a href="#导入安装-1" class="headerlink" title="导入安装"></a>导入安装</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wsl --import docker-desktop-data d:\wsl\docker-desktop-data d:\wsl\docker-desktop-data.tar`</span><br><span class="line">`wsl --import docker-desktop d:\wsl\docker-desktop d:\wsl\docker-desktop.tar</span><br></pre></td></tr></table></figure>
+
+<p>至此 公司的电脑又一次成功复活<br><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815165529003-2038965666.png" alt="image"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li>【microsoft】<a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/wsl/basic-commands">WSL 的基本命令</a></li>
+<li>【csdn】<a target="_blank" rel="noopener" href="https://blog.csdn.net/cn_ljr/article/details/132047516">Win11 安装 Docker Desktop 和 WSL2 并进行安装位置迁移</a></li>
+<li>【bilibili】【2025【Docker Windows】C盘满了通过WSL将docker数据迁移到D盘】 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV17qdpYGEEE/?share_source=copy_web&vd_source=654a4e361961dcce96893993981165f5">https://www.bilibili.com/video/BV17qdpYGEEE/?share_source=copy_web&amp;vd_source=654a4e361961dcce96893993981165f5</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/05/17/%E3%80%90Unity%E5%AD%A6%E4%B9%A0%E3%80%91Unity%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2385,14 +2547,14 @@
             <p>微信开发者工具 SSH key认证 推送、拉取GitHub项目<br>因为从2021年8月14日之后，使用git对github进行身份验证操作的时候不再接受使用账号密码形式clone和push代码，今天就琢磨了下ssh key的方式来上传下拉代码，要注意的细节还是有的所以记录一下。</p>
 <p>1.下载安装、配置git。<br>git官网地址<a target="_blank" rel="noopener" href="https://git-scm.com/%EF%BC%8C%E5%AE%89%E8%A3%85%E5%AE%8C%E5%90%8E%E8%AE%B0%E5%BE%97%E8%AE%BE%E7%BD%AE%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%E5%9C%B0%E5%9D%80%EF%BC%88GitHub%E6%88%96%E8%80%85gitee%E7%9A%84%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%EF%BC%89%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95%E7%99%BE%E5%BA%A6%E3%80%82">https://git-scm.com/，安装完后记得设置用户名和邮箱地址（GitHub或者gitee的用户名和邮箱）具体方法百度。</a></p>
 <p>2.生成SSH Key<br>右键桌面进入Git Bash Here终端</p>
-<p>输入ssh-keygen -t ed25519 -C “<a href="mailto:&#x79;&#111;&#x75;&#x72;&#x5f;&#101;&#109;&#97;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#109;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#109;">&#x79;&#111;&#x75;&#x72;&#x5f;&#101;&#109;&#97;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#109;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#109;</a>” ( <a href="mailto:&#x79;&#x6f;&#117;&#114;&#x5f;&#x65;&#x6d;&#97;&#x69;&#x6c;&#x40;&#101;&#x78;&#x61;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#x79;&#x6f;&#117;&#114;&#x5f;&#x65;&#x6d;&#97;&#x69;&#x6c;&#x40;&#101;&#x78;&#x61;&#x6d;&#112;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a>是你GitHub的邮箱),连续回车3次</p>
+<p>输入ssh-keygen -t ed25519 -C “<a href="mailto:&#x79;&#111;&#x75;&#x72;&#x5f;&#x65;&#109;&#97;&#105;&#x6c;&#64;&#x65;&#x78;&#97;&#x6d;&#112;&#x6c;&#x65;&#46;&#99;&#111;&#109;">&#x79;&#111;&#x75;&#x72;&#x5f;&#x65;&#109;&#97;&#105;&#x6c;&#64;&#x65;&#x78;&#97;&#x6d;&#112;&#x6c;&#x65;&#46;&#99;&#111;&#109;</a>” ( <a href="mailto:&#x79;&#x6f;&#x75;&#x72;&#95;&#x65;&#x6d;&#x61;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#99;&#111;&#109;">&#x79;&#x6f;&#x75;&#x72;&#95;&#x65;&#x6d;&#x61;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#99;&#111;&#109;</a>是你GitHub的邮箱),连续回车3次</p>
 <p>注意：因密钥安全性问题 GitHub 自 2022 年 3 月 15 日起不再支持 DSA 密钥 (ssh-dss)。</p>
 <p>之前使用如下命令生成的密钥对无效：</p>
-<p>ssh-keygen -t rsa -C “<a href="mailto:&#121;&#111;&#x75;&#114;&#x5f;&#x65;&#109;&#97;&#105;&#x6c;&#x40;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#x63;&#111;&#109;">&#121;&#111;&#x75;&#114;&#x5f;&#x65;&#109;&#97;&#105;&#x6c;&#x40;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#x63;&#111;&#109;</a>”</p>
+<p>ssh-keygen -t rsa -C “<a href="mailto:&#121;&#x6f;&#x75;&#x72;&#95;&#x65;&#x6d;&#97;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#101;&#x2e;&#x63;&#111;&#109;">&#121;&#x6f;&#x75;&#x72;&#95;&#x65;&#x6d;&#97;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#101;&#x2e;&#x63;&#111;&#109;</a>”</p>
 <p>于是用下面的方法重新生成，这样生成的文件会自动保存在，C:\Users\帅气陈.ssh目录下（这个路径不能有中文‘帅气陈’卡了我半天，可以将.ssh剪切到纯英文目录）</p>
-<p>ssh-keygen -t ed25519 -C “<a href="mailto:&#x79;&#x6f;&#117;&#x72;&#95;&#x65;&#x6d;&#97;&#105;&#x6c;&#x40;&#x65;&#x78;&#97;&#109;&#112;&#108;&#101;&#x2e;&#x63;&#111;&#109;">&#x79;&#x6f;&#117;&#x72;&#95;&#x65;&#x6d;&#97;&#105;&#x6c;&#x40;&#x65;&#x78;&#97;&#109;&#112;&#108;&#101;&#x2e;&#x63;&#111;&#109;</a>”</p>
+<p>ssh-keygen -t ed25519 -C “<a href="mailto:&#121;&#x6f;&#x75;&#x72;&#95;&#x65;&#109;&#97;&#x69;&#108;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;">&#121;&#x6f;&#x75;&#x72;&#95;&#x65;&#109;&#97;&#x69;&#108;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;</a>”</p>
 <p>该目录下会生成两个文件，id_ed25519.pub为公钥，id_ed25519为私钥。</p>
-<p>输入 ssh -T <a href="mailto:&#x67;&#105;&#x74;&#x40;&#103;&#x69;&#116;&#x68;&#x75;&#x62;&#46;&#99;&#x6f;&#109;">&#x67;&#105;&#x74;&#x40;&#103;&#x69;&#116;&#x68;&#x75;&#x62;&#46;&#99;&#x6f;&#109;</a>回车，因为是第一次流程提示输入yes回车。这里的-T区分大小写。如果返回【Hi ***! You’ve successfully authenticated, but GitHub does not provide shell access.】 说明配置成功</p>
+<p>输入 ssh -T <a href="mailto:&#103;&#105;&#x74;&#64;&#x67;&#105;&#x74;&#x68;&#x75;&#98;&#x2e;&#x63;&#111;&#109;">&#103;&#105;&#x74;&#64;&#x67;&#105;&#x74;&#x68;&#x75;&#98;&#x2e;&#x63;&#111;&#109;</a>回车，因为是第一次流程提示输入yes回车。这里的-T区分大小写。如果返回【Hi ***! You’ve successfully authenticated, but GitHub does not provide shell access.】 说明配置成功</p>
 <p>右键id_ed25519.pub选择记事本打开全选复制里面内容</p>
 <p>打开GitHub点击右上角头像——Settings——SSH and GPG keys——New SSH key</p>
 <p>title给key命名，key里面粘贴刚刚复制的id_ed25519.pub中的内容——Add SSH key成功之后返回上级页面会出现一个key。</p>
@@ -2402,230 +2564,6 @@
 <p>4.代码上传、下拉</p>
 <p>具体怎么用b站有教程</p>
 <p>【【微信开发者工具+github】本地代码上传至远端仓库以及从仓库拉取代码到本地】 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV15f4y1m7rA?share_source=copy_web&vd_source=b5b2a4b0a89cf17fc65c77bb0686404e">https://www.bilibili.com/video/BV15f4y1m7rA?share_source=copy_web&amp;vd_source=b5b2a4b0a89cf17fc65c77bb0686404e</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/27/%E3%80%90MySQL%E5%AD%A6%E4%B9%A0%E3%80%91%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E8%AE%B2%E6%B8%85%E6%A5%9AMySQL%E7%9A%84%E8%81%9A%E7%B0%87%E8%81%94%E5%90%88%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95%E3%80%81%E5%9B%9E%E8%A1%A8%E3%80%81%E7%B4%A2%E5%BC%95%E4%B8%8B%E6%8E%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/02/27/%E3%80%90MySQL%E5%AD%A6%E4%B9%A0%E3%80%91%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E8%AE%B2%E6%B8%85%E6%A5%9AMySQL%E7%9A%84%E8%81%9A%E7%B0%87%E8%81%94%E5%90%88%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95%E3%80%81%E5%9B%9E%E8%A1%A8%E3%80%81%E7%B4%A2%E5%BC%95%E4%B8%8B%E6%8E%A8/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-27T21:03:18+08:00">
-                2025-02-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="一篇文章讲清楚MySQL的聚簇-联合-覆盖索引、回表、索引下推"><a href="#一篇文章讲清楚MySQL的聚簇-联合-覆盖索引、回表、索引下推" class="headerlink" title="一篇文章讲清楚MySQL的聚簇&#x2F;联合&#x2F;覆盖索引、回表、索引下推"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yidengjiagou/p/16410968.html">一篇文章讲清楚MySQL的聚簇&#x2F;联合&#x2F;覆盖索引、回表、索引下推</a></h1><blockquote>
-<p>迎面走来了你的面试官，身穿格子衫，挺着啤酒肚，发际线严重后移的中年男子。<br>手拿泡着枸杞的保温杯，胳膊夹着MacBook，MacBook上还贴着公司标语：“加班使我快乐”。</p>
-</blockquote>
-<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111051713-1507542591.jpg" alt="img"></p>
-<p><strong>面试官：</strong> 看你简历上用过MySQL，问你几个简单的问题吧。什么是聚簇索引和非聚簇索引？</p>
-<blockquote>
-<p>这个问题难不住我啊。来之前我看一下一灯MySQL八股文。</p>
-</blockquote>
-<p><strong>我：</strong> 举个例子：有这么一张用户表</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE TABLE</span> `<span class="keyword">user</span>` (</span><br><span class="line">  `id` <span class="type">int</span> COMMENT <span class="string">&#x27;主键ID&#x27;</span>,</span><br><span class="line">  `name` <span class="type">varchar</span>(<span class="number">10</span>) COMMENT <span class="string">&#x27;姓名&#x27;</span>,</span><br><span class="line">  `age` <span class="type">int</span> COMMENT <span class="string">&#x27;年龄&#x27;</span>,</span><br><span class="line">  <span class="keyword">PRIMARY KEY</span> (`id`)</span><br><span class="line">) ENGINE<span class="operator">=</span>InnoDB CHARSET<span class="operator">=</span>utf8 COMMENT<span class="operator">=</span><span class="string">&#x27;用户表&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>用户表中存储了这些数据：</p>
-<table>
-<thead>
-<tr>
-<th>id</th>
-<th>nane</th>
-<th>age</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>一灯</td>
-<td>18</td>
-</tr>
-<tr>
-<td>2</td>
-<td>张三</td>
-<td>22</td>
-</tr>
-<tr>
-<td>3</td>
-<td>李四</td>
-<td>21</td>
-</tr>
-<tr>
-<td>4</td>
-<td>王二</td>
-<td>19</td>
-</tr>
-<tr>
-<td>5</td>
-<td>麻子</td>
-<td>20</td>
-</tr>
-</tbody></table>
-<p>那么在索引中，这些数据是怎么存储的呢？</p>
-<p>MySQL的InnoDB引擎中索引使用的B+树结构。</p>
-<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111108036-1147402936.png" alt="img"></p>
-<p>别问为什么根节点存储了（1,4）两个元素，左子节点又存储了（1,2,3）三个元素，下面带有三个叶子节点，叶子节点之间又用有序链表相连？</p>
-<p>问就是B+树的特性，不了解的可以翻一下上期的文章。</p>
-<p>如上图所示，叶子节点中存储了全部元素的索引，就是<strong>聚簇索引</strong>。<br>一般主键索引就是<strong>聚簇索引</strong>，如果表中没有主键，MySQL也会默认建立一个隐藏主键做主键索引。</p>
-<p><strong>什么是非聚簇索引？</strong></p>
-<p>假设我们在age（年龄）字段上建一个普通索引，age字段上面的索引存储结构就是下面这样：</p>
-<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111121011-881324052.png" alt="img"></p>
-<p>叶子节点中只存储了当前索引字段和主键ID，这样的存储结构就是非聚簇索引。</p>
-<p><strong>面试官：</strong> 那什么是联合索引呢？</p>
-<p><strong>我：</strong> 有多个字段组成的索引就是联合索引。</p>
-<p><strong>面试官：</strong> 【晕】建联合索引有什么好处？它跟在单个字段上建索引有什么区别？</p>
-<p><strong>我：</strong> 假设有这么一条查询语句。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> age <span class="operator">=</span> <span class="number">18</span> <span class="keyword">and</span> name <span class="operator">=</span> <span class="string">&#x27;张三&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>如果我们在age和name字段上分别建两个索引，这个查询语句只会用到其中一个索引。</p>
-<p>但是我们在age和name字段建一个联合索引（age，name），它的存储结构就变成这样了。</p>
-<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111132063-131242407.png" alt="img"></p>
-<p>如果只在age上面建索引，会先查询age上面非聚簇索引，有三条age&#x3D;18的记录，主键ID分别是1、4、5，然后再用这三个ID去查询主键ID的聚簇索引。</p>
-<p>如果在age和name上面建联合索引，会先查询age和name上面的非聚簇索引，匹配到一条记录，主键ID是1，然后再用这个ID去查询主键ID的聚簇索引。</p>
-<p>由此可以得出，联合索引的优点：<strong>大大减少扫描行数。</strong></p>
-<p><strong>面试官：</strong> 你再说一下什么是最左匹配原则？</p>
-<p><strong>我：</strong> 最左匹配原则是指在建立联合索引的时候，遵循最左优先，以最左边的为起点任何连续的索引都能匹配上。</p>
-<p>当我们在(age,name)上建立联合索引的时候，where条件中只有age可以用到索引，同时有age和name也可以用到索引。但是只有name的时候是无法用到索引的。</p>
-<p>为什么会出现这种情况呢？</p>
-<p>看上面的图，就理解了，(age,name)的联合索引，是先按照age排序，age相等的行再按照name排序。如果where条件只有一个name，当然无法用到索引。</p>
-<p><strong>面试官：</strong> 什么是覆盖索引和回表查询？</p>
-<p><strong>我：</strong> 这个就更简单了，上面已经提到这个知识点了。</p>
-<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111147031-342000180.png" alt="img"></p>
-<p>当我们在age上建索引的时候，查询SQL是这样的时候：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> id <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> age <span class="operator">=</span> <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
-
-<p>就会用到覆盖索引，因为ID字段我们使用age索引的时候已经查出来，不需要再二次回表查询了。</p>
-<p>但是当查询SQL是这样的时候：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> age <span class="operator">=</span> <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
-
-<p>想要查询所有字段，就需要二次回表查询。因为我们第一次用age索引的时候只查出来了主键ID，还需要再用主键ID回表查询出所有字段。</p>
-<p><strong>面试官：</strong> 再问一个，你知道什么是索引下推吗？</p>
-<blockquote>
-<p>这么冷门的问题，你都问的出来，真的要面试造火箭啊！</p>
-</blockquote>
-<p><strong>我：</strong> 索引下推（Index Condition Pushdown）是MySQL5.6引入的一个优化索引的特性。</p>
-<p><strong>举例：</strong></p>
-<p>在(age,name)上面建联合索引，并且查询SQL是这样的时候：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> age <span class="operator">=</span> <span class="number">18</span> <span class="keyword">and</span> name <span class="operator">=</span> <span class="string">&#x27;张三&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111203139-127132140.png" alt="img"></p>
-<p>如果没有索引下推，会先匹配出 age &#x3D; 18 的三条记录，再用ID回表查询，筛选出 name &#x3D; ‘张三’ 的记录。</p>
-<p>如果使用索引下推，会先匹配出 age &#x3D; 18 的三条记录，再筛选出 name &#x3D; ‘张三’ 的一条记录，最后再用ID回表查询。</p>
-<p>由此得出，索引下推的优点：减少了回表的扫描行数。</p>
-<p>**面试官： ** 小伙子，八股文背的挺溜啊。我给你出个实战题，看你有没有准备。下面这个查询SQL该怎么建联合索引？</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> b <span class="operator">=</span> <span class="number">1</span> <span class="keyword">and</span> c <span class="operator">=</span> <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>故意***难我？你以为实战题就不能背八股文了吗？</p>
-</blockquote>
-<p><strong>我：</strong> 刚才在讲联合索引的时候已经说了这个知识点了，where条件有b和c的等值查询，联合索引就建成(b,c)，由于select后面有a，我们就建立 (b,c,a) 的联合索引，并且可以用到覆盖索引，查询速度更快。</p>
-<p><strong>面试官：</strong> 小伙子，有点东西。一会儿就给你发offer，明天就来上班，薪资double。</p>
 
           
         
@@ -2711,7 +2649,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

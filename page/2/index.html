@@ -260,6 +260,230 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/27/%E3%80%90MySQL%E5%AD%A6%E4%B9%A0%E3%80%91%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E8%AE%B2%E6%B8%85%E6%A5%9AMySQL%E7%9A%84%E8%81%9A%E7%B0%87%E8%81%94%E5%90%88%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95%E3%80%81%E5%9B%9E%E8%A1%A8%E3%80%81%E7%B4%A2%E5%BC%95%E4%B8%8B%E6%8E%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/02/27/%E3%80%90MySQL%E5%AD%A6%E4%B9%A0%E3%80%91%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E8%AE%B2%E6%B8%85%E6%A5%9AMySQL%E7%9A%84%E8%81%9A%E7%B0%87%E8%81%94%E5%90%88%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95%E3%80%81%E5%9B%9E%E8%A1%A8%E3%80%81%E7%B4%A2%E5%BC%95%E4%B8%8B%E6%8E%A8/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-27T21:03:18+08:00">
+                2025-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="一篇文章讲清楚MySQL的聚簇-联合-覆盖索引、回表、索引下推"><a href="#一篇文章讲清楚MySQL的聚簇-联合-覆盖索引、回表、索引下推" class="headerlink" title="一篇文章讲清楚MySQL的聚簇&#x2F;联合&#x2F;覆盖索引、回表、索引下推"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yidengjiagou/p/16410968.html">一篇文章讲清楚MySQL的聚簇&#x2F;联合&#x2F;覆盖索引、回表、索引下推</a></h1><blockquote>
+<p>迎面走来了你的面试官，身穿格子衫，挺着啤酒肚，发际线严重后移的中年男子。<br>手拿泡着枸杞的保温杯，胳膊夹着MacBook，MacBook上还贴着公司标语：“加班使我快乐”。</p>
+</blockquote>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111051713-1507542591.jpg" alt="img"></p>
+<p><strong>面试官：</strong> 看你简历上用过MySQL，问你几个简单的问题吧。什么是聚簇索引和非聚簇索引？</p>
+<blockquote>
+<p>这个问题难不住我啊。来之前我看一下一灯MySQL八股文。</p>
+</blockquote>
+<p><strong>我：</strong> 举个例子：有这么一张用户表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE TABLE</span> `<span class="keyword">user</span>` (</span><br><span class="line">  `id` <span class="type">int</span> COMMENT <span class="string">&#x27;主键ID&#x27;</span>,</span><br><span class="line">  `name` <span class="type">varchar</span>(<span class="number">10</span>) COMMENT <span class="string">&#x27;姓名&#x27;</span>,</span><br><span class="line">  `age` <span class="type">int</span> COMMENT <span class="string">&#x27;年龄&#x27;</span>,</span><br><span class="line">  <span class="keyword">PRIMARY KEY</span> (`id`)</span><br><span class="line">) ENGINE<span class="operator">=</span>InnoDB CHARSET<span class="operator">=</span>utf8 COMMENT<span class="operator">=</span><span class="string">&#x27;用户表&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>用户表中存储了这些数据：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>nane</th>
+<th>age</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>一灯</td>
+<td>18</td>
+</tr>
+<tr>
+<td>2</td>
+<td>张三</td>
+<td>22</td>
+</tr>
+<tr>
+<td>3</td>
+<td>李四</td>
+<td>21</td>
+</tr>
+<tr>
+<td>4</td>
+<td>王二</td>
+<td>19</td>
+</tr>
+<tr>
+<td>5</td>
+<td>麻子</td>
+<td>20</td>
+</tr>
+</tbody></table>
+<p>那么在索引中，这些数据是怎么存储的呢？</p>
+<p>MySQL的InnoDB引擎中索引使用的B+树结构。</p>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111108036-1147402936.png" alt="img"></p>
+<p>别问为什么根节点存储了（1,4）两个元素，左子节点又存储了（1,2,3）三个元素，下面带有三个叶子节点，叶子节点之间又用有序链表相连？</p>
+<p>问就是B+树的特性，不了解的可以翻一下上期的文章。</p>
+<p>如上图所示，叶子节点中存储了全部元素的索引，就是<strong>聚簇索引</strong>。<br>一般主键索引就是<strong>聚簇索引</strong>，如果表中没有主键，MySQL也会默认建立一个隐藏主键做主键索引。</p>
+<p><strong>什么是非聚簇索引？</strong></p>
+<p>假设我们在age（年龄）字段上建一个普通索引，age字段上面的索引存储结构就是下面这样：</p>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111121011-881324052.png" alt="img"></p>
+<p>叶子节点中只存储了当前索引字段和主键ID，这样的存储结构就是非聚簇索引。</p>
+<p><strong>面试官：</strong> 那什么是联合索引呢？</p>
+<p><strong>我：</strong> 有多个字段组成的索引就是联合索引。</p>
+<p><strong>面试官：</strong> 【晕】建联合索引有什么好处？它跟在单个字段上建索引有什么区别？</p>
+<p><strong>我：</strong> 假设有这么一条查询语句。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> age <span class="operator">=</span> <span class="number">18</span> <span class="keyword">and</span> name <span class="operator">=</span> <span class="string">&#x27;张三&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果我们在age和name字段上分别建两个索引，这个查询语句只会用到其中一个索引。</p>
+<p>但是我们在age和name字段建一个联合索引（age，name），它的存储结构就变成这样了。</p>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111132063-131242407.png" alt="img"></p>
+<p>如果只在age上面建索引，会先查询age上面非聚簇索引，有三条age&#x3D;18的记录，主键ID分别是1、4、5，然后再用这三个ID去查询主键ID的聚簇索引。</p>
+<p>如果在age和name上面建联合索引，会先查询age和name上面的非聚簇索引，匹配到一条记录，主键ID是1，然后再用这个ID去查询主键ID的聚簇索引。</p>
+<p>由此可以得出，联合索引的优点：<strong>大大减少扫描行数。</strong></p>
+<p><strong>面试官：</strong> 你再说一下什么是最左匹配原则？</p>
+<p><strong>我：</strong> 最左匹配原则是指在建立联合索引的时候，遵循最左优先，以最左边的为起点任何连续的索引都能匹配上。</p>
+<p>当我们在(age,name)上建立联合索引的时候，where条件中只有age可以用到索引，同时有age和name也可以用到索引。但是只有name的时候是无法用到索引的。</p>
+<p>为什么会出现这种情况呢？</p>
+<p>看上面的图，就理解了，(age,name)的联合索引，是先按照age排序，age相等的行再按照name排序。如果where条件只有一个name，当然无法用到索引。</p>
+<p><strong>面试官：</strong> 什么是覆盖索引和回表查询？</p>
+<p><strong>我：</strong> 这个就更简单了，上面已经提到这个知识点了。</p>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111147031-342000180.png" alt="img"></p>
+<p>当我们在age上建索引的时候，查询SQL是这样的时候：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> id <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> age <span class="operator">=</span> <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
+
+<p>就会用到覆盖索引，因为ID字段我们使用age索引的时候已经查出来，不需要再二次回表查询了。</p>
+<p>但是当查询SQL是这样的时候：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> age <span class="operator">=</span> <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
+
+<p>想要查询所有字段，就需要二次回表查询。因为我们第一次用age索引的时候只查出来了主键ID，还需要再用主键ID回表查询出所有字段。</p>
+<p><strong>面试官：</strong> 再问一个，你知道什么是索引下推吗？</p>
+<blockquote>
+<p>这么冷门的问题，你都问的出来，真的要面试造火箭啊！</p>
+</blockquote>
+<p><strong>我：</strong> 索引下推（Index Condition Pushdown）是MySQL5.6引入的一个优化索引的特性。</p>
+<p><strong>举例：</strong></p>
+<p>在(age,name)上面建联合索引，并且查询SQL是这样的时候：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> age <span class="operator">=</span> <span class="number">18</span> <span class="keyword">and</span> name <span class="operator">=</span> <span class="string">&#x27;张三&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111203139-127132140.png" alt="img"></p>
+<p>如果没有索引下推，会先匹配出 age &#x3D; 18 的三条记录，再用ID回表查询，筛选出 name &#x3D; ‘张三’ 的记录。</p>
+<p>如果使用索引下推，会先匹配出 age &#x3D; 18 的三条记录，再筛选出 name &#x3D; ‘张三’ 的一条记录，最后再用ID回表查询。</p>
+<p>由此得出，索引下推的优点：减少了回表的扫描行数。</p>
+<p>**面试官： ** 小伙子，八股文背的挺溜啊。我给你出个实战题，看你有没有准备。下面这个查询SQL该怎么建联合索引？</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> b <span class="operator">=</span> <span class="number">1</span> <span class="keyword">and</span> c <span class="operator">=</span> <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>故意***难我？你以为实战题就不能背八股文了吗？</p>
+</blockquote>
+<p><strong>我：</strong> 刚才在讲联合索引的时候已经说了这个知识点了，where条件有b和c的等值查询，联合索引就建成(b,c)，由于select后面有a，我们就建立 (b,c,a) 的联合索引，并且可以用到覆盖索引，查询速度更快。</p>
+<p><strong>面试官：</strong> 小伙子，有点东西。一会儿就给你发offer，明天就来上班，薪资double。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/26/%E3%80%90Tomcat%E6%9C%8D%E5%8A%A1%E5%99%A8%E3%80%91tomcat%20%E6%97%A5%E5%BF%97%E8%AF%A6%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1561,368 +1785,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/17/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91Channel%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E6%80%9D%E8%80%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/02/17/%E3%80%90Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E3%80%91Channel%E7%9A%84%E4%B8%80%E7%B3%BB%E5%88%97%E6%80%9D%E8%80%83/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-17T17:07:12+08:00">
-                2025-02-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Title：Channel的一系列思考"><a href="#Title：Channel的一系列思考" class="headerlink" title="Title：Channel的一系列思考"></a>Title：Channel的一系列思考</h1><hr>
-<h2 id="自动关闭or手动关闭（close）？"><a href="#自动关闭or手动关闭（close）？" class="headerlink" title="自动关闭or手动关闭（close）？"></a>自动关闭or手动关闭（close）？</h2><p>​	学习goroutine和channel的时候发现deadlock，deadlock出现的原因基本就是通道有人生产放入但无取出的操作，就像田径比赛中的4x100接力赛，想要完成交棒必须有一个能够接棒的运动员，否则只能等待。简单来说就是无缓冲的通道必须有至少一个接收方才能发送成功。</p>
-<p>​	修复好后就对channel通道的关闭产生疑问，什么时候通道会自动关闭，或者需要手动关闭（close）？</p>
-<p>经过查阅资料，得知：<strong>一个通道值是可以被垃圾回收掉的。通道通常由发送方执行关闭操作，并且只有在接收方明确等待通道关闭的信号时才需要执行关闭操作。</strong>它和<strong>关闭文件</strong>不一样，通常在结束操作之后关闭文件是必须要做的，<strong>但关闭通道不是必须的。</strong></p>
-<p>关闭后的通道有以下特点：</p>
-<ol>
-<li>对一个关闭的通道再发送值就会导致 panic。</li>
-<li>对一个关闭的通道进行接收会一直获取值直到通道为空。</li>
-<li>对一个关闭的并且没有值的通道执行接收操作会得到对应类型的零值。</li>
-<li>关闭一个已经关闭的通道会导致 panic。</li>
-</ol>
-<p>也就是说close在go中是立即执行， 立即关闭通道。</p>
-<p><strong>close(ch) 不会清空通道，也不会等待通道中的值被取完。</strong><br><strong>关闭后，通道仍然可以被读取，但不能再写入，</strong>否则会导致panic（向已关闭的通道发送数据）。<br>读取者可以继续从已关闭的通道读取剩余的值，<strong>当通道为空时，ok 变量会变为 false</strong>（即 v, ok :&#x3D; &lt;-ch，ok为false写退出逻辑）。</p>
-<p>那么我通过观察测试，得出来的初步推论满足取出的次数等于小于存入的次数，那么就不需要自己用close，否则就要在存入后直接close是吗，还有就是如果close之后还能开启吗？</p>
-<p>不过后面考虑到这几种情况产生：</p>
-<ol>
-<li><p><strong>生产者</strong> 关闭通道，以通知消费者 <strong>不再有新数据</strong>，避免消费者一直阻塞等待的情况，</p>
-<ul>
-<li><pre><code>package main
-
-import &quot;fmt&quot;
-
-func main() &#123;
-    ch := make(chan int)
-
-    // 生产者 goroutine
-    go func() &#123;
-        for i := 0; i &lt; 5; i++ &#123;
-            ch &lt;- i
-        &#125;
-        close(ch) // 关闭通道，通知消费者
-    &#125;()
-
-    // 消费者读取数据
-    for v := range ch &#123;
-        fmt.Println(v)
-    &#125;
-&#125;
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">     </span><br><span class="line"></span><br><span class="line">2. **多个消费者时，避免 `panic: send on closed channel`**</span><br><span class="line"></span><br><span class="line">   - 如果一个生产者向通道发送数据，而多个消费者读取数据，关闭通道可以确保所有消费者都能正确退出。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-package main
-
-import (
-    &quot;fmt&quot;
-    &quot;sync&quot;
-)
-
-func main() &#123;
-    ch := make(chan int)
-    var wg sync.WaitGroup
-
-    // 启动 3 个消费者
-    for i := 0; i &lt; 3; i++ &#123;
-        wg.Add(1)
-        go func(id int) &#123;
-            defer wg.Done()
-            for v := range ch &#123;
-                fmt.Printf(&quot;Worker %d received %d\n&quot;, id, v)
-            &#125;
-        &#125;(i)
-    &#125;
-
-    // 生产者发送数据
-    for i := 0; i &lt; 10; i++ &#123;
-        ch &lt;- i
-    &#125;
-    close(ch) // 关闭通道，通知所有消费者
-
-    wg.Wait() // 等待所有消费者完成
-&#125;
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">同时 关闭通道的注意事项告诉我们不能向已关闭的通道发送数据，在关闭 nil 通道会 `panic`，以及`close` 只能由发送方调用，那么就明晰了，只要我们能确保从channel中取数据的次数是有限并小于或等于存的次数，而不是for range或无限循环就可以</span><br><span class="line"></span><br><span class="line">这里要**注意：**目前Go语言中并没有提供一个不对通道进行读取操作就能判断通道是否被关闭的方法。不能简单的通过`len(ch)`操作来判断通道是否被关闭。</span><br><span class="line"></span><br><span class="line">## **`range` 遍历通道的底层逻辑**</span><br><span class="line"></span><br><span class="line">​	对于 `range ch`：</span><br><span class="line"></span><br><span class="line">1. **从 `ch` 取出数据**。</span><br><span class="line">2. **如果 `ch` 关闭且取完数据，退出循环**。</span><br><span class="line">3. **如果 `ch` 仍然有数据，继续遍历**。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
-</ul>
-</li>
-</ol>
-<p>package main</p>
-<p>import “fmt”</p>
-<p>func main() {<br>    ch :&#x3D; make(chan int, 3)</p>
-<pre><code>go func() &#123;
-    ch &lt;- 10
-    ch &lt;- 20
-    ch &lt;- 30
-    close(ch) // 关闭通道,这里不close会无限阻塞！！！
-&#125;()
-
-for v := range ch &#123; // 直到 ch 关闭后，才退出循环
-    fmt.Println(v)
-&#125;
-</code></pre>
-<p>}</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">底层逻辑就像：</span><br><span class="line"></span><br><span class="line">```go</span><br><span class="line">for &#123;</span><br><span class="line">    v, ok := &lt;-ch</span><br><span class="line">    if !ok &#123; // 通道关闭，退出循环</span><br><span class="line">        break</span><br><span class="line">    &#125;</span><br><span class="line">    // 继续处理数据</span><br><span class="line">    fmt.Println(v)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><code>len(ch)</code> 只适用于 <strong>缓冲通道（buffered channel）</strong>，表示当前通道的元素个数，但：</p>
-<ul>
-<li>**<code>len(ch)</code> 不能用于 <code>range</code>**，因为 <code>range</code> 需要不断读取新数据。</li>
-<li><strong><code>len(ch)</code> 不能检测通道是否关闭</strong>，所以 <code>range</code> 依赖 <code>close(ch)</code> 退出。</li>
-</ul>
-<h3 id="示例："><a href="#示例：" class="headerlink" title="示例："></a><strong>示例：</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go复制编辑ch := make(chan int, 3)</span><br><span class="line">ch &lt;- 1</span><br><span class="line">ch &lt;- 2</span><br><span class="line">fmt.Println(len(ch)) // ✅ 2，通道里有两个数据</span><br></pre></td></tr></table></figure>
-
-<p>但：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go复制编辑for i := 0; i &lt; len(ch); i++ &#123; // ❌ 不能这样遍历通道！</span><br><span class="line">    fmt.Println(&lt;-ch)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这种方式<strong>不适用于通道</strong>，因为 <code>len(ch)</code> 可能在 <code>receive</code> 时动态变化。</p>
-<p>提一嘴：</p>
-<p>在<code>range</code> 遍历<code>slice/map</code> 的底层,<code>range</code> <strong>是基于 <code>len()</code> 计算的</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">arr := []int&#123;1, 2, 3&#125;</span><br><span class="line">for i := 0; i &lt; len(arr); i++ &#123; // ✅ 等价于 `range`</span><br><span class="line">    fmt.Println(arr[i])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>🔹 <strong><code>range</code> 遍历通道不会使用 <code>len(ch)</code>，而是依赖 <code>close(ch)</code> 退出</strong>。<br>🔹 <strong>如果 <code>ch</code> 没有 <code>close()</code>，<code>range</code> 会阻塞</strong>。<br>🔹 <strong>通道不能像 <code>slice/map</code> 那样用 <code>len()</code> 遍历</strong>。<br>🔹 <strong>如果 <code>range</code> 不能用，手动 <code>ok := &lt;-ch</code> 方式检测通道是否关闭</strong>。</p>
-<h3 id="range-遍历通道的正确用法"><a href="#range-遍历通道的正确用法" class="headerlink" title="range 遍历通道的正确用法"></a><strong><code>range</code> 遍历通道的正确用法</strong></h3><p>✅ <strong>方式 1：必须 <code>close(ch)</code></strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span>复制编辑<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">        ch &lt;- i</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">close</span>(ch) <span class="comment">// 关闭通道，保证 `range` 能退出</span></span><br><span class="line">&#125;()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> v := <span class="keyword">range</span> ch &#123; <span class="comment">// `range` 依赖 `close` 才能结束</span></span><br><span class="line">    fmt.Println(v)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>✅ <strong>方式 2：手动检查 <code>ok</code></strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span>复制编辑<span class="keyword">for</span> &#123;</span><br><span class="line">    v, ok := &lt;-ch</span><br><span class="line">    <span class="keyword">if</span> !ok &#123;</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(v)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>🚫 <strong>错误方式：用 <code>len(ch)</code> 遍历</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span>复制编辑<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(ch); i++ &#123; <span class="comment">// ❌ 错误，`len(ch)` 不能用来遍历通道</span></span><br><span class="line">    fmt.Println(&lt;-ch)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="close总结："><a href="#close总结：" class="headerlink" title="close总结："></a>close总结：</h2><h3 id="1-何时不需要-close？"><a href="#1-何时不需要-close？" class="headerlink" title="1. 何时不需要 close？"></a><strong>1. 何时不需要 <code>close</code>？</strong></h3><p>只要 <strong>接收次数</strong>（<code>receive</code>） <strong>等于小于</strong> <strong>发送次数</strong>（<code>send</code>），就**不需要手动 <code>close</code>**，因为：</p>
-<ul>
-<li><code>receive</code> 取数据后不会再阻塞。</li>
-<li><code>receive</code> 没有使用 <code>range</code> 依赖 <code>close</code> 才能退出。</li>
-</ul>
-<p><strong>示例：</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">            ch &lt;- i <span class="comment">// 发送 5 次</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">        fmt.Println(&lt;-ch) <span class="comment">// 接收 5 次，匹配</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>✅ 这里不需要 <code>close(ch)</code>，程序不会死锁。</strong></p>
-<hr>
-<h3 id="2-何时必须-close？"><a href="#2-何时必须-close？" class="headerlink" title="2. 何时必须 close？"></a><strong>2. 何时必须 <code>close</code>？</strong></h3><p>如果 <code>receive</code> 的次数<strong>不固定</strong>，或者使用了 <code>range</code> 读取通道，就必须 <code>close</code>，否则：</p>
-<ul>
-<li><code>range ch</code> 会<strong>无限等待</strong>，导致死锁。</li>
-<li>其他 goroutine 可能无法正确退出。</li>
-</ul>
-<p><strong>示例（必须 <code>close</code>）：</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">            ch &lt;- i</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">close</span>(ch) <span class="comment">// 生产者完成后关闭通道</span></span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> v := <span class="keyword">range</span> ch &#123; <span class="comment">// 依赖 close(ch) 才能退出</span></span><br><span class="line">        fmt.Println(v)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>✅ <code>close(ch)</code> 让 <code>range</code> 退出，防止死锁。</strong></p>
-<hr>
-<h3 id="3-close-之后还能开启吗？"><a href="#3-close-之后还能开启吗？" class="headerlink" title="3. close 之后还能开启吗？"></a><strong>3. <code>close</code> 之后还能开启吗？</strong></h3><p>🚫 <strong>不能！关闭通道后不能重新开启！</strong></p>
-<ul>
-<li>关闭通道后，任何写入 (<code>ch &lt;- x</code>) 都会 <strong>panic</strong>。</li>
-<li>但仍然可以<strong>继续读取</strong> <strong>已缓冲的数据</strong>（如果是缓冲通道）。</li>
-</ul>
-<h4 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a><strong>示例：</strong></h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    ch &lt;- <span class="number">10</span></span><br><span class="line">    ch &lt;- <span class="number">20</span></span><br><span class="line">    <span class="built_in">close</span>(ch) <span class="comment">// 关闭通道</span></span><br><span class="line"></span><br><span class="line">    fmt.Println(&lt;-ch) <span class="comment">// ✅ 还能取数据：10</span></span><br><span class="line">    fmt.Println(&lt;-ch) <span class="comment">// ✅ 还能取数据：20</span></span><br><span class="line">    fmt.Println(&lt;-ch) <span class="comment">// ❌ 取不到新数据，返回零值 0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>⚠️ <code>ch &lt;- 30</code> 这种写入会 <code>panic</code>！</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ch &lt;- <span class="number">30</span>  <span class="comment">// ❌ panic: send on closed channel</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="4-close-后的-receive-规则"><a href="#4-close-后的-receive-规则" class="headerlink" title="4. close 后的 receive 规则"></a><strong>4. <code>close</code> 后的 <code>receive</code> 规则</strong></h3><ul>
-<li>关闭后<strong>仍然可以接收</strong> <strong>已发送但未取走的数据</strong>（只有带缓存的通道）。</li>
-<li>取完后，<strong>继续取会返回通道类型的零值</strong>（<code>int</code> 类型返回 <code>0</code>，<code>string</code> 返回 <code>&quot;&quot;</code>）。</li>
-<li><code>ok := &lt;-ch</code> 方式可以<strong>检查通道是否关闭</strong>。</li>
-</ul>
-<p><strong>示例：</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    ch &lt;- <span class="number">10</span></span><br><span class="line">    ch &lt;- <span class="number">20</span></span><br><span class="line">    <span class="built_in">close</span>(ch) <span class="comment">// 关闭通道</span></span><br><span class="line"></span><br><span class="line">    v, ok := &lt;-ch</span><br><span class="line">    fmt.Println(v, ok) <span class="comment">// ✅ 10, true</span></span><br><span class="line"></span><br><span class="line">    v, ok = &lt;-ch</span><br><span class="line">    fmt.Println(v, ok) <span class="comment">// ✅ 20, true</span></span><br><span class="line"></span><br><span class="line">    v, ok = &lt;-ch</span><br><span class="line">    fmt.Println(v, ok) <span class="comment">// ❌ 0, false（通道已关闭）</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="5-close-的最佳实践"><a href="#5-close-的最佳实践" class="headerlink" title="5. close 的最佳实践"></a><strong>5. <code>close</code> 的最佳实践</strong></h3><ul>
-<li>**单个 <code>sender</code>，多个 <code>receiver</code><strong>：</strong>必须 <code>close(ch)</code>**。</li>
-<li>**多个 <code>sender</code>，单个 <code>receiver</code><strong>：</strong>不能随便 <code>close(ch)</code>**，否则会 <code>panic</code>。</li>
-<li>**多个 <code>sender</code>，多个 <code>receiver</code><strong>：</strong>需要 <code>sync.WaitGroup</code> 或 <code>sync.Once</code> 控制 <code>close(ch)</code>。</li>
-</ul>
-<hr>
-<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a><strong>结论</strong></h3><p>✅ <strong>不需要 <code>close</code>：</strong></p>
-<ul>
-<li><code>send</code> 次数 &#x3D; <code>receive</code> 次数。</li>
-<li>只用 <code>&lt;-ch</code> 读取 <strong>固定次数</strong>。</li>
-</ul>
-<p>✅ <strong>必须 <code>close</code>：</strong></p>
-<ul>
-<li><code>range ch</code> 读取通道。</li>
-<li><code>receive</code> 需要判断何时退出。</li>
-<li><code>多个 goroutine</code> 需要通知通道已结束。</li>
-</ul>
-<p>🚫 <strong>不能 <code>close</code> 之后再打开</strong></p>
-<ul>
-<li>关闭后<strong>还能读取</strong>，但<strong>不能写入</strong>，否则 <code>panic</code>。</li>
-</ul>
-<h2 id="Channal中阻塞行为"><a href="#Channal中阻塞行为" class="headerlink" title="Channal中阻塞行为"></a>Channal中阻塞行为</h2><h3 id="1-发送操作-ch"><a href="#1-发送操作-ch" class="headerlink" title="1. 发送操作 (ch &lt;- &quot;job result&quot;) 的阻塞行为"></a><strong>1. 发送操作 (<code>ch &lt;- &quot;job result&quot;</code>) 的阻塞行为</strong></h3><p>Go 语言的通道（channel）有两种：</p>
-<ul>
-<li><strong>无缓冲通道</strong>（<code>ch := make(chan string)</code>）：发送操作 <code>ch &lt;- value</code> <strong>必须等到有接收者</strong>，否则阻塞。</li>
-<li><strong>带缓冲通道</strong>（<code>ch := make(chan string, 1)</code>）：如果缓冲区未满，发送不会阻塞；如果缓冲区满了，发送仍然会阻塞。</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">go复制编辑ch := make(chan string) // 无缓冲通道</span><br><span class="line">go func() &#123;</span><br><span class="line">    time.Sleep(3 * time.Second)</span><br><span class="line">    ch &lt;- &quot;job result&quot; // 没有接收者，阻塞！</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>ch &lt;- &quot;job result&quot;</code> 这行代码会尝试把 <code>&quot;job result&quot;</code> 放入通道。</li>
-<li><strong>因为 <code>ch</code> 是无缓冲通道</strong>，它<strong>必须</strong>等到有 <code>&lt;- ch</code> 取出数据，才能完成发送操作，否则<strong>goroutine 卡在这里，不会往下执行</strong>。</li>
-<li>如果 <code>demo2()</code> 的 <code>select</code> 语句选择了超时 <code>case &lt;-time.After(1 * time.Second)</code> 并 <code>return</code>，那么 <code>ch</code> <strong>再也没有接收者</strong>，<code>ch &lt;- &quot;job result&quot;</code> <strong>永远不会成功，导致 goroutine 永远阻塞</strong>。</li>
-</ul>
-<hr>
-<h3 id="2-为什么-ch"><a href="#2-为什么-ch" class="headerlink" title="2. 为什么 ch &lt;- &quot;job result&quot; 不能先执行，再等待消费？"></a><strong>2. 为什么 <code>ch &lt;- &quot;job result&quot;</code> 不能先执行，再等待消费？</strong></h3><p>很多人误以为 <code>ch &lt;- &quot;job result&quot;</code> <strong>会先放入通道，然后阻塞等待消费</strong>，但事实并非如此！</p>
-<p>在 Go 语言中，<strong>无缓冲通道的本质是同步的</strong>：</p>
-<ul>
-<li><p>发送者和接收者必须匹配</p>
-<p>，否则发送&#x2F;接收操作会阻塞：</p>
-<ul>
-<li><code>ch &lt;- value</code> <strong>必须等到 <code>value := &lt;-ch</code> 发生时，才能完成发送</strong>。</li>
-<li><code>&lt;-ch</code> <strong>必须等到 <code>ch &lt;- value</code> 发生时，才能完成接收</strong>。</li>
-</ul>
-</li>
-</ul>
-<p><strong>示例代码演示这个特性：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    ch := make(chan int) // 无缓冲通道</span><br><span class="line">    go func() &#123;</span><br><span class="line">        fmt.Println(&quot;准备发送数据&quot;)</span><br><span class="line">        ch &lt;- 42 // 这里会阻塞，直到 main goroutine 读取数据</span><br><span class="line">        fmt.Println(&quot;发送完成&quot;) // 这行不会执行，除非 main 读取通道</span><br><span class="line">    &#125;()</span><br><span class="line">    </span><br><span class="line">    time.Sleep(2 * time.Second) // 故意延迟 2 秒</span><br><span class="line">    fmt.Println(&quot;准备接收数据&quot;)</span><br><span class="line">    value := &lt;-ch // 这里 main goroutine 接收数据</span><br><span class="line">    fmt.Println(&quot;接收到数据:&quot;, value)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>输出：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">准备发送数据</span><br><span class="line">（等待2秒）</span><br><span class="line">准备接收数据</span><br><span class="line">接收到数据: 42</span><br><span class="line">发送完成</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>“准备发送数据” 先打印</strong>，但 <code>ch &lt;- 42</code> <strong>阻塞住了 goroutine</strong>，直到 <code>value := &lt;-ch</code> 执行，发送才完成。</li>
-<li><code>ch &lt;- 42</code> <strong>不会提前放到通道里，而是等到接收者出现才一起执行</strong>。</li>
-</ul>
-<hr>
-<h3 id="3-ch"><a href="#3-ch" class="headerlink" title="3. ch &lt;- value 为什么没有存入无缓冲通道？"></a><strong>3. <code>ch &lt;- value</code> 为什么没有存入无缓冲通道？</strong></h3><p>Go 语言的 <strong>无缓冲通道就是同步通信机制</strong>，不像队列或者消息队列那样<strong>存值</strong>：</p>
-<ul>
-<li><strong>通道并不存数据</strong>，它只是一个传输机制。</li>
-<li><code>ch &lt;- value</code> 只有当 <code>value := &lt;-ch</code> 同时发生时，数据才能被真正传递。</li>
-<li>如果接收者不存在，<code>ch &lt;- value</code> <strong>会一直阻塞，而不是先存进去再等待消费</strong>。</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><ol>
-<li><p><strong>无缓冲通道的 <code>ch &lt;- value</code> 必须有 <code>&lt;-ch</code> 同时执行，否则会阻塞</strong>。</p>
-</li>
-<li><p><strong>阻塞不是等待消费，而是直接阻塞在 <code>ch &lt;-</code> 这一行</strong>，直到有接收者。</p>
-</li>
-<li><p><strong>如果 <code>select</code> 选择超时分支，goroutine 仍然执行 <code>ch &lt;- value</code>，但没有接收者，导致永久阻塞</strong>。</p>
-</li>
-<li><p>解决方案</p>
-<p>：</p>
-<ul>
-<li>用 <strong>带缓冲通道</strong></li>
-<li>在 <code>select</code> 中使用 <code>default</code></li>
-<li>用 <code>context.WithTimeout</code> 避免超时阻塞</li>
-</ul>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1973,7 +1835,7 @@ for v := range ch &#123; // 直到 ch 关闭后，才退出循环
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
