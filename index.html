@@ -260,6 +260,146 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/05/22/%E3%80%90Git%E5%AD%A6%E4%B9%A0%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86Unity%E9%A1%B9%E7%9B%AE%E4%B8%8A%E4%BC%A0%E5%88%B0Github%E8%BF%9B%E8%A1%8C%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/05/22/%E3%80%90Git%E5%AD%A6%E4%B9%A0%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86Unity%E9%A1%B9%E7%9B%AE%E4%B8%8A%E4%BC%A0%E5%88%B0Github%E8%BF%9B%E8%A1%8C%E7%AE%A1%E7%90%86/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-05-22T10:37:49+08:00">
+                2025-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="如何将Unity项目上传到Github进行管理"><a href="#如何将Unity项目上传到Github进行管理" class="headerlink" title="如何将Unity项目上传到Github进行管理"></a>如何将Unity项目上传到Github进行管理</h1><h2 id="1-下载安装Git"><a href="#1-下载安装Git" class="headerlink" title="1.下载安装Git"></a>1.下载安装Git</h2><p>忽略，自行安装</p>
+<h2 id="2-在Github上面新建一个仓库"><a href="#2-在Github上面新建一个仓库" class="headerlink" title="2.在Github上面新建一个仓库"></a>2.在Github上面新建一个仓库</h2><p>如下图，这里.gitignore文件十分建议选择Unity模板</p>
+<h2 id="3-复制仓库地址"><a href="#3-复制仓库地址" class="headerlink" title="3.复制仓库地址"></a>3.复制仓库地址</h2><p>把这里的地址复制一下，后面需要用</p>
+<h2 id="4-在项目文件夹打开Git-Bash"><a href="#4-在项目文件夹打开Git-Bash" class="headerlink" title="4.在项目文件夹打开Git Bash"></a>4.在项目文件夹打开Git Bash</h2><p>进入项目文件夹右击选择Git Bash Here</p>
+<h3 id="4-1初始化仓库"><a href="#4-1初始化仓库" class="headerlink" title="4.1初始化仓库"></a>4.1初始化仓库</h3><p>输入</p>
+<p>git init</p>
+<h3 id="4-2建立远程连接"><a href="#4-2建立远程连接" class="headerlink" title="4.2建立远程连接"></a>4.2建立远程连接</h3><p>输入</p>
+<p>git remote add origin <a target="_blank" rel="noopener" href="https://github.com/xxxx/xxxx.git%EF%BC%88%E4%B9%8B%E5%89%8D%E5%A4%8D%E5%88%B6%E7%9A%84%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80%EF%BC%89">https://github.com/xxxx/xxxx.git（之前复制的仓库地址）</a></p>
+<h3 id="4-3配置信息"><a href="#4-3配置信息" class="headerlink" title="4.3配置信息"></a>4.3配置信息</h3><p>输入</p>
+<p>git config user.name “名字”<br>git config user.email “邮箱”</p>
+<p>或</p>
+<p>git config –global user.name “名字”<br>git config –global user.email “邮箱”</p>
+<p>后者只需要一次，以后上传其他仓库仍按保留，不再需要进行配置</p>
+<h3 id="4-4下载仓库到本地"><a href="#4-4下载仓库到本地" class="headerlink" title="4.4下载仓库到本地"></a>4.4下载仓库到本地</h3><p>输入</p>
+<p>git pull origin master</p>
+<p>完成后，本地文件夹会下载空仓库中的.gitignore和LICENSE文件，务必确保执行这一步之前本地文件夹没有这两个文件</p>
+<h3 id="4-5上传项目到仓库"><a href="#4-5上传项目到仓库" class="headerlink" title="4.5上传项目到仓库"></a>4.5上传项目到仓库</h3><p>输入</p>
+<p>git add .<br>git commit -m “备注”<br>git push origin master</p>
+<p>至此完成本地项目的上传</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>github创建新仓库(master)，本地现有项目上传<br>1.git init<br>2.git remote add origin <a target="_blank" rel="noopener" href="https://github.com/xxxx/xxxx.git">https://github.com/xxxx/xxxx.git</a><br>3.git pull origin master 这一步经常连接不上<br>4.git add .<br>5.git commit -m “备注”<br>6.git push origin master</p>
+<p>强制添加被ignore的文件<br>1.git add -f Builds&#x2F;<br>2.git commit -m “备注”<br>3.git push origin master</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/05/19/%E3%80%90Docker%E5%AD%A6%E4%B9%A0%E3%80%91WSL%E3%80%81Docker%20%E8%BF%81%E7%A7%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2460,145 +2600,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/10/%E3%80%90%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7%E3%80%91SSH%20key%E8%AE%A4%E8%AF%81%20%E6%8E%A8%E9%80%81%E3%80%81%E6%8B%89%E5%8F%96GitHub%E9%A1%B9%E7%9B%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/04/10/%E3%80%90%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7%E3%80%91SSH%20key%E8%AE%A4%E8%AF%81%20%E6%8E%A8%E9%80%81%E3%80%81%E6%8B%89%E5%8F%96GitHub%E9%A1%B9%E7%9B%AE/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-04-10T11:37:31+08:00">
-                2025-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>微信开发者工具 SSH key认证 推送、拉取GitHub项目<br>因为从2021年8月14日之后，使用git对github进行身份验证操作的时候不再接受使用账号密码形式clone和push代码，今天就琢磨了下ssh key的方式来上传下拉代码，要注意的细节还是有的所以记录一下。</p>
-<p>1.下载安装、配置git。<br>git官网地址<a target="_blank" rel="noopener" href="https://git-scm.com/%EF%BC%8C%E5%AE%89%E8%A3%85%E5%AE%8C%E5%90%8E%E8%AE%B0%E5%BE%97%E8%AE%BE%E7%BD%AE%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%E5%9C%B0%E5%9D%80%EF%BC%88GitHub%E6%88%96%E8%80%85gitee%E7%9A%84%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%EF%BC%89%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95%E7%99%BE%E5%BA%A6%E3%80%82">https://git-scm.com/，安装完后记得设置用户名和邮箱地址（GitHub或者gitee的用户名和邮箱）具体方法百度。</a></p>
-<p>2.生成SSH Key<br>右键桌面进入Git Bash Here终端</p>
-<p>输入ssh-keygen -t ed25519 -C “<a href="mailto:&#x79;&#111;&#x75;&#x72;&#x5f;&#x65;&#109;&#97;&#105;&#x6c;&#64;&#x65;&#x78;&#97;&#x6d;&#112;&#x6c;&#x65;&#46;&#99;&#111;&#109;">&#x79;&#111;&#x75;&#x72;&#x5f;&#x65;&#109;&#97;&#105;&#x6c;&#64;&#x65;&#x78;&#97;&#x6d;&#112;&#x6c;&#x65;&#46;&#99;&#111;&#109;</a>” ( <a href="mailto:&#x79;&#x6f;&#x75;&#x72;&#95;&#x65;&#x6d;&#x61;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#99;&#111;&#109;">&#x79;&#x6f;&#x75;&#x72;&#95;&#x65;&#x6d;&#x61;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#99;&#111;&#109;</a>是你GitHub的邮箱),连续回车3次</p>
-<p>注意：因密钥安全性问题 GitHub 自 2022 年 3 月 15 日起不再支持 DSA 密钥 (ssh-dss)。</p>
-<p>之前使用如下命令生成的密钥对无效：</p>
-<p>ssh-keygen -t rsa -C “<a href="mailto:&#121;&#x6f;&#x75;&#x72;&#95;&#x65;&#x6d;&#97;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#101;&#x2e;&#x63;&#111;&#109;">&#121;&#x6f;&#x75;&#x72;&#95;&#x65;&#x6d;&#97;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#101;&#x2e;&#x63;&#111;&#109;</a>”</p>
-<p>于是用下面的方法重新生成，这样生成的文件会自动保存在，C:\Users\帅气陈.ssh目录下（这个路径不能有中文‘帅气陈’卡了我半天，可以将.ssh剪切到纯英文目录）</p>
-<p>ssh-keygen -t ed25519 -C “<a href="mailto:&#121;&#x6f;&#x75;&#x72;&#95;&#x65;&#109;&#97;&#x69;&#108;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;">&#121;&#x6f;&#x75;&#x72;&#95;&#x65;&#109;&#97;&#x69;&#108;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;</a>”</p>
-<p>该目录下会生成两个文件，id_ed25519.pub为公钥，id_ed25519为私钥。</p>
-<p>输入 ssh -T <a href="mailto:&#103;&#105;&#x74;&#64;&#x67;&#105;&#x74;&#x68;&#x75;&#98;&#x2e;&#x63;&#111;&#109;">&#103;&#105;&#x74;&#64;&#x67;&#105;&#x74;&#x68;&#x75;&#98;&#x2e;&#x63;&#111;&#109;</a>回车，因为是第一次流程提示输入yes回车。这里的-T区分大小写。如果返回【Hi ***! You’ve successfully authenticated, but GitHub does not provide shell access.】 说明配置成功</p>
-<p>右键id_ed25519.pub选择记事本打开全选复制里面内容</p>
-<p>打开GitHub点击右上角头像——Settings——SSH and GPG keys——New SSH key</p>
-<p>title给key命名，key里面粘贴刚刚复制的id_ed25519.pub中的内容——Add SSH key成功之后返回上级页面会出现一个key。</p>
-<p>3.微信开发者工具绑定远程仓库<br>1.微信开发者工具点击“版本管理”——设置——通用——用户名编辑，输入自己GitHub上的用户名和邮箱</p>
-<p>2.网络和认证：网络代理设置默认自动不用管，认证方式使用SSH key指定密钥</p>
-<p>3.远程——添加，名称填GitHub上的库的名称，url复制库的ssh地址，点击确定。</p>
-<p>4.代码上传、下拉</p>
-<p>具体怎么用b站有教程</p>
-<p>【【微信开发者工具+github】本地代码上传至远端仓库以及从仓库拉取代码到本地】 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV15f4y1m7rA?share_source=copy_web&vd_source=b5b2a4b0a89cf17fc65c77bb0686404e">https://www.bilibili.com/video/BV15f4y1m7rA?share_source=copy_web&amp;vd_source=b5b2a4b0a89cf17fc65c77bb0686404e</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2649,7 +2650,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
