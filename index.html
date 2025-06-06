@@ -260,6 +260,703 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/06/05/%E3%80%90JVM%E5%AD%A6%E4%B9%A0%E3%80%91%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8A%E4%BA%A4%E4%BA%92%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/06/05/%E3%80%90JVM%E5%AD%A6%E4%B9%A0%E3%80%91%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8A%E4%BA%A4%E4%BA%92%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-06-05T09:53:08+08:00">
+                2025-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我将使用两种方式来展示JVM的主要架构：目录结构和Mermaid图。</p>
+<ol>
+<li><p><strong>目录结构形式</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">JVM架构</span><br><span class="line">├── 类加载子系统 (Class Loading Subsystem)</span><br><span class="line">│   ├── 加载 (Loading)</span><br><span class="line">│   │   ├── Bootstrap ClassLoader</span><br><span class="line">│   │   ├── Extension ClassLoader</span><br><span class="line">│   │   └── Application ClassLoader</span><br><span class="line">│   ├── 链接 (Linking)</span><br><span class="line">│   │   ├── 验证 (Verification)</span><br><span class="line">│   │   ├── 准备 (Preparation)</span><br><span class="line">│   │   └── 解析 (Resolution)</span><br><span class="line">│   └── 初始化 (Initialization)</span><br><span class="line">│</span><br><span class="line">├── 运行时数据区 (Runtime Data Areas)</span><br><span class="line">│   ├── 方法区 (Method Area) - 线程共享</span><br><span class="line">│   │   ├── 类信息</span><br><span class="line">│   │   ├── 常量</span><br><span class="line">│   │   ├── 静态变量</span><br><span class="line">│   │   └── JIT编译代码</span><br><span class="line">│   ├── 堆区 (Heap) - 线程共享</span><br><span class="line">│   │   ├── 新生代 (Young Generation)</span><br><span class="line">│   │   │   ├── Eden区</span><br><span class="line">│   │   │   ├── Survivor 0</span><br><span class="line">│   │   │   └── Survivor 1</span><br><span class="line">│   │   └── 老年代 (Old Generation)</span><br><span class="line">│   ├── 栈区 (Stack) - 线程私有</span><br><span class="line">│   │   └── 栈帧 (Stack Frame)</span><br><span class="line">│   │       ├── 局部变量表</span><br><span class="line">│   │       ├── 操作数栈</span><br><span class="line">│   │       ├── 动态链接</span><br><span class="line">│   │       └── 返回地址</span><br><span class="line">│   ├── 程序计数器 (PC Register) - 线程私有</span><br><span class="line">│   └── 本地方法栈 (Native Method Stack) - 线程私有</span><br><span class="line">│</span><br><span class="line">├── 执行引擎 (Execution Engine)</span><br><span class="line">│   ├── 解释器 (Interpreter)</span><br><span class="line">│   ├── JIT编译器 (JIT Compiler)</span><br><span class="line">│   │   ├── 中间代码生成器</span><br><span class="line">│   │   ├── 代码优化器</span><br><span class="line">│   │   └── 目标代码生成器</span><br><span class="line">│   └── 垃圾回收器 (Garbage Collector)</span><br><span class="line">│       ├── Serial GC</span><br><span class="line">│       ├── Parallel GC</span><br><span class="line">│       ├── CMS GC</span><br><span class="line">│       └── G1 GC</span><br><span class="line">│</span><br><span class="line">└── 本地方法接口 (Native Method Interface)</span><br><span class="line">    └── 本地方法库 (Native Method Libraries)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Mermaid图形式</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line">    JVM[JVM架构]</span><br><span class="line">    </span><br><span class="line">    %% 类加载子系统</span><br><span class="line">    CLS[类加载子系统]</span><br><span class="line">    L[加载]</span><br><span class="line">    LK[链接]</span><br><span class="line">    I[初始化]</span><br><span class="line">    </span><br><span class="line">    %% 运行时数据区</span><br><span class="line">    RDA[运行时数据区]</span><br><span class="line">    MA[方法区]</span><br><span class="line">    HP[堆]</span><br><span class="line">    STK[栈]</span><br><span class="line">    PC[程序计数器]</span><br><span class="line">    NMS[本地方法栈]</span><br><span class="line">    </span><br><span class="line">    %% 执行引擎</span><br><span class="line">    EE[执行引擎]</span><br><span class="line">    INT[解释器]</span><br><span class="line">    JIT[JIT编译器]</span><br><span class="line">    GC[垃圾回收器]</span><br><span class="line">    </span><br><span class="line">    %% 本地方法接口</span><br><span class="line">    NMI[本地方法接口]</span><br><span class="line">    NML[本地方法库]</span><br><span class="line">    </span><br><span class="line">    %% 连接关系</span><br><span class="line">    JVM --&gt; CLS</span><br><span class="line">    JVM --&gt; RDA</span><br><span class="line">    JVM --&gt; EE</span><br><span class="line">    JVM --&gt; NMI</span><br><span class="line">    </span><br><span class="line">    %% 类加载子系统详细</span><br><span class="line">    CLS --&gt; L</span><br><span class="line">    CLS --&gt; LK</span><br><span class="line">    CLS --&gt; I</span><br><span class="line">    L --&gt; BCL[Bootstrap ClassLoader]</span><br><span class="line">    L --&gt; ECL[Extension ClassLoader]</span><br><span class="line">    L --&gt; ACL[Application ClassLoader]</span><br><span class="line">    LK --&gt; V[验证]</span><br><span class="line">    LK --&gt; P[准备]</span><br><span class="line">    LK --&gt; R[解析]</span><br><span class="line">    </span><br><span class="line">    %% 运行时数据区详细</span><br><span class="line">    RDA --&gt; MA</span><br><span class="line">    RDA --&gt; HP</span><br><span class="line">    RDA --&gt; STK</span><br><span class="line">    RDA --&gt; PC</span><br><span class="line">    RDA --&gt; NMS</span><br><span class="line">    </span><br><span class="line">    HP --&gt; YG[新生代]</span><br><span class="line">    HP --&gt; OG[老年代]</span><br><span class="line">    YG --&gt; Eden</span><br><span class="line">    YG --&gt; S0[Survivor 0]</span><br><span class="line">    YG --&gt; S1[Survivor 1]</span><br><span class="line">    </span><br><span class="line">    STK --&gt; SF[栈帧]</span><br><span class="line">    SF --&gt; LVT[局部变量表]</span><br><span class="line">    SF --&gt; OS[操作数栈]</span><br><span class="line">    SF --&gt; DL[动态链接]</span><br><span class="line">    SF --&gt; RA[返回地址]</span><br><span class="line">    </span><br><span class="line">    %% 执行引擎详细</span><br><span class="line">    EE --&gt; INT</span><br><span class="line">    EE --&gt; JIT</span><br><span class="line">    EE --&gt; GC</span><br><span class="line">    </span><br><span class="line">    JIT --&gt; ICG[中间代码生成器]</span><br><span class="line">    JIT --&gt; CO[代码优化器]</span><br><span class="line">    JIT --&gt; TCG[目标代码生成器]</span><br><span class="line">    </span><br><span class="line">    GC --&gt; SGC[Serial GC]</span><br><span class="line">    GC --&gt; PGC[Parallel GC]</span><br><span class="line">    GC --&gt; CMS[CMS GC]</span><br><span class="line">    GC --&gt; G1[G1 GC]</span><br><span class="line">    </span><br><span class="line">    %% 本地方法接口详细</span><br><span class="line">    NMI --&gt; NML</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>主要组件之间的交互流程</strong>：</p>
+</li>
+<li><p><strong>类的生命周期</strong>：</p>
+<ul>
+<li>源代码(.java) -&gt; 字节码(.class) -&gt; 类加载 -&gt; 链接 -&gt; 初始化 -&gt; 使用 -&gt; 卸载</li>
+</ul>
+</li>
+<li><p><strong>方法调用流程</strong>：</p>
+<ul>
+<li>代码定位 -&gt; 常量池查找 -&gt; 方法区获取信息 -&gt; 创建栈帧 -&gt; 执行字节码</li>
+</ul>
+</li>
+<li><p><strong>内存管理流程</strong>：</p>
+<ul>
+<li>对象创建 -&gt; 新生代分配 -&gt; 垃圾回收 -&gt; 对象晋升 -&gt; 老年代回收</li>
+</ul>
+</li>
+<li><p><strong>代码执行优化</strong>：</p>
+<ul>
+<li>解释执行 -&gt; 热点检测 -&gt; JIT编译 -&gt; 本地代码执行</li>
+</ul>
+</li>
+</ol>
+<p>这个架构展示了JVM的四个主要组件：</p>
+<ol>
+<li><strong>类加载子系统</strong>：负责加载、链接和初始化类</li>
+<li><strong>运行时数据区</strong>：管理JVM的内存结构</li>
+<li><strong>执行引擎</strong>：负责执行字节码和优化</li>
+<li><strong>本地方法接口</strong>：处理与本地代码的交互</li>
+</ol>
+<p>每个组件都有其特定的职责，它们协同工作确保Java程序能够正确、高效地运行。这种模块化的设计使得JVM能够在不同平台上提供一致的执行环境，同时也便于优化和维护。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/06/05/%E3%80%90JVM%E5%AD%A6%E4%B9%A0%E3%80%91%E6%96%B9%E6%B3%95%E5%8C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/06/05/%E3%80%90JVM%E5%AD%A6%E4%B9%A0%E3%80%91%E6%96%B9%E6%B3%95%E5%8C%BA/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-06-05T09:29:13+08:00">
+                2025-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>让我详细解释方法区（Method Area）的概念和位置。</p>
+<p>在JVM的内存结构中，方法区是一个非常重要的部分。让我们通过JVM的整体内存结构来理解：</p>
+<ol>
+<li><p><strong>JVM内存结构</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">JVM内存</span><br><span class="line">├── 堆区（Heap）</span><br><span class="line">│   ├── 新生代</span><br><span class="line">│   │   ├── Eden区</span><br><span class="line">│   │   ├── Survivor 0</span><br><span class="line">│   │   └── Survivor 1</span><br><span class="line">│   └── 老年代</span><br><span class="line">├── 方法区（Method Area）</span><br><span class="line">│   ├── 类信息</span><br><span class="line">│   ├── 常量</span><br><span class="line">│   ├── 静态变量</span><br><span class="line">│   └── 即时编译器编译后的代码</span><br><span class="line">├── 程序计数器（PC Register）</span><br><span class="line">└── JVM栈（JVM Stack）</span><br><span class="line">    ├── 栈帧1</span><br><span class="line">    ├── 栈帧2</span><br><span class="line">    └── 栈帧3</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>方法区的演进</strong>：</p>
+</li>
+</ol>
+<ul>
+<li><p><strong>JDK 1.7之前</strong>：</p>
+<ul>
+<li>方法区在永久代（PermGen）中</li>
+<li>和堆区连续</li>
+<li>有固定大小限制</li>
+</ul>
+</li>
+<li><p><strong>JDK 1.8及之后</strong>：</p>
+<ul>
+<li>方法区在元空间（Metaspace）中</li>
+<li>直接使用本地内存（Native Memory）</li>
+<li>不再受JVM堆内存的限制</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li><strong>在我们的mini-jvm中查看相关实现</strong>：</li>
+</ol>
+<p>Search files…<br>在我们的mini-jvm实现中，方法区的概念主要体现在<code>ClassFile</code>对象中，它包含了类的所有信息。让我们看看方法区的主要特点：</p>
+<ol>
+<li><p><strong>方法区存储的内容</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">方法区</span><br><span class="line">├── 类型信息</span><br><span class="line">│   ├── 类名</span><br><span class="line">│   ├── 修饰符</span><br><span class="line">│   ├── 父类信息</span><br><span class="line">│   └── 接口信息</span><br><span class="line">├── 方法信息</span><br><span class="line">│   ├── 方法名</span><br><span class="line">│   ├── 返回类型</span><br><span class="line">│   ├── 参数列表</span><br><span class="line">│   └── 方法字节码</span><br><span class="line">├── 字段信息</span><br><span class="line">│   ├── 字段名</span><br><span class="line">│   ├── 类型</span><br><span class="line">│   └── 修饰符</span><br><span class="line">└── 其他</span><br><span class="line">    ├── 运行时常量池</span><br><span class="line">    ├── 静态变量</span><br><span class="line">    └── JIT编译的本地代码</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>方法区的特点</strong>：</p>
+</li>
+</ol>
+<ul>
+<li>线程共享：所有线程共享方法区</li>
+<li>动态性：运行时会动态加载新的类</li>
+<li>垃圾回收：主要针对常量池的回收和类的卸载</li>
+</ul>
+<ol start="3">
+<li><p><strong>在mini-jvm中的体现</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 类加载时，将类信息加载到&quot;方法区&quot;</span></span><br><span class="line"><span class="keyword">public</span> ClassFile <span class="title function_">loadClass</span><span class="params">(String fqcn)</span> <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">    <span class="keyword">return</span> classPath.stream()</span><br><span class="line">        .map(path -&gt; tryLoad(path, fqcn))</span><br><span class="line">        .filter(Objects::nonNull)</span><br><span class="line">        .findAny()</span><br><span class="line">        .orElseThrow(() -&gt; <span class="keyword">new</span> <span class="title class_">ClassNotFoundException</span>(fqcn + <span class="string">&quot;找不到&quot;</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法调用时，从&quot;方法区&quot;获取方法信息</span></span><br><span class="line"><span class="type">MethodInfo</span> <span class="variable">finalMethodInfo</span> <span class="operator">=</span> classFile.getMethods(methodName).get(<span class="number">0</span>);</span><br><span class="line"><span class="type">StackFrame</span> <span class="variable">stackFrame</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StackFrame</span>(finalMethodInfo, classFile.getConstantPool(), args);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>方法区的访问过程</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Java代码调用方法</span><br><span class="line">     ↓</span><br><span class="line">查找常量池中的方法引用</span><br><span class="line">     ↓</span><br><span class="line">到方法区找到方法的具体实现</span><br><span class="line">     ↓</span><br><span class="line">创建栈帧</span><br><span class="line">     ↓</span><br><span class="line">执行方法的字节码</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>用生动的比喻来说：</p>
+<p>方法区就像一个<strong>图书馆</strong>：</p>
+<ul>
+<li><p><strong>书架</strong>（类信息存储区）：</p>
+<ul>
+<li>每个类就像一本书</li>
+<li>书的目录就是类的结构信息</li>
+<li>书的内容就是类的方法实现</li>
+</ul>
+</li>
+<li><p><strong>图书管理系统</strong>（类加载器）：</p>
+<ul>
+<li>负责把新书（类）放到正确的位置</li>
+<li>记录书的位置信息</li>
+<li>当需要时能快速找到对应的书</li>
+</ul>
+</li>
+<li><p><strong>阅览室</strong>（运行时）：</p>
+<ul>
+<li>读者（线程）需要看书时</li>
+<li>先查目录（常量池）</li>
+<li>找到具体页码（方法）</li>
+<li>在阅览桌（栈）上阅读</li>
+</ul>
+</li>
+</ul>
+<p>所以，方法区是JVM中一个非常重要的内存区域，它：</p>
+<ol>
+<li>存储类的结构信息</li>
+<li>存储方法的具体实现</li>
+<li>被所有线程共享</li>
+<li>在类加载时填充</li>
+<li>在方法调用时提供数据</li>
+</ol>
+<p>这就是为什么它也被称为”永久代”或”元空间”，因为它存储的是类的”元数据”，是Java程序运行的基础设施。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/06/04/%E3%80%90JVM%E5%AD%A6%E4%B9%A0%E3%80%91%E4%B8%80%E4%B8%AAMini_JVM%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/06/04/%E3%80%90JVM%E5%AD%A6%E4%B9%A0%E3%80%91%E4%B8%80%E4%B8%AAMini_JVM%E5%AE%9E%E7%8E%B0/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-06-04T23:31:00+08:00">
+                2025-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="类加载系统（ClassLoader）："><a href="#类加载系统（ClassLoader）：" class="headerlink" title="类加载系统（ClassLoader）："></a><strong>类加载系统（ClassLoader）</strong>：</h2><p>让我们看看BootstrapClassLoader的实现：</p>
+<p>Read file: src&#x2F;main&#x2F;java&#x2F;club&#x2F;shengsheng&#x2F;jvm&#x2F;BootstrapClassLoader.java<br>类加载器的工作原理：</p>
+<ol>
+<li>接收类路径列表（classpath）</li>
+<li>根据全限定类名（如：java.lang.String）在类路径中查找.class文件</li>
+<li>读取类文件的字节码</li>
+<li>解析字节码生成ClassFile对象</li>
+</ol>
+<h2 id="栈帧（StackFrame）："><a href="#栈帧（StackFrame）：" class="headerlink" title="栈帧（StackFrame）："></a><strong>栈帧（StackFrame）</strong>：</h2><p>让我们看看栈帧的实现：</p>
+<p>Read file: src&#x2F;main&#x2F;java&#x2F;club&#x2F;shengsheng&#x2F;jvm&#x2F;StackFrame.java<br>栈帧的关键组成：</p>
+<ol>
+<li>局部变量表（localVariable）：存储方法的参数和局部变量</li>
+<li>操作数栈（operandStack）：用于存储指令操作的临时数据</li>
+<li>字节码指令列表（codes）：方法的执行指令</li>
+<li>常量池引用（constantPool）：用于访问类的常量信息</li>
+</ol>
+<h2 id="JVM栈（JvmStack）："><a href="#JVM栈（JvmStack）：" class="headerlink" title="JVM栈（JvmStack）："></a><strong>JVM栈（JvmStack）</strong>：</h2><p>Read file: src&#x2F;main&#x2F;java&#x2F;club&#x2F;shengsheng&#x2F;jvm&#x2F;JvmStack.java<br>JVM栈的特点：</p>
+<ol>
+<li>使用双端队列存储栈帧</li>
+<li>支持基本的栈操作：压栈（push）、出栈（pop）、查看栈顶（peek）</li>
+<li>每个线程都有自己的JVM栈</li>
+</ol>
+<h2 id="用一个生动的例子来全面理解JVM："><a href="#用一个生动的例子来全面理解JVM：" class="headerlink" title="用一个生动的例子来全面理解JVM："></a><strong>用一个生动的例子来全面理解JVM</strong>：</h2><p>想象JVM就像一个工厂，这个工厂是这样运作的：</p>
+<ol>
+<li><p><strong>类加载就像原料入库</strong>：</p>
+<ul>
+<li>工厂（JVM）需要先把生产图纸（.class文件）从仓库（硬盘）运到车间（内存）</li>
+<li>类加载器就像叉车，负责这个搬运和整理的工作</li>
+<li>图纸被整理好后放在固定的架子上（方法区）</li>
+</ul>
+</li>
+<li><p><strong>栈帧就像工作台</strong>：</p>
+<ul>
+<li>每个工人（线程）都有自己的工作台（JVM栈）</li>
+<li>工作台上有工具盒（局部变量表）和临时放置工件的托盘（操作数栈）</li>
+<li>还有一份生产指令（字节码）和参考手册（常量池）</li>
+</ul>
+</li>
+<li><p><strong>执行过程就像流水线</strong>：</p>
+<ul>
+<li>工人（线程）按照指令一步步操作</li>
+<li>需要零件时从工具盒（局部变量表）拿</li>
+<li>加工过程中用托盘（操作数栈）暂存</li>
+<li>完成一个产品（方法调用）就清理工作台（栈帧出栈）</li>
+<li>开始下一个产品的制作（新的方法调用）</li>
+</ul>
+</li>
+</ol>
+<p>所以，JVM的核心就是：一个能够加载Java字节码（类加载），为每个任务分配工作空间（栈帧），并按照特定规则（字节码）执行程序的软件系统。它让Java代码能够在不同的硬件平台上运行，就像一个标准化的工厂，能在世界各地用相同的图纸生产出相同的产品。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/06/04/%E3%80%90JVM%E5%AD%A6%E4%B9%A0%E3%80%91%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%88%EF%BC%88Operand%20Stack%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/06/04/%E3%80%90JVM%E5%AD%A6%E4%B9%A0%E3%80%91%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%88%EF%BC%88Operand%20Stack%EF%BC%89/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-06-04T23:28:21+08:00">
+                2025-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>操作数栈（Operand Stack）的概念。</p>
+<p>操作数栈是用来存储<strong>操作的数据</strong>的，而不是存储操作命令。我用一个简单的例子来说明：</p>
+<p>假设我们有这样一段Java代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">2</span>;</span><br><span class="line"><span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> a + b;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码在JVM中的执行过程是这样的：</p>
+<ol>
+<li><strong>加载数据到操作数栈</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iconst_1        // 将常量1压入操作数栈</span><br><span class="line">istore_1        // 将栈顶的1存入局部变量表位置1（变量a）</span><br><span class="line">iconst_2        // 将常量2压入操作数栈</span><br><span class="line">istore_2        // 将栈顶的2存入局部变量表位置2（变量b）</span><br><span class="line">iload_1         // 将局部变量表位置1的值（a=1）压入操作数栈</span><br><span class="line">iload_2         // 将局部变量表位置2的值（b=2）压入操作数栈</span><br><span class="line">iadd            // 将栈顶的两个值相加，结果压入栈顶</span><br><span class="line">istore_3        // 将栈顶的结果存入局部变量表位置3（变量c）</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>让我们看看操作数栈在这个过程中的变化：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">// 初始状态</span><br><span class="line">操作数栈: []</span><br><span class="line"></span><br><span class="line">// 执行 iconst_1 后</span><br><span class="line">操作数栈: [1]</span><br><span class="line"></span><br><span class="line">// 执行 istore_1 后</span><br><span class="line">操作数栈: []</span><br><span class="line">局部变量表: [a=1]</span><br><span class="line"></span><br><span class="line">// 执行 iconst_2 后</span><br><span class="line">操作数栈: [2]</span><br><span class="line"></span><br><span class="line">// 执行 istore_2 后</span><br><span class="line">操作数栈: []</span><br><span class="line">局部变量表: [a=1, b=2]</span><br><span class="line"></span><br><span class="line">// 执行 iload_1 后</span><br><span class="line">操作数栈: [1]</span><br><span class="line"></span><br><span class="line">// 执行 iload_2 后</span><br><span class="line">操作数栈: [1, 2]</span><br><span class="line"></span><br><span class="line">// 执行 iadd 后</span><br><span class="line">操作数栈: [3]</span><br><span class="line"></span><br><span class="line">// 执行 istore_3 后</span><br><span class="line">操作数栈: []</span><br><span class="line">局部变量表: [a=1, b=2, c=3]</span><br></pre></td></tr></table></figure>
+
+<p>所以：</p>
+<ol>
+<li><p><strong>操作数栈的作用</strong>：</p>
+<ul>
+<li>临时存储数据</li>
+<li>为指令提供操作数</li>
+<li>存储指令的计算结果</li>
+</ul>
+</li>
+<li><p><strong>操作命令（字节码指令）在哪里</strong>？</p>
+<ul>
+<li>字节码指令存储在方法的Code属性中</li>
+<li>由PC寄存器（程序计数器）指向当前要执行的指令</li>
+<li>指令本身不存在操作数栈中</li>
+</ul>
+</li>
+<li><p><strong>操作数栈的特点</strong>：</p>
+<ul>
+<li>后进先出（LIFO）的栈结构</li>
+<li>只存储实际的数据值</li>
+<li>与局部变量表配合工作</li>
+</ul>
+</li>
+</ol>
+<p>在我们的mini-jvm实现中，可以看到操作数栈的定义：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> Deque&lt;Object&gt; operandStack = <span class="keyword">new</span> <span class="title class_">ArrayDeque</span>&lt;&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>它就像一个临时的工作区：</p>
+<ul>
+<li>当需要进行计算时，先把需要的值都压入栈</li>
+<li>指令执行时从栈顶取出所需的值进行运算</li>
+<li>运算结果再压回栈顶</li>
+<li>最后将结果存入局部变量表或用于其他操作</li>
+</ul>
+<p>比如在Thread.java中的指令执行：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> iconst_1 -&gt; stack.peek().pushObjectToOperandStack(<span class="number">1</span>);  <span class="comment">// 压入常量1</span></span><br><span class="line"><span class="keyword">case</span> iadd -&gt; &#123;  <span class="comment">// 处理加法</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">value2</span> <span class="operator">=</span> (<span class="type">int</span>) stack.peek().operandStack.pop();  <span class="comment">// 弹出第二个操作数</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">value1</span> <span class="operator">=</span> (<span class="type">int</span>) stack.peek().operandStack.pop();  <span class="comment">// 弹出第一个操作数</span></span><br><span class="line">    stack.peek().pushObjectToOperandStack(value1 + value2);  <span class="comment">// 压入结果</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以，操作数栈就像是一个计算器的内存，存储的是要参与运算的数据和运算的结果，而不是操作命令本身。操作命令是由JVM的执行引擎按照字节码指令一条一条执行的。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/05/22/%E3%80%90Git%E5%AD%A6%E4%B9%A0%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86Unity%E9%A1%B9%E7%9B%AE%E4%B8%8A%E4%BC%A0%E5%88%B0Github%E8%BF%9B%E8%A1%8C%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1365,1246 +2062,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/13/%E3%80%90%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E3%80%91%E5%8D%95%E4%BD%93%E5%BA%94%E7%94%A8%E5%8D%87%E7%BA%A7%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%8B%86%E5%88%86%E6%96%B9%E6%A1%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/04/13/%E3%80%90%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E3%80%91%E5%8D%95%E4%BD%93%E5%BA%94%E7%94%A8%E5%8D%87%E7%BA%A7%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%8B%86%E5%88%86%E6%96%B9%E6%A1%88/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-04-13T20:11:02+08:00">
-                2025-04-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我先了解一下您的应用结构，以便给出适合的微服务改造建议。</p>
-<p>Ran tool</p>
-<p>Ran tool</p>
-<p>Read file: app_order&#x2F;pom.xml</p>
-<p>Ran tool</p>
-<p>Ran tool</p>
-<p>Read file: app_order&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;jf3q&#x2F;order&#x2F;AppOrderApplication.java</p>
-<p>Search files…</p>
-<p>Ran tool<br>基于对您的代码结构的分析，我现在为您提供将单体应用改造为微服务架构的建议：</p>
-<h2 id="微服务拆分方案"><a href="#微服务拆分方案" class="headerlink" title="微服务拆分方案"></a>微服务拆分方案</h2><h3 id="1-领域拆分"><a href="#1-领域拆分" class="headerlink" title="1. 领域拆分"></a>1. 领域拆分</h3><p>根据您的系统功能，建议将应用拆分为以下几个微服务：</p>
-<ol>
-<li><p><strong>用户服务 (user-service)</strong></p>
-<ul>
-<li>负责用户管理、认证授权</li>
-<li>包含现有的 User 相关功能</li>
-</ul>
-</li>
-<li><p><strong>摄影师服务 (photographer-service)</strong></p>
-<ul>
-<li>负责摄影师信息管理</li>
-<li>包含 Photographer 和 PhotographerNews 相关功能</li>
-</ul>
-</li>
-<li><p><strong>订单服务 (order-service)</strong></p>
-<ul>
-<li>负责订单处理和管理</li>
-<li>包含 Orders 和 ReceivingOrders 相关功能</li>
-</ul>
-</li>
-<li><p><strong>套餐服务 (package-service)</strong></p>
-<ul>
-<li>负责摄影套餐管理</li>
-<li>包含 Package 相关功能</li>
-</ul>
-</li>
-<li><p><strong>反馈服务 (feedback-service)</strong></p>
-<ul>
-<li>负责用户反馈管理</li>
-<li>包含 Feedback 相关功能</li>
-</ul>
-</li>
-<li><p><strong>文件服务 (file-service)</strong></p>
-<ul>
-<li>负责文件上传下载</li>
-<li>包含现有的文件和头像处理功能</li>
-</ul>
-</li>
-</ol>
-<h3 id="2-技术架构升级"><a href="#2-技术架构升级" class="headerlink" title="2. 技术架构升级"></a>2. 技术架构升级</h3><ol>
-<li><p><strong>服务注册与发现</strong></p>
-<ul>
-<li>引入 Spring Cloud Alibaba Nacos 作为服务注册中心</li>
-<li>每个微服务向 Nacos 注册，并通过 Nacos 发现其他服务</li>
-</ul>
-</li>
-<li><p><strong>网关服务</strong></p>
-<ul>
-<li>引入 Spring Cloud Gateway 作为 API 网关</li>
-<li>统一入口、路由转发、认证授权</li>
-</ul>
-</li>
-<li><p><strong>配置中心</strong></p>
-<ul>
-<li>使用 Nacos Config 进行配置管理</li>
-<li>集中管理各服务配置，支持动态配置更新</li>
-</ul>
-</li>
-<li><p><strong>服务间通信</strong></p>
-<ul>
-<li>使用 OpenFeign 进行服务间的声明式 HTTP 调用</li>
-<li>使用 Spring Cloud Stream 进行事件驱动的异步通信</li>
-</ul>
-</li>
-<li><p><strong>服务熔断与降级</strong></p>
-<ul>
-<li>使用 Sentinel 实现服务熔断、限流、降级</li>
-<li>提高系统稳定性和可用性</li>
-</ul>
-</li>
-<li><p><strong>链路追踪</strong></p>
-<ul>
-<li>引入 SkyWalking 或 Zipkin 进行分布式链路追踪</li>
-<li>方便排查跨服务调用问题</li>
-</ul>
-</li>
-<li><p><strong>分布式事务</strong></p>
-<ul>
-<li>使用 Seata 处理跨服务的分布式事务</li>
-<li>确保数据一致性</li>
-</ul>
-</li>
-</ol>
-<h2 id="具体实施步骤"><a href="#具体实施步骤" class="headerlink" title="具体实施步骤"></a>具体实施步骤</h2><h3 id="1-搭建基础设施"><a href="#1-搭建基础设施" class="headerlink" title="1. 搭建基础设施"></a>1. 搭建基础设施</h3><ol>
-<li><p><strong>创建父项目</strong>：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.jf3q<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>ssc-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">packaging</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">modules</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-gateway<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-common<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-user<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-photographer<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-order<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-package<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-feedback<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-file<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">modules</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>搭建注册中心和配置中心</strong>：</p>
-<ul>
-<li>部署 Nacos 服务器</li>
-<li>将各微服务注册到 Nacos</li>
-</ul>
-</li>
-<li><p><strong>设置网关服务</strong>：创建 ssc-gateway 模块，配置路由规则</p>
-</li>
-</ol>
-<h3 id="2-创建公共模块"><a href="#2-创建公共模块" class="headerlink" title="2. 创建公共模块"></a>2. 创建公共模块</h3><p>创建 ssc-common 模块，包含：</p>
-<ul>
-<li>公共实体类</li>
-<li>通用工具类</li>
-<li>统一返回结果</li>
-<li>全局异常处理</li>
-<li>安全认证相关配置</li>
-</ul>
-<h3 id="3-拆分业务服务"><a href="#3-拆分业务服务" class="headerlink" title="3. 拆分业务服务"></a>3. 拆分业务服务</h3><ol>
-<li><p><strong>创建每个微服务的基本结构</strong>：</p>
-<ul>
-<li>配置文件：application.yml, bootstrap.yml</li>
-<li>启动类：添加 <code>@EnableDiscoveryClient</code> 等注解</li>
-<li>基本包结构：controller, service, mapper, entity</li>
-</ul>
-</li>
-<li><p><strong>迁移业务代码</strong>：</p>
-<ul>
-<li>将原有代码按业务领域迁移到对应微服务</li>
-<li>调整服务间依赖，使用 Feign 替代直接调用</li>
-</ul>
-</li>
-<li><p><strong>数据库拆分</strong>：</p>
-<ul>
-<li>为每个微服务创建独立数据库</li>
-<li>将原单体数据库中的表迁移到对应服务的数据库</li>
-</ul>
-</li>
-</ol>
-<h3 id="4-调整服务间通信"><a href="#4-调整服务间通信" class="headerlink" title="4. 调整服务间通信"></a>4. 调整服务间通信</h3><ol>
-<li><p><strong>同步调用</strong>：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient(name = &quot;ssc-user&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserFeignClient</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/users/&#123;id&#125;&quot;)</span></span><br><span class="line">    Result&lt;User&gt; <span class="title function_">getUserById</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Long id)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>异步通信</strong>：</p>
-<ul>
-<li>使用消息队列（如RocketMQ）处理跨服务异步事件</li>
-</ul>
-</li>
-</ol>
-<h3 id="5-安全认证改造"><a href="#5-安全认证改造" class="headerlink" title="5. 安全认证改造"></a>5. 安全认证改造</h3><ol>
-<li><p><strong>基于 OAuth2 + JWT 的统一认证</strong>：</p>
-<ul>
-<li>在网关层统一处理认证</li>
-<li>使用 JWT 在微服务间传递用户信息</li>
-</ul>
-</li>
-<li><p><strong>资源服务器配置</strong>：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableResourceServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ResourceServerConfig</span> <span class="keyword">extends</span> <span class="title class_">ResourceServerConfigurerAdapter</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        http.authorizeRequests()</span><br><span class="line">            .antMatchers(<span class="string">&quot;/public/**&quot;</span>).permitAll()</span><br><span class="line">            .anyRequest().authenticated();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="6-部署与监控"><a href="#6-部署与监控" class="headerlink" title="6. 部署与监控"></a>6. 部署与监控</h3><ol>
-<li><p><strong>容器化部署</strong>：</p>
-<ul>
-<li>使用 Docker 容器化每个微服务</li>
-<li>使用 Kubernetes 编排和管理容器</li>
-</ul>
-</li>
-<li><p><strong>监控系统</strong>：</p>
-<ul>
-<li>使用 Prometheus + Grafana 监控系统运行状态</li>
-<li>使用 ELK 收集分析日志</li>
-</ul>
-</li>
-</ol>
-<h2 id="迁移注意事项"><a href="#迁移注意事项" class="headerlink" title="迁移注意事项"></a>迁移注意事项</h2><ol>
-<li><p><strong>渐进式迁移</strong>：不要一次性全部拆分，可先拆分边缘服务，逐步向核心服务迁移</p>
-</li>
-<li><p><strong>数据一致性</strong>：注意跨服务的事务处理，合理使用分布式事务或最终一致性方案</p>
-</li>
-<li><p><strong>接口兼容性</strong>：保持接口的向后兼容，避免影响现有功能</p>
-</li>
-<li><p><strong>测试</strong>：编写完善的集成测试确保服务拆分后的功能正确性</p>
-</li>
-<li><p><strong>服务治理</strong>：关注服务依赖关系，避免出现循环依赖</p>
-</li>
-<li><p><strong>性能优化</strong>：注意网络延迟增加带来的性能影响，合理使用缓存</p>
-</li>
-</ol>
-<p>通过以上步骤，您可以平稳地将单体应用迁移到微服务架构，同时保持业务功能的正常运行和扩展能力的提升。</p>
-<p>在3天内完成基本微服务框架搭建是有挑战性的，但可以实现一个简化版本。以下是3天内的精简计划：</p>
-<h2 id="3天微服务框架搭建计划"><a href="#3天微服务框架搭建计划" class="headerlink" title="3天微服务框架搭建计划"></a>3天微服务框架搭建计划</h2><h3 id="第1天：基础设施搭建"><a href="#第1天：基础设施搭建" class="headerlink" title="第1天：基础设施搭建"></a>第1天：基础设施搭建</h3><ol>
-<li><p><strong>搭建基础环境</strong></p>
-<ul>
-<li>安装部署Nacos（可使用Docker快速部署）</li>
-<li>创建父项目和基础架构</li>
-</ul>
-</li>
-<li><p><strong>创建核心模块</strong></p>
-<ul>
-<li>创建父工程ssc-parent</li>
-<li>创建公共模块ssc-common</li>
-<li>创建网关模块ssc-gateway</li>
-</ul>
-</li>
-<li><p><strong>配置父项目依赖</strong></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 统一管理版本 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">spring-boot.version</span>&gt;</span>2.3.12.RELEASE<span class="tag">&lt;/<span class="name">spring-boot.version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">spring-cloud.version</span>&gt;</span>Hoxton.SR12<span class="tag">&lt;/<span class="name">spring-cloud.version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">spring-cloud-alibaba.version</span>&gt;</span>2.2.7.RELEASE<span class="tag">&lt;/<span class="name">spring-cloud-alibaba.version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- Spring Boot --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring-boot.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- Spring Cloud --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring-cloud.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- Spring Cloud Alibaba --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-alibaba-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring-cloud-alibaba.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="第2天：核心服务拆分"><a href="#第2天：核心服务拆分" class="headerlink" title="第2天：核心服务拆分"></a>第2天：核心服务拆分</h3><ol>
-<li><p><strong>创建两个核心微服务</strong></p>
-<ul>
-<li>用户服务（ssc-user）</li>
-<li>订单服务（ssc-order）</li>
-</ul>
-</li>
-<li><p><strong>实现公共模块</strong></p>
-<ul>
-<li>移植Result类和通用工具类</li>
-<li>定义统一异常处理</li>
-<li>创建跨服务数据传输对象(DTO)</li>
-</ul>
-</li>
-<li><p><strong>用户服务实现</strong></p>
-<ul>
-<li>移植User实体和用户相关代码</li>
-<li>实现基本认证功能</li>
-<li>注册到Nacos</li>
-</ul>
-</li>
-<li><p><strong>订单服务实现</strong></p>
-<ul>
-<li>移植Orders实体和订单相关代码</li>
-<li>通过Feign调用用户服务</li>
-<li>注册到Nacos</li>
-</ul>
-</li>
-</ol>
-<h3 id="第3天：网关和服务集成"><a href="#第3天：网关和服务集成" class="headerlink" title="第3天：网关和服务集成"></a>第3天：网关和服务集成</h3><ol>
-<li><p><strong>网关服务配置</strong></p>
-<ul>
-<li>配置路由规则</li>
-<li>实现简单认证过滤器</li>
-<li>配置跨域处理</li>
-</ul>
-</li>
-<li><p><strong>服务间调用测试</strong></p>
-<ul>
-<li>实现用户服务Feign客户端</li>
-<li>测试订单服务调用用户服务</li>
-<li>验证网关路由功能</li>
-</ul>
-</li>
-<li><p><strong>部署与联调</strong></p>
-<ul>
-<li>打包各服务</li>
-<li>测试完整调用链路</li>
-<li>编写简单文档</li>
-</ul>
-</li>
-</ol>
-<h2 id="快速实现的关键代码片段"><a href="#快速实现的关键代码片段" class="headerlink" title="快速实现的关键代码片段"></a>快速实现的关键代码片段</h2><h3 id="1-网关配置（ssc-gateway）"><a href="#1-网关配置（ssc-gateway）" class="headerlink" title="1. 网关配置（ssc-gateway）"></a>1. 网关配置（ssc-gateway）</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># application.yml</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">9000</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">ssc-gateway</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="string">localhost:8848</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">locator:</span></span><br><span class="line">          <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">user-service</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://ssc-user</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/api/users/**</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">StripPrefix=1</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">order-service</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://ssc-order</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/api/orders/**</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">StripPrefix=1</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-用户服务（ssc-user）"><a href="#2-用户服务（ssc-user）" class="headerlink" title="2. 用户服务（ssc-user）"></a>2. 用户服务（ssc-user）</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># application.yml</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">9001</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">ssc-user</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="string">localhost:8848</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">jdbc:mysql:///photographer_order?serverTimezone=Asia/Shanghai</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">password:</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-订单服务（ssc-order）"><a href="#3-订单服务（ssc-order）" class="headerlink" title="3. 订单服务（ssc-order）"></a>3. 订单服务（ssc-order）</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># application.yml</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">9002</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">ssc-order</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="string">localhost:8848</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">jdbc:mysql:///photographer_order?serverTimezone=Asia/Shanghai</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">password:</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="4-用户服务Feign客户端（在ssc-order中）"><a href="#4-用户服务Feign客户端（在ssc-order中）" class="headerlink" title="4. 用户服务Feign客户端（在ssc-order中）"></a>4. 用户服务Feign客户端（在ssc-order中）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UserClient.java</span></span><br><span class="line"><span class="meta">@FeignClient(name = &quot;ssc-user&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserClient</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/users/&#123;id&#125;&quot;)</span></span><br><span class="line">    Result&lt;UserDTO&gt; <span class="title function_">getUserById</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Long id)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="5-简化版本的订单服务实现"><a href="#5-简化版本的订单服务实现" class="headerlink" title="5. 简化版本的订单服务实现"></a>5. 简化版本的订单服务实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// OrdersServiceImpl.java</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrdersServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">OrdersService</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> OrdersMapper ordersMapper;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserClient userClient;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Orders <span class="title function_">getOrderWithUserInfo</span><span class="params">(Long orderId)</span> &#123;</span><br><span class="line">        <span class="comment">// 获取订单信息</span></span><br><span class="line">        <span class="type">Orders</span> <span class="variable">order</span> <span class="operator">=</span> ordersMapper.selectById(orderId);</span><br><span class="line">        <span class="keyword">if</span> (order != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 调用用户服务获取用户信息</span></span><br><span class="line">            Result&lt;UserDTO&gt; userResult = userClient.getUserById(order.getUserId());</span><br><span class="line">            <span class="keyword">if</span> (userResult.isSuccess()) &#123;</span><br><span class="line">                <span class="comment">// 设置用户信息</span></span><br><span class="line">                <span class="type">UserDTO</span> <span class="variable">userDTO</span> <span class="operator">=</span> userResult.getData();</span><br><span class="line">                order.setUserName(userDTO.getUsername());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> order;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="实现建议"><a href="#实现建议" class="headerlink" title="实现建议"></a>实现建议</h2><ol>
-<li><p><strong>简化数据库结构</strong></p>
-<ul>
-<li>初期可先使用共享数据库</li>
-<li>保持原有表结构不变，减少迁移成本</li>
-</ul>
-</li>
-<li><p><strong>重点关注</strong></p>
-<ul>
-<li>服务注册与发现</li>
-<li>基本服务间调用</li>
-<li>网关路由功能</li>
-</ul>
-</li>
-<li><p><strong>暂缓处理项</strong></p>
-<ul>
-<li>复杂的认证授权</li>
-<li>分布式事务</li>
-<li>高级监控体系</li>
-<li>容器化部署</li>
-</ul>
-</li>
-</ol>
-<p>3天时间内，可以搭建一个基础但功能可用的微服务框架，主要完成服务注册发现、网关路由和简单服务间调用功能。这将为后续完整微服务改造打下基础，同时能够验证技术路线的可行性。</p>
-<p>请注意，这个时间框架非常紧，建议集中精力于核心架构搭建，避免深入实现业务细节，以确保能在3天内看到一个基本可运行的框架。</p>
-<h3 id="一、网关配置的特殊路由"><a href="#一、网关配置的特殊路由" class="headerlink" title="一、网关配置的特殊路由"></a>一、网关配置的特殊路由</h3><ol>
-<li>登录路由</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;login</p>
-</li>
-<li><p>方法: POST</p>
-</li>
-<li><p>实际转发到: &#x2F;users&#x2F;login</p>
-</li>
-<li><p>服务: ssc-user</p>
-</li>
-</ul>
-<ol>
-<li>注册路由</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;register</p>
-</li>
-<li><p>方法: POST</p>
-</li>
-<li><p>实际转发到: &#x2F;users&#x2F;register</p>
-</li>
-<li><p>服务: ssc-user</p>
-</li>
-</ul>
-<h3 id="二、用户服务接口-通过网关访问需添加前缀-api"><a href="#二、用户服务接口-通过网关访问需添加前缀-api" class="headerlink" title="二、用户服务接口 (通过网关访问需添加前缀 &#x2F;api)"></a>二、用户服务接口 (通过网关访问需添加前缀 &#x2F;api)</h3><ol>
-<li>根据ID获取用户</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;users&#x2F;{id}</p>
-</li>
-<li><p>方法: GET</p>
-</li>
-<li><p>描述: 获取指定ID的用户信息</p>
-</li>
-</ul>
-<ol>
-<li>用户登录</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;users&#x2F;login</p>
-</li>
-<li><p>方法: POST</p>
-</li>
-<li><p>描述: 用户登录认证</p>
-</li>
-</ul>
-<ol>
-<li>用户注册</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;users&#x2F;register</p>
-</li>
-<li><p>方法: POST</p>
-</li>
-<li><p>描述: 用户注册</p>
-</li>
-</ul>
-<ol>
-<li>更新用户信息</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;users&#x2F;{id}</p>
-</li>
-<li><p>方法: PUT</p>
-</li>
-<li><p>描述: 更新指定用户的信息</p>
-</li>
-</ul>
-<ol>
-<li>更新用户头像</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;users&#x2F;{id}&#x2F;avatar</p>
-</li>
-<li><p>方法: PUT</p>
-</li>
-<li><p>描述: 更新指定用户的头像</p>
-</li>
-</ul>
-<ol>
-<li>根据角色获取用户列表</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;users&#x2F;role&#x2F;{role}</p>
-</li>
-<li><p>方法: GET</p>
-</li>
-<li><p>描述: 获取指定角色的所有用户</p>
-</li>
-</ul>
-<ol>
-<li>分页查询用户</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;users&#x2F;page</p>
-</li>
-<li><p>方法: GET</p>
-</li>
-<li><p>参数: current(默认1), size(默认10), keyword(可选)</p>
-</li>
-<li><p>描述: 分页查询用户信息</p>
-</li>
-</ul>
-<h3 id="三、订单服务接口-通过网关访问需添加前缀-api"><a href="#三、订单服务接口-通过网关访问需添加前缀-api" class="headerlink" title="三、订单服务接口 (通过网关访问需添加前缀 &#x2F;api)"></a>三、订单服务接口 (通过网关访问需添加前缀 &#x2F;api)</h3><ol>
-<li>创建订单</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;orders</p>
-</li>
-<li><p>方法: POST</p>
-</li>
-<li><p>描述: 创建新订单</p>
-</li>
-</ul>
-<ol>
-<li>获取订单详情</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;orders&#x2F;{id}</p>
-</li>
-<li><p>方法: GET</p>
-</li>
-<li><p>描述: 获取指定ID订单的详细信息</p>
-</li>
-</ul>
-<ol>
-<li>获取用户的订单列表</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;orders&#x2F;user&#x2F;{userId}</p>
-</li>
-<li><p>方法: GET</p>
-</li>
-<li><p>描述: 获取指定用户的所有订单</p>
-</li>
-</ul>
-<ol>
-<li>获取摄影师的订单列表</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;orders&#x2F;photographer&#x2F;{photographerId}</p>
-</li>
-<li><p>方法: GET</p>
-</li>
-<li><p>描述: 获取指定摄影师的所有订单</p>
-</li>
-</ul>
-<ol>
-<li>更新订单状态</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;orders&#x2F;{id}&#x2F;status</p>
-</li>
-<li><p>方法: PUT</p>
-</li>
-<li><p>参数: status(必填)</p>
-</li>
-<li><p>描述: 更新指定订单的状态</p>
-</li>
-</ul>
-<ol>
-<li>分页查询订单</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;orders&#x2F;page</p>
-</li>
-<li><p>方法: GET</p>
-</li>
-<li><p>参数: current(默认1), size(默认10), keyword(可选)</p>
-</li>
-<li><p>描述: 分页查询订单信息</p>
-</li>
-</ul>
-<h3 id="四、测试接口"><a href="#四、测试接口" class="headerlink" title="四、测试接口"></a>四、测试接口</h3><ol>
-<li>测试订单服务</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;orders&#x2F;test</p>
-</li>
-<li><p>方法: GET</p>
-</li>
-<li><p>描述: 测试订单服务是否正常运行</p>
-</li>
-</ul>
-<ol>
-<li>测试服务调用</li>
-</ol>
-<ul>
-<li><p>路径: &#x2F;api&#x2F;orders&#x2F;test&#x2F;user&#x2F;{id}</p>
-</li>
-<li><p>方法: GET</p>
-</li>
-<li><p>描述: 测试订单服务调用用户服务获取用户信息</p>
-</li>
-</ul>
-<h1 id="Sa-token引入"><a href="#Sa-token引入" class="headerlink" title="Sa-token引入"></a>Sa-token引入</h1><p>使用Postman测试Sa-Token认证系统需要进行以下步骤：</p>
-<h2 id="1-测试注册功能"><a href="#1-测试注册功能" class="headerlink" title="1. 测试注册功能"></a>1. 测试注册功能</h2><ol>
-<li>打开Postman</li>
-<li>创建一个新的POST请求</li>
-<li>设置请求URL为 <code>http://localhost:9999/register</code></li>
-<li>选择Headers选项卡，添加头部：<ul>
-<li>Key: <code>Content-Type</code></li>
-<li>Value: <code>application/json</code></li>
-</ul>
-</li>
-<li>选择Body选项卡，选择raw，然后选择JSON格式</li>
-<li>输入注册信息：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;testuser&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;password123&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;测试用户&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;role&quot;</span><span class="punctuation">:</span> <span class="string">&quot;user&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;email&quot;</span><span class="punctuation">:</span> <span class="string">&quot;test@example.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;phone&quot;</span><span class="punctuation">:</span> <span class="string">&quot;13800138000&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
-<li>点击Send发送请求</li>
-<li>检查响应，应该返回成功信息和用户数据（不含密码）</li>
-</ol>
-<h2 id="2-测试登录功能"><a href="#2-测试登录功能" class="headerlink" title="2. 测试登录功能"></a>2. 测试登录功能</h2><ol>
-<li><p>创建一个新的POST请求</p>
-</li>
-<li><p>设置请求URL为 <code>http://localhost:9999/login</code></p>
-</li>
-<li><p>在Headers中添加：</p>
-<ul>
-<li>Key: <code>Content-Type</code></li>
-<li>Value: <code>application/json</code></li>
-</ul>
-</li>
-<li><p>在Body中输入：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;testuser&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;password123&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>点击Send发送请求</p>
-</li>
-<li><p>检查响应，应该包含：</p>
-<ul>
-<li>用户信息</li>
-<li>tokenName (通常是”Authorization”)</li>
-<li>tokenValue (JWT令牌值)</li>
-</ul>
-</li>
-<li><p><strong>重要：复制响应中的tokenName和tokenValue，后续请求需要使用</strong></p>
-</li>
-</ol>
-<h2 id="3-使用token获取用户信息"><a href="#3-使用token获取用户信息" class="headerlink" title="3. 使用token获取用户信息"></a>3. 使用token获取用户信息</h2><ol>
-<li>创建一个新的GET请求</li>
-<li>设置请求URL为 <code>http://localhost:9999/api/user/info</code></li>
-<li>在Headers中添加从登录响应获取的token：<ul>
-<li>Key: <code>Authorization</code> (使用tokenName的值)</li>
-<li>Value: 登录响应中的tokenValue值</li>
-</ul>
-</li>
-<li>点击Send发送请求</li>
-<li>检查响应，应该返回当前登录用户的详细信息</li>
-</ol>
-<h2 id="4-测试权限控制"><a href="#4-测试权限控制" class="headerlink" title="4. 测试权限控制"></a>4. 测试权限控制</h2><h3 id="4-1-测试管理员角色的接口"><a href="#4-1-测试管理员角色的接口" class="headerlink" title="4.1 测试管理员角色的接口"></a>4.1 测试管理员角色的接口</h3><ol>
-<li>创建一个新的GET请求</li>
-<li>设置请求URL为 <code>http://localhost:9999/api/admin/users</code> (假设这是一个管理员接口)</li>
-<li>在Headers中添加token</li>
-<li>点击Send发送请求</li>
-<li>如果使用的是普通用户token，应该返回权限不足的错误</li>
-<li>如果使用的是管理员token，应该能够正常访问</li>
-</ol>
-<h3 id="4-2-测试摄影师角色的接口"><a href="#4-2-测试摄影师角色的接口" class="headerlink" title="4.2 测试摄影师角色的接口"></a>4.2 测试摄影师角色的接口</h3><ol>
-<li>创建一个新的GET请求</li>
-<li>设置请求URL为 <code>http://localhost:9999/api/photographer/profile</code> (假设这是一个摄影师接口)</li>
-<li>在Headers中添加token</li>
-<li>发送请求并检查响应</li>
-</ol>
-<h2 id="5-测试退出登录"><a href="#5-测试退出登录" class="headerlink" title="5. 测试退出登录"></a>5. 测试退出登录</h2><ol>
-<li>创建一个新的POST请求</li>
-<li>设置请求URL为 <code>http://localhost:9999/logout</code></li>
-<li>在Headers中添加token</li>
-<li>点击Send发送请求</li>
-<li>检查响应，应该返回退出成功的信息</li>
-<li>然后再尝试使用同一个token访问需要登录的接口，应该会返回”未登录”的错误</li>
-</ol>
-<h2 id="6-使用Postman的Collection和Environment功能"><a href="#6-使用Postman的Collection和Environment功能" class="headerlink" title="6. 使用Postman的Collection和Environment功能"></a>6. 使用Postman的Collection和Environment功能</h2><p>为了更方便地测试，可以使用Postman的集合和环境变量：</p>
-<ol>
-<li><p>创建一个新的环境，命名为”Sa-Token测试”</p>
-</li>
-<li><p>添加以下环境变量：</p>
-<ul>
-<li><code>baseUrl</code>: <code>http://localhost:9999</code></li>
-<li><code>token</code>: 空值(登录后自动填充)</li>
-</ul>
-</li>
-<li><p>创建一个新的Collection，命名为”用户认证测试”</p>
-</li>
-<li><p>在Collection中创建上述所有请求，并使用环境变量，如：</p>
-<ul>
-<li>登录URL: <code>&#123;&#123;baseUrl&#125;&#125;/login</code></li>
-<li>用户信息URL: <code>&#123;&#123;baseUrl&#125;&#125;/api/user/info</code></li>
-<li>授权Header: <code>Authorization: &#123;&#123;token&#125;&#125;</code></li>
-</ul>
-</li>
-<li><p>在登录请求的Tests选项卡中添加以下JavaScript代码，自动保存token：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pm.<span class="property">response</span>.<span class="property">code</span> === <span class="number">200</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> jsonData = pm.<span class="property">response</span>.<span class="title function_">json</span>();</span><br><span class="line">    <span class="keyword">if</span> (jsonData.<span class="property">code</span> === <span class="string">&quot;200&quot;</span> &amp;&amp; jsonData.<span class="property">data</span> &amp;&amp; jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>) &#123;</span><br><span class="line">        pm.<span class="property">environment</span>.<span class="title function_">set</span>(<span class="string">&quot;token&quot;</span>, jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Token saved to environment variable&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="7-测试无效或过期token"><a href="#7-测试无效或过期token" class="headerlink" title="7. 测试无效或过期token"></a>7. 测试无效或过期token</h2><ol>
-<li>创建一个需要登录的请求，如获取用户信息</li>
-<li>在Headers中添加一个无效的token值</li>
-<li>发送请求，应该返回未登录或token无效的错误</li>
-</ol>
-<h2 id="8-调试技巧"><a href="#8-调试技巧" class="headerlink" title="8. 调试技巧"></a>8. 调试技巧</h2><ol>
-<li>使用Postman控制台查看请求和响应的详细信息</li>
-<li>检查服务器端日志，特别是与Sa-Token相关的日志</li>
-<li>如果遇到问题，可以在Postman中使用预请求脚本进行调试</li>
-</ol>
-<h2 id="9-常见问题及解决方案"><a href="#9-常见问题及解决方案" class="headerlink" title="9. 常见问题及解决方案"></a>9. 常见问题及解决方案</h2><ol>
-<li><strong>CORS错误</strong>：确保网关的CorsConfig正确配置并暴露了Authorization头</li>
-<li><strong>token不生效</strong>：检查token名称和值是否正确，以及请求URL是否正确</li>
-<li><strong>token过期</strong>：尝试重新登录获取新的token</li>
-<li><strong>权限错误</strong>：检查用户角色和接口要求的权限是否匹配</li>
-</ol>
-<p>通过以上步骤，你可以全面测试Sa-Token认证系统的功能，确保用户注册、登录、权限控制和注销功能都正常工作。</p>
-<p>在Postman中测试头像上传功能的详细步骤如下：</p>
-<h2 id="步骤1-用户登录获取Token"><a href="#步骤1-用户登录获取Token" class="headerlink" title="步骤1: 用户登录获取Token"></a>步骤1: 用户登录获取Token</h2><ol>
-<li>打开Postman，创建一个新的POST请求</li>
-<li>设置URL: <code>http://localhost:9999/login</code></li>
-<li>选择Body选项卡，选择raw，格式为JSON</li>
-<li>输入登录信息：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;testuser&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;password123&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
-<li>发送请求</li>
-<li>从响应中获取Sa-Token的token值，记录下来：<ul>
-<li>tokenName (通常是”Authorization”)</li>
-<li>tokenValue (后续请求需要使用)</li>
-</ul>
-</li>
-</ol>
-<h2 id="步骤2-设置头像上传请求"><a href="#步骤2-设置头像上传请求" class="headerlink" title="步骤2: 设置头像上传请求"></a>步骤2: 设置头像上传请求</h2><ol>
-<li><p>创建一个新的POST请求</p>
-</li>
-<li><p>设置URL: <code>http://localhost:9999/api/uploadAvatar</code></p>
-</li>
-<li><p>添加Header：</p>
-<ul>
-<li>Key: <code>Authorization</code> (或者登录响应中的tokenName值)</li>
-<li>Value: 登录响应中的tokenValue值</li>
-</ul>
-</li>
-<li><p>选择Body选项卡，选择form-data</p>
-</li>
-<li><p>添加一个键值对：</p>
-<ul>
-<li>Key: <code>avatar</code></li>
-<li>在Key右侧下拉菜单选择File类型</li>
-<li>Value: 点击”Select Files”按钮，选择一个本地图片文件（如.jpg, .png）</li>
-</ul>
-</li>
-</ol>
-<h2 id="步骤3-发送请求并检查响应"><a href="#步骤3-发送请求并检查响应" class="headerlink" title="步骤3: 发送请求并检查响应"></a>步骤3: 发送请求并检查响应</h2><ol>
-<li>点击Send发送请求</li>
-<li>如果成功，应该收到类似以下的响应：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="string">&quot;200&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;msg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;请求成功&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://yourserver:9999/file/view/someuniquefilename.jpg&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="步骤4-测试头像预览和查看"><a href="#步骤4-测试头像预览和查看" class="headerlink" title="步骤4: 测试头像预览和查看"></a>步骤4: 测试头像预览和查看</h2><h3 id="测试当前用户头像预览："><a href="#测试当前用户头像预览：" class="headerlink" title="测试当前用户头像预览："></a>测试当前用户头像预览：</h3><ol>
-<li>创建一个新的GET请求</li>
-<li>设置URL: <code>http://localhost:9999/api/avatar/my/preview</code></li>
-<li>添加Header（使用与上传相同的token）</li>
-<li>发送请求并检查返回的预览URL</li>
-</ol>
-<h3 id="测试头像下载："><a href="#测试头像下载：" class="headerlink" title="测试头像下载："></a>测试头像下载：</h3><ol>
-<li>创建一个新的GET请求</li>
-<li>设置URL: <code>http://localhost:9999/api/avatar/&#123;userId&#125;</code> (将{userId}替换为实际用户ID)</li>
-<li>添加Header（使用与上传相同的token）</li>
-<li>发送请求，获取下载链接</li>
-<li>在浏览器中访问下载链接验证文件是否可以下载</li>
-</ol>
-<h2 id="使用Postman中的Environment变量（可选但推荐）"><a href="#使用Postman中的Environment变量（可选但推荐）" class="headerlink" title="使用Postman中的Environment变量（可选但推荐）"></a>使用Postman中的Environment变量（可选但推荐）</h2><p>为了更便捷地进行测试，您可以设置Postman环境变量：</p>
-<ol>
-<li><p>在Postman右上角点击”No Environment”下拉菜单，然后点击”New”</p>
-</li>
-<li><p>创建一个名为”微服务测试”的环境</p>
-</li>
-<li><p>添加以下变量：</p>
-<ul>
-<li><code>baseUrl</code>: <code>http://localhost:9999</code></li>
-<li><code>token</code>: 空值(登录后自动填充)</li>
-</ul>
-</li>
-<li><p>点击”Save”保存环境</p>
-</li>
-<li><p>在登录请求的Tests选项卡中添加以下代码，以便在登录时自动保存token：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pm.<span class="property">response</span>.<span class="property">code</span> === <span class="number">200</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> jsonData = pm.<span class="property">response</span>.<span class="title function_">json</span>();</span><br><span class="line">    <span class="keyword">if</span> (jsonData.<span class="property">code</span> === <span class="string">&quot;200&quot;</span> &amp;&amp; jsonData.<span class="property">data</span>) &#123;</span><br><span class="line">        pm.<span class="property">environment</span>.<span class="title function_">set</span>(<span class="string">&quot;token&quot;</span>, jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Token saved: &quot;</span> + jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>然后所有请求都可以使用环境变量：</p>
-<ul>
-<li>URL: <code>&#123;&#123;baseUrl&#125;&#125;/api/uploadAvatar</code></li>
-<li>Headers: <code>Authorization: &#123;&#123;token&#125;&#125;</code></li>
-</ul>
-</li>
-</ol>
-<h2 id="常见问题排查"><a href="#常见问题排查" class="headerlink" title="常见问题排查"></a>常见问题排查</h2><p>如果上传过程中遇到问题，请检查以下几点：</p>
-<ol>
-<li><p><strong>Token问题：</strong> 确保已正确设置了Authorization头部，且token值有效。您可以再次登录获取新token测试。</p>
-</li>
-<li><p><strong>文件大小：</strong> 确保上传的文件不超过配置的大小限制（在application.yml中配置的multipart大小）。</p>
-</li>
-<li><p><strong>Content-Type：</strong> 确保使用的是form-data方式，而不是binary或其他方式，否则服务器可能无法正确解析文件。</p>
-</li>
-<li><p><strong>文件格式：</strong> 确保上传的是图片文件（code中校验了文件类型必须以image&#x2F;开头）。</p>
-</li>
-<li><p><strong>网络问题：</strong> 检查网关服务和用户服务是否正常运行，可以通过访问一些简单的接口（如&#x2F;）来确认。</p>
-</li>
-<li><p><strong>跨域问题：</strong> 如果在实际前端应用中测试，可能会遇到跨域问题，确保网关的CORS配置正确。</p>
-</li>
-<li><p><strong>日志检查：</strong> 查看服务器日志，特别注意与文件上传相关的异常信息。</p>
-</li>
-</ol>
-<p>通过以上步骤，您应该能够在Postman中成功测试头像上传功能，并验证整个流程是否正常工作。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/12/%E3%80%90AI%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0%E3%80%91MCP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/04/12/%E3%80%90AI%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0%E3%80%91MCP/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-04-12T23:45:09+08:00">
-                2025-04-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="MCP-和-Function-Call"><a href="#MCP-和-Function-Call" class="headerlink" title="MCP 和 Function Call"></a>MCP 和 Function Call</h1><h2 id="困惑"><a href="#困惑" class="headerlink" title="困惑"></a>困惑</h2><ol>
-<li>有哪些模型支持MCP？</li>
-<li>只有支持函数调用的模型才能使用MCP吗？</li>
-<li>MCP能脱离LLM调用吗？</li>
-</ol>
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><ul>
-<li>MCP是<strong>协议</strong>，是一套标准</li>
-<li>Function Call &#x2F; Tool Call是模型的基本<strong>能力</strong>，可以返回格式化工具调用的能力</li>
-</ul>
-<h2 id="从调用流程角度"><a href="#从调用流程角度" class="headerlink" title="从调用流程角度"></a>从调用流程角度</h2><p><img src="C:\Users\Jinju\AppData\Roaming\Typora\typora-user-images\image-20250412164919679.png" alt="image-20250412164919679"></p>
-<p>是否使用MCP的区别发生在FunctionCall完成后</p>
-<p><img src="C:\Users\Jinju\blog\source\images\image-20250414170310829.png" alt="image-20250414170310829"></p>
-<h2 id="从开发者角度"><a href="#从开发者角度" class="headerlink" title="从开发者角度"></a>从开发者角度</h2><ul>
-<li><strong>无MCP</strong><ul>
-<li>Host作者制定工具的开发规范 (LobeChat &#x2F; LibreChat)</li>
-<li>开发者根据规范给某一个Host开发工具</li>
-<li>不同Host之间插件生态不互通</li>
-</ul>
-</li>
-<li><strong>有MCP</strong><ul>
-<li>Host作者根据MCP Client Spec开发客户端</li>
-<li>工具作者根据MCP Server Sepc开发工具服务端</li>
-<li>打通插件&#x2F;工具生态</li>
-</ul>
-</li>
-</ul>
-<h2 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h2><p>MCP的能力不止调用工具</p>
-<p><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/introduction">MCP文档</a></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Mcp只是LLM调用外部工具的一种协议</p>
-<p>Function call是模型的能力它会以json的方式描述调用外部工具的参数和外部工具的名称</p>
-<p>✅ 如何从零开始设置MCP服务器 ✅ 使用API获取实时天气数据 ✅ 将MCP服务器连接到Claude for Desktop ✅ 理解MCP如何使AI与外部数据互动 ✅ 实践演示以实现无缝集成</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/10/%E3%80%90Python%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E3%80%91Flask%20%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/04/10/%E3%80%90Python%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E3%80%91Flask%20%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-04-10T23:30:24+08:00">
-                2025-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Flask 是一个轻量级的 Python Web 框架，它被广泛用于构建 Web 应用程序和 API。Flask 简单易用，具有灵活性和可扩展性，是许多开发者喜欢用其构建项目的原因。本文将介绍 Flask 是什么以及如何使用它来构建 Web 应用程序，同时提供一个实践案例，让你能够在 IDE 编辑器中运行代码。</p>
-<p>Flask 官网地址：<a target="_blank" rel="noopener" href="https://flask.palletsprojects.com/en/2.3.x/quickstart/">https://flask.palletsprojects.com/en/2.3.x/quickstart/</a></p>
-<p><img src="http://apifox.com/apiskills/content/images/2023/07/image-887.png" alt="Flask 是什么？怎么使用">Flask 官网</p>
-<h2 id="Flask-的基本使用"><a href="#Flask-的基本使用" class="headerlink" title="Flask 的基本使用"></a>Flask 的基本使用</h2><p>首先，确保你已经安装了 Flask。你可以通过以下命令使用 pip 安装 Flask：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install flask</span><br></pre></td></tr></table></figure>
-
-
-<p>接下来，我们将创建一个简单的 Flask 应用程序并运行它。请在你的 IDE 编辑器中创建一个名为 <code>app.py</code> 的文件，并将以下代码粘贴到其中：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, Flask!&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
-
-<p>在上面的代码中，我们导入了 Flask 类并创建了一个应用程序实例。然后，我们定义了一个根路由 <code>/</code>，并在该路由上定义了一个简单的处理函数 <code>hello()</code>。该处理函数返回一个字符串 “Hello, Flask!”。</p>
-<p>最后，我们使用 <code>app.run()</code> 方法运行应用程序。这将在本地主机上的默认端口（通常是 5000）上启动应用程序。你可以在浏览器中访问 <code>http://localhost:5000/</code>，你将看到 “Hello, Flask!” 的输出。</p>
-<p><img src="http://apifox.com/apiskills/content/images/2023/07/image-892.png" alt="Flask 是什么？怎么使用？"></p>
-<h2 id="进阶案例"><a href="#进阶案例" class="headerlink" title="进阶案例"></a>进阶案例</h2><p>现在，我们将展示一个稍微复杂一点的实践案例，其中涉及到一个动态路由和模板渲染。在你的 <code>app.py</code> 文件中添加以下代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, Flask!&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/user/&lt;username&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_user</span>(<span class="params">username</span>):</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;user.html&#x27;</span>, name=username)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
-
-<p>在上面的代码中，我们定义了一个新的路由 <code>/user/&lt;username&gt;</code>，其中 <code>&lt;username&gt;</code> 是一个动态参数。在处理函数 <code>show_user()</code> 中，我们使用 <code>render_template()</code> 方法来渲染一个名为 <code>user.html</code> 的模板，并将参数 <code>name</code> 设置为动态参数 <code>username</code>。</p>
-<p>为了使这个案例能够运行，我们需要创建一个名为 <code>user.html</code> 的模板文件。在你的项目目录中创建一个名为 <code>templates</code> 的文件夹，并在其中创建 <code>user.html</code> 文件。将以下代码粘贴到 <code>user.html</code> 文件中：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;User Profile&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1&gt;Welcome, &#123;&#123; name &#125;&#125;!&lt;/h1&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-
-
-<p>现在，运行 <code>app.py</code>，并访问 <code>http://localhost:5000/user/liziqi</code>，你将看到 “Welcome, liziqi!” 的输出。</p>
-<p><img src="http://apifox.com/apiskills/content/images/2023/07/image-894.png" alt="Flask 是什么？怎么使用？"></p>
-<h2 id="使用-Apifox-调试-Flask-接口"><a href="#使用-Apifox-调试-Flask-接口" class="headerlink" title="使用 Apifox 调试 Flask 接口"></a>使用 Apifox 调试 Flask 接口</h2><p>如果你是 Flask 开发者，你经常需要与 API 打交道，确保你的应用程序能够正常工作。这时，一个强大的接口测试工具就会派上用场。</p>
-<p><a target="_blank" rel="noopener" href="https://apifox.com/">Apifox</a> 是一个集 API 文档、API 调试、API Mock和API 自动化测试于一体的 API 协作平台，支持 http(s)、gRPC、WebSocket 等协议，我们可以通过 <a target="_blank" rel="noopener" href="https://apifox.com/">Apifox </a>来更方便的调试 Flask 接口。</p>
-<p>如果想快速的调试一条接口，新建一个项目后，在项目中选择<strong>“调试模式”</strong>，填写请求地址后即可快速发送请求，并获得响应结果，上文的实践案例如图所示：</p>
-<p><a target="_blank" rel="noopener" href="https://app.apifox.com/">立即体验 Apifox</a></p>
-<p><img src="http://apifox.com/apiskills/content/images/2023/07/image-895.png" alt="Flask 是什么？怎么使用？">Apifox 调试</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文介绍了 Flask 是什么以及如何使用它来构建 Web 应用程序。Flask 是一个轻量级的 Python Web 框架，提供了简单易用的 API，并具有灵活性和可扩展性。</p>
-<p>Flask 提供了更多功能和扩展，可以帮助你构建出强大的 Web 应用程序，开始使用 Flask，构建出出色的 Web 应用程序吧！</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/10/%E3%80%90AI%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0%E3%80%91%E5%81%9A%E4%B8%80%E4%B8%AA%E6%9C%AC%E5%9C%B0%E6%B5%8F%E8%A7%88%E5%99%A8Agent/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/04/10/%E3%80%90AI%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0%E3%80%91%E5%81%9A%E4%B8%80%E4%B8%AA%E6%9C%AC%E5%9C%B0%E6%B5%8F%E8%A7%88%E5%99%A8Agent/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-04-10T14:08:47+08:00">
-                2025-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>开发步骤<br>根据参考文档，<a target="_blank" rel="noopener" href="https://docs.browser-use.com/customize/real-browser">https://docs.browser-use.com/customize/real-browser</a><br>用cursor写一个简单的python flask应用<br>准备好OpenAl或者Claude的APIKey，就可以运行了</p>
-<ul>
-<li>如何申请API<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1PqKKeeEnm/?spm_id_from=333.337.search-card.all.click&vd_source=9a75a4b5f792c3cd3b921c00fec104bb">https://www.bilibili.com/video/BV1PqKKeeEnm/?spm_id_from=333.337.search-card.all.click&amp;vd_source=9a75a4b5f792c3cd3b921c00fec104bb</a></li>
-</ul>
-<p>代码地址:<a target="_blank" rel="noopener" href="https://github.com/jiangyan/browser-operator">https://github.com/jiangyan/browser-operator</a><br>。工具列表<br>。Cursor<br>OpenAl&#x2F;Claude AP| Key</p>
-<p>安装问题:<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/76191061/fatal-unable-to-access-failed-to-connect-to-github-com-port-443-after-2105">致命：无法访问’’：21058 毫秒后无法连接到 github.com 端口 443：无法连接到服务器</a></p>
-<p>如果你使用VPN，你可以尝试<code>git config --global http.proxy http://127.0.0.1:7890</code>（7890是你的VPN端口，我用的是7897）和<code>git config --global https.proxy https://127.0.0.1:7890</code>。<br>如果没有，你可以尝试<code>git config --global unset http.proxy</code>和<code>git config --global unset https.proxy</code>。</p>
-<p><img src="C:\Users\Jinju\blog\source\images\image-20250411102816799.png" alt="image-20250411102816799"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
   </nav>
 
 
@@ -2650,7 +2112,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">41</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

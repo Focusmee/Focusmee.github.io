@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="让我详细解释方法区（Method Area）的概念和位置。 在JVM的内存结构中，方法区是一个非常重要的部分。让我们通过JVM的整体内存结构来理解：  JVM内存结构： 1234567891011121314151617JVM内存├── 堆区（Heap）│   ├── 新生代│   │   ├── Eden区│   │   ├── Survivor 0│   │   └── Survivor 1│">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2025/06/05/%E3%80%90JVM%E5%AD%A6%E4%B9%A0%E3%80%91%E6%96%B9%E6%B3%95%E5%8C%BA/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="让我详细解释方法区（Method Area）的概念和位置。 在JVM的内存结构中，方法区是一个非常重要的部分。让我们通过JVM的整体内存结构来理解：  JVM内存结构： 1234567891011121314151617JVM内存├── 堆区（Heap）│   ├── 新生代│   │   ├── Eden区│   │   ├── Survivor 0│   │   └── Survivor 1│">
+<meta property="og:locale">
+<meta property="article:published_time" content="2025-06-05T01:29:13.957Z">
+<meta property="article:modified_time" content="2025-06-05T01:29:14.251Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2025/06/05/【JVM学习】方法区/"/>
+
+
+
+
+
+  <title> | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/06/05/%E3%80%90JVM%E5%AD%A6%E4%B9%A0%E3%80%91%E6%96%B9%E6%B3%95%E5%8C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-06-05T09:29:13+08:00">
+                2025-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>让我详细解释方法区（Method Area）的概念和位置。</p>
+<p>在JVM的内存结构中，方法区是一个非常重要的部分。让我们通过JVM的整体内存结构来理解：</p>
+<ol>
+<li><p><strong>JVM内存结构</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">JVM内存</span><br><span class="line">├── 堆区（Heap）</span><br><span class="line">│   ├── 新生代</span><br><span class="line">│   │   ├── Eden区</span><br><span class="line">│   │   ├── Survivor 0</span><br><span class="line">│   │   └── Survivor 1</span><br><span class="line">│   └── 老年代</span><br><span class="line">├── 方法区（Method Area）</span><br><span class="line">│   ├── 类信息</span><br><span class="line">│   ├── 常量</span><br><span class="line">│   ├── 静态变量</span><br><span class="line">│   └── 即时编译器编译后的代码</span><br><span class="line">├── 程序计数器（PC Register）</span><br><span class="line">└── JVM栈（JVM Stack）</span><br><span class="line">    ├── 栈帧1</span><br><span class="line">    ├── 栈帧2</span><br><span class="line">    └── 栈帧3</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>方法区的演进</strong>：</p>
+</li>
+</ol>
+<ul>
+<li><p><strong>JDK 1.7之前</strong>：</p>
+<ul>
+<li>方法区在永久代（PermGen）中</li>
+<li>和堆区连续</li>
+<li>有固定大小限制</li>
+</ul>
+</li>
+<li><p><strong>JDK 1.8及之后</strong>：</p>
+<ul>
+<li>方法区在元空间（Metaspace）中</li>
+<li>直接使用本地内存（Native Memory）</li>
+<li>不再受JVM堆内存的限制</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li><strong>在我们的mini-jvm中查看相关实现</strong>：</li>
+</ol>
+<p>Search files…<br>在我们的mini-jvm实现中，方法区的概念主要体现在<code>ClassFile</code>对象中，它包含了类的所有信息。让我们看看方法区的主要特点：</p>
+<ol>
+<li><p><strong>方法区存储的内容</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">方法区</span><br><span class="line">├── 类型信息</span><br><span class="line">│   ├── 类名</span><br><span class="line">│   ├── 修饰符</span><br><span class="line">│   ├── 父类信息</span><br><span class="line">│   └── 接口信息</span><br><span class="line">├── 方法信息</span><br><span class="line">│   ├── 方法名</span><br><span class="line">│   ├── 返回类型</span><br><span class="line">│   ├── 参数列表</span><br><span class="line">│   └── 方法字节码</span><br><span class="line">├── 字段信息</span><br><span class="line">│   ├── 字段名</span><br><span class="line">│   ├── 类型</span><br><span class="line">│   └── 修饰符</span><br><span class="line">└── 其他</span><br><span class="line">    ├── 运行时常量池</span><br><span class="line">    ├── 静态变量</span><br><span class="line">    └── JIT编译的本地代码</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>方法区的特点</strong>：</p>
+</li>
+</ol>
+<ul>
+<li>线程共享：所有线程共享方法区</li>
+<li>动态性：运行时会动态加载新的类</li>
+<li>垃圾回收：主要针对常量池的回收和类的卸载</li>
+</ul>
+<ol start="3">
+<li><p><strong>在mini-jvm中的体现</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 类加载时，将类信息加载到&quot;方法区&quot;</span></span><br><span class="line"><span class="keyword">public</span> ClassFile <span class="title function_">loadClass</span><span class="params">(String fqcn)</span> <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">    <span class="keyword">return</span> classPath.stream()</span><br><span class="line">        .map(path -&gt; tryLoad(path, fqcn))</span><br><span class="line">        .filter(Objects::nonNull)</span><br><span class="line">        .findAny()</span><br><span class="line">        .orElseThrow(() -&gt; <span class="keyword">new</span> <span class="title class_">ClassNotFoundException</span>(fqcn + <span class="string">&quot;找不到&quot;</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法调用时，从&quot;方法区&quot;获取方法信息</span></span><br><span class="line"><span class="type">MethodInfo</span> <span class="variable">finalMethodInfo</span> <span class="operator">=</span> classFile.getMethods(methodName).get(<span class="number">0</span>);</span><br><span class="line"><span class="type">StackFrame</span> <span class="variable">stackFrame</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StackFrame</span>(finalMethodInfo, classFile.getConstantPool(), args);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>方法区的访问过程</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Java代码调用方法</span><br><span class="line">     ↓</span><br><span class="line">查找常量池中的方法引用</span><br><span class="line">     ↓</span><br><span class="line">到方法区找到方法的具体实现</span><br><span class="line">     ↓</span><br><span class="line">创建栈帧</span><br><span class="line">     ↓</span><br><span class="line">执行方法的字节码</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>用生动的比喻来说：</p>
+<p>方法区就像一个<strong>图书馆</strong>：</p>
+<ul>
+<li><p><strong>书架</strong>（类信息存储区）：</p>
+<ul>
+<li>每个类就像一本书</li>
+<li>书的目录就是类的结构信息</li>
+<li>书的内容就是类的方法实现</li>
+</ul>
+</li>
+<li><p><strong>图书管理系统</strong>（类加载器）：</p>
+<ul>
+<li>负责把新书（类）放到正确的位置</li>
+<li>记录书的位置信息</li>
+<li>当需要时能快速找到对应的书</li>
+</ul>
+</li>
+<li><p><strong>阅览室</strong>（运行时）：</p>
+<ul>
+<li>读者（线程）需要看书时</li>
+<li>先查目录（常量池）</li>
+<li>找到具体页码（方法）</li>
+<li>在阅览桌（栈）上阅读</li>
+</ul>
+</li>
+</ul>
+<p>所以，方法区是JVM中一个非常重要的内存区域，它：</p>
+<ol>
+<li>存储类的结构信息</li>
+<li>存储方法的具体实现</li>
+<li>被所有线程共享</li>
+<li>在类加载时填充</li>
+<li>在方法调用时提供数据</li>
+</ol>
+<p>这就是为什么它也被称为”永久代”或”元空间”，因为它存储的是类的”元数据”，是Java程序运行的基础设施。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2025/06/04/%E3%80%90JVM%E5%AD%A6%E4%B9%A0%E3%80%91%E4%B8%80%E4%B8%AAMini_JVM%E5%AE%9E%E7%8E%B0/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2025/06/05/%E3%80%90JVM%E5%AD%A6%E4%B9%A0%E3%80%91%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8A%E4%BA%A4%E4%BA%92%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
