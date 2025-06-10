@@ -260,6 +260,215 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/06/10/%E3%80%90Netty%E5%AD%A6%E4%B9%A0%E3%80%91ChannelHandlerContext%E5%92%8CPipeline/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/06/10/%E3%80%90Netty%E5%AD%A6%E4%B9%A0%E3%80%91ChannelHandlerContext%E5%92%8CPipeline/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-06-10T16:14:50+08:00">
+                2025-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Netty-ChannelHandlerContext-和-Pipeline-作用"><a href="#Netty-ChannelHandlerContext-和-Pipeline-作用" class="headerlink" title="Netty ChannelHandlerContext 和 Pipeline 作用"></a>Netty ChannelHandlerContext 和 Pipeline 作用</h1><p><em>Exported on 2025&#x2F;6&#x2F;10 at GMT+8 16:13:31 from Cursor (1.0.0)</em></p>
+<hr>
+<p><strong>User</strong></p>
+<p>能列举说明所有Netty中ChannelHandlerContext的接口作用handler构成的Pipelinei链路的效果吗</p>
+<hr>
+<p><strong>Cursor</strong></p>
+<p>我来帮您详细分析Netty中ChannelHandlerContext的接口作用和Pipeline链路效果。首先让我查看一下您项目中的Netty相关代码。</p>
+<p>基于您项目中的代码示例，我来详细说明Netty中ChannelHandlerContext的接口作用以及Handler构成的Pipeline链路效果：</p>
+<h2 id="ChannelHandlerContext核心接口作用"><a href="#ChannelHandlerContext核心接口作用" class="headerlink" title="ChannelHandlerContext核心接口作用"></a>ChannelHandlerContext核心接口作用</h2><h3 id="1-事件传播接口"><a href="#1-事件传播接口" class="headerlink" title="1. 事件传播接口"></a>1. 事件传播接口</h3><p>ChannelHandlerContext是Handler之间的桥梁，提供了关键的事件传播方法：</p>
+<p><strong>入站事件传播（Inbound）：</strong></p>
+<ul>
+<li><code>fireChannelRegistered()</code> - 传播Channel注册事件</li>
+<li><code>fireChannelActive()</code> - 传播连接激活事件</li>
+<li><code>fireChannelRead(Object msg)</code> - 传播数据读取事件</li>
+<li><code>fireChannelReadComplete()</code> - 传播读取完成事件</li>
+<li><code>fireChannelInactive()</code> - 传播连接断开事件</li>
+<li><code>fireExceptionCaught(Throwable cause)</code> - 传播异常事件</li>
+</ul>
+<p><strong>出站操作接口（Outbound）：</strong></p>
+<ul>
+<li><code>write(Object msg)</code> - 写入数据到缓冲区</li>
+<li><code>writeAndFlush(Object msg)</code> - 写入并立即发送</li>
+<li><code>flush()</code> - 刷新缓冲区</li>
+<li><code>close()</code> - 关闭连接</li>
+<li><code>connect()</code> - 建立连接</li>
+</ul>
+<h3 id="2-上下文访问接口"><a href="#2-上下文访问接口" class="headerlink" title="2. 上下文访问接口"></a>2. 上下文访问接口</h3><ul>
+<li><code>channel()</code> - 获取关联的Channel</li>
+<li><code>pipeline()</code> - 获取Pipeline引用</li>
+<li><code>handler()</code> - 获取当前Handler</li>
+<li><code>name()</code> - 获取Handler名称</li>
+<li><code>executor()</code> - 获取执行器</li>
+</ul>
+<h2 id="Pipeline链路工作效果"><a href="#Pipeline链路工作效果" class="headerlink" title="Pipeline链路工作效果"></a>Pipeline链路工作效果</h2><h3 id="1-Handler执行顺序"><a href="#1-Handler执行顺序" class="headerlink" title="1. Handler执行顺序"></a>1. Handler执行顺序</h3><p>根据您项目中的 <code>PipelineServer.java</code> 示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Pipeline配置顺序</span></span><br><span class="line">pipeline.addLast(<span class="string">&quot;decoder&quot;</span>, <span class="keyword">new</span> <span class="title class_">StringDecoder</span>(CharsetUtil.UTF_8));</span><br><span class="line">pipeline.addLast(<span class="string">&quot;inbound1&quot;</span>, <span class="keyword">new</span> <span class="title class_">InboundHandler1</span>());</span><br><span class="line">pipeline.addLast(<span class="string">&quot;inbound2&quot;</span>, <span class="keyword">new</span> <span class="title class_">InboundHandler2</span>());</span><br><span class="line">pipeline.addLast(<span class="string">&quot;business&quot;</span>, <span class="keyword">new</span> <span class="title class_">BusinessHandler</span>());</span><br><span class="line">pipeline.addLast(<span class="string">&quot;outbound1&quot;</span>, <span class="keyword">new</span> <span class="title class_">OutboundHandler1</span>());</span><br><span class="line">pipeline.addLast(<span class="string">&quot;outbound2&quot;</span>, <span class="keyword">new</span> <span class="title class_">OutboundHandler2</span>());</span><br><span class="line">pipeline.addLast(<span class="string">&quot;encoder&quot;</span>, <span class="keyword">new</span> <span class="title class_">StringEncoder</span>(CharsetUtil.UTF_8));</span><br></pre></td></tr></table></figure>
+
+<p><strong>入站事件流（数据接收）：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Socket数据 → decoder → inbound1 → inbound2 → business → 业务处理</span><br></pre></td></tr></table></figure>
+
+<p><strong>出站事件流（数据发送）：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">业务处理 → outbound2 → outbound1 → encoder → Socket发送</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-两种传播方式的区别"><a href="#2-两种传播方式的区别" class="headerlink" title="2. 两种传播方式的区别"></a>2. 两种传播方式的区别</h3><p>从您项目的 <code>BusinessHandler.java</code> 中可以看到：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方式1：从当前位置开始的Outbound链</span></span><br><span class="line">ctx.writeAndFlush(response);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方式2：从Pipeline尾部开始的完整Outbound链</span></span><br><span class="line">ctx.channel().writeAndFlush(response);</span><br></pre></td></tr></table></figure>
+
+<p><strong>ctx.writeAndFlush()效果：</strong></p>
+<ul>
+<li>从当前Handler位置向前传播</li>
+<li>跳过前面的OutboundHandler</li>
+<li>效率更高，但可能错过某些处理</li>
+</ul>
+<p><strong>ctx.channel().writeAndFlush()效果：</strong></p>
+<ul>
+<li>从Pipeline尾部开始完整传播</li>
+<li>经过所有OutboundHandler</li>
+<li>保证完整的处理链路</li>
+</ul>
+<h3 id="3-实际运行效果演示"><a href="#3-实际运行效果演示" class="headerlink" title="3. 实际运行效果演示"></a>3. 实际运行效果演示</h3><p>根据您项目的 <code>NettyWorkflowDemo.java</code>，当客户端发送消息时：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">channelRead</span><span class="params">(ChannelHandlerContext ctx, Object msg)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;\n=== 服务器端事件: channelRead (InboundHandler) ===&quot;</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;   消息经过的Handler: decoder -&gt; serverHandler&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="type">String</span> <span class="variable">response</span> <span class="operator">=</span> <span class="string">&quot;Echo: &quot;</span> + msg;</span><br><span class="line">    ctx.writeAndFlush(response);</span><br><span class="line">    System.out.println(<span class="string">&quot;   响应将经过的Handler: serverHandler -&gt; encoder&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-线程模型效果"><a href="#4-线程模型效果" class="headerlink" title="4. 线程模型效果"></a>4. 线程模型效果</h3><p>Pipeline中的所有Handler都在同一个EventLoop线程中执行：</p>
+<ul>
+<li><strong>单线程顺序执行</strong>：避免线程安全问题</li>
+<li><strong>无锁设计</strong>：提高性能</li>
+<li><strong>事件驱动</strong>：高效处理大量连接</li>
+</ul>
+<h3 id="5-异常传播效果"><a href="#5-异常传播效果" class="headerlink" title="5. 异常传播效果"></a>5. 异常传播效果</h3><p>当Handler中发生异常时：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">exceptionCaught</span><span class="params">(ChannelHandlerContext ctx, Throwable cause)</span> &#123;</span><br><span class="line">    cause.printStackTrace();</span><br><span class="line">    ctx.close(); <span class="comment">// 关闭连接</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>异常会沿着Pipeline向后传播，直到被处理或到达末尾。</p>
+<h2 id="Pipeline链路的核心优势"><a href="#Pipeline链路的核心优势" class="headerlink" title="Pipeline链路的核心优势"></a>Pipeline链路的核心优势</h2><ol>
+<li><strong>职责分离</strong>：每个Handler专注单一功能</li>
+<li><strong>可组合性</strong>：灵活配置Handler组合</li>
+<li><strong>可重用性</strong>：Handler可在不同Pipeline中复用</li>
+<li><strong>高性能</strong>：单线程无锁设计</li>
+<li><strong>易扩展</strong>：添加新功能只需新增Handler</li>
+</ol>
+<p>这种设计使Netty能够高效处理复杂的网络通信场景，同时保持代码的清晰和可维护性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Pipeline配置顺序</span></span><br><span class="line">pipeline.addLast(<span class="string">&quot;decoder&quot;</span>, <span class="keyword">new</span> <span class="title class_">StringDecoder</span>(CharsetUtil.UTF_8));</span><br><span class="line">pipeline.addLast(<span class="string">&quot;inbound1&quot;</span>, <span class="keyword">new</span> <span class="title class_">InboundHandler1</span>());</span><br><span class="line">pipeline.addLast(<span class="string">&quot;inbound2&quot;</span>, <span class="keyword">new</span> <span class="title class_">InboundHandler2</span>());</span><br><span class="line">pipeline.addLast(<span class="string">&quot;business&quot;</span>, <span class="keyword">new</span> <span class="title class_">BusinessHandler</span>());</span><br><span class="line">pipeline.addLast(<span class="string">&quot;outbound1&quot;</span>, <span class="keyword">new</span> <span class="title class_">OutboundHandler1</span>());</span><br><span class="line">pipeline.addLast(<span class="string">&quot;outbound2&quot;</span>, <span class="keyword">new</span> <span class="title class_">OutboundHandler2</span>());</span><br><span class="line">pipeline.addLast(<span class="string">&quot;encoder&quot;</span>, <span class="keyword">new</span> <span class="title class_">StringEncoder</span>(CharsetUtil.UTF_8));</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Socket数据 → decoder → inbound1 → inbound2 → business → 业务处理</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">业务处理 → outbound2 → outbound1 → encoder → Socket发送</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方式1：从当前位置开始的Outbound链</span></span><br><span class="line">ctx.writeAndFlush(response);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方式2：从Pipeline尾部开始的完整Outbound链</span></span><br><span class="line">ctx.channel().writeAndFlush(response);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">channelRead</span><span class="params">(ChannelHandlerContext ctx, Object msg)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;\n=== 服务器端事件: channelRead (InboundHandler) ===&quot;</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;   消息经过的Handler: decoder -&gt; serverHandler&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="type">String</span> <span class="variable">response</span> <span class="operator">=</span> <span class="string">&quot;Echo: &quot;</span> + msg;</span><br><span class="line">    ctx.writeAndFlush(response);</span><br><span class="line">    System.out.println(<span class="string">&quot;   响应将经过的Handler: serverHandler -&gt; encoder&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">exceptionCaught</span><span class="params">(ChannelHandlerContext ctx, Throwable cause)</span> &#123;</span><br><span class="line">    cause.printStackTrace();</span><br><span class="line">    ctx.close(); <span class="comment">// 关闭连接</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/06/05/%E3%80%90JVM%E5%AD%A6%E4%B9%A0%E3%80%91%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8A%E4%BA%A4%E4%BA%92%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1902,166 +2111,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/20/%E3%80%90MinIO%E3%80%91%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/04/20/%E3%80%90MinIO%E3%80%91%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1%E5%99%A8/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-04-20T23:40:33+08:00">
-                2025-04-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>本文主要记录一下<code>docker</code>如何安装和启动<code>minio</code>，先看一下成功启动的步骤：</p>
-<p>首先下载相关镜像：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bash 代码解读复制代码# 搜索minio镜像</span><br><span class="line">docker search minio</span><br><span class="line"><span class="comment"># 下载minio/minio</span></span><br><span class="line">docker pull minio/minio</span><br></pre></td></tr></table></figure>
-
-<p>创建文件挂载目录：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bash 代码解读复制代码<span class="built_in">sudo</span> <span class="built_in">mkdir</span> /opt/docker/minio/miniodata</span><br><span class="line"><span class="comment"># 提供可写的权限，否则启动时会出现如下错误</span></span><br><span class="line"><span class="comment"># unable to use the drive /data:file access denied: Invalid arguments specified</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 777 /opt/docker/minio/miniodata</span><br></pre></td></tr></table></figure>
-
-<p>启动：<code>minio</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bash 代码解读复制代码docker run \</span><br><span class="line">-p 9000:9000 \</span><br><span class="line">-p 5001:5001 \</span><br><span class="line">-v /opt/docker/minio/miniodata:/data \</span><br><span class="line">-e <span class="string">&quot;ROOT_ACCESS_KEY=minioadmin&quot;</span> \</span><br><span class="line">-e <span class="string">&quot;ROOT_SECRET_KEY=minioadmin&quot;</span> \</span><br><span class="line">-d minio/minio server /data --console-address <span class="string">&quot;:5001&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>命令说明：</p>
-<blockquote>
-<ol>
-<li>docker run：启动程序</li>
-<li>-p：指定端口号 9000: 是minio默认的端口号</li>
-<li>-v：指定挂载目录，这是因为如果不指定，当容器被删除之后容器的数据将会丢失。</li>
-<li>-e：指定环境变量，这里是指定了<code>minio dashboard</code>的登录账号和密码。</li>
-<li>-d：后台运行 <code>minio/minio</code> 是我们下载的镜像，server &#x2F;data 是minio的命令指定文件存放的目录。–console-address：指定<code>minio dashbord</code>的端口号。有时在命令后面还会看见 -address参数，该参数指定的是<code>minio s3 api</code> 的端口号。</li>
-</ol>
-</blockquote>
-<p>启动后便可通过<code>docker logs containerId</code>的方式查看<code>log</code>，如果在电脑上安装了<code>docker desktop</code>也可以在容器的<code>logs</code>看到如下信息：</p>
-<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac95d11aebfb4b2da2e919370801086f~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1484&h=594&s=411864&e=jpg&b=fcfcfc" alt="WechatIMG9.jpg"></p>
-<p>其中<code>s3-api</code>这个地址就可以配置在springboot项目的<code>yaml</code>中，进行文件上传操作。如下所示：</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">yml</span> <span class="string">代码解读复制代码minio:</span></span><br><span class="line">  <span class="attr">endpoint:</span> <span class="string">http://127.0.0.1:9000</span></span><br><span class="line">  <span class="attr">accessKey:</span> <span class="string">minioadmin</span></span><br><span class="line">  <span class="attr">secretKey:</span> <span class="string">minioadmin</span></span><br><span class="line">  <span class="attr">bucketName:</span> <span class="string">minio-first-bucket</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">servlet:</span></span><br><span class="line">    <span class="attr">multipart:</span></span><br><span class="line">      <span class="attr">max-file-size:</span> <span class="string">10MB</span></span><br><span class="line">      <span class="attr">max-request-size:</span> <span class="string">100MB</span></span><br></pre></td></tr></table></figure>
-
-<p>下面的内容就是记录一下踩坑的过程：</p>
-<blockquote>
-<ul>
-<li>本人首先是成功安装启动后，通过<code>spring boot</code>项目上传文件后，文件上传成功但是我的挂载目录本没有这个文件。</li>
-<li>接着从docker官网了解到文件应该是会在挂载目录的，但是由于不知道如何排查这个问题，就将该容器删除，打算重新启动一个容器试一下【大坑】</li>
-<li>在删除之后，按照同样的方式启动，容器就无法启动出现如下信息的错误：<code>unable to rename xxx</code>和<code>unable to use the drive /data:file access denied</code>。</li>
-<li>接着在网上搜寻一番，有的人说是因为之前安装过，不能指定相同的目录，于是呼：换一个目录，失败，删掉之前的目录重新启动，失败！换版本失败！包括但不限于<code>stack overflow</code>或者官网给定的解决方法。 最后在打算放弃的关头：执行了<code>chmod 777 挂载目录</code>，重启成功，不仅重启成功通过<code>java</code>上传文件，在该目录下也有了备份。</li>
-<li>ps: 整个过程大概耗费了三个小时，</li>
-</ul>
-</blockquote>
-<p>参考资料：</p>
-<ul>
-<li><a href="https://link.juejin.cn/?target=https://stackoverflow.com/questions/72332735/minio-permission-denied">sof:inio-permission-denied</a></li>
-<li><a href="https://link.juejin.cn/?target=https://blog.csdn.net/DCTANT/article/details/129861486">解决minio启动报ERROR Unable to use the drive ** found backend type fs, expected xl or xl-single</a></li>
-<li><a href="https://link.juejin.cn/?target=https://min.io/docs/minio/macos/index.html">MinIO Object Storage for MacOS</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2112,7 +2161,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
