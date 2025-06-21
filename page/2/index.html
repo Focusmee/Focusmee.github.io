@@ -260,6 +260,305 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/23/%E3%80%90%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E3%80%91%E5%AD%A6%E7%94%9F%E6%8A%A5%E5%88%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/04/23/%E3%80%90%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E3%80%91%E5%AD%A6%E7%94%9F%E6%8A%A5%E5%88%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-04-23T14:34:44+08:00">
+                2025-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="学生报到管理系统技术架构说明"><a href="#学生报到管理系统技术架构说明" class="headerlink" title="学生报到管理系统技术架构说明"></a>学生报到管理系统技术架构说明</h1><h2 id="1-系统概述"><a href="#1-系统概述" class="headerlink" title="1. 系统概述"></a>1. 系统概述</h2><p>学生报到管理系统是一个基于微信小程序的应用，主要用于高校新生报到管理。系统支持学生信息管理、报到流程管理、数据统计等功能，帮助学校高效完成新生报到工作。系统以微信小程序作为前端，利用微信云开发提供后端服务支持，实现了完整的报到流程管理。</p>
+<h2 id="2-技术栈"><a href="#2-技术栈" class="headerlink" title="2. 技术栈"></a>2. 技术栈</h2><h3 id="2-1-前端技术"><a href="#2-1-前端技术" class="headerlink" title="2.1 前端技术"></a>2.1 前端技术</h3><ul>
+<li><strong>微信小程序原生开发</strong>：使用WXML、WXSS和JavaScript进行小程序开发</li>
+<li><strong>微信开发者工具</strong>：用于开发、调试和发布小程序</li>
+<li><strong>wxCharts</strong>：用于数据可视化展示</li>
+</ul>
+<h3 id="2-2-后端技术"><a href="#2-2-后端技术" class="headerlink" title="2.2 后端技术"></a>2.2 后端技术</h3><ul>
+<li><strong>微信云开发</strong>：提供云函数、云数据库和云存储服务</li>
+<li><strong>Node.js</strong>：云函数运行环境</li>
+<li><strong>云函数</strong>：实现业务逻辑处理</li>
+<li><strong>云数据库</strong>：存储应用数据</li>
+<li><strong>云存储</strong>：存储图片等静态资源</li>
+</ul>
+<h2 id="3-系统架构设计"><a href="#3-系统架构设计" class="headerlink" title="3. 系统架构设计"></a>3. 系统架构设计</h2><h3 id="3-1-整体架构"><a href="#3-1-整体架构" class="headerlink" title="3.1 整体架构"></a>3.1 整体架构</h3><p>系统采用前后端分离架构，具体包括：</p>
+<ul>
+<li><strong>前端层</strong>：微信小程序，负责用户界面展示和交互</li>
+<li><strong>云函数层</strong>：业务逻辑实现和数据处理</li>
+<li><strong>数据层</strong>：云数据库存储结构化数据，云存储保存文件</li>
+</ul>
+<h3 id="3-2-网络架构"><a href="#3-2-网络架构" class="headerlink" title="3.2 网络架构"></a>3.2 网络架构</h3><ul>
+<li>微信小程序前端通过微信提供的API与云开发后端进行通信</li>
+<li>采用HTTPS协议保证数据传输安全</li>
+<li>云函数作为API网关，处理所有前端请求</li>
+</ul>
+<h3 id="3-3-模块架构"><a href="#3-3-模块架构" class="headerlink" title="3.3 模块架构"></a>3.3 模块架构</h3><p>系统主要分为以下几个模块：</p>
+<ol>
+<li><strong>用户认证模块</strong>：负责用户登录、注册和权限验证</li>
+<li><strong>学生信息管理模块</strong>：负责学生基本信息管理</li>
+<li><strong>报到流程管理模块</strong>：负责报到流程设置和状态管理</li>
+<li><strong>统计分析模块</strong>：负责数据统计和分析</li>
+<li><strong>系统管理模块</strong>：负责系统配置和权限管理</li>
+</ol>
+<h2 id="4-数据库设计"><a href="#4-数据库设计" class="headerlink" title="4. 数据库设计"></a>4. 数据库设计</h2><p>系统使用微信云开发提供的NoSQL数据库，主要包含以下集合：</p>
+<h3 id="4-1-students（学生信息表）"><a href="#4-1-students（学生信息表）" class="headerlink" title="4.1 students（学生信息表）"></a>4.1 students（学生信息表）</h3><ul>
+<li>_id：唯一标识</li>
+<li>openid：微信用户唯一标识</li>
+<li>name：姓名</li>
+<li>studentId：学号</li>
+<li>college：学院</li>
+<li>major：专业</li>
+<li>class：班级</li>
+<li>idCard：身份证号</li>
+<li>phone：联系电话</li>
+<li>status：报到状态</li>
+<li>registrationTime：报到时间</li>
+</ul>
+<h3 id="4-2-staff（工作人员表）"><a href="#4-2-staff（工作人员表）" class="headerlink" title="4.2 staff（工作人员表）"></a>4.2 staff（工作人员表）</h3><ul>
+<li>_id：唯一标识</li>
+<li>openid：微信用户唯一标识</li>
+<li>name：姓名</li>
+<li>staffId：工号</li>
+<li>role：角色权限</li>
+<li>department：部门</li>
+</ul>
+<h3 id="4-3-registrationProcess（报到流程表）"><a href="#4-3-registrationProcess（报到流程表）" class="headerlink" title="4.3 registrationProcess（报到流程表）"></a>4.3 registrationProcess（报到流程表）</h3><ul>
+<li>_id：唯一标识</li>
+<li>stepName：步骤名称</li>
+<li>stepOrder：步骤顺序</li>
+<li>description：步骤描述</li>
+<li>location：地点</li>
+<li>responsible：负责人</li>
+<li>isRequired：是否必须</li>
+</ul>
+<h3 id="4-4-announcements（公告信息表）"><a href="#4-4-announcements（公告信息表）" class="headerlink" title="4.4 announcements（公告信息表）"></a>4.4 announcements（公告信息表）</h3><ul>
+<li>_id：唯一标识</li>
+<li>title：公告标题</li>
+<li>content：公告内容</li>
+<li>publishTime：发布时间</li>
+<li>publisher：发布人</li>
+<li>isTop：是否置顶</li>
+</ul>
+<h3 id="4-5-campusInfo（校园信息表）"><a href="#4-5-campusInfo（校园信息表）" class="headerlink" title="4.5 campusInfo（校园信息表）"></a>4.5 campusInfo（校园信息表）</h3><ul>
+<li>_id：唯一标识</li>
+<li>type：信息类型</li>
+<li>title：标题</li>
+<li>content：内容</li>
+<li>images：相关图片</li>
+</ul>
+<h2 id="5-核心功能模块"><a href="#5-核心功能模块" class="headerlink" title="5. 核心功能模块"></a>5. 核心功能模块</h2><h3 id="5-1-学生模块"><a href="#5-1-学生模块" class="headerlink" title="5.1 学生模块"></a>5.1 学生模块</h3><ul>
+<li>学生注册与登录</li>
+<li>个人信息维护</li>
+<li>报到流程查看与确认</li>
+<li>校园信息查看</li>
+<li>请假申请</li>
+</ul>
+<h3 id="5-2-工作人员模块"><a href="#5-2-工作人员模块" class="headerlink" title="5.2 工作人员模块"></a>5.2 工作人员模块</h3><ul>
+<li>工作人员登录</li>
+<li>学生信息审核</li>
+<li>报到状态管理</li>
+<li>请假审批</li>
+<li>统计数据查看</li>
+</ul>
+<h3 id="5-3-管理员模块"><a href="#5-3-管理员模块" class="headerlink" title="5.3 管理员模块"></a>5.3 管理员模块</h3><ul>
+<li>系统配置管理</li>
+<li>用户权限管理</li>
+<li>报到流程设置</li>
+<li>公告发布管理</li>
+<li>数据导入导出</li>
+</ul>
+<h2 id="6-云函数设计"><a href="#6-云函数设计" class="headerlink" title="6. 云函数设计"></a>6. 云函数设计</h2><p>系统使用多个云函数处理不同业务逻辑：</p>
+<ul>
+<li><strong>login</strong>：处理用户登录逻辑</li>
+<li><strong>userDao</strong>：用户数据操作</li>
+<li><strong>studentsDao</strong>：学生数据操作</li>
+<li><strong>staffDao</strong>：工作人员数据操作</li>
+<li><strong>registrationProcessDao</strong>：报到流程数据操作</li>
+<li><strong>announcementsDao</strong>：公告信息数据操作</li>
+<li><strong>campusInfoDao</strong>：校园信息数据操作</li>
+<li><strong>leaveRequestsDao</strong>：请假申请数据操作</li>
+<li><strong>checkAdminPermission</strong>：权限检查</li>
+<li><strong>dataimport</strong>：数据导入功能</li>
+</ul>
+<h2 id="7-安全架构"><a href="#7-安全架构" class="headerlink" title="7. 安全架构"></a>7. 安全架构</h2><h3 id="7-1-认证与授权"><a href="#7-1-认证与授权" class="headerlink" title="7.1 认证与授权"></a>7.1 认证与授权</h3><ul>
+<li>使用微信小程序原生登录机制</li>
+<li>基于角色的访问控制（RBAC）权限系统</li>
+<li>云函数权限验证</li>
+</ul>
+<h3 id="7-2-数据安全"><a href="#7-2-数据安全" class="headerlink" title="7.2 数据安全"></a>7.2 数据安全</h3><ul>
+<li>数据传输采用HTTPS加密</li>
+<li>敏感信息加密存储</li>
+<li>定期数据备份机制</li>
+</ul>
+<h3 id="7-3-接口安全"><a href="#7-3-接口安全" class="headerlink" title="7.3 接口安全"></a>7.3 接口安全</h3><ul>
+<li>接口参数验证</li>
+<li>防SQL注入</li>
+<li>防XSS攻击</li>
+</ul>
+<h2 id="8-部署架构"><a href="#8-部署架构" class="headerlink" title="8. 部署架构"></a>8. 部署架构</h2><h3 id="8-1-开发环境"><a href="#8-1-开发环境" class="headerlink" title="8.1 开发环境"></a>8.1 开发环境</h3><ul>
+<li>微信开发者工具</li>
+<li>Node.js环境</li>
+<li>微信云开发测试环境</li>
+</ul>
+<h3 id="8-2-生产环境"><a href="#8-2-生产环境" class="headerlink" title="8.2 生产环境"></a>8.2 生产环境</h3><ul>
+<li>微信小程序正式环境</li>
+<li>微信云开发生产环境</li>
+<li>设置适当的云函数和数据库资源配置</li>
+</ul>
+<h3 id="8-3-运维监控"><a href="#8-3-运维监控" class="headerlink" title="8.3 运维监控"></a>8.3 运维监控</h3><ul>
+<li>微信云开发监控台监控</li>
+<li>错误日志收集</li>
+<li>性能监控</li>
+</ul>
+<h2 id="9-系统扩展性"><a href="#9-系统扩展性" class="headerlink" title="9. 系统扩展性"></a>9. 系统扩展性</h2><p>系统采用模块化设计，便于后续功能扩展：</p>
+<ul>
+<li>基于云函数的松耦合架构，可独立扩展各功能模块</li>
+<li>数据库采用NoSQL设计，灵活适应数据结构变化</li>
+<li>前端组件化开发，便于UI&#x2F;UX升级</li>
+</ul>
+<h2 id="10-技术优势"><a href="#10-技术优势" class="headerlink" title="10. 技术优势"></a>10. 技术优势</h2><ul>
+<li><strong>微信生态优势</strong>：无需额外安装应用，直接利用微信平台流量</li>
+<li><strong>云开发便捷性</strong>：无需搭建服务器，降低运维成本</li>
+<li><strong>实时数据同步</strong>：云数据库支持实时数据同步，保证数据一致性</li>
+<li><strong>灵活扩展</strong>：模块化设计，支持功能灵活扩展</li>
+<li><strong>多端统一</strong>：一套代码多端适配（手机、平板等）</li>
+</ul>
+<p>{</p>
+<p> “_id”: “自动生成的ID”,</p>
+<p> “openid”: “用户的openid”,</p>
+<p> “model”: “使用的模型，如deepseek-chat”,</p>
+<p> “success”: true, <em>&#x2F;&#x2F; 调用是否成功</em></p>
+<p> “promptTokens”: 50, <em>&#x2F;&#x2F; 请求Token数</em></p>
+<p> “completionTokens”: 120, <em>&#x2F;&#x2F; 响应Token数</em></p>
+<p> “totalTokens”: 170, <em>&#x2F;&#x2F; 总Token数</em></p>
+<p> “error”: “错误信息，仅在success&#x3D;false时存在”,</p>
+<p> “timestamp”: “2023-11-15T08:30:00.000Z” <em>&#x2F;&#x2F; 请求时间</em></p>
+<p>}</p>
+<p>{</p>
+<p> “_id”: “自动生成的ID”,</p>
+<p> “openid”: “用户的openid”,</p>
+<p> “balance”: 1000, <em>&#x2F;&#x2F; 用户余额</em></p>
+<p> “created”: “2023-11-10T06:20:00.000Z”, <em>&#x2F;&#x2F; 创建时间</em></p>
+<p> “lastUpdated”: “2023-11-15T08:30:00.000Z” <em>&#x2F;&#x2F; 最后更新时间</em></p>
+<p>}</p>
+<p>{</p>
+<p> “_id”: “自动生成的ID”,</p>
+<p> “openid”: “用户的openid”,</p>
+<p> “amount”: 1000, <em>&#x2F;&#x2F; 正数表示充值，负数表示消费</em></p>
+<p> “type”: “recharge”, <em>&#x2F;&#x2F; 交易类型：recharge充值，consume消费</em></p>
+<p> “timestamp”: “2023-11-15T08:30:00.000Z” <em>&#x2F;&#x2F; 交易时间</em></p>
+<p>}</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/20/%E3%80%90MinIO%E3%80%91%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1729,14 +2028,14 @@
             <p>微信开发者工具 SSH key认证 推送、拉取GitHub项目<br>因为从2021年8月14日之后，使用git对github进行身份验证操作的时候不再接受使用账号密码形式clone和push代码，今天就琢磨了下ssh key的方式来上传下拉代码，要注意的细节还是有的所以记录一下。</p>
 <p>1.下载安装、配置git。<br>git官网地址<a target="_blank" rel="noopener" href="https://git-scm.com/%EF%BC%8C%E5%AE%89%E8%A3%85%E5%AE%8C%E5%90%8E%E8%AE%B0%E5%BE%97%E8%AE%BE%E7%BD%AE%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%E5%9C%B0%E5%9D%80%EF%BC%88GitHub%E6%88%96%E8%80%85gitee%E7%9A%84%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%EF%BC%89%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95%E7%99%BE%E5%BA%A6%E3%80%82">https://git-scm.com/，安装完后记得设置用户名和邮箱地址（GitHub或者gitee的用户名和邮箱）具体方法百度。</a></p>
 <p>2.生成SSH Key<br>右键桌面进入Git Bash Here终端</p>
-<p>输入ssh-keygen -t ed25519 -C “<a href="mailto:&#121;&#x6f;&#117;&#x72;&#x5f;&#x65;&#109;&#97;&#105;&#x6c;&#64;&#101;&#120;&#97;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#111;&#109;">&#121;&#x6f;&#117;&#x72;&#x5f;&#x65;&#109;&#97;&#105;&#x6c;&#64;&#101;&#120;&#97;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#111;&#109;</a>” ( <a href="mailto:&#x79;&#111;&#x75;&#x72;&#95;&#101;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#46;&#x63;&#111;&#x6d;">&#x79;&#111;&#x75;&#x72;&#95;&#101;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#46;&#x63;&#111;&#x6d;</a>是你GitHub的邮箱),连续回车3次</p>
+<p>输入ssh-keygen -t ed25519 -C “<a href="mailto:&#x79;&#111;&#x75;&#x72;&#x5f;&#x65;&#x6d;&#x61;&#x69;&#108;&#64;&#x65;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#99;&#x6f;&#109;">&#x79;&#111;&#x75;&#x72;&#x5f;&#x65;&#x6d;&#x61;&#x69;&#108;&#64;&#x65;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#99;&#x6f;&#109;</a>” ( <a href="mailto:&#x79;&#111;&#x75;&#x72;&#95;&#x65;&#109;&#97;&#x69;&#108;&#x40;&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#101;&#x2e;&#x63;&#111;&#109;">&#x79;&#111;&#x75;&#x72;&#95;&#x65;&#109;&#97;&#x69;&#108;&#x40;&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#101;&#x2e;&#x63;&#111;&#109;</a>是你GitHub的邮箱),连续回车3次</p>
 <p>注意：因密钥安全性问题 GitHub 自 2022 年 3 月 15 日起不再支持 DSA 密钥 (ssh-dss)。</p>
 <p>之前使用如下命令生成的密钥对无效：</p>
-<p>ssh-keygen -t rsa -C “<a href="mailto:&#121;&#x6f;&#117;&#x72;&#x5f;&#x65;&#x6d;&#x61;&#105;&#x6c;&#64;&#x65;&#120;&#x61;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#111;&#x6d;">&#121;&#x6f;&#117;&#x72;&#x5f;&#x65;&#x6d;&#x61;&#105;&#x6c;&#64;&#x65;&#120;&#x61;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#111;&#x6d;</a>”</p>
+<p>ssh-keygen -t rsa -C “<a href="mailto:&#121;&#x6f;&#x75;&#114;&#x5f;&#x65;&#109;&#97;&#x69;&#108;&#x40;&#101;&#120;&#x61;&#109;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#x6d;">&#121;&#x6f;&#x75;&#114;&#x5f;&#x65;&#109;&#97;&#x69;&#108;&#x40;&#101;&#120;&#x61;&#109;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#x6d;</a>”</p>
 <p>于是用下面的方法重新生成，这样生成的文件会自动保存在，C:\Users\帅气陈.ssh目录下（这个路径不能有中文‘帅气陈’卡了我半天，可以将.ssh剪切到纯英文目录）</p>
-<p>ssh-keygen -t ed25519 -C “<a href="mailto:&#121;&#111;&#x75;&#114;&#x5f;&#x65;&#109;&#x61;&#x69;&#108;&#x40;&#x65;&#x78;&#97;&#109;&#x70;&#x6c;&#101;&#46;&#99;&#111;&#x6d;">&#121;&#111;&#x75;&#114;&#x5f;&#x65;&#109;&#x61;&#x69;&#108;&#x40;&#x65;&#x78;&#97;&#109;&#x70;&#x6c;&#101;&#46;&#99;&#111;&#x6d;</a>”</p>
+<p>ssh-keygen -t ed25519 -C “<a href="mailto:&#121;&#x6f;&#117;&#114;&#x5f;&#x65;&#x6d;&#x61;&#x69;&#x6c;&#64;&#x65;&#120;&#97;&#109;&#112;&#x6c;&#101;&#46;&#x63;&#111;&#109;">&#121;&#x6f;&#117;&#114;&#x5f;&#x65;&#x6d;&#x61;&#x69;&#x6c;&#64;&#x65;&#120;&#97;&#109;&#112;&#x6c;&#101;&#46;&#x63;&#111;&#109;</a>”</p>
 <p>该目录下会生成两个文件，id_ed25519.pub为公钥，id_ed25519为私钥。</p>
-<p>输入 ssh -T <a href="mailto:&#103;&#105;&#x74;&#x40;&#103;&#105;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#x6f;&#109;">&#103;&#105;&#x74;&#x40;&#103;&#105;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#x6f;&#109;</a>回车，因为是第一次流程提示输入yes回车。这里的-T区分大小写。如果返回【Hi ***! You’ve successfully authenticated, but GitHub does not provide shell access.】 说明配置成功</p>
+<p>输入 ssh -T <a href="mailto:&#x67;&#105;&#116;&#x40;&#103;&#105;&#x74;&#104;&#x75;&#x62;&#46;&#99;&#x6f;&#109;">&#x67;&#105;&#116;&#x40;&#103;&#105;&#x74;&#104;&#x75;&#x62;&#46;&#99;&#x6f;&#109;</a>回车，因为是第一次流程提示输入yes回车。这里的-T区分大小写。如果返回【Hi ***! You’ve successfully authenticated, but GitHub does not provide shell access.】 说明配置成功</p>
 <p>右键id_ed25519.pub选择记事本打开全选复制里面内容</p>
 <p>打开GitHub点击右上角头像——Settings——SSH and GPG keys——New SSH key</p>
 <p>title给key命名，key里面粘贴刚刚复制的id_ed25519.pub中的内容——Add SSH key成功之后返回上级页面会出现一个key。</p>
@@ -2318,162 +2617,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/25/%E3%80%90Mini-Spring%E3%80%91Spring%E9%A1%B9%E7%9B%AE%E5%BF%AB%E9%80%9F%E5%AD%A6%E4%B9%A0%EF%BC%883%E5%A4%A9%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2025/02/25/%E3%80%90Mini-Spring%E3%80%91Spring%E9%A1%B9%E7%9B%AE%E5%BF%AB%E9%80%9F%E5%AD%A6%E4%B9%A0%EF%BC%883%E5%A4%A9%EF%BC%89/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-25T14:57:03+08:00">
-                2025-02-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="【Mini-Spring】Spring项目快速学习（3天）"><a href="#【Mini-Spring】Spring项目快速学习（3天）" class="headerlink" title="【Mini-Spring】Spring项目快速学习（3天）"></a>【Mini-Spring】Spring项目快速学习（3天）</h1><h2 id="第一章-IOC基础"><a href="#第一章-IOC基础" class="headerlink" title="第一章 IOC基础"></a>第一章 IOC基础</h2><p>使用IOC容器解决同类服务灵活切换问题</p>
-<p><strong>依赖注入（Dependency Injection, DI）</strong> 是一种 <strong>设计模式</strong>，用于<strong>管理类与其依赖对象之间的关系</strong>。它的核心思想是<strong>将依赖项（对象）从外部传递给需要它的类，而不是在类内部创建或查找依赖项</strong>。这样可以降低代码的耦合度，提高可测试性和可维护性。</p>
-<p>✅ <strong>使用依赖注入</strong></p>
-<p><strong>依赖注入的做法是：</strong></p>
-<ul>
-<li><strong>不在类内部创建依赖，而是从外部提供</strong>（注入）。</li>
-<li><strong>可以使用接口，让依赖可替换</strong>，增强灵活性。</li>
-</ul>
-<h2 id="🎯-总结"><a href="#🎯-总结" class="headerlink" title="🎯 总结"></a>🎯 <strong>总结</strong></h2><table>
-<thead>
-<tr>
-<th>方式</th>
-<th>适用场景</th>
-<th>优点</th>
-<th>缺点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>构造函数注入</strong></td>
-<td>依赖对象必须在创建时提供</td>
-<td>代码清晰、解耦、便于单元测试</td>
-<td>可能导致构造函数参数过多</td>
-</tr>
-<tr>
-<td><strong>方法注入</strong></td>
-<td>只在某些方法调用时需要依赖</td>
-<td>灵活、减少长期依赖</td>
-<td>依赖关系不明显</td>
-</tr>
-<tr>
-<td><strong>属性注入</strong></td>
-<td>依赖可以动态修改</td>
-<td>适用于框架（如 Spring）</td>
-<td>Go 里较少使用，容易导致全局状态问题</td>
-</tr>
-</tbody></table>
-<p>💡</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2524,7 +2667,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-count">43</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
