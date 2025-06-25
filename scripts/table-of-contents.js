@@ -112,7 +112,23 @@ class TableOfContents {
         // 目录切换按钮事件
         const toggleBtn = document.getElementById('toc-toggle');
         if (toggleBtn) {
-            toggleBtn.addEventListener('click', () => this.toggleToc());
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.toggleToc();
+            });
+        }
+
+        // 目录容器点击事件（用于悬浮球状态下的点击）
+        if (this.tocContainer) {
+            this.tocContainer.addEventListener('click', (e) => {
+                // 如果是collapsed状态且点击的是容器本身，则展开目录
+                if (this.tocContainer.classList.contains('collapsed') && 
+                    e.target === this.tocContainer || 
+                    e.target.closest('.toc-header')) {
+                    e.stopPropagation();
+                    this.toggleToc();
+                }
+            });
         }
 
         // 目录链接点击事件
@@ -145,6 +161,9 @@ class TableOfContents {
 
         // 移动端触摸事件
         this.addMobileSupport();
+        
+        // 添加拖拽功能
+        this.addDragSupport();
     }
 
     toggleToc() {
@@ -155,14 +174,34 @@ class TableOfContents {
             const isCollapsed = tocContent.classList.contains('collapsed');
             
             if (isCollapsed) {
+                // 展开目录
                 tocContent.classList.remove('collapsed');
                 toggleBtn.innerHTML = '<i class="toggle-icon">📖</i>';
                 this.tocContainer.classList.remove('collapsed');
+                
+                // 恢复到原始位置
+                this.restoreOriginalPosition();
             } else {
+                // 收起目录
                 tocContent.classList.add('collapsed');
                 toggleBtn.innerHTML = '<i class="toggle-icon">📚</i>';
                 this.tocContainer.classList.add('collapsed');
+                
+                // 如果有保存的位置，恢复到那个位置
+                this.restoreTocPosition();
             }
+        }
+    }
+
+    // 恢复到原始位置
+    restoreOriginalPosition() {
+        if (this.tocContainer) {
+            // 清除拖拽设置的位置样式，恢复CSS默认定位
+            this.tocContainer.style.position = '';
+            this.tocContainer.style.left = '';
+            this.tocContainer.style.top = '';
+            this.tocContainer.style.right = '';
+            this.tocContainer.style.transform = '';
         }
     }
 
@@ -265,6 +304,203 @@ class TableOfContents {
         if (this.headings.length > 0) {
             this.generateToc();
             this.updateActiveHeading();
+        }
+    }
+
+    // 添加拖拽支持
+    addDragSupport() {
+        if (!this.tocContainer) return;
+
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let containerStartX = 0;
+        let containerStartY = 0;
+
+        // 鼠标按下事件
+        const handleMouseDown = (e) => {
+            // 只有在collapsed状态下才允许拖拽
+            if (!this.tocContainer.classList.contains('collapsed')) return;
+            
+            // 确保点击的是目录容器或其头部区域
+            if (e.target === this.tocContainer || e.target.closest('.toc-header')) {
+                isDragging = true;
+                
+                // 记录开始拖拽时的鼠标位置
+                dragStartX = e.clientX;
+                dragStartY = e.clientY;
+                
+                // 获取容器当前位置
+                const rect = this.tocContainer.getBoundingClientRect();
+                containerStartX = rect.left;
+                containerStartY = rect.top;
+                
+                // 设置拖拽状态样式
+                this.tocContainer.style.cursor = 'grabbing';
+                this.tocContainer.style.userSelect = 'none';
+                this.tocContainer.style.transition = 'none'; // 禁用过渡动画
+                this.tocContainer.classList.add('dragging'); // 添加拖拽视觉反馈
+                
+                // 防止文本选择和其他默认行为
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        };
+
+        // 鼠标移动事件
+        const handleMouseMove = (e) => {
+            if (!isDragging) return;
+            
+            // 计算鼠标移动的距离
+            const deltaX = e.clientX - dragStartX;
+            const deltaY = e.clientY - dragStartY;
+            
+            // 计算新的位置
+            let newX = containerStartX + deltaX;
+            let newY = containerStartY + deltaY;
+            
+            // 限制拖拽范围，确保不超出视窗
+            const containerWidth = this.tocContainer.offsetWidth;
+            const containerHeight = this.tocContainer.offsetHeight;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            // 限制水平位置
+            newX = Math.max(10, Math.min(newX, viewportWidth - containerWidth - 10));
+            // 限制垂直位置
+            newY = Math.max(10, Math.min(newY, viewportHeight - containerHeight - 10));
+            
+            // 应用新位置
+            this.tocContainer.style.position = 'fixed';
+            this.tocContainer.style.left = newX + 'px';
+            this.tocContainer.style.top = newY + 'px';
+            this.tocContainer.style.right = 'auto'; // 清除right定位
+            this.tocContainer.style.transform = 'none'; // 清除transform
+            
+            e.preventDefault();
+        };
+
+        // 鼠标释放事件
+        const handleMouseUp = (e) => {
+            if (isDragging) {
+                isDragging = false;
+                
+                // 恢复样式
+                this.tocContainer.style.cursor = '';
+                this.tocContainer.style.userSelect = '';
+                this.tocContainer.style.transition = ''; // 恢复过渡动画
+                this.tocContainer.classList.remove('dragging'); // 移除拖拽视觉反馈
+                
+                // 保存当前位置到localStorage，下次加载时恢复
+                const rect = this.tocContainer.getBoundingClientRect();
+                localStorage.setItem('tocPosition', JSON.stringify({
+                    left: rect.left,
+                    top: rect.top
+                }));
+            }
+        };
+
+        // 绑定事件
+        this.tocContainer.addEventListener('mousedown', handleMouseDown);
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+
+        // 触摸事件支持（移动端）
+        const handleTouchStart = (e) => {
+            if (!this.tocContainer.classList.contains('collapsed')) return;
+            
+            if (e.target === this.tocContainer || e.target.closest('.toc-header')) {
+                const touch = e.touches[0];
+                isDragging = true;
+                
+                dragStartX = touch.clientX;
+                dragStartY = touch.clientY;
+                
+                const rect = this.tocContainer.getBoundingClientRect();
+                containerStartX = rect.left;
+                containerStartY = rect.top;
+                
+                this.tocContainer.style.transition = 'none';
+                this.tocContainer.classList.add('dragging'); // 添加拖拽视觉反馈
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        };
+
+        const handleTouchMove = (e) => {
+            if (!isDragging) return;
+            
+            const touch = e.touches[0];
+            const deltaX = touch.clientX - dragStartX;
+            const deltaY = touch.clientY - dragStartY;
+            
+            let newX = containerStartX + deltaX;
+            let newY = containerStartY + deltaY;
+            
+            const containerWidth = this.tocContainer.offsetWidth;
+            const containerHeight = this.tocContainer.offsetHeight;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            newX = Math.max(10, Math.min(newX, viewportWidth - containerWidth - 10));
+            newY = Math.max(10, Math.min(newY, viewportHeight - containerHeight - 10));
+            
+            this.tocContainer.style.position = 'fixed';
+            this.tocContainer.style.left = newX + 'px';
+            this.tocContainer.style.top = newY + 'px';
+            this.tocContainer.style.right = 'auto';
+            this.tocContainer.style.transform = 'none';
+            
+            e.preventDefault();
+        };
+
+        const handleTouchEnd = (e) => {
+            if (isDragging) {
+                isDragging = false;
+                this.tocContainer.style.transition = '';
+                this.tocContainer.classList.remove('dragging'); // 移除拖拽视觉反馈
+                
+                const rect = this.tocContainer.getBoundingClientRect();
+                localStorage.setItem('tocPosition', JSON.stringify({
+                    left: rect.left,
+                    top: rect.top
+                }));
+            }
+        };
+
+        // 绑定触摸事件
+        this.tocContainer.addEventListener('touchstart', handleTouchStart, { passive: false });
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+        document.addEventListener('touchend', handleTouchEnd);
+
+        // 恢复上次保存的位置
+        this.restoreTocPosition();
+    }
+
+    // 恢复目录位置
+    restoreTocPosition() {
+        const savedPosition = localStorage.getItem('tocPosition');
+        if (savedPosition) {
+            try {
+                const position = JSON.parse(savedPosition);
+                
+                // 验证位置是否在有效范围内
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                
+                if (position.left >= 0 && position.left < viewportWidth - 100 &&
+                    position.top >= 0 && position.top < viewportHeight - 100) {
+                    
+                    this.tocContainer.style.position = 'fixed';
+                    this.tocContainer.style.left = position.left + 'px';
+                    this.tocContainer.style.top = position.top + 'px';
+                    this.tocContainer.style.right = 'auto';
+                    this.tocContainer.style.transform = 'none';
+                }
+            } catch (e) {
+                // 如果解析失败，忽略保存的位置
+                console.warn('Failed to restore TOC position:', e);
+            }
         }
     }
 }
