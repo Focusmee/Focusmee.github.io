@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Channel的一系列思考 - 技术博客</title>
+    <meta name="description" content="Channel的一系列思考 - Go语言相关技术文章">
+    <meta name="keywords" content="Go语言, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">Go语言</span>
+            <span class="separator">›</span>
+            <span class="current-page">Channel的一系列思考</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag golang">🚀 Go语言</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 9 分钟阅读</span>
+                </div>
+                <h1 class="post-title">Channel的一系列思考</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p><h1>Title：Channel的一系列思考</h1><br /><br />------<br /><br /><h2>自动关闭or手动关闭（close）？	</h2><br /><br />​	学习goroutine和channel的时候发现deadlock，deadlock出现的原因基本就是通道有人生产放入但无取出的操作，就像田径比赛中的4x100接力赛，想要完成交棒必须有一个能够接棒的运动员，否则只能等待。简单来说就是无缓冲的通道必须有至少一个接收方才能发送成功。<br /><br />​	修复好后就对channel通道的关闭产生疑问，什么时候通道会自动关闭，或者需要手动关闭（close）？<br /><br />经过查阅资料，得知：<strong>一个通道值是可以被垃圾回收掉的。通道通常由发送方执行关闭操作，并且只有在接收方明确等待通道关闭的信号时才需要执行关闭操作。<em>*它和**关闭文件**不一样，通常在结束操作之后关闭文件是必须要做的，*</em>但关闭通道不是必须的。</strong><br /><br />关闭后的通道有以下特点：<br /><br />1. 对一个关闭的通道再发送值就会导致 panic。<br />2. 对一个关闭的通道进行接收会一直获取值直到通道为空。<br />3. 对一个关闭的并且没有值的通道执行接收操作会得到对应类型的零值。<br />4. 关闭一个已经关闭的通道会导致 panic。<br /><br />也就是说close在go中是立即执行， 立即关闭通道。<br /><br /><strong>close(ch) 不会清空通道，也不会等待通道中的值被取完。</strong><br /><strong>关闭后，通道仍然可以被读取，但不能再写入，</strong>否则会导致panic（向已关闭的通道发送数据）。<br />读取者可以继续从已关闭的通道读取剩余的值，<strong>当通道为空时，ok 变量会变为 false</strong>（即 v, ok := <-ch，ok为false写退出逻辑）。<br /><br />那么我通过观察测试，得出来的初步推论满足取出的次数等于小于存入的次数，那么就不需要自己用close，否则就要在存入后直接close是吗，还有就是如果close之后还能开启吗？<br /><br />不过后面考虑到这几种情况产生：<br /><br />1. <strong>生产者<em>* 关闭通道，以通知消费者 *</em>不再有新数据</strong>，避免消费者一直阻塞等待的情况，<br /><br />   - ```<br />     package main<br />     <br />     import "fmt"<br />     <br />     func main() {<br />         ch := make(chan int)<br />     <br />         // 生产者 goroutine<br />         go func() {<br />             for i := 0; i < 5; i++ {<br />                 ch <- i<br />             }<br />             close(ch) // 关闭通道，通知消费者<br />         }()<br />     <br />         // 消费者读取数据<br />         for v := range ch {<br />             fmt.Println(v)<br />         }<br />     }<br />     <br />     ```<br /><br />     <br /><br />2. <strong>多个消费者时，避免 `panic: send on closed channel`</strong><br /><br />   - 如果一个生产者向通道发送数据，而多个消费者读取数据，关闭通道可以确保所有消费者都能正确退出。<br /><br />     ```<br />     package main<br />     <br />     import (<br />         "fmt"<br />         "sync"<br />     )<br />     <br />     func main() {<br />         ch := make(chan int)<br />         var wg sync.WaitGroup<br />     <br />         // 启动 3 个消费者<br />         for i := 0; i < 3; i++ {<br />             wg.Add(1)<br />             go func(id int) {<br />                 defer wg.Done()<br />                 for v := range ch {<br />                     fmt.Printf("Worker %d received %d\n", id, v)<br />                 }<br />             }(i)<br />         }<br />     <br />         // 生产者发送数据<br />         for i := 0; i < 10; i++ {<br />             ch <- i<br />         }<br />         close(ch) // 关闭通道，通知所有消费者<br />     <br />         wg.Wait() // 等待所有消费者完成<br />     }<br />     <br />     ```<br /><br />同时 关闭通道的注意事项告诉我们不能向已关闭的通道发送数据，在关闭 nil 通道会 `panic`，以及`close` 只能由发送方调用，那么就明晰了，只要我们能确保从channel中取数据的次数是有限并小于或等于存的次数，而不是for range或无限循环就可以<br /><br />这里要<strong>注意：</strong>目前Go语言中并没有提供一个不对通道进行读取操作就能判断通道是否被关闭的方法。不能简单的通过`len(ch)`操作来判断通道是否被关闭。<br /><br /><h2><strong>`range` 遍历通道的底层逻辑</strong></h2><br /><br />​	对于 `range ch`：<br /><br />1. <strong>从 `ch` 取出数据</strong>。<br />2. <strong>如果 `ch` 关闭且取完数据，退出循环</strong>。<br />3. <strong>如果 `ch` 仍然有数据，继续遍历</strong>。<br /><br />```<br />package main<br /><br />import "fmt"<br /><br />func main() {<br />    ch := make(chan int, 3)<br /><br />    go func() {<br />        ch <- 10<br />        ch <- 20<br />        ch <- 30<br />        close(ch) // 关闭通道,这里不close会无限阻塞！！！<br />    }()<br /><br />    for v := range ch { // 直到 ch 关闭后，才退出循环<br />        fmt.Println(v)<br />    }<br />}<br /><br />```<br /><br />底层逻辑就像：<br /><br />```go<br />for {<br />    v, ok := <-ch<br />    if !ok { // 通道关闭，退出循环<br />        break<br />    }<br />    // 继续处理数据<br />    fmt.Println(v)<br />}<br /><br />```<br /><br />`len(ch)` 只适用于 <strong>缓冲通道（buffered channel）</strong>，表示当前通道的元素个数，但：<br /><br />- <strong>`len(ch)` 不能用于 `range`</strong>，因为 `range` 需要不断读取新数据。<br />- <strong>`len(ch)` 不能检测通道是否关闭</strong>，所以 `range` 依赖 `close(ch)` 退出。<br /><br /><h3><strong>示例：</strong></h3><br /><br />```<br />go复制编辑ch := make(chan int, 3)<br />ch <- 1<br />ch <- 2<br />fmt.Println(len(ch)) // ✅ 2，通道里有两个数据<br />```<br /><br />但：<br /><br />```<br />go复制编辑for i := 0; i < len(ch); i++ { // ❌ 不能这样遍历通道！<br />    fmt.Println(<-ch)<br />}<br />```<br /><br />这种方式<strong>不适用于通道</strong>，因为 `len(ch)` 可能在 `receive` 时动态变化。<br /><br />提一嘴：<br /><br />在`range` 遍历`slice/map` 的底层,`range` <strong>是基于 `len()` 计算的</strong><br /><br />```<br />arr := []int{1, 2, 3}<br />for i := 0; i < len(arr); i++ { // ✅ 等价于 `range`<br />    fmt.Println(arr[i])<br />}<br />```<br /><br /><br /><br /><h2>总结：</h2><br /><br />🔹 <strong>`range` 遍历通道不会使用 `len(ch)`，而是依赖 `close(ch)` 退出</strong>。<br />🔹 <strong>如果 `ch` 没有 `close()`，`range` 会阻塞</strong>。<br />🔹 <strong>通道不能像 `slice/map` 那样用 `len()` 遍历</strong>。<br />🔹 <strong>如果 `range` 不能用，手动 `ok := <-ch` 方式检测通道是否关闭</strong>。<br /><br /><h3><strong>`range` 遍历通道的正确用法</strong></h3><br /><br />✅ <strong>方式 1：必须 `close(ch)`</strong><br /><br />```go<br />go复制编辑go func() {<br />    for i := 0; i < 5; i++ {<br />        ch <- i<br />    }<br />    close(ch) // 关闭通道，保证 `range` 能退出<br />}()<br /><br />for v := range ch { // `range` 依赖 `close` 才能结束<br />    fmt.Println(v)<br />}<br />```<br /><br />✅ <strong>方式 2：手动检查 `ok`</strong><br /><br />```go<br />go复制编辑for {<br />    v, ok := <-ch<br />    if !ok {<br />        break<br />    }<br />    fmt.Println(v)<br />}<br />```<br /><br />🚫 <strong>错误方式：用 `len(ch)` 遍历</strong><br /><br />```go<br />go复制编辑for i := 0; i < len(ch); i++ { // ❌ 错误，`len(ch)` 不能用来遍历通道<br />    fmt.Println(<-ch)<br />}<br />```<br /><br /><br /><br /><br /><br /><h2>close总结：</h2><br /><br /><h3><strong>1. 何时不需要 `close`？</strong></h3><br /><br />只要 <strong>接收次数<em>*（`receive`） **等于小于** **发送次数**（`send`），就*</em>不需要手动 `close`</strong>，因为：<br /><br />- `receive` 取数据后不会再阻塞。<br />- `receive` 没有使用 `range` 依赖 `close` 才能退出。<br /><br /><strong>示例：</strong><br /><br />```go<br />package main<br /><br />import "fmt"<br /><br />func main() {<br />    ch := make(chan int)<br /><br />    go func() {<br />        for i := 0; i < 5; i++ {<br />            ch <- i // 发送 5 次<br />        }<br />    }()<br /><br />    for i := 0; i < 5; i++ {<br />        fmt.Println(<-ch) // 接收 5 次，匹配<br />    }<br />}<br />```<br /><br /><strong>✅ 这里不需要 `close(ch)`，程序不会死锁。</strong><br /><br />------<br /><br /><h3><strong>2. 何时必须 `close`？</strong></h3><br /><br />如果 `receive` 的次数<strong>不固定</strong>，或者使用了 `range` 读取通道，就必须 `close`，否则：<br /><br />- `range ch` 会<strong>无限等待</strong>，导致死锁。<br />- 其他 goroutine 可能无法正确退出。<br /><br /><strong>示例（必须 `close`）：</strong><br /><br />```go<br />package main<br /><br />import "fmt"<br /><br />func main() {<br />    ch := make(chan int)<br /><br />    go func() {<br />        for i := 0; i < 5; i++ {<br />            ch <- i<br />        }<br />        close(ch) // 生产者完成后关闭通道<br />    }()<br /><br />    for v := range ch { // 依赖 close(ch) 才能退出<br />        fmt.Println(v)<br />    }<br />}<br />```<br /><br /><strong>✅ `close(ch)` 让 `range` 退出，防止死锁。</strong><br /><br />------<br /><br /><h3><strong>3. `close` 之后还能开启吗？</strong></h3><br /><br />🚫 <strong>不能！关闭通道后不能重新开启！</strong><br /><br />- 关闭通道后，任何写入 (`ch <- x`) 都会 <strong>panic</strong>。<br />- 但仍然可以<strong>继续读取<em>* *</em>已缓冲的数据</strong>（如果是缓冲通道）。<br /><br />#### <strong>示例：</strong><br /><br />```go<br />package main<br /><br />import "fmt"<br /><br />func main() {<br />    ch := make(chan int, 2)<br /><br />    ch <- 10<br />    ch <- 20<br />    close(ch) // 关闭通道<br /><br />    fmt.Println(<-ch) // ✅ 还能取数据：10<br />    fmt.Println(<-ch) // ✅ 还能取数据：20<br />    fmt.Println(<-ch) // ❌ 取不到新数据，返回零值 0<br />}<br />```<br /><br /><strong>⚠️ `ch <- 30` 这种写入会 `panic`！</strong><br /><br />```go<br />ch <- 30  // ❌ panic: send on closed channel<br />```<br /><br />------<br /><br /><h3><strong>4. `close` 后的 `receive` 规则</strong></h3><br /><br />- 关闭后<strong>仍然可以接收<em>* *</em>已发送但未取走的数据</strong>（只有带缓存的通道）。<br />- 取完后，<strong>继续取会返回通道类型的零值</strong>（`int` 类型返回 `0`，`string` 返回 `""`）。<br />- `ok := <-ch` 方式可以<strong>检查通道是否关闭</strong>。<br /><br /><strong>示例：</strong><br /><br />```go<br />package main<br /><br />import "fmt"<br /><br />func main() {<br />    ch := make(chan int, 2)<br /><br />    ch <- 10<br />    ch <- 20<br />    close(ch) // 关闭通道<br /><br />    v, ok := <-ch<br />    fmt.Println(v, ok) // ✅ 10, true<br /><br />    v, ok = <-ch<br />    fmt.Println(v, ok) // ✅ 20, true<br /><br />    v, ok = <-ch<br />    fmt.Println(v, ok) // ❌ 0, false（通道已关闭）<br />}<br />```<br /><br />------<br /><br /><h3><strong>5. `close` 的最佳实践</strong></h3><br /><br />- <strong>单个 `sender`，多个 `receiver`<em>*：*</em>必须 `close(ch)`</strong>。<br />- <strong>多个 `sender`，单个 `receiver`<em>*：*</em>不能随便 `close(ch)`</strong>，否则会 `panic`。<br />- <strong>多个 `sender`，多个 `receiver`<em></em>：</strong>需要 `sync.WaitGroup` 或 `sync.Once` 控制 `close(ch)`。<br /><br />------<br /><br /><h3><strong>结论</strong></h3><br /><br />✅ <strong>不需要 `close`：</strong><br /><br />- `send` 次数 = `receive` 次数。<br />- 只用 `<-ch` 读取 <strong>固定次数</strong>。<br /><br />✅ <strong>必须 `close`：</strong><br /><br />- `range ch` 读取通道。<br />- `receive` 需要判断何时退出。<br />- `多个 goroutine` 需要通知通道已结束。<br /><br />🚫 <strong>不能 `close` 之后再打开</strong><br /><br />- 关闭后<strong>还能读取<em>*，但*</em>不能写入</strong>，否则 `panic`。<br /><br /><br /><br /><br /><br /><h2>Channal中阻塞行为</h2><br /><br /><h3><strong>1. 发送操作 (`ch <- "job result"`) 的阻塞行为</strong></h3><br /><br />Go 语言的通道（channel）有两种：<br /><br />- <strong>无缓冲通道<em>*（`ch := make(chan string)`）：发送操作 `ch <- value` *</em>必须等到有接收者</strong>，否则阻塞。<br />- <strong>带缓冲通道</strong>（`ch := make(chan string, 1)`）：如果缓冲区未满，发送不会阻塞；如果缓冲区满了，发送仍然会阻塞。<br /><br />```<br />go复制编辑ch := make(chan string) // 无缓冲通道<br />go func() {<br />    time.Sleep(3 * time.Second)<br />    ch <- "job result" // 没有接收者，阻塞！<br />}()<br />```<br /><br />- `ch <- "job result"` 这行代码会尝试把 `"job result"` 放入通道。<br />- <strong>因为 `ch` 是无缓冲通道<em>*，它**必须**等到有 `<- ch` 取出数据，才能完成发送操作，否则*</em>goroutine 卡在这里，不会往下执行</strong>。<br />- 如果 `demo2()` 的 `select` 语句选择了超时 `case <-time.After(1 <em> time.Second)` 并 `return`，那么 `ch` <strong>再也没有接收者**，`ch <- "job result"` *</em>永远不会成功，导致 goroutine 永远阻塞</strong>。<br /><br />------<br /><br /><h3><strong>2. 为什么 `ch <- "job result"` 不能先执行，再等待消费？</strong></h3><br /><br />很多人误以为 `ch <- "job result"` <strong>会先放入通道，然后阻塞等待消费</strong>，但事实并非如此！<br /><br />在 Go 语言中，<strong>无缓冲通道的本质是同步的</strong>：<br /><br />- 发送者和接收者必须匹配<br /><br />  ，否则发送/接收操作会阻塞：<br /><br />  - `ch <- value` <strong>必须等到 `value := <-ch` 发生时，才能完成发送</strong>。<br />  - `<-ch` <strong>必须等到 `ch <- value` 发生时，才能完成接收</strong>。<br /><br /><strong>示例代码演示这个特性：</strong><br /><br />```<br />func main() {<br />    ch := make(chan int) // 无缓冲通道<br />    go func() {<br />        fmt.Println("准备发送数据")<br />        ch <- 42 // 这里会阻塞，直到 main goroutine 读取数据<br />        fmt.Println("发送完成") // 这行不会执行，除非 main 读取通道<br />    }()<br />    <br />    time.Sleep(2 * time.Second) // 故意延迟 2 秒<br />    fmt.Println("准备接收数据")<br />    value := <-ch // 这里 main goroutine 接收数据<br />    fmt.Println("接收到数据:", value)<br />}<br />```<br /><br /><strong>输出：</strong><br /><br />```<br />准备发送数据<br />（等待2秒）<br />准备接收数据<br />接收到数据: 42<br />发送完成<br />```<br /><br />- <strong>"准备发送数据" 先打印<em>*，但 `ch <- 42` *</em>阻塞住了 goroutine</strong>，直到 `value := <-ch` 执行，发送才完成。<br />- `ch <- 42` <strong>不会提前放到通道里，而是等到接收者出现才一起执行</strong>。<br /><br />------<br /><br /><h3><strong>3. `ch <- value` 为什么没有存入无缓冲通道？</strong></h3><br /><br />Go 语言的 <strong>无缓冲通道就是同步通信机制<em>*，不像队列或者消息队列那样*</em>存值</strong>：<br /><br />- <strong>通道并不存数据</strong>，它只是一个传输机制。<br />- `ch <- value` 只有当 `value := <-ch` 同时发生时，数据才能被真正传递。<br />- 如果接收者不存在，`ch <- value` <strong>会一直阻塞，而不是先存进去再等待消费</strong>。<br /><br /><br /><br /><h3><strong>总结</strong></h3><br /><br />1. <strong>无缓冲通道的 `ch <- value` 必须有 `<-ch` 同时执行，否则会阻塞</strong>。<br /><br />2. <strong>阻塞不是等待消费，而是直接阻塞在 `ch <-` 这一行</strong>，直到有接收者。<br /><br />3. <strong>如果 `select` 选择超时分支，goroutine 仍然执行 `ch <- value`，但没有接收者，导致永久阻塞</strong>。<br /><br />4. 解决方案<br /><br />   ：<br /><br />   - 用 <strong>带缓冲通道</strong><br />   - 在 `select` 中使用 `default`<br />   - 用 `context.WithTimeout` 避免超时阻塞</p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">Go语言</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

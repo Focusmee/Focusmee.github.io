@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Docker学习】WSL、Docker 迁移 | Focusmee</title>
+    <meta name="description" content="【Docker学习】WSL、Docker 迁移">
+    <meta property="og:title" content="【Docker学习】WSL、Docker 迁移">
+    <meta property="og:description" content="【Docker学习】WSL、Docker 迁移">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Docker学习】WSL、Docker 迁移</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">8 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Docker学习】WSL、Docker 迁移</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>WSL、Docker 迁移</h1>
+<p>Windows WSL Docker 默认安装路径在C盘的，导致岌岌可危的C盘空间😱更加吃紧，一不小心就要出现👇这种情况了</p>
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815143048352-1440225869.png" alt="image"></p>
+<p>接下来我们一起迁移它们吧</p>
+<h2>迁移 WSL</h2>
+<p>WSL2 默认安装在 C 盘，我们可以通过以下步骤迁移安装位置<br>通过以下命令列出已安装的 Linux 发行版：</p>
+<pre><code>wsl -l -v
+</code></pre>
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815145222644-1202975402.png" alt="image"><br>可以看到已安装了 Ubuntu，其运行状态为：Stopped</p>
+<h3>导出分发版</h3>
+<p>如果运行状态为 Running，需先通过以下命令关闭：</p>
+<pre><code>wsl --shutdown
+</code></pre>
+<p>然后我们通过以下命令将 Ubuntu 导出为 tar 文件：</p>
+<pre><code>wsl --export Ubuntu d:\wsl\Ubuntu.tar
+</code></pre>
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815145856500-292128290.png" alt="image"></p>
+<blockquote>
+<p>⚠️<br>wsl --export <Distribution Name> <FileName><br><code>&lt;Distribution Name&gt;</code> 为目标 Linux 发行版的名称，我安装的为： <code>Ubuntu</code><br><code>&lt;FileName&gt;</code> 为导出的文件名，这里我导出到 <code>d:\wsl\Ubuntu.tar</code><br>当然可以是任意位置</p>
+</blockquote>
+<h3>注销并卸载</h3>
+<p>然后注销并卸载 Ubuntu</p>
+<pre><code>wsl --unregister Ubuntu
+</code></pre>
+<p>这时候可以执行验证是否完成注销并卸载<br><code>wsl -l -v</code></p>
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815160735996-160221150.png" alt="image"></p>
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815160813251-615510379.png" alt="image"></p>
+<p>👍完美，符合预期！！！</p>
+<h3>导入安装</h3>
+<p>将 Ubuntu 从新位置导入：<br><code>wsl --import Ubuntu d:\wsl\Ubuntu d:\wsl\Ubuntu.tar</code><br>再次查看已安装的 Linux 发行版<br><code>wsl -l -v</code><br><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815161553829-1503338969.png" alt="image"></p>
+<p>设置默认用户<br><code>Ubuntu config --default-user bigroc</code></p>
+<blockquote>
+<p>⚠️<br><DistributionName> config --default-user <Username><br><code>&lt;DistributionName&gt;</code> 为目标 Linux 发行版的名称，我安装的为： <code>Ubuntu</code>，命令里要写为：<code>Ubuntu</code><br>假如你的是<code>Ubuntu-22.04</code>，命令里要写为：<code>Ubuntu2204</code><br><code>&lt;Username&gt;</code> 为 WSL 发行版中存在的用户名，在设置 Linux 用户名和密码时我创建的用户为：<code>bigroc</code> ，所以命令里的 <code>&lt;Username&gt;</code> 这里就为：<code>bigroc</code></p>
+</blockquote>
+<h2>迁移 docker-desktop-data 和 docker-desktop</h2>
+<p>Docker Desktop 会创建两个发行版：<code>docker-desktop-data</code> 和 <code>docker-desktop</code>，它们的默认位置在 <code>C:\Users\&lt;你电脑的用户名&gt;\AppData\Local\Docker\wsl</code>，我们同样可以参考上面导入导出 <code>Ubuntu</code> 的过程将<code>docker-desktop-data</code> 和 <code>docker-desktop</code> 迁移到其他位置</p>
+<p>过程一致⬇️</p>
+<h3>导出</h3>
+<pre><code>wsl --export docker-desktop-data d:\wsl\docker-desktop-data.tar`
+`wsl --export docker-desktop-data d:\wsl\docker-desktop.tar
+</code></pre>
+<h3>注销卸载</h3>
+<pre><code>wsl --unregister docker-desktop-data`
+`wsl --unregister docker-desktop
+</code></pre>
+<h3>导入安装</h3>
+<pre><code>wsl --import docker-desktop-data d:\wsl\docker-desktop-data d:\wsl\docker-desktop-data.tar`
+`wsl --import docker-desktop d:\wsl\docker-desktop d:\wsl\docker-desktop.tar
+</code></pre>
+<p>至此 公司的电脑又一次成功复活<br><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815165529003-2038965666.png" alt="image"></p>
+<h2>参考</h2>
+<ol>
+<li>【microsoft】<a href="https://learn.microsoft.com/zh-cn/windows/wsl/basic-commands">WSL 的基本命令</a></li>
+<li>【csdn】<a href="https://blog.csdn.net/cn_ljr/article/details/132047516">Win11 安装 Docker Desktop 和 WSL2 并进行安装位置迁移</a></li>
+<li>【bilibili】【2025【Docker Windows】C盘满了通过WSL将docker数据迁移到D盘】 <a href="https://www.bilibili.com/video/BV17qdpYGEEE/?share_source=copy_web&vd_source=654a4e361961dcce96893993981165f5">https://www.bilibili.com/video/BV17qdpYGEEE/?share_source=copy_web&amp;vd_source=654a4e361961dcce96893993981165f5</a></li>
+</ol>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

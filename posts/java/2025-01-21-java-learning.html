@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java学习之路：从入门到进阶 | Focusmee</title>
+    <meta name="description" content="分享我的Java学习经验，从基础语法到高级特性的完整学习路线。">
+    <meta property="og:title" content="Java学习之路：从入门到进阶">
+    <meta property="og:description" content="分享我的Java学习经验，从基础语法到高级特性的完整学习路线。">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">Java</span>
+                    <span class="separator">/</span>
+                    <span class="current">Java学习之路：从入门到进阶</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/1/21 08:00:00</time>
+                    <span class="post-category">Java</span>
+                    <span class="post-read-time">6 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">Java学习之路：从入门到进阶</h1>
+                
+                <div class="post-tags">
+                    <span class="post-tag">Java</span><span class="post-tag">学习路线</span><span class="post-tag">编程</span>
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>Java学习之路：从入门到进阶</h1>
+<p>Java作为一门经典的编程语言，在企业开发中占据重要地位。本文分享我的Java学习历程和一些实用的学习建议。</p>
+<h2>🎯 学习路线规划</h2>
+<h3>第一阶段：Java基础</h3>
+<ul>
+<li>Java语法基础</li>
+<li>面向对象编程</li>
+<li>常用API使用</li>
+<li>异常处理机制</li>
+</ul>
+<h3>第二阶段：Java进阶</h3>
+<ul>
+<li>集合框架深入</li>
+<li>多线程编程</li>
+<li>IO流操作</li>
+<li>反射机制</li>
+</ul>
+<h3>第三阶段：企业开发</h3>
+<ul>
+<li>Spring框架</li>
+<li>MyBatis框架</li>
+<li>Spring Boot</li>
+<li>微服务架构</li>
+</ul>
+<h2>💻 代码示例</h2>
+<h3>Hello World</h3>
+<pre><code class="language-java">public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println(&quot;Hello, Java World!&quot;);
+    }
+}
+</code></pre>
+<h3>面向对象示例</h3>
+<pre><code class="language-java">public class Student {
+    private String name;
+    private int age;
+    
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    // Getter 和 Setter 方法
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+    
+    public void setAge(int age) {
+        this.age = age;
+    }
+    
+    @Override
+    public String toString() {
+        return &quot;Student{name=&#39;&quot; + name + &quot;&#39;, age=&quot; + age + &quot;}&quot;;
+    }
+}
+</code></pre>
+<h2>📚 学习资源推荐</h2>
+<h3>官方资源</h3>
+<ul>
+<li><a href="https://docs.oracle.com/javase/">Oracle Java Documentation</a></li>
+<li><a href="https://openjdk.java.net/">OpenJDK</a></li>
+</ul>
+<h3>在线教程</h3>
+<ul>
+<li><strong>慕课网</strong>：提供丰富的Java课程</li>
+<li><strong>极客时间</strong>：深度技术专栏</li>
+<li><strong>GitHub</strong>：开源项目学习</li>
+</ul>
+<h3>书籍推荐</h3>
+<ol>
+<li><strong>《Java核心技术》</strong> - 入门必备</li>
+<li><strong>《Effective Java》</strong> - 进阶神书</li>
+<li><strong>《Java并发编程实战》</strong> - 并发编程</li>
+<li><strong>《深入理解JVM虚拟机》</strong> - JVM深入</li>
+</ol>
+<h2>🛠️ 开发工具</h2>
+<h3>IDE选择</h3>
+<ul>
+<li><strong>IntelliJ IDEA</strong>：功能强大，智能提示</li>
+<li><strong>Eclipse</strong>：免费开源，插件丰富</li>
+<li><strong>VS Code</strong>：轻量级，扩展性好</li>
+</ul>
+<h3>构建工具</h3>
+<ul>
+<li><strong>Maven</strong>：项目管理和构建</li>
+<li><strong>Gradle</strong>：新一代构建工具</li>
+</ul>
+<h2>🚀 实践项目建议</h2>
+<h3>初级项目</h3>
+<ol>
+<li><strong>学生管理系统</strong></li>
+<li><strong>图书管理系统</strong></li>
+<li><strong>简单计算器</strong></li>
+</ol>
+<h3>中级项目</h3>
+<ol>
+<li><strong>博客系统</strong></li>
+<li><strong>在线商城</strong></li>
+<li><strong>聊天应用</strong></li>
+</ol>
+<h3>高级项目</h3>
+<ol>
+<li><strong>分布式系统</strong></li>
+<li><strong>微服务架构</strong></li>
+<li><strong>高并发应用</strong></li>
+</ol>
+<h2>💡 学习建议</h2>
+<h3>1. 理论与实践结合</h3>
+<p>不要只看书不动手，每学一个知识点都要写代码验证。</p>
+<h3>2. 建立知识体系</h3>
+<p>将学到的知识点串联起来，形成完整的知识网络。</p>
+<h3>3. 多看优秀代码</h3>
+<p>阅读开源项目源码，学习优秀的编程习惯和设计思想。</p>
+<h3>4. 持续学习</h3>
+<p>技术更新很快，保持学习的热情和习惯。</p>
+<h2>🎉 总结</h2>
+<p>Java学习是一个循序渐进的过程，需要耐心和毅力。重要的是要：</p>
+<ul>
+<li><strong>多练习</strong>：理论学习后一定要实践</li>
+<li><strong>多思考</strong>：不仅要知道怎么做，还要知道为什么</li>
+<li><strong>多交流</strong>：参与技术社区，与他人分享交流</li>
+</ul>
+<p>希望这篇文章对正在学习Java的朋友有所帮助。编程路上，我们一起加油！</p>
+<hr>
+<p><em>如果你有任何问题或建议，欢迎在评论区留言交流！</em> </p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

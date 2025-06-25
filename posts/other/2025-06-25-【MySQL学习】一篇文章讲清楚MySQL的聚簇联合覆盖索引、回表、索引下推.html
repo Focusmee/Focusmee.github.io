@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【MySQL学习】一篇文章讲清楚MySQL的聚簇联合覆盖索引、回表、索引下推 | Focusmee</title>
+    <meta name="description" content="【MySQL学习】一篇文章讲清楚MySQL的聚簇联合覆盖索引、回表、索引下推">
+    <meta property="og:title" content="【MySQL学习】一篇文章讲清楚MySQL的聚簇联合覆盖索引、回表、索引下推">
+    <meta property="og:description" content="【MySQL学习】一篇文章讲清楚MySQL的聚簇联合覆盖索引、回表、索引下推">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【MySQL学习】一篇文章讲清楚MySQL的聚簇联合覆盖索引、回表、索引下推</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">9 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【MySQL学习】一篇文章讲清楚MySQL的聚簇联合覆盖索引、回表、索引下推</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1><a href="https://www.cnblogs.com/yidengjiagou/p/16410968.html">一篇文章讲清楚MySQL的聚簇/联合/覆盖索引、回表、索引下推</a></h1>
+<blockquote>
+<p>迎面走来了你的面试官，身穿格子衫，挺着啤酒肚，发际线严重后移的中年男子。<br>手拿泡着枸杞的保温杯，胳膊夹着MacBook，MacBook上还贴着公司标语：“加班使我快乐”。</p>
+</blockquote>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111051713-1507542591.jpg" alt="img"></p>
+<p><strong>面试官：</strong> 看你简历上用过MySQL，问你几个简单的问题吧。什么是聚簇索引和非聚簇索引？</p>
+<blockquote>
+<p>这个问题难不住我啊。来之前我看一下一灯MySQL八股文。</p>
+</blockquote>
+<p><strong>我：</strong> 举个例子：有这么一张用户表</p>
+<pre><code class="language-sql">CREATE TABLE `user` (
+  `id` int COMMENT &#39;主键ID&#39;,
+  `name` varchar(10) COMMENT &#39;姓名&#39;,
+  `age` int COMMENT &#39;年龄&#39;,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARSET=utf8 COMMENT=&#39;用户表&#39;;
+</code></pre>
+<p>用户表中存储了这些数据：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>nane</th>
+<th>age</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>一灯</td>
+<td>18</td>
+</tr>
+<tr>
+<td>2</td>
+<td>张三</td>
+<td>22</td>
+</tr>
+<tr>
+<td>3</td>
+<td>李四</td>
+<td>21</td>
+</tr>
+<tr>
+<td>4</td>
+<td>王二</td>
+<td>19</td>
+</tr>
+<tr>
+<td>5</td>
+<td>麻子</td>
+<td>20</td>
+</tr>
+</tbody></table>
+<p>那么在索引中，这些数据是怎么存储的呢？</p>
+<p>MySQL的InnoDB引擎中索引使用的B+树结构。</p>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111108036-1147402936.png" alt="img"></p>
+<p>别问为什么根节点存储了（1,4）两个元素，左子节点又存储了（1,2,3）三个元素，下面带有三个叶子节点，叶子节点之间又用有序链表相连？</p>
+<p>问就是B+树的特性，不了解的可以翻一下上期的文章。</p>
+<p>如上图所示，叶子节点中存储了全部元素的索引，就是<strong>聚簇索引</strong>。<br>一般主键索引就是<strong>聚簇索引</strong>，如果表中没有主键，MySQL也会默认建立一个隐藏主键做主键索引。</p>
+<p><strong>什么是非聚簇索引？</strong></p>
+<p>假设我们在age（年龄）字段上建一个普通索引，age字段上面的索引存储结构就是下面这样：</p>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111121011-881324052.png" alt="img"></p>
+<p>叶子节点中只存储了当前索引字段和主键ID，这样的存储结构就是非聚簇索引。</p>
+<p><strong>面试官：</strong> 那什么是联合索引呢？</p>
+<p><strong>我：</strong> 有多个字段组成的索引就是联合索引。</p>
+<p><strong>面试官：</strong> 【晕】建联合索引有什么好处？它跟在单个字段上建索引有什么区别？</p>
+<p><strong>我：</strong> 假设有这么一条查询语句。</p>
+<pre><code class="language-sql">select * from user where age = 18 and name = &#39;张三&#39;;
+</code></pre>
+<p>如果我们在age和name字段上分别建两个索引，这个查询语句只会用到其中一个索引。</p>
+<p>但是我们在age和name字段建一个联合索引（age，name），它的存储结构就变成这样了。</p>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111132063-131242407.png" alt="img"></p>
+<p>如果只在age上面建索引，会先查询age上面非聚簇索引，有三条age=18的记录，主键ID分别是1、4、5，然后再用这三个ID去查询主键ID的聚簇索引。</p>
+<p>如果在age和name上面建联合索引，会先查询age和name上面的非聚簇索引，匹配到一条记录，主键ID是1，然后再用这个ID去查询主键ID的聚簇索引。</p>
+<p>由此可以得出，联合索引的优点：<strong>大大减少扫描行数。</strong></p>
+<p><strong>面试官：</strong> 你再说一下什么是最左匹配原则？</p>
+<p><strong>我：</strong> 最左匹配原则是指在建立联合索引的时候，遵循最左优先，以最左边的为起点任何连续的索引都能匹配上。</p>
+<p>当我们在(age,name)上建立联合索引的时候，where条件中只有age可以用到索引，同时有age和name也可以用到索引。但是只有name的时候是无法用到索引的。</p>
+<p>为什么会出现这种情况呢？</p>
+<p>看上面的图，就理解了，(age,name)的联合索引，是先按照age排序，age相等的行再按照name排序。如果where条件只有一个name，当然无法用到索引。</p>
+<p><strong>面试官：</strong> 什么是覆盖索引和回表查询？</p>
+<p><strong>我：</strong> 这个就更简单了，上面已经提到这个知识点了。</p>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111147031-342000180.png" alt="img"></p>
+<p>当我们在age上建索引的时候，查询SQL是这样的时候：</p>
+<pre><code class="language-sql">select id from user where age = 18;
+</code></pre>
+<p>就会用到覆盖索引，因为ID字段我们使用age索引的时候已经查出来，不需要再二次回表查询了。</p>
+<p>但是当查询SQL是这样的时候：</p>
+<pre><code class="language-sql">select * from user where age = 18;
+</code></pre>
+<p>想要查询所有字段，就需要二次回表查询。因为我们第一次用age索引的时候只查出来了主键ID，还需要再用主键ID回表查询出所有字段。</p>
+<p><strong>面试官：</strong> 再问一个，你知道什么是索引下推吗？</p>
+<blockquote>
+<p>这么冷门的问题，你都问的出来，真的要面试造火箭啊！</p>
+</blockquote>
+<p><strong>我：</strong> 索引下推（Index Condition Pushdown）是MySQL5.6引入的一个优化索引的特性。</p>
+<p><strong>举例：</strong></p>
+<p>在(age,name)上面建联合索引，并且查询SQL是这样的时候：</p>
+<pre><code class="language-sql">select * from user where age = 18 and name = &#39;张三&#39;;
+</code></pre>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111203139-127132140.png" alt="img"></p>
+<p>如果没有索引下推，会先匹配出 age = 18 的三条记录，再用ID回表查询，筛选出 name = &#39;张三&#39; 的记录。</p>
+<p>如果使用索引下推，会先匹配出 age = 18 的三条记录，再筛选出 name = &#39;张三&#39; 的一条记录，最后再用ID回表查询。</p>
+<p>由此得出，索引下推的优点：减少了回表的扫描行数。</p>
+<p>**面试官： ** 小伙子，八股文背的挺溜啊。我给你出个实战题，看你有没有准备。下面这个查询SQL该怎么建联合索引？</p>
+<pre><code class="language-sql">select a from table where b = 1 and c = 2;
+</code></pre>
+<blockquote>
+<p>故意***难我？你以为实战题就不能背八股文了吗？</p>
+</blockquote>
+<p><strong>我：</strong> 刚才在讲联合索引的时候已经说了这个知识点了，where条件有b和c的等值查询，联合索引就建成(b,c)，由于select后面有a，我们就建立 (b,c,a) 的联合索引，并且可以用到覆盖索引，查询速度更快。</p>
+<p><strong>面试官：</strong> 小伙子，有点东西。一会儿就给你发offer，明天就来上班，薪资double。</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

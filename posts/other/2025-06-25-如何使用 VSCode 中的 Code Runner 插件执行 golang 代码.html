@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>如何使用 VSCode 中的 Code Runner 插件执行 golang 代码 | Focusmee</title>
+    <meta name="description" content="如何使用 VSCode 中的 Code Runner 插件执行 golang 代码">
+    <meta property="og:title" content="如何使用 VSCode 中的 Code Runner 插件执行 golang 代码">
+    <meta property="og:description" content="如何使用 VSCode 中的 Code Runner 插件执行 golang 代码">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">如何使用 VSCode 中的 Code Runner 插件执行 golang 代码</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">10 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">如何使用 VSCode 中的 Code Runner 插件执行 golang 代码</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <p>project 的文档结如下</p>
+<p>mylab<br>   |—- main.go<br>   |—- test.go</p>
+<p>main.go</p>
+<pre><code class="language-go">package main
+
+func main() {
+    test()
+}
+</code></pre>
+<p>test.go</p>
+<pre><code class="language-go">package main
+
+func test() {
+    println(&quot;in test&quot;)
+}
+</code></pre>
+<p>在<a href="https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner">Code Runner 插件的 Doc 地址</a>中<br>找到如下 Configuration 的配置说明</p>
+<blockquote>
+<p>Configuration<br>Make sure the executor PATH of each language is set in the environment variable. You could also add entry into code-runner.executorMap to set the executor PATH. e.g. To set the executor PATH for ruby, php and html:</p>
+</blockquote>
+<pre><code class="language-json">{
+  &quot;code-runner.executorMap&quot;: {
+    &quot;javascript&quot;: &quot;node&quot;,
+    &quot;php&quot;: &quot;C:\\php\\php.exe&quot;,
+    &quot;python&quot;: &quot;python&quot;,
+    &quot;perl&quot;: &quot;perl&quot;,
+    &quot;ruby&quot;: &quot;C:\\Ruby23-x64\\bin\\ruby.exe&quot;,
+    &quot;go&quot;: &quot;go run&quot;,
+    &quot;html&quot;: &quot;\&quot;C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe\&quot;&quot;,
+    &quot;java&quot;: &quot;cd $dir &amp;&amp; javac $fileName &amp;&amp; java $fileNameWithoutExt&quot;,
+    &quot;c&quot;: &quot;cd $dir &amp;&amp; gcc $fileName -o $fileNameWithoutExt &amp;&amp; $dir$fileNameWithoutExt&quot;
+  }
+}
+</code></pre>
+<blockquote>
+<p>Supported customized parameters</p>
+<ul>
+<li>$workspaceRoot: The path of the folder opened in VS Code</li>
+<li>$dir: The directory of the code file being run</li>
+<li>$dirWithoutTrailingSlash: The directory of the code file being run without a trailing slash</li>
+<li>$fullFileName: The full name of the code file being run</li>
+<li>$fileName: The base name of the code file being run, that is the file without the directory</li>
+<li>$fileNameWithoutExt: The base name of the code file being run without its extension</li>
+<li>$driveLetter: The drive letter of the code file being run (Windows only)</li>
+<li>$pythonPath: The path of Python interpreter (set by Python: Select Interpreter command)</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Please take care of the back slash and the space in file path of the executor</p>
+<p>Back slash: please use <br>If there ares spaces in file path, please use &quot; to surround your file path</p>
+</blockquote>
+<blockquote>
+<p>You could set the executor per filename glob:</p>
+</blockquote>
+<pre><code class="language-json">{
+  &quot;code-runner.executorMapByGlob&quot;: {
+    &quot;pom.xml&quot;: &quot;cd $dir &amp;&amp; mvn clean package&quot;,
+    &quot;*.test.js&quot;: &quot;tap&quot;,
+    &quot;*.js&quot;: &quot;node&quot;
+  }
+}
+</code></pre>
+<p>可以看到 go 的执行命令默认配置成了 go run, 并且默认执行当前打开的文件。 所以需要利用$dir 这个变量 run 整个 main 包所涉及到的所有文件。并且可以正则匹配文件名。</p>
+<p>查看一下 go run 这个命令的参数解释，由于众所周知的原因，我们只能上国内的<a href="https://golang.google.cn/cmd/go/#hdr-Compile_and_run_Go_program">替代官网</a>。</p>
+<blockquote>
+<p>Compile and run Go program Usage:</p>
+<p>go run [build flags][-exec xprog] package [arguments…] Run compiles and runs the named main Go package. Typically the package is specified as a list of .go source files, but it may also be an import path, file system path, or pattern matching a single known package, as in <strong>‘go run .&#39;</strong> or ‘go run my/cmd’.</p>
+<p>By default, ‘go run’ runs the compiled binary directly: ‘a.out arguments…&#39;. If the -exec flag is given, ‘go run’ invokes the binary using xprog:</p>
+<p>‘xprog a.out arguments…&#39;. If the -exec flag is not given, GOOS or GOARCH is different from the system default, and a program named go*$GOOS*$GOARCH_exec can be found on the current search path, ‘go run’ invokes the binary using that program, for example ‘go_nacl_386_exec a.out arguments…&#39;. This allows execution of cross-compiled programs when a simulator or other execution method is available.</p>
+<p>The exit status of Run is not the exit status of the compiled binary.</p>
+<p>For more about build flags, see ‘go help build’. For more about specifying packages, see ‘go help packages’.</p>
+</blockquote>
+<p>找到了，使用<code>go run .</code> 来跑整个 package 的。</p>
+<p>在 VSCode 的.vscode 目录下创建 settings.json 文件</p>
+<p>自定义这个 project 的用户配置如下</p>
+<pre><code class="language-json">{
+  &quot;code-runner.executorMap&quot;: {
+    &quot;go&quot;: &quot;cd $dir &amp;&amp; go run .&quot;
+  },
+  &quot;code-runner.executorMapByGlob&quot;: {
+    &quot;$dir\\*.go&quot;: &quot;go&quot;
+  }
+}
+</code></pre>
+<p>点击 Cdoe Runner 在 VSCode GUI 界面提供的 RUN 按钮</p>
+<pre><code>[Running] cd &quot;d:\Users\polar\go\src\mylab\&quot; &amp;&amp; go run .
+in test
+
+[Done] exited with code=0 in 3.564 seconds
+</code></pre>
+<p>OK!</p>
+<p>当然也可以用 VSCode Debug 的 launch.json 来配置，但是那是 debug 模式，并不是 go run。</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

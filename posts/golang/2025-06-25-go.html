@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于Go热部署踩坑 - 技术博客</title>
+    <meta name="description" content="关于Go热部署踩坑 - Go语言相关技术文章">
+    <meta name="keywords" content="Go语言, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">Go语言</span>
+            <span class="separator">›</span>
+            <span class="current-page">关于Go热部署踩坑</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag golang">🚀 Go语言</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 3 分钟阅读</span>
+                </div>
+                <h1 class="post-title">关于Go热部署踩坑</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p><h1>关于go开发环境热部署踩坑</h1><br /><br />https://blog.csdn.net/Theirsky/article/details/135349503<br /><br /><h3>在终端中使用air命令,一直出现air windows找不到文件 'APP_ENV=dev’这个错误</h3><br /><br />#### 解决方法是直接在配置文件里做文章<br /><br />将air.conf 里将配置文件换成<br /><br />```<br /><h1><a href="https://github.com/cosmtrek/air">Air</a> TOML 格式的配置文件</h1><br /><br /><h1>工作目录</h1><br /><h1>使用 . 或绝对路径，请注意 `tmp_dir` 目录必须在 `root` 目录下</h1><br />root = "."<br />tmp_dir = "tmp"<br /><br />[build]<br /><h1>只需要写你平常编译使用的shell命令。你也可以使用 `make`</h1><br />cmd = "go build -o ./tmp/main.exe ."<br /><h1>由`cmd`命令得到的二进制文件名</h1><br />bin = "tmp/main.exe"<br /><h1>自定义的二进制，可以添加额外的编译标识例如添加 GIN_MODE=release</h1><br />full_bin = "SET APP_ENV=dev & SET APP_USER=air & .\tmp\main.exe"<br /><h1>监听以下文件扩展名的文件.</h1><br />include_ext = ["go", "tpl", "tmpl", "html"]<br /><h1>忽略这些文件扩展名或目录</h1><br />exclude_dir = ["assets", "tmp", "vendor", "frontend/node_modules"]<br /><h1>监听以下指定目录的文件</h1><br />include_dir = []<br /><h1>排除以下文件</h1><br />exclude_file = []<br /><h1>如果文件更改过于频繁，则没有必要在每次更改时都触发构建。可以设置触发构建的延迟时间</h1><br />delay = 1000 # ms<br /><h1>发生构建错误时，停止运行旧的二进制文件。</h1><br />stop_on_error = true<br /><h1>air的日志文件名，该日志文件放置在你的`tmp_dir`中</h1><br />log = "air_errors.log"<br /><br />[log]<br /><h1>显示日志时间</h1><br />time = true<br /><br />[color]<br /><h1>自定义每个部分显示的颜色。如果找不到颜色，使用原始的应用程序日志。</h1><br />main = "magenta"<br />watcher = "cyan"<br />build = "yellow"<br />runner = "green"<br /><br />[misc]<br /><h1>退出时删除tmp目录</h1><br />clean_on_exit = true<br />Linux版<br /><br />Copy<br /><h1><a href="https://github.com/cosmtrek/air">Air</a> TOML 格式的配置文件</h1><br /><br /><h1>工作目录</h1><br /><h1>使用 . 或绝对路径，请注意 `tmp_dir` 目录必须在 `root` 目录下</h1><br />root = "."<br />tmp_dir = "tmp"<br /><br />[build]<br /><h1>只需要写你平常编译使用的shell命令。你也可以使用 `make`</h1><br />cmd = "go build -o ./tmp/main ."<br /><h1>由`cmd`命令得到的二进制文件名</h1><br />bin = "tmp/main"<br /><h1>自定义的二进制，可以添加额外的编译标识例如添加 GIN_MODE=release</h1><br />full_bin = "APP_ENV=dev APP_USER=air ./tmp/main"<br /><h1>监听以下文件扩展名的文件.</h1><br />include_ext = ["go", "tpl", "tmpl", "html"]<br /><h1>忽略这些文件扩展名或目录</h1><br />exclude_dir = ["assets", "tmp", "vendor", "frontend/node_modules"]<br /><h1>监听以下指定目录的文件</h1><br />include_dir = []<br /><h1>排除以下文件</h1><br />exclude_file = []<br /><h1>如果文件更改过于频繁，则没有必要在每次更改时都触发构建。可以设置触发构建的延迟时间</h1><br />delay = 1000 # ms<br /><h1>发生构建错误时，停止运行旧的二进制文件。</h1><br />stop_on_error = true<br /><h1>air的日志文件名，该日志文件放置在你的`tmp_dir`中</h1><br />log = "air_errors.log"<br /><br />[log]<br /><h1>显示日志时间</h1><br />time = true<br /><br />[color]<br /><h1>自定义每个部分显示的颜色。如果找不到颜色，使用原始的应用程序日志。</h1><br />main = "magenta"<br />watcher = "cyan"<br />build = "yellow"<br />runner = "green"<br /><br />[misc]<br /><h1>退出时删除tmp目录</h1><br />clean_on_exit = true<br /><br />```<br /><br /><br /><br /><br /><br /><br /><br /></p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">Go语言</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

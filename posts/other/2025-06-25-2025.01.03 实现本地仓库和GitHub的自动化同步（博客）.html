@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025.01.03 实现本地仓库和GitHub的自动化同步（博客） | Focusmee</title>
+    <meta name="description" content="2025.01.03 实现本地仓库和GitHub的自动化同步（博客）">
+    <meta property="og:title" content="2025.01.03 实现本地仓库和GitHub的自动化同步（博客）">
+    <meta property="og:description" content="2025.01.03 实现本地仓库和GitHub的自动化同步（博客）">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">2025.01.03 实现本地仓库和GitHub的自动化同步（博客）</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">1 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">2025.01.03 实现本地仓库和GitHub的自动化同步（博客）</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>自动同步Github的Blog</h1>
+<ol>
+<li><p>配置好你需要的脚本</p>
+</li>
+<li><p>创建一个批处理文件运行这个脚本</p>
+</li>
+<li><p>创建一个批处理文件运行上面的批处理文件防止cmd闪退，然后start+批处理文件路径</p>
+</li>
+<li><p>右键我的电脑-管理-系统计划程序-创建基本任务可以随意命名，选择想要启动的时间来启动脚本，找到步骤三创建的批处理文件打开，点击完成即可</p>
+</li>
+</ol>
+<p>ref: <a href="https://www.bilibili.com/video/BV1Gg411R7dD/?spm_id_from=333.337.search-card.all.click&vd_source=9a75a4b5f792c3cd3b921c00fec104bb">https://www.bilibili.com/video/BV1Gg411R7dD/?spm_id_from=333.337.search-card.all.click&amp;vd_source=9a75a4b5f792c3cd3b921c00fec104bb</a></p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursor使用指北 - 技术博客</title>
+    <meta name="description" content="Cursor使用指北 - AI工具相关技术文章">
+    <meta name="keywords" content="AI工具, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">AI工具</span>
+            <span class="separator">›</span>
+            <span class="current-page">Cursor使用指北</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag ai-tools">🤖 AI工具</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 4 分钟阅读</span>
+                </div>
+                <h1 class="post-title">Cursor使用指北</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p><h1>Cursor使用指北</h1><br /><br /><h2>Rules for AI</h2><br /><br />前置提示词<br /><br /><h2>Codebase Indexing</h2><br /><br />在初始化项目的时候用于检索项目，可以理解为 cursor 的代码上下文索引，在对话的时候会进行检索关联的代码<br /><br /><h2>MCP</h2><br /><br />让 cursor 支持调用工具的能力，详情后面会出文章描述<br /><br /><h2>Docs</h2><br /><br />可以将公司的开发文档或者当前使用框架的文档放入进来，这样可以达到规范开发，并且在对话进行引用<br /><br /><h2>实战</h2><br /><br /><h3>代码审查</h3><br /><br />@git 可以让 cursor 进行审查代码，该方式比通过 提交 pr 后使用 LLM 进行审查好太多。<br /><br /><h3>前端页面生成</h3><br /><br /><h3>生成多种方案</h3><br /><br />给 cursor 提出多种方案的提示词，cursor 会同时给出多种修改方案建议，此时说明自己需要哪种方案，则会直接进行修改。<br /><br /><br /><br /><br /><br /><h2>【5.17更新】使用Cursor技巧</h2><br /><br /><h3><strong>1. 设定清晰的项目规则</strong></h3><br /><br />- 在项目初期定义5-10条规则（如代码规范、技术栈约束），帮助Cursor理解项目结构。<br />- 规则分三级：通用规则、编程语言规则、框架规则。<br />- 通过`generate rules`命令自动生成规则。<br /><br /><h3><strong>2. 提示词需具体明确</strong></h3><br /><br />- 像写迷你规范一样描述需求，包括技术栈、功能边界等（例如“纯HTML/CSS/JS实现，无外部依赖”）。<br />- 避免模糊表述，减少AI的不可控输出。<br /><br /><h3><strong>3. 按模块逐个开发</strong></h3><br /><br />- 复杂项目拆解为小模块，分批生成代码并测试，避免一次性生成大量不可控代码。<br />- 核心功能优先，再逐步扩展。<br /><br /><h3><strong>4. 先写测试再生成代码</strong></h3><br /><br />- 提前编写测试用例并锁定（用`cursor ignore`防止AI修改测试文件）。<br />- 确保生成的代码通过所有测试。<br /><br /><h3><strong>5. 人工审查与硬修复</strong></h3><br /><br />- 对AI生成的代码进行人工检查，修正错误后将其作为示例反馈给Cursor，帮助AI学习改进。<br /><br /><h3><strong>6. 限制上下文范围</strong></h3><br /><br />- 使用`@file`、`@folder`指定当前工作文件/目录，避免无关代码干扰。<br />- 提升生成精准度，减少意外改动。<br /><br /><h3><strong>7. 维护设计文档</strong></h3><br /><br />- 将项目规则、设计文档、检查清单保存在`.cursor`目录或`README.md`中，帮助AI理解项目上下文。<br /><br /><h3><strong>8. 主动编辑代码示例</strong></h3><br /><br />- 当AI反复出错时，手动修改代码并提供给Cursor学习，比单纯解释更高效。<br /><br /><h3><strong>9. 复用聊天历史优化提示</strong></h3><br /><br />- 通过历史对话迭代提示词，无需从头开始。即使AI跑偏，也可通过追问调整方向。<br /><br /><h3><strong>10. 根据场景选择模型</strong></h3><br /><br />- <strong>Claude 3.5</strong>：严格遵循指令。<br />- <strong>GPT-4o</strong>：适合复杂调试。<br />- <strong>Gemini</strong>：文档扫描/更新。<br />- 不同模型优势互补。<br /><br /><h3><strong>11. 粘贴文档链接解决新问题</strong></h3><br /><br />- 对不熟悉的技术栈，直接粘贴官方文档链接（或用`Context.ai`工具获取最新文档），减少AI幻觉。<br /><br /><h3><strong>12. 大型项目需索引优化</strong></h3><br /><br />- 启用`code base indexing`夜间运行，忽略无关文件（如`node_modules`），保持性能敏捷。<br /><br />------<br /><br /><h3><strong>核心原则</strong></h3><br /><br />- <strong>控制与结构</strong>：像管理初级开发者一样引导Cursor，明确边界+分步验证。<br />- <strong>人工主导</strong>：AI是辅助工具，需结合审查、测试和主动干预。<br /><br /><br /><br /><br /><br /><h2>【5.18更新】Cursorv0.50</h2><br /><br /><h3><strong>1. 后台代理（Background Agent）</strong></h3><br /><br /><strong>功能定位</strong>：云端异步处理的“远程小助手”，适合耗时/重复性任务，不干扰本地环境。<br /><br />#### <strong>如何使用？</strong><br /><br />1. <strong>开启步骤</strong>：<br />   - 进入 `Cursor Settings → Beta`，开启 <strong>Background Agent</strong>。<br />   - 同意风险提示后，对话框右上角会出现 <strong>云端图标</strong>。<br />2. <strong>前提条件</strong>：<br />   - 代码库需托管在 <strong>GitHub</strong> 上（否则会提示错误）。<br />3. <strong>适用场景</strong>：<br />   - <strong>适合</strong>：自动化任务（如批量重构、文档生成）。<br />   - <strong>不适合</strong>：需人工干预的任务（如复杂项目重构、低复杂度错误修复）。<br />4. <strong>当前限制</strong>：<br />   - 仅支持 <strong>Max 模式兼容的模型</strong>。<br />   - 功能未全量开放，可能存在小 Bug。<br /><br />------<br /><br /><h3><strong>2. 多代码库工作区（Workspaces）</strong></h3><br /><br /><strong>功能定位</strong>：类似 VS Code 的多项目管理，支持同时打开/操作多个独立代码库。<br /><br />#### <strong>如何配置？</strong><br /><br />1. <strong>创建配置文件</strong>：<br /><br />   - 新建 `name.code-workspace` 文件（JSON 格式），指定项目路径和统一设置。<br /><br />   ```<br />   {<br />     "folders": [<br />       { "path": "/path/to/frontend" },<br />       { "path": "/path/to/backend" }<br />     ],<br />     "settings": {<br />       "editor.tabSize": 2,<br />       "files.exclude": { "<em></em>/node_modules": true }<br />     }<br />   }<br />   ```<br /><br />2. <strong>核心配置项</strong>：<br /><br />   - <strong>`folders`</strong>：添加多个项目路径。<br />   - <strong>`settings`</strong>：统一工作区规则（如缩进、格式化、文件忽略）。<br /><br />3. <strong>使用场景</strong>：<br /><br />   - <strong>前后端联调</strong>：同时修改 API 和前端界面。<br />   - <strong>微服务开发</strong>：跨服务代码对比调试。<br />   - <strong>学习参考</strong>：对比开源项目与自己的练习代码。<br /><br />4. <strong>优势</strong>：<br /><br />   - 规则优先级：`Workspace Settings` > `Project Rules`。<br />   - 提升跨项目操作效率，避免频繁切换窗口。<br /><br />------<br /><br /><h3><strong>3. 对话管理增强</strong></h3><br /><br />1. <strong>导出对话</strong>：<br />   - 点击 `Export Chat`，将对话（含代码）保存为 Markdown 文件，便于分享或二次提问。<br />2. <strong>复制对话</strong>：<br />   - 通过 `Duplicate Chat` 分支当前对话，探索不同解决方案（如回溯到某个节点测试新需求）。<br /><br />------<br /><br /><h3><strong>4. 其他更新彩蛋</strong></h3><br /><br />1. <strong>Indexing 独立设置</strong>：<br />   - 从 `Features` 中分离，未来可能强化代码库索引能力。<br />2. <strong>隐藏功能 RCP Server</strong>：<br />   - 短暂出现在 Beta 中，用途未知（可能为远程协作铺垫）。<br /><br />------<br /><br /><h3><strong>总结</strong></h3><br /><br />- <strong>后台代理</strong>：云端异步处理，适合自动化任务，需 GitHub 托管。<br />- <strong>工作区</strong>：多项目同屏管理，统一配置，提升跨代码库开发效率。<br />- <strong>对话分支</strong>：支持回溯探索不同方案，避免重复提问。</p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">AI工具</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

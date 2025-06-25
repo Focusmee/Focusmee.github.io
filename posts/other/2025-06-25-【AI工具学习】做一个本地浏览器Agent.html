@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【AI工具学习】做一个本地浏览器Agent | Focusmee</title>
+    <meta name="description" content="【AI工具学习】做一个本地浏览器Agent">
+    <meta property="og:title" content="【AI工具学习】做一个本地浏览器Agent">
+    <meta property="og:description" content="【AI工具学习】做一个本地浏览器Agent">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【AI工具学习】做一个本地浏览器Agent</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">3 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【AI工具学习】做一个本地浏览器Agent</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <p>开发步骤<br>根据参考文档，<a href="https://docs.browser-use.com/customize/real-browser">https://docs.browser-use.com/customize/real-browser</a><br>用cursor写一个简单的python flask应用<br>准备好OpenAl或者Claude的APIKey，就可以运行了</p>
+<ul>
+<li>如何申请API<a href="https://www.bilibili.com/video/BV1PqKKeeEnm/?spm_id_from=333.337.search-card.all.click&vd_source=9a75a4b5f792c3cd3b921c00fec104bb">https://www.bilibili.com/video/BV1PqKKeeEnm/?spm_id_from=333.337.search-card.all.click&amp;vd_source=9a75a4b5f792c3cd3b921c00fec104bb</a></li>
+</ul>
+<p>代码地址:<a href="https://github.com/jiangyan/browser-operator">https://github.com/jiangyan/browser-operator</a><br>。工具列表<br>。Cursor<br>OpenAl/Claude AP| Key</p>
+<p>安装问题:<a href="https://stackoverflow.com/questions/76191061/fatal-unable-to-access-failed-to-connect-to-github-com-port-443-after-2105">致命：无法访问&#39;&#39;：21058 毫秒后无法连接到 github.com 端口 443：无法连接到服务器</a></p>
+<p>如果你使用VPN，你可以尝试<code>git config --global http.proxy http://127.0.0.1:7890</code>（7890是你的VPN端口，我用的是7897）和<code>git config --global https.proxy https://127.0.0.1:7890</code>。<br>如果没有，你可以尝试<code>git config --global unset http.proxy</code>和<code>git config --global unset https.proxy</code>。</p>
+<p><img src="C:%5CUsers%5CJinju%5Cblog%5Csource%5Cimages%5Cimage-20250411102816799.png" alt="image-20250411102816799"></p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

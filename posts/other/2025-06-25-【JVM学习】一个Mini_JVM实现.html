@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【JVM学习】一个Mini_JVM实现 | Focusmee</title>
+    <meta name="description" content="【JVM学习】一个Mini_JVM实现">
+    <meta property="og:title" content="【JVM学习】一个Mini_JVM实现">
+    <meta property="og:description" content="【JVM学习】一个Mini_JVM实现">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【JVM学习】一个Mini_JVM实现</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">4 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【JVM学习】一个Mini_JVM实现</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h2><strong>类加载系统（ClassLoader）</strong>：</h2>
+<p>让我们看看BootstrapClassLoader的实现：</p>
+<p>Read file: src/main/java/club/shengsheng/jvm/BootstrapClassLoader.java<br>类加载器的工作原理：</p>
+<ol>
+<li>接收类路径列表（classpath）</li>
+<li>根据全限定类名（如：java.lang.String）在类路径中查找.class文件</li>
+<li>读取类文件的字节码</li>
+<li>解析字节码生成ClassFile对象</li>
+</ol>
+<h2><strong>栈帧（StackFrame）</strong>：</h2>
+<p>让我们看看栈帧的实现：</p>
+<p>Read file: src/main/java/club/shengsheng/jvm/StackFrame.java<br>栈帧的关键组成：</p>
+<ol>
+<li>局部变量表（localVariable）：存储方法的参数和局部变量</li>
+<li>操作数栈（operandStack）：用于存储指令操作的临时数据</li>
+<li>字节码指令列表（codes）：方法的执行指令</li>
+<li>常量池引用（constantPool）：用于访问类的常量信息</li>
+</ol>
+<h2><strong>JVM栈（JvmStack）</strong>：</h2>
+<p>Read file: src/main/java/club/shengsheng/jvm/JvmStack.java<br>JVM栈的特点：</p>
+<ol>
+<li>使用双端队列存储栈帧</li>
+<li>支持基本的栈操作：压栈（push）、出栈（pop）、查看栈顶（peek）</li>
+<li>每个线程都有自己的JVM栈</li>
+</ol>
+<h2><strong>用一个生动的例子来全面理解JVM</strong>：</h2>
+<p>想象JVM就像一个工厂，这个工厂是这样运作的：</p>
+<ol>
+<li><p><strong>类加载就像原料入库</strong>：</p>
+<ul>
+<li>工厂（JVM）需要先把生产图纸（.class文件）从仓库（硬盘）运到车间（内存）</li>
+<li>类加载器就像叉车，负责这个搬运和整理的工作</li>
+<li>图纸被整理好后放在固定的架子上（方法区）</li>
+</ul>
+</li>
+<li><p><strong>栈帧就像工作台</strong>：</p>
+<ul>
+<li>每个工人（线程）都有自己的工作台（JVM栈）</li>
+<li>工作台上有工具盒（局部变量表）和临时放置工件的托盘（操作数栈）</li>
+<li>还有一份生产指令（字节码）和参考手册（常量池）</li>
+</ul>
+</li>
+<li><p><strong>执行过程就像流水线</strong>：</p>
+<ul>
+<li>工人（线程）按照指令一步步操作</li>
+<li>需要零件时从工具盒（局部变量表）拿</li>
+<li>加工过程中用托盘（操作数栈）暂存</li>
+<li>完成一个产品（方法调用）就清理工作台（栈帧出栈）</li>
+<li>开始下一个产品的制作（新的方法调用）</li>
+</ul>
+</li>
+</ol>
+<p>所以，JVM的核心就是：一个能够加载Java字节码（类加载），为每个任务分配工作空间（栈帧），并按照特定规则（字节码）执行程序的软件系统。它让Java代码能够在不同的硬件平台上运行，就像一个标准化的工厂，能在世界各地用相同的图纸生产出相同的产品。</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

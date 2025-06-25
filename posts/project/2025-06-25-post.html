@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生报到管理系统技术架构说明 - 技术博客</title>
+    <meta name="description" content="学生报到管理系统技术架构说明 - 项目相关技术文章">
+    <meta name="keywords" content="项目, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">项目</span>
+            <span class="separator">›</span>
+            <span class="current-page">学生报到管理系统技术架构说明</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag project">📋 项目</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 4 分钟阅读</span>
+                </div>
+                <h1 class="post-title">学生报到管理系统技术架构说明</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p><h1>学生报到管理系统技术架构说明</h1><br /><br /><h2>1. 系统概述</h2><br /><br />学生报到管理系统是一个基于微信小程序的应用，主要用于高校新生报到管理。系统支持学生信息管理、报到流程管理、数据统计等功能，帮助学校高效完成新生报到工作。系统以微信小程序作为前端，利用微信云开发提供后端服务支持，实现了完整的报到流程管理。<br /><br /><h2>2. 技术栈</h2><br /><br /><h3>2.1 前端技术</h3><br />- <strong>微信小程序原生开发</strong>：使用WXML、WXSS和JavaScript进行小程序开发<br />- <strong>微信开发者工具</strong>：用于开发、调试和发布小程序<br />- <strong>wxCharts</strong>：用于数据可视化展示<br /><br /><h3>2.2 后端技术</h3><br />- <strong>微信云开发</strong>：提供云函数、云数据库和云存储服务<br />- <strong>Node.js</strong>：云函数运行环境<br />- <strong>云函数</strong>：实现业务逻辑处理<br />- <strong>云数据库</strong>：存储应用数据<br />- <strong>云存储</strong>：存储图片等静态资源<br /><br /><h2>3. 系统架构设计</h2><br /><br /><h3>3.1 整体架构</h3><br />系统采用前后端分离架构，具体包括：<br />- <strong>前端层</strong>：微信小程序，负责用户界面展示和交互<br />- <strong>云函数层</strong>：业务逻辑实现和数据处理<br />- <strong>数据层</strong>：云数据库存储结构化数据，云存储保存文件<br /><br /><h3>3.2 网络架构</h3><br />- 微信小程序前端通过微信提供的API与云开发后端进行通信<br />- 采用HTTPS协议保证数据传输安全<br />- 云函数作为API网关，处理所有前端请求<br /><br /><h3>3.3 模块架构</h3><br />系统主要分为以下几个模块：<br />1. <strong>用户认证模块</strong>：负责用户登录、注册和权限验证<br />2. <strong>学生信息管理模块</strong>：负责学生基本信息管理<br />3. <strong>报到流程管理模块</strong>：负责报到流程设置和状态管理<br />4. <strong>统计分析模块</strong>：负责数据统计和分析<br />5. <strong>系统管理模块</strong>：负责系统配置和权限管理<br /><br /><h2>4. 数据库设计</h2><br /><br />系统使用微信云开发提供的NoSQL数据库，主要包含以下集合：<br /><br /><h3>4.1 students（学生信息表）</h3><br />- _id：唯一标识<br />- openid：微信用户唯一标识<br />- name：姓名<br />- studentId：学号<br />- college：学院<br />- major：专业<br />- class：班级<br />- idCard：身份证号<br />- phone：联系电话<br />- status：报到状态<br />- registrationTime：报到时间<br /><br /><h3>4.2 staff（工作人员表）</h3><br />- _id：唯一标识<br />- openid：微信用户唯一标识<br />- name：姓名<br />- staffId：工号<br />- role：角色权限<br />- department：部门<br /><br /><h3>4.3 registrationProcess（报到流程表）</h3><br />- _id：唯一标识<br />- stepName：步骤名称<br />- stepOrder：步骤顺序<br />- description：步骤描述<br />- location：地点<br />- responsible：负责人<br />- isRequired：是否必须<br /><br /><h3>4.4 announcements（公告信息表）</h3><br />- _id：唯一标识<br />- title：公告标题<br />- content：公告内容<br />- publishTime：发布时间<br />- publisher：发布人<br />- isTop：是否置顶<br /><br /><h3>4.5 campusInfo（校园信息表）</h3><br />- _id：唯一标识<br />- type：信息类型<br />- title：标题<br />- content：内容<br />- images：相关图片<br /><br /><h2>5. 核心功能模块</h2><br /><br /><h3>5.1 学生模块</h3><br />- 学生注册与登录<br />- 个人信息维护<br />- 报到流程查看与确认<br />- 校园信息查看<br />- 请假申请<br /><br /><h3>5.2 工作人员模块</h3><br />- 工作人员登录<br />- 学生信息审核<br />- 报到状态管理<br />- 请假审批<br />- 统计数据查看<br /><br /><h3>5.3 管理员模块</h3><br />- 系统配置管理<br />- 用户权限管理<br />- 报到流程设置<br />- 公告发布管理<br />- 数据导入导出<br /><br /><h2>6. 云函数设计</h2><br /><br />系统使用多个云函数处理不同业务逻辑：<br /><br />- <strong>login</strong>：处理用户登录逻辑<br />- <strong>userDao</strong>：用户数据操作<br />- <strong>studentsDao</strong>：学生数据操作<br />- <strong>staffDao</strong>：工作人员数据操作<br />- <strong>registrationProcessDao</strong>：报到流程数据操作<br />- <strong>announcementsDao</strong>：公告信息数据操作<br />- <strong>campusInfoDao</strong>：校园信息数据操作<br />- <strong>leaveRequestsDao</strong>：请假申请数据操作<br />- <strong>checkAdminPermission</strong>：权限检查<br />- <strong>dataimport</strong>：数据导入功能<br /><br /><h2>7. 安全架构</h2><br /><br /><h3>7.1 认证与授权</h3><br />- 使用微信小程序原生登录机制<br />- 基于角色的访问控制（RBAC）权限系统<br />- 云函数权限验证<br /><br /><h3>7.2 数据安全</h3><br />- 数据传输采用HTTPS加密<br />- 敏感信息加密存储<br />- 定期数据备份机制<br /><br /><h3>7.3 接口安全</h3><br />- 接口参数验证<br />- 防SQL注入<br />- 防XSS攻击<br /><br /><h2>8. 部署架构</h2><br /><br /><h3>8.1 开发环境</h3><br />- 微信开发者工具<br />- Node.js环境<br />- 微信云开发测试环境<br /><br /><h3>8.2 生产环境</h3><br />- 微信小程序正式环境<br />- 微信云开发生产环境<br />- 设置适当的云函数和数据库资源配置<br /><br /><h3>8.3 运维监控</h3><br />- 微信云开发监控台监控<br />- 错误日志收集<br />- 性能监控<br /><br /><h2>9. 系统扩展性</h2><br /><br />系统采用模块化设计，便于后续功能扩展：<br />- 基于云函数的松耦合架构，可独立扩展各功能模块<br />- 数据库采用NoSQL设计，灵活适应数据结构变化<br />- 前端组件化开发，便于UI/UX升级<br /><br /><h2>10. 技术优势</h2><br /><br />- <strong>微信生态优势</strong>：无需额外安装应用，直接利用微信平台流量<br />- <strong>云开发便捷性</strong>：无需搭建服务器，降低运维成本<br />- <strong>实时数据同步</strong>：云数据库支持实时数据同步，保证数据一致性<br />- <strong>灵活扩展</strong>：模块化设计，支持功能灵活扩展<br />- <strong>多端统一</strong>：一套代码多端适配（手机、平板等） <br /><br /><br /><br /><br /><br /><br /><br />{<br /><br /> "_id": "自动生成的ID",<br /><br /> "openid": "用户的openid",<br /><br /> "model": "使用的模型，如deepseek-chat",<br /><br /> "success": true, <em>// 调用是否成功</em><br /><br /> "promptTokens": 50, <em>// 请求Token数</em><br /><br /> "completionTokens": 120, <em>// 响应Token数</em><br /><br /> "totalTokens": 170, <em>// 总Token数</em><br /><br /> "error": "错误信息，仅在success=false时存在",<br /><br /> "timestamp": "2023-11-15T08:30:00.000Z" <em>// 请求时间</em><br /><br />}<br /><br /><br /><br /><br /><br />{<br /><br /> "_id": "自动生成的ID",<br /><br /> "openid": "用户的openid",<br /><br /> "balance": 1000, <em>// 用户余额</em><br /><br /> "created": "2023-11-10T06:20:00.000Z", <em>// 创建时间</em><br /><br /> "lastUpdated": "2023-11-15T08:30:00.000Z" <em>// 最后更新时间</em><br /><br />}<br /><br /><br /><br /><br /><br />{<br /><br /> "_id": "自动生成的ID",<br /><br /> "openid": "用户的openid",<br /><br /> "amount": 1000, <em>// 正数表示充值，负数表示消费</em><br /><br /> "type": "recharge", <em>// 交易类型：recharge充值，consume消费</em><br /><br /> "timestamp": "2023-11-15T08:30:00.000Z" <em>// 交易时间</em><br /><br />}</p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">项目</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Gin框架学习】中间件学习 | Focusmee</title>
+    <meta name="description" content="【Gin框架学习】中间件学习">
+    <meta property="og:title" content="【Gin框架学习】中间件学习">
+    <meta property="og:description" content="【Gin框架学习】中间件学习">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Gin框架学习】中间件学习</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">6 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Gin框架学习】中间件学习</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h2>title：中间件学习</h2>
+<p>Go 中的 <strong>中间件（Middleware）</strong> 本质上是 <strong>在请求到达处理函数（Handler）之前或之后执行的一系列封装好的逻辑</strong>，可以拦截、修改或增强请求和响应的行为。</p>
+<p>在 <strong>Web 框架（如 Gin、Echo、net/http）</strong> 中，中间件常用于 <strong>日志记录、权限校验、错误处理、请求限流等</strong>。</p>
+<hr>
+<h2><strong>💡 能不能理解为“在某个函数执行时调用其他封装好的函数”？</strong></h2>
+<p><strong>✅ 部分正确，但不够全面！</strong><br> 可以理解为 <strong>在处理主逻辑（如 HTTP 处理函数）之前、之后或替代时，自动调用封装好的函数</strong>。</p>
+<p>中间件通常是 <strong>一个函数，它接受并返回一个新的处理函数</strong>，形成 <strong>嵌套执行</strong> 的模式。</p>
+<hr>
+<h2><strong>📌 Go 中间件的基本实现</strong></h2>
+<p>在 <code>net/http</code> 里，Handler 是 <code>func(http.ResponseWriter, *http.Request)</code>，中间件通常是一个 <strong>高阶函数</strong>，它接受一个 <code>http.Handler</code> 并返回一个新的 <code>http.Handler</code>。</p>
+<h3><strong>📝 示例：日志中间件</strong></h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;net/http&quot;
+    &quot;time&quot;
+)
+
+// 日志中间件
+func Logger(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        start := time.Now()
+        // 调用下一个处理器
+        next.ServeHTTP(w, r)
+        fmt.Printf(&quot;[%s] %s %s %v\n&quot;, time.Now().Format(time.RFC3339), r.Method, r.URL.Path, time.Since(start))
+    })
+}
+
+// 业务处理函数
+func HelloHandler(w http.ResponseWriter, r *http.Request) {
+    w.Write([]byte(&quot;Hello, Go Middleware!&quot;))
+}
+
+func main() {
+    mux := http.NewServeMux()
+    mux.Handle(&quot;/&quot;, Logger(http.HandlerFunc(HelloHandler)))
+
+    http.ListenAndServe(&quot;:8080&quot;, mux)
+}
+</code></pre>
+<p>✅ <strong>执行顺序</strong>：</p>
+<ol>
+<li><code>Logger</code> 先执行（<strong>前置逻辑</strong>）</li>
+<li><code>HelloHandler</code> 执行</li>
+<li><code>Logger</code> 记录请求信息（<strong>后置逻辑</strong>）</li>
+</ol>
+<hr>
+<h2><strong>📌 在 Gin 框架中的中间件</strong></h2>
+<p>Gin 的中间件是 <code>func(c *gin.Context)</code> 类型：</p>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;time&quot;
+
+    &quot;github.com/gin-gonic/gin&quot;
+)
+
+// Gin 中间件
+func LoggerMiddleware(c *gin.Context) {
+    start := time.Now()
+    c.Next() // 执行后续处理（下一个中间件或路由处理函数）
+    fmt.Printf(&quot;[%s] %s %s %v\n&quot;, time.Now().Format(time.RFC3339), c.Request.Method, c.Request.URL.Path, time.Since(start))
+}
+
+func main() {
+    r := gin.Default()
+    r.Use(LoggerMiddleware) // 应用中间件
+
+    r.GET(&quot;/&quot;, func(c *gin.Context) {
+        c.String(200, &quot;Hello, Gin Middleware!&quot;)
+    })
+
+    r.Run(&quot;:8080&quot;)
+}
+</code></pre>
+<p>✅ <strong><code>c.Next()</code> 让请求进入下一个中间件或处理函数</strong></p>
+<hr>
+<h2><strong>📌 适用场景</strong></h2>
+<ul>
+<li><strong>日志记录</strong></li>
+<li><strong>身份认证</strong></li>
+<li><strong>请求限流</strong></li>
+<li><strong>错误恢复</strong></li>
+<li><strong>CORS 处理</strong></li>
+<li><strong>请求/响应修改</strong></li>
+</ul>
+<hr>
+<h2><strong>📌 总结</strong></h2>
+<p>🔹 <strong>中间件 ≠ 直接调用一个封装好的函数</strong>，而是 <strong>封装逻辑 + 传递控制权</strong> 的函数，<strong>拦截并增强</strong> 原有的处理流程。<br> 🔹 通过 <strong>嵌套调用</strong> 形成责任链，<strong>前置处理 → 目标函数 → 后置处理</strong>。<br> 🔹 Go 的 <code>net/http</code> 使用 <code>http.Handler</code>，Gin 使用 <code>c.Next()</code> 传递控制权。</p>
+<p>👉 <strong>如果你面试被问“Go 的中间件是什么？”</strong>，你可以回答：</p>
+<blockquote>
+<p><strong>中间件是一种在请求处理前后执行逻辑的封装，通常是一个高阶函数，它接收并返回新的处理函数，形成嵌套调用，以增强 HTTP 请求的处理能力。</strong> 🚀</p>
+</blockquote>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

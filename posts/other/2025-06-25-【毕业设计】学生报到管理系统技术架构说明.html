@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【毕业设计】学生报到管理系统技术架构说明 | Focusmee</title>
+    <meta name="description" content="【毕业设计】学生报到管理系统技术架构说明">
+    <meta property="og:title" content="【毕业设计】学生报到管理系统技术架构说明">
+    <meta property="og:description" content="【毕业设计】学生报到管理系统技术架构说明">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【毕业设计】学生报到管理系统技术架构说明</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">9 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【毕业设计】学生报到管理系统技术架构说明</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>学生报到管理系统技术架构说明</h1>
+<h2>1. 系统概述</h2>
+<p>学生报到管理系统是一个基于微信小程序的应用，主要用于高校新生报到管理。系统支持学生信息管理、报到流程管理、数据统计等功能，帮助学校高效完成新生报到工作。系统以微信小程序作为前端，利用微信云开发提供后端服务支持，实现了完整的报到流程管理。</p>
+<h2>2. 技术栈</h2>
+<h3>2.1 前端技术</h3>
+<ul>
+<li><strong>微信小程序原生开发</strong>：使用WXML、WXSS和JavaScript进行小程序开发</li>
+<li><strong>微信开发者工具</strong>：用于开发、调试和发布小程序</li>
+<li><strong>wxCharts</strong>：用于数据可视化展示</li>
+</ul>
+<h3>2.2 后端技术</h3>
+<ul>
+<li><strong>微信云开发</strong>：提供云函数、云数据库和云存储服务</li>
+<li><strong>Node.js</strong>：云函数运行环境</li>
+<li><strong>云函数</strong>：实现业务逻辑处理</li>
+<li><strong>云数据库</strong>：存储应用数据</li>
+<li><strong>云存储</strong>：存储图片等静态资源</li>
+</ul>
+<h2>3. 系统架构设计</h2>
+<h3>3.1 整体架构</h3>
+<p>系统采用前后端分离架构，具体包括：</p>
+<ul>
+<li><strong>前端层</strong>：微信小程序，负责用户界面展示和交互</li>
+<li><strong>云函数层</strong>：业务逻辑实现和数据处理</li>
+<li><strong>数据层</strong>：云数据库存储结构化数据，云存储保存文件</li>
+</ul>
+<h3>3.2 网络架构</h3>
+<ul>
+<li>微信小程序前端通过微信提供的API与云开发后端进行通信</li>
+<li>采用HTTPS协议保证数据传输安全</li>
+<li>云函数作为API网关，处理所有前端请求</li>
+</ul>
+<h3>3.3 模块架构</h3>
+<p>系统主要分为以下几个模块：</p>
+<ol>
+<li><strong>用户认证模块</strong>：负责用户登录、注册和权限验证</li>
+<li><strong>学生信息管理模块</strong>：负责学生基本信息管理</li>
+<li><strong>报到流程管理模块</strong>：负责报到流程设置和状态管理</li>
+<li><strong>统计分析模块</strong>：负责数据统计和分析</li>
+<li><strong>系统管理模块</strong>：负责系统配置和权限管理</li>
+</ol>
+<h2>4. 数据库设计</h2>
+<p>系统使用微信云开发提供的NoSQL数据库，主要包含以下集合：</p>
+<h3>4.1 students（学生信息表）</h3>
+<ul>
+<li>_id：唯一标识</li>
+<li>openid：微信用户唯一标识</li>
+<li>name：姓名</li>
+<li>studentId：学号</li>
+<li>college：学院</li>
+<li>major：专业</li>
+<li>class：班级</li>
+<li>idCard：身份证号</li>
+<li>phone：联系电话</li>
+<li>status：报到状态</li>
+<li>registrationTime：报到时间</li>
+</ul>
+<h3>4.2 staff（工作人员表）</h3>
+<ul>
+<li>_id：唯一标识</li>
+<li>openid：微信用户唯一标识</li>
+<li>name：姓名</li>
+<li>staffId：工号</li>
+<li>role：角色权限</li>
+<li>department：部门</li>
+</ul>
+<h3>4.3 registrationProcess（报到流程表）</h3>
+<ul>
+<li>_id：唯一标识</li>
+<li>stepName：步骤名称</li>
+<li>stepOrder：步骤顺序</li>
+<li>description：步骤描述</li>
+<li>location：地点</li>
+<li>responsible：负责人</li>
+<li>isRequired：是否必须</li>
+</ul>
+<h3>4.4 announcements（公告信息表）</h3>
+<ul>
+<li>_id：唯一标识</li>
+<li>title：公告标题</li>
+<li>content：公告内容</li>
+<li>publishTime：发布时间</li>
+<li>publisher：发布人</li>
+<li>isTop：是否置顶</li>
+</ul>
+<h3>4.5 campusInfo（校园信息表）</h3>
+<ul>
+<li>_id：唯一标识</li>
+<li>type：信息类型</li>
+<li>title：标题</li>
+<li>content：内容</li>
+<li>images：相关图片</li>
+</ul>
+<h2>5. 核心功能模块</h2>
+<h3>5.1 学生模块</h3>
+<ul>
+<li>学生注册与登录</li>
+<li>个人信息维护</li>
+<li>报到流程查看与确认</li>
+<li>校园信息查看</li>
+<li>请假申请</li>
+</ul>
+<h3>5.2 工作人员模块</h3>
+<ul>
+<li>工作人员登录</li>
+<li>学生信息审核</li>
+<li>报到状态管理</li>
+<li>请假审批</li>
+<li>统计数据查看</li>
+</ul>
+<h3>5.3 管理员模块</h3>
+<ul>
+<li>系统配置管理</li>
+<li>用户权限管理</li>
+<li>报到流程设置</li>
+<li>公告发布管理</li>
+<li>数据导入导出</li>
+</ul>
+<h2>6. 云函数设计</h2>
+<p>系统使用多个云函数处理不同业务逻辑：</p>
+<ul>
+<li><strong>login</strong>：处理用户登录逻辑</li>
+<li><strong>userDao</strong>：用户数据操作</li>
+<li><strong>studentsDao</strong>：学生数据操作</li>
+<li><strong>staffDao</strong>：工作人员数据操作</li>
+<li><strong>registrationProcessDao</strong>：报到流程数据操作</li>
+<li><strong>announcementsDao</strong>：公告信息数据操作</li>
+<li><strong>campusInfoDao</strong>：校园信息数据操作</li>
+<li><strong>leaveRequestsDao</strong>：请假申请数据操作</li>
+<li><strong>checkAdminPermission</strong>：权限检查</li>
+<li><strong>dataimport</strong>：数据导入功能</li>
+</ul>
+<h2>7. 安全架构</h2>
+<h3>7.1 认证与授权</h3>
+<ul>
+<li>使用微信小程序原生登录机制</li>
+<li>基于角色的访问控制（RBAC）权限系统</li>
+<li>云函数权限验证</li>
+</ul>
+<h3>7.2 数据安全</h3>
+<ul>
+<li>数据传输采用HTTPS加密</li>
+<li>敏感信息加密存储</li>
+<li>定期数据备份机制</li>
+</ul>
+<h3>7.3 接口安全</h3>
+<ul>
+<li>接口参数验证</li>
+<li>防SQL注入</li>
+<li>防XSS攻击</li>
+</ul>
+<h2>8. 部署架构</h2>
+<h3>8.1 开发环境</h3>
+<ul>
+<li>微信开发者工具</li>
+<li>Node.js环境</li>
+<li>微信云开发测试环境</li>
+</ul>
+<h3>8.2 生产环境</h3>
+<ul>
+<li>微信小程序正式环境</li>
+<li>微信云开发生产环境</li>
+<li>设置适当的云函数和数据库资源配置</li>
+</ul>
+<h3>8.3 运维监控</h3>
+<ul>
+<li>微信云开发监控台监控</li>
+<li>错误日志收集</li>
+<li>性能监控</li>
+</ul>
+<h2>9. 系统扩展性</h2>
+<p>系统采用模块化设计，便于后续功能扩展：</p>
+<ul>
+<li>基于云函数的松耦合架构，可独立扩展各功能模块</li>
+<li>数据库采用NoSQL设计，灵活适应数据结构变化</li>
+<li>前端组件化开发，便于UI/UX升级</li>
+</ul>
+<h2>10. 技术优势</h2>
+<ul>
+<li><strong>微信生态优势</strong>：无需额外安装应用，直接利用微信平台流量</li>
+<li><strong>云开发便捷性</strong>：无需搭建服务器，降低运维成本</li>
+<li><strong>实时数据同步</strong>：云数据库支持实时数据同步，保证数据一致性</li>
+<li><strong>灵活扩展</strong>：模块化设计，支持功能灵活扩展</li>
+<li><strong>多端统一</strong>：一套代码多端适配（手机、平板等）</li>
+</ul>
+<p>{</p>
+<p> &quot;_id&quot;: &quot;自动生成的ID&quot;,</p>
+<p> &quot;openid&quot;: &quot;用户的openid&quot;,</p>
+<p> &quot;model&quot;: &quot;使用的模型，如deepseek-chat&quot;,</p>
+<p> &quot;success&quot;: true, <em>// 调用是否成功</em></p>
+<p> &quot;promptTokens&quot;: 50, <em>// 请求Token数</em></p>
+<p> &quot;completionTokens&quot;: 120, <em>// 响应Token数</em></p>
+<p> &quot;totalTokens&quot;: 170, <em>// 总Token数</em></p>
+<p> &quot;error&quot;: &quot;错误信息，仅在success=false时存在&quot;,</p>
+<p> &quot;timestamp&quot;: &quot;2023-11-15T08:30:00.000Z&quot; <em>// 请求时间</em></p>
+<p>}</p>
+<p>{</p>
+<p> &quot;_id&quot;: &quot;自动生成的ID&quot;,</p>
+<p> &quot;openid&quot;: &quot;用户的openid&quot;,</p>
+<p> &quot;balance&quot;: 1000, <em>// 用户余额</em></p>
+<p> &quot;created&quot;: &quot;2023-11-10T06:20:00.000Z&quot;, <em>// 创建时间</em></p>
+<p> &quot;lastUpdated&quot;: &quot;2023-11-15T08:30:00.000Z&quot; <em>// 最后更新时间</em></p>
+<p>}</p>
+<p>{</p>
+<p> &quot;_id&quot;: &quot;自动生成的ID&quot;,</p>
+<p> &quot;openid&quot;: &quot;用户的openid&quot;,</p>
+<p> &quot;amount&quot;: 1000, <em>// 正数表示充值，负数表示消费</em></p>
+<p> &quot;type&quot;: &quot;recharge&quot;, <em>// 交易类型：recharge充值，consume消费</em></p>
+<p> &quot;timestamp&quot;: &quot;2023-11-15T08:30:00.000Z&quot; <em>// 交易时间</em></p>
+<p>}</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Unity学习】Unity开发规范 | Focusmee</title>
+    <meta name="description" content="【Unity学习】Unity开发规范">
+    <meta property="og:title" content="【Unity学习】Unity开发规范">
+    <meta property="og:description" content="【Unity学习】Unity开发规范">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Unity学习】Unity开发规范</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">7 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Unity学习】Unity开发规范</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>【Unity学习】Unity开发规范</h1>
+<h1>Unity操作指南</h1>
+<h2>基础操作规范</h2>
+<h3>1. 场景操作</h3>
+<ul>
+<li>创建新场景：<ol>
+<li>在Project窗口中右键 → Create → Scene</li>
+<li>将新场景保存到 <code>Assets/Scenes</code> 目录下</li>
+<li>在Build Settings中添加场景（File → Build Settings）</li>
+</ol>
+</li>
+</ul>
+<h3>2. 预制体(Prefab)操作</h3>
+<ul>
+<li>创建预制体：<ol>
+<li>在Hierarchy窗口中创建/设计好游戏对象</li>
+<li>将对象拖拽到Project窗口的 <code>Assets/Prefabs</code> 目录中</li>
+<li>预制体会显示为蓝色，表示创建成功</li>
+</ol>
+</li>
+</ul>
+<h3>3. 脚本添加</h3>
+<ul>
+<li>添加新脚本：<ol>
+<li>在Project窗口中右键 → Create → C# Script</li>
+<li>将脚本保存到对应的 <code>Assets/Script/[模块名]</code> 目录下</li>
+<li>将脚本拖拽到Hierarchy中的目标游戏对象上</li>
+<li>在Inspector中设置脚本的公共变量</li>
+</ol>
+</li>
+</ul>
+<h3>4. 组件操作</h3>
+<ul>
+<li>添加组件：<ol>
+<li>选中游戏对象</li>
+<li>在Inspector窗口点击&quot;Add Component&quot;</li>
+<li>搜索并选择需要的组件</li>
+<li>在Inspector中配置组件参数</li>
+</ol>
+</li>
+</ul>
+<h2>常见功能实现指南</h2>
+<h3>1. 角色移动功能</h3>
+<pre><code class="language-csharp">// 在 Assets/Script/Player/PlayerMovement.cs 中实现
+public class PlayerMovement : MonoBehaviour
+{
+    public float moveSpeed = 5f;
+    private Rigidbody2D rb;
+
+    void Start()
+    {
+        // 获取刚体组件
+        rb = GetComponent&lt;Rigidbody2D&gt;();
+    }
+}
+</code></pre>
+<p>实现步骤：</p>
+<ol>
+<li>创建角色游戏对象（Hierarchy → 2D Object → Sprite）</li>
+<li>添加Rigidbody2D组件（Inspector → Add Component → Rigidbody2D）</li>
+<li>添加Collider2D组件（Inspector → Add Component → Box Collider 2D）</li>
+<li>创建并添加移动脚本</li>
+<li>在Inspector中设置moveSpeed值</li>
+</ol>
+<h3>2. 动画系统设置</h3>
+<p>实现步骤：</p>
+<ol>
+<li>创建动画文件夹：<code>Assets/Animations/[角色名]</code></li>
+<li>导入精灵图：<ul>
+<li>将图片文件放入 <code>Assets/Sprites</code> 目录</li>
+<li>选择图片，在Inspector中设置：<ul>
+<li>Texture Type: Sprite (2D and UI)</li>
+<li>Sprite Mode: Multiple (如果是精灵图集)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>创建动画器：<ul>
+<li>选中角色，添加Animator组件</li>
+<li>在Project窗口创建Animator Controller</li>
+<li>将Controller拖拽到角色的Animator组件上</li>
+</ul>
+</li>
+</ol>
+<h3>3. UI系统实现</h3>
+<p>实现步骤：</p>
+<ol>
+<li>创建Canvas：<ul>
+<li>Hierarchy → UI → Canvas</li>
+<li>确保有EventSystem</li>
+</ul>
+</li>
+<li>添加UI元素：<ul>
+<li>在Canvas下右键 → UI → 选择需要的UI元素</li>
+</ul>
+</li>
+<li>创建UI脚本：<ul>
+<li>在 <code>Assets/Script/UI</code> 目录下创建脚本</li>
+<li>将脚本挂载到对应UI元素上</li>
+</ul>
+</li>
+</ol>
+<h3>4. 场景切换</h3>
+<p>实现步骤：</p>
+<ol>
+<li>确保所有场景都在Build Settings中</li>
+<li>创建切换脚本：</li>
+</ol>
+<pre><code class="language-csharp">// 在 Assets/Script/Transition/SceneLoader.cs 中实现
+public class SceneLoader : MonoBehaviour
+{
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+}
+</code></pre>
+<ol start="3">
+<li>在UI按钮上添加点击事件：<ul>
+<li>选择按钮</li>
+<li>在Inspector中找到Button组件</li>
+<li>点击 &quot;+&quot; 添加OnClick事件</li>
+<li>拖拽包含SceneLoader脚本的对象</li>
+<li>选择LoadScene函数</li>
+</ul>
+</li>
+</ol>
+<h2>调试技巧</h2>
+<ol>
+<li>使用Debug.Log()输出信息：<ul>
+<li>在Console窗口查看输出</li>
+<li>使用不同颜色区分日志级别：<pre><code class="language-csharp">Debug.Log(&quot;普通信息&quot;);
+Debug.LogWarning(&quot;警告信息&quot;);
+Debug.LogError(&quot;错误信息&quot;);
+</code></pre>
+</li>
+</ul>
+</li>
+<li>使用Scene视图工具：<ul>
+<li>使用Gizmos可视化碰撞器和路径</li>
+<li>使用Scene窗口顶部的2D/3D切换按钮</li>
+</ul>
+</li>
+</ol>
+<h2>性能优化建议</h2>
+<ol>
+<li>使用对象池而不是频繁创建销毁对象</li>
+<li>合理使用协程(Coroutine)处理延时任务</li>
+<li>避免在Update中进行复杂计算</li>
+</ol>
+<p>请在开发时参考此指南，确保按步骤实现功能。如有疑问，可以查看Unity官方文档或咨询有经验的开发者。</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>做一个本地浏览器Agent - 技术博客</title>
+    <meta name="description" content="做一个本地浏览器Agent - AI工具相关技术文章">
+    <meta name="keywords" content="AI工具, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">AI工具</span>
+            <span class="separator">›</span>
+            <span class="current-page">做一个本地浏览器Agent</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag ai-tools">🤖 AI工具</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 1 分钟阅读</span>
+                </div>
+                <h1 class="post-title">做一个本地浏览器Agent</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p>开发步骤<br />根据参考文档，https://docs.browser-use.com/customize/real-browser<br />用cursor写一个简单的python flask应用<br />准备好OpenAl或者Claude的APIKey，就可以运行了<br /><br />- 如何申请APIhttps://www.bilibili.com/video/BV1PqKKeeEnm/?spm_id_from=333.337.search-card.all.click&vd_source=9a75a4b5f792c3cd3b921c00fec104bb<br /><br />代码地址:https://github.com/jiangyan/browser-operator<br />。工具列表<br />。Cursor<br />OpenAl/Claude AP| Key<br /><br /><br /><br />安装问题:<a href="https://stackoverflow.com/questions/76191061/fatal-unable-to-access-failed-to-connect-to-github-com-port-443-after-2105">致命：无法访问''：21058 毫秒后无法连接到 github.com 端口 443：无法连接到服务器</a><br /><br />如果你使用VPN，你可以尝试`git config --global http.proxy http://127.0.0.1:7890`（7890是你的VPN端口，我用的是7897）和`git config --global https.proxy https://127.0.0.1:7890`。<br />如果没有，你可以尝试`git config --global unset http.proxy`和`git config --global unset https.proxy`。<br /><br /><img alt="image-20250411102816799" src="C:\Users\Jinju\blog\source\images\image-20250411102816799.png" /></p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">AI工具</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

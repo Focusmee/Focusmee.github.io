@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025-01-20-my-first-post - 技术博客</title>
+    <meta name="description" content="2025-01-20-my-first-post - 其他相关技术文章">
+    <meta name="keywords" content="其他, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">其他</span>
+            <span class="separator">›</span>
+            <span class="current-page">2025-01-20-my-first-post</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag other">📄 其他</span>
+                    <time class="publish-date" datetime="2025-01-20">2025-01-20</time>
+                    <span class="read-time">📖 2 分钟阅读</span>
+                </div>
+                <h1 class="post-title">2025-01-20-my-first-post</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p>---<br />title: "我的第一篇博客文章"<br />date: "2025-01-20"<br />category: "other"<br />tags: ["入门", "博客", "Markdown"]<br />description: "这是我的第一篇使用Markdown格式的博客文章，介绍如何使用这个博客系统。"<br />---<br /><br /><h1>我的第一篇博客文章</h1><br /><br />欢迎来到我的博客！这是我使用新的博客系统发布的第一篇文章。<br /><br /><h2>关于这个博客系统</h2><br /><br />这个博客系统具有以下特点：<br /><br />- 支持 Markdown 格式写作<br />- 自动生成 HTML 页面<br />- 支持代码高亮<br />- 响应式设计<br />- 无需外部依赖，可直接部署到 GitHub Pages<br /><br /><h2>如何写文章</h2><br /><br /><h3>1. 创建 Markdown 文件</h3><br /><br />在 `_posts` 目录下创建文件，文件名格式为：`YYYY-MM-DD-title.md`<br /><br />例如：`2025-01-20-my-first-post.md`<br /><br /><h3>2. 添加 Front Matter</h3><br /><br />在文件开头添加元数据：<br /><br />```yaml<br />---<br />title: "文章标题"<br />date: "2025-01-20"<br />category: "分类"<br />tags: ["标签1", "标签2"]<br />description: "文章描述"<br />---<br />```<br /><br /><h3>3. 编写内容</h3><br /><br />使用标准的 Markdown 语法编写内容。<br /><br /><h2>代码示例</h2><br /><br />支持语法高亮的代码块：<br /><br />```javascript<br />function generateBlog() {<br />    console.log('开始生成博客...');<br />    // 你的代码<br />}<br />```<br /><br />```java<br />public class HelloWorld {<br />    public static void main(String[] args) {<br />        System.out.println("Hello, World!");<br />    }<br />}<br />```<br /><br /><h2>如何生成和部署</h2><br /><br />1. 运行生成命令：<br />   ```bash<br />   npm run generate<br />   ```<br /><br />2. 查看结果：<br />   ```bash<br />   npm run serve<br />   ```<br /><br />3. 部署到 GitHub：<br />   ```bash<br />   npm run deploy<br />   ```<br /><br />就是这么简单！希望您会喜欢这个博客系统。 </p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">其他</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

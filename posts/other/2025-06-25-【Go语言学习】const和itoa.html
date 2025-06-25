@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Go语言学习】const和itoa | Focusmee</title>
+    <meta name="description" content="【Go语言学习】const和itoa">
+    <meta property="og:title" content="【Go语言学习】const和itoa">
+    <meta property="og:description" content="【Go语言学习】const和itoa">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Go语言学习】const和itoa</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">10 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Go语言学习】const和itoa</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <p><strong>const 用于定义常量，定义之后不能修改，不能再次赋值，在程序运行期间不会改变。</strong></p>
+<h1>定义一个常量</h1>
+<pre><code class="language-go">const pi = 3.1415926
+</code></pre>
+<h1>批量声明常量</h1>
+<pre><code class="language-go">const (
+   statusOk = 200
+   notFound = 404
+   serverError = 500
+)
+</code></pre>
+<h1>批量声明常量时，如果某一行没有写=，那么就和上一行一致</h1>
+<pre><code class="language-go">const (
+   n1 = 100
+   n2
+   n3
+)
+</code></pre>
+<p>打印结果：n1 n2 n3 都是100</p>
+<h1>iota</h1>
+<ol>
+<li>在const关键字出现时将被重置为0；</li>
+<li>const中每增加一行常量声明，将使 iota 计数一次</li>
+<li>我iota的理解就是类似枚举</li>
+</ol>
+<pre><code class="language-go"> const (
+   a1 = iota //0
+   a2
+   a3
+)
+</code></pre>
+<p>打印结果：a1:0 a2:1 a3:2</p>
+<h2>iota面试题1</h2>
+<pre><code class="language-go">go  const (
+   b1 = iota //0
+   b2        //1
+   _         //2
+   b3        //3
+)
+</code></pre>
+<p><strong>分析：_也占了一行，所以_的值相当于是2，打印b3的值为3</strong></p>
+<h2>iota面试题2：插队情况(1)</h2>
+<pre><code class="language-go">go  const (
+   c1 = iota //0
+   c2 = 100  //100
+   c3        //100
+   c4        //100
+)
+</code></pre>
+<p><strong>分析：c1=iota，所以c1的值为0很好理解；因为c2=100，而c3、c4没有=，所以和c2的值保持一致都是100</strong></p>
+<h2>iota面试题3：插队情况(2)</h2>
+<pre><code class="language-go"> const (
+   d1 = iota //0
+   d2 = 100  //100
+   d3 = iota //2
+   d4        //3
+)
+</code></pre>
+<p><strong>分析：d3的值为2可能出乎有些同学的意料，有的同学可能觉得d3的值为0，其实不是的。这道题其实就是为了让d3继续使用iota的方式设置值。 或者这么讲：在面试题2中怎么设置让c3不为100，而是继续按照iota赋值，让c3=2呢？面试题3就给出了答案。</strong></p>
+<h2>多个常量声明在一行</h2>
+<pre><code class="language-go"> const (
+   d1, d2 = iota + 1, iota + 2 //1 2
+   d3, d4 = iota + 1, iota + 2 //2 3
+)
+</code></pre>
+<p><strong>分析：其实很好理解，第一行的iota值为0，第二行的iota值为1，再执行加法运算就是注释中标注的结果了</strong></p>
+<h1>iota应用实例</h1>
+<h3><strong>1. 基本枚举</strong></h3>
+<p>定义一组自增的枚举常量：</p>
+<pre><code>const (
+    Pending = iota // 0
+    Active         // 1
+    Done           // 2
+)
+</code></pre>
+<h3><strong>2. 结合表达式</strong></h3>
+<p>生成带有偏移或运算的常量：</p>
+<pre><code class="language-go">const (
+    A = iota + 1   // 1
+    B              // 2
+    C              // 3
+)
+
+// 结合位运算（权限控制）
+const (
+    Read  = 1 &lt;&lt; iota // 1 (0b001)
+    Write             // 2 (0b010)
+    Exec              // 4 (0b100)
+)
+</code></pre>
+<h3><strong>3. 跳过特定值</strong></h3>
+<p>使用<code>_</code>忽略某些值：</p>
+<pre><code class="language-go">const (
+    Apple = iota // 0
+    Banana       // 1
+    _            // 2（跳过）
+    Cherry       // 3
+)
+</code></pre>
+<h3><strong>4. 文件大小单位</strong></h3>
+<p>生成按指数增长的常量（如KB、MB）：</p>
+<p>定义数量级</p>
+<pre><code class="language-go">  const (
+   _  = iota
+   KB = 1 &lt;&lt; (10 * iota)
+   MB = 1 &lt;&lt; (10 * iota)
+   GB = 1 &lt;&lt; (10 * iota)
+   TB = 1 &lt;&lt; (10 * iota)
+   PB = 1 &lt;&lt; (10 * iota)
+)
+</code></pre>
+<p>输出结果</p>
+<pre><code class="language-go">KB: 1024
+MB: 1048576
+GB: 1073741824
+TB: 1099511627776
+PB: 1125899906842624
+</code></pre>
+<h5>更进一步</h5>
+<p>猜一下下面代码段的输出结果是什么？</p>
+<pre><code class="language-go">  const (
+   _  = iota
+   KB = 1 &lt;&lt; (10 * iota)
+   MB
+   GB
+   TB
+   PB
+)
+</code></pre>
+<p>打印结果和上面是一样的：</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/08f340a4fef847949e36c1c2997fae35~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?" alt="image.png"></p>
+<h3><strong>5. 索引常量</strong></h3>
+<p>为数组或结构体字段生成索引：</p>
+<pre><code class="language-go">const (
+    Name = iota // 0
+    Age         // 1
+    Email       // 2
+    NumFields   // 3（字段总数）
+)
+
+var user [NumFields]string
+</code></pre>
+<h3><strong>6. 多常量分组</strong></h3>
+<p>不同<code>const</code>块中的<code>iota</code>独立计数：</p>
+<pre><code class="language-go">const ( // 分组1
+    GroupA = iota // 0
+    GroupB        // 1
+)
+
+const ( // 分组2
+    GroupX = iota // 0
+    GroupY        // 1
+)
+</code></pre>
+<h3><strong>7. 字符串枚举</strong></h3>
+<p>结合字符串方法生成可读枚举：</p>
+<pre><code class="language-go">type Status int
+
+const (
+    Pending Status = iota
+    Active
+    Completed
+)
+
+func (s Status) String() string {
+    return [...]string{&quot;Pending&quot;, &quot;Active&quot;, &quot;Completed&quot;}[s]
+}
+</code></pre>
+<h3><strong>8. 复杂表达式</strong></h3>
+<p>同一行声明多个常量：</p>
+<pre><code class="language-go">const (
+    A, B = iota, iota * 2 // A=0, B=0
+    C, D                  // C=1, D=2
+)
+</code></pre>
+<h3><strong>注意事项</strong></h3>
+<ul>
+<li><p><code>iota</code>在<code>const</code>块中从0开始，每行递增，<strong>无论是否显式使用</strong>。</p>
+</li>
+<li><p>中断<code>iota</code>后需显式恢复：</p>
+<pre><code class="language-go">const (
+    A = iota    // 0
+    B           // 1
+    C = 100     // 100（显式赋值）
+    D = iota    // 3（继续递增）
+)
+</code></pre>
+</li>
+</ul>
+<h1>总结</h1>
+<p>定义常量使用<code>const</code>关键字，定义之后不能修改，不能再次赋值，在程序运行期间不会改变。</p>
+<p><code>iota</code>是go语言中很特殊的设定，<code>iota</code>主要用于简化自增常量的声明，适合枚举、位掩码、索引等场景。使用时需注意其递增规则，避免因中断或复杂表达式导致意外结果。</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客样式诊断工具</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background: #f8f9fa;
+        }
+        .debug-container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .debug-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+        }
+        .debug-title {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .fix-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: 500;
+        }
+        .fix-btn:hover {
+            background: #218838;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+        .status.good {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.bad {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .test-card {
+            border: 1px solid #ddd; 
+            padding: 20px; 
+            border-radius: 8px; 
+            background: white; 
+            margin: 15px 0;
+        }
+        .test-title {
+            color: #2c3e50; 
+            font-size: 1.2rem; 
+            margin: 10px 0;
+        }
+        .test-excerpt {
+            color: #666; 
+            line-height: 1.6; 
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-container">
+        <h1 style="color: #2c3e50; text-align: center;">博客样式诊断工具</h1>
+        
+        <div class="debug-section">
+            <h2 class="debug-title">🔍 问题诊断</h2>
+            <p>这个工具将帮助您诊断和修复博客文章卡片中文字不可见的问题。</p>
+            
+            <button class="fix-btn" onclick="runDiagnostics()">开始诊断</button>
+            <button class="fix-btn" onclick="applyQuickFix()">快速修复</button>
+            <button class="fix-btn" onclick="resetStyles()">重置样式</button>
+            
+            <div id="diagnosticResults"></div>
+        </div>
+        
+        <div class="debug-section">
+            <h2 class="debug-title">🛠️ 手动修复选项</h2>
+            
+            <h3>选项1：移除新样式文件</h3>
+            <p>临时移除blog-new.css文件的引用：</p>
+            <div class="code-block">
+                &lt;!-- 在blog.html中注释掉这一行 --&gt;<br>
+                &lt;!-- &lt;link rel="stylesheet" href="styles/blog-new.css"&gt; --&gt;
+            </div>
+            <button class="fix-btn" onclick="toggleNewCSS()">切换新CSS</button>
+            
+            <h3>选项2：强制文字可见</h3>
+            <p>添加强制可见的CSS样式：</p>
+            <div class="code-block">
+                .post-card * {<br>
+                &nbsp;&nbsp;color: #333 !important;<br>
+                &nbsp;&nbsp;opacity: 1 !important;<br>
+                &nbsp;&nbsp;visibility: visible !important;<br>
+                }
+            </div>
+            <button class="fix-btn" onclick="forceTextVisible()">强制文字可见</button>
+            
+            <h3>选项3：检查浏览器控制台</h3>
+            <p>打开浏览器开发者工具(F12)，检查Console和Elements标签页。</p>
+            <button class="fix-btn" onclick="showConsoleInstructions()">查看说明</button>
+        </div>
+        
+        <div class="debug-section">
+            <h2 class="debug-title">📋 测试样例</h2>
+            <p>以下是一个测试文章卡片，查看文字是否可见：</p>
+            
+            <div class="test-card">
+                <h3 class="test-title">测试文章标题</h3>
+                <p class="test-excerpt">这是测试文字内容。如果您能看到这段文字，说明样式正常。</p>
+                <span style="background: #007bff; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem;">测试标签</span>
+            </div>
+            
+            <div id="testResults"></div>
+        </div>
+    </div>
+
+    <script>
+        function runDiagnostics() {
+            const results = document.getElementById('diagnosticResults');
+            results.innerHTML = '<h3>🔍 诊断结果：</h3>';
+            
+            // 检查CSS文件是否加载
+            const cssLinks = document.querySelectorAll('link[rel="stylesheet"]');
+            let hasNewCSS = false;
+            let hasOldCSS = false;
+            
+            cssLinks.forEach(link => {
+                if (link.href.includes('blog-new.css')) hasNewCSS = true;
+                if (link.href.includes('blog.css')) hasOldCSS = true;
+            });
+            
+            if (hasNewCSS) {
+                results.innerHTML += '<div class="status bad">检测到blog-new.css文件，可能存在样式冲突</div>';
+            } else {
+                results.innerHTML += '<div class="status good">未检测到blog-new.css文件</div>';
+            }
+            
+            if (hasOldCSS) {
+                results.innerHTML += '<div class="status good">检测到blog.css文件</div>';
+            } else {
+                results.innerHTML += '<div class="status bad">未检测到blog.css文件</div>';
+            }
+            
+            // 检查测试文字是否可见
+            const testCard = document.querySelector('.post-card');
+            const cardStyles = window.getComputedStyle(testCard);
+            const titleStyles = window.getComputedStyle(testCard.querySelector('.post-title'));
+            
+            if (cardStyles.display === 'none' || cardStyles.visibility === 'hidden' || cardStyles.opacity === '0') {
+                results.innerHTML += '<div class="status bad">测试卡片不可见</div>';
+            } else {
+                results.innerHTML += '<div class="status good">测试卡片可见</div>';
+            }
+            
+            if (titleStyles.color === 'rgb(255, 255, 255)' || titleStyles.opacity === '0') {
+                results.innerHTML += '<div class="status bad">文字颜色异常</div>';
+            } else {
+                results.innerHTML += '<div class="status good">文字颜色正常</div>';
+            }
+            
+            results.innerHTML += '<p><strong>建议：</strong>如果检测到样式冲突，请使用"快速修复"按钮或手动修复选项。</p>';
+        }
+        
+        function applyQuickFix() {
+            const fixCSS = document.createElement('style');
+            fixCSS.id = 'blog-text-fix';
+            fixCSS.innerHTML = `
+                /* 博客文章卡片文字修复 */
+                .post-card, .post-card * {
+                    color: #333 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                }
+                .post-title {
+                    color: #2c3e50 !important;
+                    font-size: 1.2rem !important;
+                    font-weight: 600 !important;
+                    margin: 10px 0 !important;
+                }
+                .post-excerpt {
+                    color: #666 !important;
+                    font-size: 1rem !important;
+                    line-height: 1.6 !important;
+                }
+                .post-meta span {
+                    color: #666 !important;
+                    font-size: 0.9rem !important;
+                }
+                .post-category {
+                    background: #007bff !important;
+                    color: white !important;
+                    padding: 4px 8px !important;
+                    border-radius: 12px !important;
+                }
+                .post-tag {
+                    background: #f8f9fa !important;
+                    color: #666 !important;
+                    padding: 3px 8px !important;
+                    border-radius: 12px !important;
+                }
+                .post-link {
+                    color: #007bff !important;
+                    text-decoration: none !important;
+                }
+            `;
+            
+            const oldFix = document.getElementById('blog-text-fix');
+            if (oldFix) oldFix.remove();
+            
+            document.head.appendChild(fixCSS);
+            
+            document.getElementById('fixStatus').innerHTML = 
+                '<div style="background: #d4edda; color: #155724; padding: 10px; border-radius: 5px;">✅ 修复样式已应用！请返回博客页面检查效果。</div>';
+        }
+        
+        function toggleNewCSS() {
+            const newCSS = document.querySelector('link[href*="blog-new.css"]');
+            if (newCSS) {
+                if (newCSS.disabled) {
+                    newCSS.disabled = false;
+                    alert('已启用blog-new.css');
+                } else {
+                    newCSS.disabled = true;
+                    alert('已禁用blog-new.css');
+                }
+            } else {
+                alert('未找到blog-new.css文件');
+            }
+        }
+        
+        function forceTextVisible() {
+            applyQuickFix();
+        }
+        
+        function resetStyles() {
+            const fixCSS = document.getElementById('blog-text-fix');
+            if (fixCSS) {
+                fixCSS.remove();
+                document.getElementById('fixStatus').innerHTML = 
+                    '<div style="background: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px;">⚠️ 修复样式已移除。</div>';
+            } else {
+                document.getElementById('fixStatus').innerHTML = 
+                    '<div style="background: #d1ecf1; color: #0c5460; padding: 10px; border-radius: 5px;">ℹ️ 没有发现需要移除的修复样式。</div>';
+            }
+        }
+        
+        function showConsoleInstructions() {
+            alert('请按F12打开开发者工具，然后：\\n1. 检查Console标签页是否有错误\\n2. 在Elements标签页中检查.post-card元素的样式\\n3. 查看是否有被划掉的CSS属性');
+        }
+        
+        // 自动检测并提供修复建议
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const status = document.getElementById('fixStatus');
+                status.innerHTML = 
+                    '<div style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 5px;">💡 提示：如果您在博客页面看不到文字，请点击"应用修复样式"按钮。</div>';
+            }, 1000);
+        });
+    </script>
+</body>
+</html> 

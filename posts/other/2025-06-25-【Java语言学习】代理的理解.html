@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Java语言学习】代理的理解 | Focusmee</title>
+    <meta name="description" content="【Java语言学习】代理的理解">
+    <meta property="og:title" content="【Java语言学习】代理的理解">
+    <meta property="og:description" content="【Java语言学习】代理的理解">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Java语言学习】代理的理解</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">37 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Java语言学习】代理的理解</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>代理</h1>
+<p>在学习设计模式的过程中，代理模式绕不开，本次文章的任务是先学习代理模式，然后以此为衍生学习动态代理和静态代理。</p>
+<p>首先要了解以下基础概念：</p>
+<ol>
+<li>反射</li>
+<li>代理</li>
+</ol>
+<h2>反射</h2>
+<h3><strong>1. 什么是反射调用？</strong></h3>
+<p>反射（Reflection）是一种 <strong>运行时</strong> 机制，它允许 Java 程序在 <strong>不知道类的情况下</strong>，动态地获取类的信息，并调用它的方法。<br> 换句话说：你可以<strong>在程序运行时</strong>，通过类名的字符串找到类，并执行其中的方法，而不是写死 <code>new</code> 一个对象再调用方法。</p>
+<h3><strong>2. 反射调用方法的基本流程</strong></h3>
+<p>假设我们有一个 <code>Test</code> 类：</p>
+<pre><code>class Test {
+    public void hello() {
+        System.out.println(&quot;Hello, Reflection!&quot;);
+    }
+}
+</code></pre>
+<p>如果 <strong>不使用反射</strong>，我们一般这样调用：</p>
+<pre><code>Test obj = new Test(); // 直接创建对象
+obj.hello(); // 直接调用方法
+</code></pre>
+<p>但是 <strong>使用反射</strong>，可以这样：</p>
+<pre><code>import java.lang.reflect.Method;
+
+public class ReflectionExample {
+    public static void main(String[] args) throws Exception {
+        Class&lt;?&gt; cls = Class.forName(&quot;Test&quot;); // 通过类名找到类
+        Object obj = cls.getDeclaredConstructor().newInstance(); // 通过反射创建对象
+        Method method = cls.getMethod(&quot;hello&quot;); // 获取方法对象
+        method.invoke(obj); // 通过反射调用方法
+    }
+}
+</code></pre>
+<p><strong>输出：</strong></p>
+<pre><code>
+Hello, Reflection!
+</code></pre>
+<p>反射的 <code>invoke()</code> 方法<strong>到底怎么调用的</strong>呢？这就涉及到底层原理。</p>
+<hr>
+<h3><strong>3. <code>Method.invoke()</code> 的底层调用方式</strong></h3>
+<p>当 <code>invoke()</code> 被调用时，Java 的 <strong>反射 API</strong> 会做如下几步：</p>
+<ol>
+<li><p>检查访问权限</p>
+<ul>
+<li>例如 <code>private</code> 方法是不能随便调用的，需要 <code>setAccessible(true)</code>.</li>
+</ul>
+</li>
+<li><p>调用 <code>MethodAccessor</code> 的 <code>invoke()</code></p>
+<ul>
+<li><p><code>Method.invoke()</code> 其实内部调用了一个 <code>MethodAccessor</code> 对象。</p>
+</li>
+<li><pre><code>MethodAccessor
+</code></pre>
+<p> 具体实现由 JVM 选择，通常有两种方式：</p>
+<ol>
+<li><strong>通过 <code>native</code> 方法调用 C 语言逻辑</strong>（JVM 自带的方式）</li>
+<li><strong>通过 ASM 生成字节码并优化调用</strong>（JVM 可能为了提高性能会采用）</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3><strong>4. 方式一：通过 <code>native</code> 方法调用 C 逻辑</strong></h3>
+<p>在 <code>Method.java</code> 源码里，你会发现：</p>
+<pre><code>@CallerSensitive
+public Object invoke(Object obj, Object... args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    return methodAccessor.invoke(obj, args);
+}
+</code></pre>
+<p>这里的 <code>methodAccessor.invoke(obj, args)</code> 可能调用的是 <strong>Native Method（C 语言实现）</strong>。</p>
+<p>Java 通过 JNI（Java Native Interface）调用 <code>native</code> 方法：</p>
+<pre><code>cJNIEXPORT jobject JNICALL Java_java_lang_reflect_Method_invoke
+  (JNIEnv *env, jobject method, jobject obj, jobjectArray args) {
+    // 这里会用 C 语言的方式解析方法，并调用
+}
+</code></pre>
+<p><strong>总结</strong>：<br> 在 <strong>传统实现</strong> 中，Java 通过 <code>Method.invoke()</code> 走 <code>native</code> 方法，最终调用 C 语言的 <strong>JNI 接口</strong>，找到方法在内存中的地址并执行。</p>
+<hr>
+<h3><strong>5. 方式二：通过 ASM 生成字节码</strong></h3>
+<p>为了提高反射的调用速度，JVM 可能会采用 <strong>动态生成字节码</strong> 的方式（ASM 技术），让 <code>invoke()</code> <strong>更快</strong>。<br> 具体来说：</p>
+<ul>
+<li>Java 可能会<strong>动态创建一个子类</strong>，这个子类会<strong>直接调用目标方法</strong>，避免了 <code>native</code> 方法的开销。</li>
+<li>这种方式在 Java 1.8 之后越来越常见。</li>
+</ul>
+<p>例如，JVM 可能会<strong>自动生成类似这样的 Java 代码</strong>：</p>
+<pre><code>class MethodAccessorImpl extends MethodAccessor {
+    public Object invoke(Object obj, Object... args) {
+        ((Test) obj).hello(); // 直接调用目标方法
+        return null;
+    }
+}
+</code></pre>
+<p>然后再通过 <strong>ASM 或者 <code>Unsafe</code></strong> 在运行时<strong>动态生成字节码</strong>，让这个 <code>invoke()</code> 速度更快。</p>
+<hr>
+<h3><strong>6. 总结</strong></h3>
+<ol>
+<li>早期的 JVM（或者某些情况）<ul>
+<li><code>Method.invoke()</code> 走 <code>native</code> 方法，通过 JNI 调用 C 语言的逻辑。</li>
+</ul>
+</li>
+<li>现代的 JVM（优化后）<ul>
+<li>可能会使用 ASM <strong>动态创建字节码</strong>，让 <code>invoke()</code> 直接调用目标方法，提高效率。</li>
+</ul>
+</li>
+</ol>
+<p><strong>简单理解：</strong></p>
+<ul>
+<li><strong>普通 <code>invoke()</code>（默认）：慢一点，调用 <code>native</code> 方法（C 语言逻辑）。</strong></li>
+<li><strong>JVM 优化后（可能）：更快，动态生成字节码（ASM）。</strong></li>
+</ul>
+<h2>代理模式</h2>
+<p>以下是针对代理模式（Proxy Pattern）的详细说明，包含 <strong>生活案例</strong> 和 <strong>Java/Go 代码示例</strong>：</p>
+<hr>
+<h3>代理模式 (Proxy)</h3>
+<p><strong>核心思想</strong>：通过中间人（代理）控制对真实对象的访问，类似「代购」或「经纪人」</p>
+<ol>
+<li><strong>代理对象</strong>：代替原始对象执行操作的对象，通常会在调用前后添加额外逻辑（如日志、权限校验）。</li>
+<li><strong>被代理对象（目标对象）</strong>：实际执行业务逻辑的对象，代理对象会调用它的方法。</li>
+</ol>
+<hr>
+<h4>生活案例</h4>
+<p><strong>场景</strong>：网购时快递代收点  </p>
+<ul>
+<li><strong>真实对象</strong>：你购买的物品  </li>
+<li><strong>代理对象</strong>：快递代收点</li>
+<li><strong>作用</strong>：代收点帮你暂存快递（控制你对快递的直接访问）</li>
+</ul>
+<hr>
+<h3>三大代理类型及代码实现</h3>
+<hr>
+<h4>1. 虚拟代理 (延迟初始化)</h4>
+<p><strong>场景</strong>：网页加载时先显示缩略图，点击后才加载高清图  </p>
+<pre><code class="language-java">// Java 实现
+interface Image {
+    void display();
+}
+
+class RealImage implements Image { // 真实对象（耗资源）
+    private String filename;
+    public RealImage(String name) {
+        this.filename = name;
+        loadFromDisk(); // 模拟耗时加载
+    }
+    private void loadFromDisk() {
+        System.out.println(&quot;加载高清图片：&quot; + filename);
+    }
+    public void display() {
+        System.out.println(&quot;显示图片：&quot; + filename);
+    }
+}
+
+class ProxyImage implements Image { // 代理对象
+    private RealImage realImage;
+    private String filename;
+    
+    public ProxyImage(String name) {
+        this.filename = name;
+    }
+    
+    public void display() {
+        if (realImage == null) {
+            realImage = new RealImage(filename); // 延迟初始化
+        }
+        realImage.display();
+    }
+}
+
+// 使用示例
+Image image = new ProxyImage(&quot;photo.jpg&quot;);
+image.display(); // 第一次调用时才真正加载
+</code></pre>
+<pre><code class="language-go">// Go 实现
+type Image interface {
+    Display()
+}
+
+type RealImage struct { filename string }
+func (ri *RealImage) Display() {
+    fmt.Printf(&quot;显示图片：%s\n&quot;, ri.filename)
+}
+func NewRealImage(name string) *RealImage {
+    fmt.Printf(&quot;加载高清图片：%s\n&quot;, name)
+    return &amp;RealImage{name}
+}
+
+type ProxyImage struct {
+    realImage *RealImage
+    filename  string
+}
+func (pi *ProxyImage) Display() {
+    if pi.realImage == nil {
+        pi.realImage = NewRealImage(pi.filename) // 延迟初始化
+    }
+    pi.realImage.Display()
+}
+
+// 使用示例
+image := &amp;ProxyImage{filename: &quot;photo.jpg&quot;}
+image.Display() // 第一次调用时才真正加载
+</code></pre>
+<hr>
+<h4>2. 保护代理 (访问控制)</h4>
+<p><strong>场景</strong>：公司文件系统，普通员工只能读文件，经理可以修改  </p>
+<pre><code class="language-java">// Java 实现
+interface FileSystem {
+    void read();
+    void write();
+}
+
+class RealFileSystem implements FileSystem {
+    public void read() {
+        System.out.println(&quot;读取文件内容&quot;);
+    }
+    public void write() {
+        System.out.println(&quot;修改文件内容&quot;);
+    }
+}
+
+class ProtectedProxy implements FileSystem { // 保护代理
+    private RealFileSystem realFS = new RealFileSystem();
+    private boolean isManager;
+    
+    public ProtectedProxy(boolean isManager) {
+        this.isManager = isManager;
+    }
+    
+    public void read() {
+        realFS.read(); // 所有人可读
+    }
+    
+    public void write() {
+        if (isManager) {
+            realFS.write();
+        } else {
+            System.out.println(&quot;权限不足，无法修改&quot;);
+        }
+    }
+}
+
+// 使用示例
+FileSystem empFs = new ProtectedProxy(false);
+empFs.write(); // 输出：权限不足，无法修改
+</code></pre>
+<pre><code class="language-go">// Go 实现
+type FileSystem interface {
+    Read()
+    Write()
+}
+
+type RealFileSystem struct{}
+func (rfs RealFileSystem) Read()  { fmt.Println(&quot;读取文件内容&quot;) }
+func (rfs RealFileSystem) Write() { fmt.Println(&quot;修改文件内容&quot;) }
+
+type ProtectedProxy struct {
+    realFS    RealFileSystem
+    isManager bool
+}
+func (pp ProtectedProxy) Read() {
+    pp.realFS.Read()
+}
+func (pp ProtectedProxy) Write() {
+    if pp.isManager {
+        pp.realFS.Write()
+    } else {
+        fmt.Println(&quot;权限不足，无法修改&quot;)
+    }
+}
+
+// 使用示例
+empFs := ProtectedProxy{isManager: false}
+empFs.Write() // 输出：权限不足，无法修改
+</code></pre>
+<hr>
+<h4>3. 远程代理 (网络调用封装)</h4>
+<p><strong>场景</strong>：手机App访问云服务器数据（用户无需关心网络细节）  </p>
+<pre><code class="language-java">// Java 伪代码（演示概念）
+interface CloudService {
+    String getData();
+}
+
+class RemoteCloud implements CloudService { // 真实对象在云端
+    public String getData() {
+        // 实际会通过网络请求获取数据
+        return &quot;云端数据&quot;;
+    }
+}
+
+class CloudProxy implements CloudService { // 本地代理
+    public String getData() {
+        // 1. 建立网络连接
+        // 2. 发送请求
+        // 3. 接收返回数据
+        RemoteCloud cloud = new RemoteCloud();
+        return cloud.getData();
+    }
+}
+</code></pre>
+<pre><code class="language-go">// Go 伪代码（演示概念）
+type CloudService interface {
+    GetData() string
+}
+
+type RemoteCloud struct{} // 真实对象在云端
+func (rc RemoteCloud) GetData() string {
+    return &quot;云端数据&quot;
+}
+
+type CloudProxy struct{} // 本地代理
+func (cp CloudProxy) GetData() string {
+    // 模拟网络请求过程
+    cloud := RemoteCloud{}
+    return cloud.GetData()
+}
+</code></pre>
+<hr>
+<h3>代理模式核心总结</h3>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>优点</strong></td>
+<td>1. 控制对象访问<br>2. 增强安全性<br>3. 实现懒加载/延迟初始化<br>4. 降低系统耦合度</td>
+</tr>
+<tr>
+<td><strong>缺点</strong></td>
+<td>1. 增加代码复杂度<br>2. 可能降低请求速度（如远程代理）</td>
+</tr>
+<tr>
+<td><strong>使用场景</strong></td>
+<td>1. 权限控制<br>2. 虚拟代理（延迟加载）<br>3. 日志记录/监控<br>4. 缓存代理</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>与装饰者模式的区别</h3>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>核心目的</th>
+<th>控制权</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>代理模式</strong></td>
+<td><strong>控制访问</strong>（是否允许调用）</td>
+<td>代理决定是否调用真实对象</td>
+</tr>
+<tr>
+<td><strong>装饰者模式</strong></td>
+<td><strong>增强功能</strong>（在原有功能基础上添加新功能）</td>
+<td>必须调用被装饰对象</td>
+</tr>
+</tbody></table>
+<p><strong>示例对比</strong>：  </p>
+<ul>
+<li>代理：代收点决定是否给你快递（控制访问）  </li>
+<li>装饰者：给咖啡加糖（增强原有咖啡的功能）</li>
+</ul>
+<h3>常见误区澄清</h3>
+<table>
+<thead>
+<tr>
+<th align="left">误区</th>
+<th align="left">正解</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>代理就是多加一层类</strong></td>
+<td align="left">必须实现和原对象相同的接口，客户端无需知道用的是代理还是真实对象</td>
+</tr>
+<tr>
+<td align="left"><strong>代理只是为了延迟加载</strong></td>
+<td align="left">代理可以实现：权限控制、日志记录、缓存、防火墙等多种功能</td>
+</tr>
+<tr>
+<td align="left"><strong>代理和装饰者一样</strong></td>
+<td align="left">装饰者模式重点在「增强功能」，代理模式重点在「控制访问」</td>
+</tr>
+</tbody></table>
+<h3>什么时候该用代理模式？</h3>
+<ol>
+<li><strong>需要控制对象访问</strong>（如权限验证）</li>
+<li><strong>需要增强非业务功能</strong>（如日志、监控）</li>
+<li><strong>需要延迟消耗资源的操作</strong>（如大文件加载）</li>
+<li><strong>需要本地代理远程服务</strong>（如RPC调用）</li>
+</ol>
+<p>综上，可以看出来</p>
+<p>代理模式简单来说就是在原来的类的基础上又封装了一层，使其在需要使用原来的类上的时候通过调用封装的方法来创建对象，或者进行管理，一句话：<strong>「用一个中间层（代理）代替真实对象出面，在访问真实对象前后插入控制逻辑」</strong>。</p>
+<p><strong>记住一个原则</strong>：当你发现某些操作必须在主逻辑之前/之后执行，且这些操作与业务无关时，就可以考虑使用代理模式。</p>
+<h2>静态代理与动态代理</h2>
+<p>接下来我将用代码说明静态代理和动态代理，</p>
+<p>✅ <strong>动态代理</strong>——“在代码运行的过程中动态生成一个灵活的对象（可以在过程中组装它）并执行使用它。”<br> ✅ <strong>静态代理</strong>——“通过一个静态的文件或者代码生成一个固定的对象。”</p>
+<h3><strong>静态代理（Static Proxy）</strong></h3>
+<ul>
+<li><strong>代理类在编译期就已经确定</strong>，需要手写代理类，每个代理类只能为一个目标类提供代理。</li>
+<li><strong>代理逻辑是固定的</strong>，如果需要修改代理逻辑，必须<strong>修改源码</strong>并重新编译。</li>
+</ul>
+<h3><strong>动态代理（Dynamic Proxy）</strong></h3>
+<ul>
+<li><strong>代理对象在运行时生成，而不是编译期就写死</strong>。</li>
+<li><strong>可以灵活修改代理逻辑</strong>，无需修改源码或重新编译。</li>
+<li>代理对象<strong>不需要手写具体的类</strong>，而是用<strong>反射</strong>或其他方法<strong>动态生成代理类</strong>。</li>
+<li><strong>代理的方法可以根据上下文调整，比如日志、权限控制等</strong>，可以<strong>拦截方法调用</strong>并执行额外逻辑。</li>
+<li>我采用手写 <code>MyInterfaceFactory</code> <strong>自己实现了一个动态代理机制</strong>，和 Java 原生 <code>Proxy.newProxyInstance()</code> 类似。</li>
+</ul>
+<h3>手写步骤</h3>
+<p>总体一句话说明白：<strong>将逻辑看成类，看成字符串拼接然后通过编译加载到jvm中组装成类，并通过反射获取到对象</strong>。</p>
+<p>静态代理是编译期确定的，动态代理是运行时生成的。我就</p>
+<p>把一个字符串写在文件里</p>
+<p>java编译器，动态编译文件（使用java封装的Compiler.compile(javaFile)）：可以在java运行时候动态编译java文件，编译文件放在class path里面</p>
+<p>java虚拟机在执行的时候所有的虚拟资源都是通过class path获取，而在maven下class path是在target classes</p>
+<p>然后通过编译这个文件加载到jvm中然后反射拿到实例对象之后可以运行，后面通过代理模式，对目标对象（这个文件生成的对象）进行代理（实际上就是相当于对这个文件再添加了字符串进去）然后编译文件加载反射拿到实例对象（代理对象），这个代理对象里面被注入了目标对象，就可以使用目标对象的方法。</p>
+<p>这个代码存在与实际Java提供的动态代理还有一定区别：</p>
+<ol>
+<li><p>首先在代理类的生成方式上：</p>
+<ul>
+<li>通过手动拼接Java源码字符串生成代理类，并调用<code>JavaCompiler</code>进行编译。这种方式依赖文件系统和JDK环境，生成的是物理存在的<code>.java</code>和<code>.class</code>文件。</li>
+<li><strong>JDK动态代理</strong>：而在JDK中在内存中直接生成字节码（通过<code>ProxyGenerator</code>），无需源码文件和编译过程，性能更高且不依赖文件系统。</li>
+</ul>
+</li>
+<li><p>在接口灵活动态性上：</p>
+<ul>
+<li>代理类硬编码实现了固定的<code>MyInterface</code>接口（见<code>createJavaFile</code>中的<code>implements MyInterface</code>）。若要代理其他接口，必须修改生成代码的逻辑。（用反射构造器获取具体类）</li>
+<li><strong>JDK动态代理</strong>：通过<code>Proxy.newProxyInstance(ClassLoader, Class&lt;?&gt;[] interfaces, InvocationHandler)</code>动态传入接口数组，支持任意接口的代理。（是通过类加载器，必须是接口）</li>
+</ul>
+</li>
+<li><p><strong>方法调用的处理</strong></p>
+<ul>
+<li>为每个接口方法生成固定代码（如<code>func1</code>、<code>func2</code>），通过<code>MyHandler.functionBody</code>返回方法体字符串。需要为每个方法单独处理，扩展性差。</li>
+<li><strong>JDK动态代理</strong>：所有方法调用统一转发到<code>InvocationHandler.invoke</code>方法，通过反射动态处理，无需为每个方法单独编码。</li>
+</ul>
+</li>
+<li><p><strong>依赖注入方式</strong></p>
+<ul>
+<li>通过反射手动注入成员变量（如<code>LogHandler</code>中的<code>myInterface</code>），需要显式操作字段，代码复杂且易出错。</li>
+<li><strong>JDK动态代理</strong>：通过<code>InvocationHandler</code>持有目标对象（即被代理的实例），在<code>invoke</code>方法中直接调用目标对象的方法，无需手动注入。</li>
+</ul>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>动态代理 (<code>Proxy</code>)</th>
+<th>反射构造器实例化</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>目标类型</td>
+<td>必须是接口</td>
+<td>必须是具体类（非接口）</td>
+</tr>
+<tr>
+<td>方法调用行为</td>
+<td>通过<code>InvocationHandler</code>拦截</td>
+<td>直接调用真实方法</td>
+</tr>
+<tr>
+<td>生成对象类型</td>
+<td>运行时生成的代理类</td>
+<td>普通类的实例</td>
+</tr>
+<tr>
+<td>典型应用场景</td>
+<td>AOP、远程调用、日志拦截</td>
+<td>反射创建普通对象</td>
+</tr>
+</tbody></table>
+<h3>代码流程说明</h3>
+<p>这段代码通过动态生成代理类的方式实现了方法调用的增强（如日志功能），其核心流程如下：</p>
+<hr>
+<h4><strong>1. 核心组件说明</strong></h4>
+<ul>
+<li><strong><code>MyInterface</code></strong>: 定义业务方法 (<code>func1</code>, <code>func2</code>, <code>func3</code>)。</li>
+<li><strong><code>MyHandler</code></strong>: 定义如何生成代理类的方法体代码（<code>functionBody</code>）和设置代理的方法（<code>setProxy</code>）。</li>
+<li><strong><code>MyInterfaceFactory</code></strong>: 负责动态生成代理类的源码、编译并实例化代理对象。</li>
+<li><strong><code>Main</code> 类</strong>:<ul>
+<li><code>PrintFunctionName</code>/<code>PrintFunctionName1</code>: 直接打印方法名或添加额外逻辑。</li>
+<li><code>LogHandler</code>: 为方法调用添加日志（<code>before</code>/<code>after</code>），实现装饰器模式。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4><strong>2. 运行流程分析</strong></h4>
+<h5><strong>步骤 1：创建基础代理对象</strong></h5>
+<pre><code class="language-java">proxyObject = MyInterfaceFactory.createProxyObject(new PrintFunctionName());
+proxyObject.func1();
+</code></pre>
+<ul>
+<li><strong>生成代理类</strong>:<ul>
+<li>工厂生成类名 <code>MyInterface$proxy1</code>。</li>
+<li><code>PrintFunctionName</code> 的 <code>functionBody</code> 返回 <code>System.out.println(&quot;func1&quot;);</code>。</li>
+<li>生成的代理类代码直接打印方法名。</li>
+</ul>
+</li>
+<li><strong>输出</strong>:<pre><code>func1
+func2
+func3
+</code></pre>
+</li>
+</ul>
+<h5><strong>步骤 2：增强代理对象逻辑</strong></h5>
+<pre><code class="language-java">proxyObject = MyInterfaceFactory.createProxyObject(new PrintFunctionName1());
+proxyObject.func1();
+</code></pre>
+<ul>
+<li><strong>生成代理类</strong>:<ul>
+<li>类名变为 <code>MyInterface$proxy2</code>。</li>
+<li><code>PrintFunctionName1</code> 生成的代码会先打印 <code>1</code>，再打印方法名。</li>
+</ul>
+</li>
+<li><strong>输出</strong>:<pre><code>1
+func1
+1
+func2
+1
+func3
+</code></pre>
+</li>
+</ul>
+<h5><strong>步骤 3：添加日志功能（装饰器模式）</strong></h5>
+<pre><code class="language-java">proxyObject = MyInterfaceFactory.createProxyObject(new LogHandler(proxyObject));
+proxyObject.func1();
+</code></pre>
+<ul>
+<li><p><strong>生成代理类</strong>:</p>
+<ul>
+<li>类名变为 <code>MyInterface$proxy3</code>。</li>
+<li><code>LogHandler</code> 的 <code>functionBody</code> 生成代码：<pre><code class="language-java">System.out.println(&quot;before&quot;);
+myInterface.func1(); // 调用前一个代理对象的方法
+System.out.println(&quot;after&quot;);
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p><strong>注入依赖</strong>:</p>
+<ul>
+<li><code>LogHandler</code> 通过反射将前一个代理对象（<code>MyInterface$proxy2</code>）注入到新代理对象（<code>MyInterface$proxy3</code>）的 <code>myInterface</code> 字段。</li>
+</ul>
+</li>
+<li><p><strong>输出</strong>:</p>
+<pre><code>before
+1         // 来自 MyInterface$proxy2 的逻辑
+func1
+after
+before
+1
+func2
+after
+before
+1
+func3
+after
+</code></pre>
+</li>
+</ul>
+<hr>
+<h4><strong>3. 关键机制解析</strong></h4>
+<ul>
+<li><strong>动态代码生成</strong>:<ul>
+<li><code>MyInterfaceFactory</code> 拼接 Java 源码字符串，生成代理类文件（如 <code>MyInterface$proxy1.java</code>）。</li>
+<li>编译生成的源码，加载类并实例化代理对象。</li>
+</ul>
+</li>
+<li><strong>反射注入</strong>:<ul>
+<li><code>LogHandler</code> 通过反射将前一个代理对象注入新代理类的 <code>myInterface</code> 字段，实现链式调用。</li>
+</ul>
+</li>
+<li><strong>装饰器模式</strong>:<ul>
+<li>通过嵌套代理对象，逐层增强功能（如日志）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4><strong>4. 代码学习建议</strong></h4>
+<ol>
+<li><strong>调试生成的文件</strong>:<ul>
+<li>检查 <code>target/classes/com/jinju/proxyTest</code> 下生成的 <code>MyInterface$proxy*.java</code> 文件，观察方法体如何被动态生成。</li>
+</ul>
+</li>
+<li><strong>反射操作</strong>:<ul>
+<li>理解 <code>LogHandler.setProxy()</code> 如何通过反射修改私有字段，思考其潜在风险（如安全限制）。</li>
+</ul>
+</li>
+<li><strong>动态编译</strong>:<ul>
+<li>研究 <code>JavaCompiler</code> 的 API，了解如何实现内存编译（避免写入临时文件）。</li>
+</ul>
+</li>
+<li><strong>设计模式</strong>:<ul>
+<li>对比 JDK 动态代理（<code>InvocationHandler</code>），理解手动实现代理的优缺点。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>通过动态生成代理类，这段代码展示了如何在不修改原始类的情况下增强方法逻辑，是理解代理和装饰器模式的典型案例。</p>
+<p><img src="C:%5CUsers%5CJinju%5Cimages%5Cmermaid-diagram-2025-03-15-180834.png" alt="mermaid-diagram-2025-03-15-180834"></p>
+<h3>后续改进</h3>
+<p>很明显缺陷在于无法<strong>不能动态传递接口</strong>，</p>
+<p>生成的代理类强制实现了固定的<code>MyInterface</code>接口：</p>
+<pre><code>// 生成的代理类代码（硬编码接口）
+public class MyInterface$proxy1 implements MyInterface { ... }
+</code></pre>
+<p>这意味着：</p>
+<ol>
+<li><strong>仅支持单一接口</strong>：代理类只能实现<code>MyInterface</code>，无法在运行时动态指定其他接口（如<code>AnotherInterface</code>）。</li>
+<li><strong>方法名硬编码</strong>：<code>func1</code>、<code>func2</code>等方法名在代码生成逻辑中固定，若接口方法变更（如新增<code>func4</code>），必须修改<code>createJavaFile</code>的拼接逻辑。</li>
+</ol>
+<p><strong>对比JDK动态代理</strong>：</p>
+<pre><code class="language-java">// JDK动态代理支持任意接口
+MyInterface proxy = (MyInterface) Proxy.newProxyInstance(
+    MyInterface.class.getClassLoader(),
+    new Class[]{MyInterface.class, AnotherInterface.class}, // 可传入多个接口
+    invocationHandler
+);
+</code></pre>
+<p>若希望代码支持动态接口，可以做以下改进：</p>
+<ol>
+<li><p><strong>动态传入接口类型</strong>：</p>
+<ul>
+<li>修改<code>createJavaFile</code>方法，接受接口的<code>Class</code>对象，生成<code>implements</code>语句。</li>
+</ul>
+<pre><code class="language-java">String implementsClause = &quot;implements &quot; + interfaceClass.getName();
+</code></pre>
+</li>
+<li><p><strong>动态处理方法签名</strong>：</p>
+<ul>
+<li>通过反射获取接口的所有方法，遍历生成每个方法的具体实现，而不是硬编码<code>func1</code>、<code>func2</code>。</li>
+</ul>
+<pre><code class="language-java">for (Method method : interfaceClass.getMethods()) {
+    String methodName = method.getName();
+    String methodBody = handler.functionBody(methodName);
+    // 拼接方法代码...
+}
+</code></pre>
+</li>
+<li><p><strong>避免硬编码包名和路径</strong>：</p>
+<ul>
+<li>根据接口的包名动态生成代理类的包路径，确保生成的类在正确的目录下。</li>
+</ul>
+</li>
+</ol>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客测试页面</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-container { max-width: 800px; margin: 0 auto; }
+        .loading { color: #666; }
+        .error { color: #e74c3c; }
+        .success { color: #27ae60; }
+        .post-card { 
+            border: 1px solid #ddd; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+        }
+        .debug-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>博客功能测试</h1>
+        
+        <div id="debugInfo" class="debug-info">
+            <h3>调试信息：</h3>
+            <div id="debugMessages"></div>
+        </div>
+        
+        <div id="testResults">
+            <h3>测试结果：</h3>
+            <div id="loadStatus" class="loading">正在加载数据...</div>
+        </div>
+        
+        <div id="postsContainer">
+            <h3>文章列表：</h3>
+            <div id="postsList"></div>
+        </div>
+    </div>
+
+    <script src="scripts/posts-data.js"></script>
+    <script>
+        const debugMessages = document.getElementById('debugMessages');
+        const loadStatus = document.getElementById('loadStatus');
+        const postsList = document.getElementById('postsList');
+        
+        function addDebugMessage(message, type = 'info') {
+            const div = document.createElement('div');
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            div.className = type;
+            debugMessages.appendChild(div);
+            console.log(message);
+        }
+        
+        async function testBlogFunctions() {
+            try {
+                addDebugMessage('开始测试博客功能...');
+                
+                // 测试数据初始化
+                addDebugMessage('初始化文章数据...');
+                await initPostsData();
+                
+                // 测试获取所有文章
+                addDebugMessage('测试获取所有文章...');
+                const allPosts = getAllPosts();
+                addDebugMessage(`获取到 ${allPosts.length} 篇文章`, 'success');
+                
+                if (allPosts.length > 0) {
+                    loadStatus.textContent = `✅ 成功加载 ${allPosts.length} 篇文章`;
+                    loadStatus.className = 'success';
+                    
+                    // 显示文章列表
+                    allPosts.forEach(post => {
+                        const div = document.createElement('div');
+                        div.className = 'post-card';
+                        div.innerHTML = `
+                            <h4>${post.title}</h4>
+                            <p><strong>分类:</strong> ${post.categoryDisplayName}</p>
+                            <p><strong>标签:</strong> ${post.tags.join(', ')}</p>
+                            <p><strong>发布日期:</strong> ${post.publishedAt}</p>
+                            <p>${post.description}</p>
+                        `;
+                        postsList.appendChild(div);
+                    });
+                    
+                    // 测试其他函数
+                    addDebugMessage('测试统计功能...');
+                    const stats = getPostsStats();
+                    addDebugMessage(`文章统计: ${JSON.stringify(stats)}`, 'success');
+                    
+                    addDebugMessage('测试标签功能...');
+                    const tags = getAllTags();
+                    addDebugMessage(`标签列表: ${tags.map(t => t.name).join(', ')}`, 'success');
+                    
+                    addDebugMessage('测试热门文章...');
+                    const popularPosts = getPopularPosts();
+                    addDebugMessage(`热门文章: ${popularPosts.length} 篇`, 'success');
+                    
+                } else {
+                    loadStatus.textContent = '⚠️ 没有找到文章数据';
+                    loadStatus.className = 'error';
+                }
+                
+                addDebugMessage('所有测试完成！', 'success');
+                
+            } catch (error) {
+                addDebugMessage(`测试失败: ${error.message}`, 'error');
+                loadStatus.textContent = `❌ 测试失败: ${error.message}`;
+                loadStatus.className = 'error';
+            }
+        }
+        
+        // 页面加载后开始测试
+        document.addEventListener('DOMContentLoaded', testBlogFunctions);
+    </script>
+</body>
+</html> 

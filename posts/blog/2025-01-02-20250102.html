@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025.01.02 记录搭建博客的坑 - 技术博客</title>
+    <meta name="description" content="2025.01.02 记录搭建博客的坑 - 博客相关技术文章">
+    <meta name="keywords" content="博客, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">博客</span>
+            <span class="separator">›</span>
+            <span class="current-page">2025.01.02 记录搭建博客的坑</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag blog">📝 博客</span>
+                    <time class="publish-date" datetime="2025-01-02">2025-01-02</time>
+                    <span class="read-time">📖 5 分钟阅读</span>
+                </div>
+                <h1 class="post-title">2025.01.02 记录搭建博客的坑</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p><br />---<br />title: 【2025.01.02】记录搭建博客时候的坑<br />---<br /><br /><h3>在克隆github上面的Next主题的时候遇到问题</h3><br /><br />```<br /> git clone --branch v5.1.2 https://github.com/iissnan/hexo-theme-next themes/next<br />```<br /><br />```<br />fatal: unable to access ' ': Failed to connect to github.com port 443 after 21058 ms: Couldn't connect to server，<br />```<br /><br /><br /><br />如果你使用VPN，你可以尝试`git config --global http.proxy http://127.0.0.1:7890`（7890是你的vpn端口）和`git config --global https.proxy https://127.0.0.1:7890`。<br />如果没有，你可以尝试`git config --global unset http.proxy`和`git config --global unset https.proxy`。<br /><br /><h3><strong>为什么需要 Git 代理？</strong></h3><br /><br />- <strong>网络限制</strong>：某些地区或网络环境对 GitHub 等国外资源访问有限制，导致无法正常克隆或下载代码。<br />- <strong>公司防火墙</strong>：某些企业网络会阻止直接访问外部服务。<br />- <strong>连接速度慢</strong>：直接访问 GitHub 等服务器的速度可能很慢。<br />- <strong>VPN 的特殊配置</strong>：如果使用 VPN 或代理软件，需要让 Git 通过代理服务器连接外部资源。<br /><br />------<br /><br /><h3><strong>2. 错误的含义</strong></h3><br /><br />错误信息如下：<br /><br />```<br />fatal: unable to access 'URL': Failed to connect to github.com port 443 after 21058 ms: Couldn't connect to server<br />```<br /><br />解释：<br /><br />- <strong>URL 无法访问</strong>：Git 无法连接到指定的远程仓库地址。<br />- <strong>443 端口问题</strong>：这是 HTTPS 的默认端口，连接超时意味着 Git 客户端尝试建立 HTTPS 连接失败。<br />- <strong>网络问题</strong>：可能是由于本地网络配置、DNS 问题、防火墙或网络封锁导致的。<br /><br />------<br /><br /><h3>3. 为什么设置代理后能解决问题？</h3><br /><br />通过设置代理：<br /><br />1. <strong>请求转发</strong>：Git 的网络请求会通过指定的代理服务器发送，而不是直接访问目标地址。<br />2. <strong>绕过限制</strong>：如果目标服务器被本地网络限制，代理服务器可以帮助绕过这些限制。<br />3. <strong>优化速度</strong>：代理服务器可能有更快的连接路径到目标服务器。<br /><br />例如：<br /><br />```bash<br />git config --global http.proxy http://127.0.0.1:7890<br />git config --global https.proxy https://127.0.0.1:7890<br />```<br /><br />- `127.0.0.1:7890` 是本地运行的代理服务器（例如，某些 VPN 软件会在本地开启代理）。<br />- `http.proxy` 和 `https.proxy` 告诉 Git 客户端通过该代理连接目标服务器。<br /><br />------<br /><br /><h3><strong>4. 如何设置和取消 Git 代理？</strong></h3><br /><br />#### <strong>设置代理</strong><br /><br />根据你的代理类型（HTTP 或 HTTPS），使用以下命令：<br /><br />```<br />git config --global http.proxy http://代理地址:端口<br />git config --global https.proxy https://代理地址:端口<br />```<br /><br />例如：<br /><br />```<br />git config --global http.proxy http://127.0.0.1:7890<br />git config --global https.proxy https://127.0.0.1:7890<br />```<br /><br />#### <strong>取消代理</strong><br /><br />如果不再需要代理，可以取消设置：<br /><br />```<br />git config --global --unset http.proxy<br />git config --global --unset https.proxy<br />```<br /><br />#### <strong>检查代理设置</strong><br /><br />确认当前的代理配置：<br /><br />```<br />git config --global --get http.proxy<br />git config --global --get https.proxy<br />```<br /><br />------<br /><br /><h3><strong>5. 常见场景</strong></h3><br /><br />#### <strong>使用 VPN 或本地代理工具</strong><br /><br />- 代理工具（如 Shadowsocks、Clash 等）会在本地提供一个代理服务。<br />- 配置 Git 的代理地址为工具的代理端口（例如，`127.0.0.1:7890`）。<br /><br />#### <strong>没有 VPN 时的解决方法</strong><br /><br />- <strong>取消代理</strong>：当没有代理或代理配置不当时，使用 `unset` 命令取消代理。<br />- <strong>使用其他网络</strong>：尝试切换到更稳定的网络。<br />- <strong>使用 SSH 代替 HTTPS</strong>：改用 SSH 协议可能绕过 HTTPS 的连接问题。<br /><br />------<br /><br /><h3><strong>总结</strong></h3><br /><br />- <strong>问题原因</strong>：网络限制或连接不稳定。<br />- <strong>解决方法</strong>：配置代理可以帮助绕过限制或优化连接。如果代理不可用，可以取消代理设置。<br />- <strong>重要提示</strong>：确保代理配置正确，VPN 或代理工具运行正常。<br /><br /><br /><br /><br /><br /><h2>hexo主题切换可能出现的错误</h2><br /><br /><h3>1.1上传时出现error：spawn failed...问题</h3><br /><br />#### 方法一<br /><br />```git bash 进入博客根目录<br />rm -rf .deploy_git/ //删除提交内容文件夹<br /><br />git config --global core.autocrlf false //执行<br /><br />hexo clean<br /><br />hexo g<br /><br />hexo d<br />```<br /><br /><br /><br />#### 方法二<br /><br />修改 _config.yml 文件，将配置地址http方式切换成ssh方式<br /><br />```<br />git bash 进入博客根目录<br /><br />vim _config.yml //删除git提交内容文件夹<br />```<br /><br /><br /><br />修改最后一行内容<br /><br />```<br />deploy：<br /><br />type：git<br /><br />repository：git@github.com:Uninfo/github用户名.github用户名.io.git<br /><br />branch：master<br /><br />hexo clean<br /><br />hexo g<br /><br />hexo d<br />```<br /><br /><br /><br /><h3>1.2运行后博客页面为</h3><br /><br />```<br />{% extends ‘layout.swig‘ %} {% import ‘macro/post.swig‘ as post_template %}<br />原因是hexo5.0后swig被删除，需自己手动安装npm i hexo-renderer-swig<br />```<br /><br /><br /><h3>1.3绑定域名失效</h3><br /><br />#### 方法一<br /><br />只要在source 目录添加一个新文件CNAME就好<br /><br />CNAME –不带任何后缀，内容为域名<br /><br />#### 方法二<br /><br />安装插件<br /><br />npm install hexo-generator-cname --save 之后在_config.yml中添加一条<br /><br />Plugins:<br /><br />hexo-generator-cname 当第一个方法不能用时，应该是把方法二里面的插件也安装啦，两个有冲突，只需要执行<br /><br />npm uninstall hexo-generator-cname --save<br /><br /><br /><br /><br /><br /><h3>hexo d命令报错 ERROR Deployer not found: git</h3><br /><br />问题描述<br />我已经在站点配置文件中写入了：<br /><br />```<br />deploy:<br />  type: git<br />  repo: git@github.com:lanlan2017/lanlan2017.github.io.git  # Github pages地址<br />  branch: master<br /><br />```<br /><br />但是执行，hexo d报错：<br /><br />```<br />ERROR Deployer not found: git<br /><br />```<br /><br />解决方案<br />这是因为没安装hexo-deployer-git插件，在站点目录下输入下面的插件安装就好了：<br /><br />```<br />npm install hexo-deployer-git --save<br /><br />```<br /><br />然后在使用Hexo d命令就可以推送了。<br /><br /><br /><br /><h3>上传github但没有显示</h3><br /><br />#### 解决方案概览<br /><br />1. 确认你的Hexo环境已正确设置。<br />2. 确保你的GitHub仓库设置正确。<br />3. 使用正确的命令来生成并部署你的网站。<br />4. 检查GitHub Pages的设置。<br />5. 清除浏览器缓存。<br /><br />#### 详细步骤<br /><br />第一种：清浏览器缓存试试<br /><br />清除一下浏览器缓存试试，例如Chrome清除缓存的快捷键是Ctrl+Shift+Delete,之后Enter(回车)。 再或者换个浏览器试试，很多时候是本地缓存造成的！<br /><br />第二种：删除.deploy_git<br /><br /> 重新hexo clean    hexo g -d  <br /><br />第三种<br /><br />Shift+F5刷新<br /><br />第四种   <br /><br />打开github页面仓库，进入settings界面<br /><br />设置Branch分支，通常是`master`或`main`。<br /></p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">博客</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

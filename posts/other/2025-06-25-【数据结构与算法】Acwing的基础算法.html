@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【数据结构与算法】Acwing的基础算法 | Focusmee</title>
+    <meta name="description" content="【数据结构与算法】Acwing的基础算法">
+    <meta property="og:title" content="【数据结构与算法】Acwing的基础算法">
+    <meta property="og:description" content="【数据结构与算法】Acwing的基础算法">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【数据结构与算法】Acwing的基础算法</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">50 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【数据结构与算法】Acwing的基础算法</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <p><img src="D:%5Ctypora%E7%AC%94%E8%AE%B0%5C%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95.assets%5Cimage-20231227203029359.png" alt="image-20231227203029359"></p>
+<h4>快速排序</h4>
+<pre><code class="language-c++">void quick_sort(int q[], int l, int r)
+{
+    if (l &gt;= r) return;
+
+    int i = l - 1, j = r + 1, x = q[l + r &gt;&gt; 1];
+    while (i &lt; j)
+    {
+        do i ++ ; while (q[i] &lt; x);
+        do j -- ; while (q[j] &gt; x);
+        if (i &lt; j) swap(q[i], q[j]);
+    }
+    quick_sort(q, l, j), quick_sort(q, j + 1, r);
+}
+</code></pre>
+<p>注意一下边界问题</p>
+<p><a href="https://blog.csdn.net/SHU15121856/article/details/109839618">(48条消息) 【算法学习笔记】8：快速排序中的边界问题_LauZyHou的博客-CSDN博客_快速排序边界问题</a></p>
+<h4>高精度乘法</h4>
+<p>t=0;</p>
+<p>循环到A.size()||t</p>
+<p>本位 C<del>n</del>=（A[n]*B+t<del>n-1</del>）%10</p>
+<p>给下一位进位 t<del>n+1</del>=（A[n]*B）/10</p>
+<h4>前缀和与差分</h4>
+<p>前缀和是输出原序列中从第 l个数到第 r个数的和（求出某个区间的和）</p>
+<p>差分是将序列中某个区间 <code>[l,r] </code>之间的每个数加上一个数。</p>
+<p>​	差分关键：</p>
+<pre><code>void insert(int l,int r,int c){
+    a[l]+=c;
+    a[r+1]-=c;
+}
+</code></pre>
+<p>先把每个数字放进去，使得数组a的每个前缀和仍为0</p>
+<p>后在插入区间内求出前缀和就完成在区间加上一个数</p>
+<h4>二进制算法</h4>
+<ol>
+<li><p>第n位是1还是0 x&gt;&gt;n&amp;1</p>
+</li>
+<li><p>取得末端第一个是1以及后面的位</p>
+<p>例子：比如 5 101 得到的是1 8 1000 得到的是1000</p>
+<p>lowbit就是x&amp;-x -x为~x+1（-x为x取反然后+1）</p>
+<p>可以通过lowbit知道数字二进制形式有多少个1</p>
+</li>
+</ol>
+<h4>单链表：</h4>
+<p>一般用邻接表 存储树和图</p>
+<h4>双链表：</h4>
+<p>优化某些问题 e[N]表示某个值 ne[N]表示某个点的next指针 通过下标关联起来 空结点ne用-1表示</p>
+<h4>栈：</h4>
+<pre><code>// tt表示栈顶
+int stk[N], tt = 0;
+
+// 向栈顶插入一个数
+stk[ ++ tt] = x;
+
+// 从栈顶弹出一个数
+tt -- ;
+
+// 栈顶的值
+stk[tt];
+
+// 判断栈是否为空
+if (tt &gt; 0)
+{
+
+}
+</code></pre>
+<h4>普通队列：</h4>
+<pre><code>// hh 表示队头，tt表示队尾
+int q[N], hh = 0, tt = -1;
+
+// 向队尾插入一个数
+q[ ++ tt] = x;
+
+// 从队头弹出一个数
+hh ++ ;
+
+// 队头的值
+q[hh];
+
+// 判断队列是否为空
+if (hh &lt;= tt)
+{
+
+}
+</code></pre>
+<h4>循环队列：</h4>
+<pre><code>// hh 表示队头，tt表示队尾的后一个位置
+int q[N], hh = 0, tt = 0;
+
+// 向队尾插入一个数
+q[tt ++ ] = x;
+if (tt == N) tt = 0;
+
+// 从队头弹出一个数
+hh ++ ;
+if (hh == N) hh = 0;
+
+// 队头的值
+q[hh];
+
+// 判断队列是否为空
+if (hh != tt)
+{
+
+}
+</code></pre>
+<h4>单调栈：</h4>
+<pre><code>常见模型：找出每个数左边离它最近的比它大/小的数
+int tt = 0;
+for (int i = 1; i &lt;= n; i ++ )
+{
+    while (tt &amp;&amp; check(stk[tt], i)) tt -- ;
+    stk[ ++ tt] = i;
+}
+</code></pre>
+<h4>单调队列：</h4>
+<ol>
+<li>用普通队列该怎么做</li>
+<li>将队列中的没有用的元素删掉-&gt;具有了单调性</li>
+<li>可以用O(1)时间从队头/队尾取出最值</li>
+</ol>
+<pre><code>if (i - k + 1 &gt; q[hh]) ++ hh;                  // 若队首出窗口，hh加1
+while (hh &lt;= tt &amp;&amp; a[i] &lt;= a[q[tt]]) -- tt;    // 若队尾不单调，tt减1，保证了队头为最小
+q[++ tt] = i;                                  // 下标加到队尾，这个元素在后面左窗口缩小的时候可能会成为窗口最凶安置
+if (i + 1 &gt;= k) printf(&quot;%d &quot;, a[q[hh]]);       // 输出结果
+</code></pre>
+<p><img src="C:%5CUsers%5C%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20230603224710262.png" alt="image-20230603224710262"></p>
+<p><img src="C:%5CUsers%5C%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20230603224827020.png" alt="image-20230603224827020"></p>
+<pre><code>常见模型：找出滑动窗口中的最大值/最小值
+int hh = 0, tt = -1;
+for (int i = 0; i &lt; n; i ++ )
+{
+    while (hh &lt;= tt &amp;&amp; check_out(q[hh])) hh ++ ;  // 判断队头是否滑出窗口
+    while (hh &lt;= tt &amp;&amp; check(q[tt], i)) tt -- ;
+    q[ ++ tt] = i;
+}
+</code></pre>
+<h4>KMP算法</h4>
+<p>i和j比较，同则next[i]=++j</p>
+<p>不同则j看前一个next跳转到新的位置再进行i和j比较</p>
+<p>字符串的next数组：</p>
+<pre><code>for(int i=1,j=0;i&lt;n;i++)
+    {
+        while(j&amp;&amp;a[i]!=a[j])
+        {
+            j=next[j-1];
+        }
+        if(a[i]==a[j])
+        {
+            next[i]=j+1;
+            j++;
+        }
+        if(j==0) next[i]=0,j++;
+    }
+</code></pre>
+<p>对比模式串：</p>
+<pre><code>for(int i=0,j=0;i&lt;=m;i++)
+    {
+          while(j&amp;&amp;a[j]!=b[i]) j=next[j-1];
+          if(b[i]==a[j]) 
+          {
+              j++;
+          }
+          if(j==n)
+          {
+              j=next[j-1];
+              printf(&quot;%d &quot;,i-n+1);
+          }
+ }
+</code></pre>
+<h4>Tire树</h4>
+<p>需要变量：<code>int son[N][26],cnt[N],id</code></p>
+<p>高效地存储和查找字符串</p>
+<p>集合的数据结构</p>
+<p>每一个出现的结点都会有唯一一个编号idx（也即rxc说的指针）<br>不是按层数来编的，是按出现的先后顺序编的</p>
+<p>idx是先把idx自增1再赋值给<code>son[p][u]</code>，而idx是先自增1再赋值给<code>son[p][u]</code>，二者的区别在于，习惯于根节点的编号为0，而存储每一个单词下标是从1开始的，idx++相当于第一个值赋值给了根节点，理解一下这里</p>
+<pre><code>int son[N][26], cnt[N], idx;
+// 0号点既是根节点，又是空节点
+// son[][]存储树中每个节点的子节点
+// cnt[]存储以每个节点结尾的单词数量
+
+// 插入一个字符串
+void insert(char *str)
+{
+    int p = 0;
+    for (int i = 0; str[i]; i ++ )
+    {
+        int u = str[i] - &#39;a&#39;;
+        if (!son[p][u]) son[p][u] = ++ idx;
+        p = son[p][u];
+    }
+    cnt[p] ++ ;
+}
+
+// 查询字符串出现的次数
+int query(char *str)
+{
+    int p = 0;
+    for (int i = 0; str[i]; i ++ )
+    {
+        int u = str[i] - &#39;a&#39;;
+        if (!son[p][u]) return 0;
+        p = son[p][u];
+    }
+    return cnt[p];
+}
+</code></pre>
+<pre><code>#include&lt;iostream&gt;
+#include&lt;string.h&gt;
+using namespace std;
+const int N = 100010;
+int son[N][26],cnt[N],idx;//son[p][u]表示该串下一个字母的位置，cnt负责标记，表示这个树的路径（字符串）的次数
+void insert(char* s)
+{
+    int p=0;
+    for(int i=0;s[i];i++)
+    {
+        int u=s[i]-&#39;a&#39;;
+        if(!son[p][u]) son[p][u]=++idx;
+        //son[p][u]=idx就是把下一个结点的位置存在当前的son[p][u]里,if就是判断是否这个结点有孩子
+        //比如之前插入了abc，再插入ab的时候就会判断，如果有就不需要继续插入了，就直接顺延
+        p=son[p][u];
+    }
+    cnt[p]++;
+}
+int query(char* s)
+{
+    int p=0;
+    for(int i=0;s[i];i++)
+    {
+        int u=s[i]-&#39;a&#39;;
+        if(!son[p][u]) return 0;
+        p=son[p][u];
+    }
+    return cnt[p];
+}
+int main()
+{
+    int n;
+    char op[2];
+    char s[N];
+    scanf(&quot;%d&quot;,&amp;n);
+    for(int i=0;i&lt;n;i++)
+    {
+        scanf(&quot;%s%s&quot;,op,s);
+
+        if(op[0]==&#39;I&#39;)
+        {
+            insert(s);
+        }
+        if(op[0]==&#39;Q&#39;)
+        {t
+            printf(&quot;%d\n&quot;,query(s));
+        }
+    }
+    
+}
+</code></pre>
+<h4>并查集：</h4>
+<p><a href="https://www.acwing.com/solution/content/33345/">AcWing 836. 基础_并查集_合并集合java_python_c++ - AcWing</a></p>
+<pre><code>int find(int x)
+    {
+        if(p[x]==x) return x;
+        return p[x]=find(p[x]);
+    }
+</code></pre>
+<p><strong>合并</strong></p>
+<p>把一个集合的根指向另一个集合的根</p>
+<pre><code>void unionset(int x,int y){
+
+fa[find(x)]=find(y);
+
+}
+</code></pre>
+<p><strong>按秩合并（启发式合并）</strong></p>
+<p>实际一般用不到，因为路径压缩已经做的够优秀了</p>
+<p>把小集合的根指向大集合的根</p>
+<pre><code>//记录并初始化子树的大小为1
+vector&lt;int&gt;siz(N,1);
+void unionset(int x,int y){
+    x=find(x),y=find(y);
+    if(x==y) return;
+    if(siz[x]&gt;siz[y]) swap(x,y);
+    fa[x]=y;
+    siz[y]+=siz[x];
+}
+</code></pre>
+<p>p[N] 中 每一个··节点表示当前节点所指向的父节点</p>
+<p>快速支持以下操作</p>
+<ol>
+<li>将两个集合合并</li>
+<li>询问两个元素是否在一个集合当中</li>
+</ol>
+<p>基本原理：每个集合用一棵树来表示。树根的编号就是整个集合的编号。每个结点存储它的父节点，p[x]表示x的父节点</p>
+<p>问题1：如何判断树根：<code>if(p[x]==x)</code></p>
+<p>问题2：如何求x的集合编号：<code>while(p[x]!=x) x=p[x];</code></p>
+<p>问题3：如何合并两个集合：px是x的集合编号，py是y的集合编号，<code>p[x]=y</code></p>
+<p>并查集优化：遍历过一次每个结点直接指向根节点 路径压缩</p>
+<h4>堆：</h4>
+<p>需要的变量：<code>h[N],size</code></p>
+<ol>
+<li><p>插入一个数</p>
+</li>
+<li><p>求集合当中的最小值</p>
+</li>
+<li><p>删除最小值</p>
+</li>
+<li><p>删除任意一个元素</p>
+</li>
+<li><p>修改任意一个元素</p>
+<p><img src="C:%5CUsers%5C%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20221112173131690.png" alt="image-20221112173131690"></p>
+</li>
+</ol>
+<p>满足完全二叉树</p>
+<ol>
+<li><p>小根堆：每一个点是小于它左右两边的最小值</p>
+</li>
+<li><p>存储：一维数组来存</p>
+</li>
+</ol>
+<h4>哈希表</h4>
+<h5>一般哈希：</h5>
+<p><img src="C:%5CUsers%5C%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20230221224809070.png" alt="image-20230221224809070"></p>
+<pre><code>(1) 拉链法
+    int h[N], e[N], ne[N], idx;//h[i]存的链表头结点下标,e[i]存的是链表的值，ne[i]是e[i]结点下一个结点的位置，idx是最新可用的点的下标
+//head始终是头结点的下标，
+
+    // 向哈希表中插入一个数
+    void insert(int x)
+    {
+        int k = (x % N + N) % N;//jiang
+        e[idx] = x;
+        ne[idx] = h[k];
+        h[k] = idx ++ ;
+    }
+
+    // 在哈希表中查询某个数是否存在
+    bool find(int x)
+    {
+        int k = (x % N + N) % N;
+        for (int i = h[k]; i != -1; i = ne[i])
+            if (e[i] == x)
+                return true;
+
+        return false;
+    }
+
+(2) 开放寻址法
+    int h[N];
+
+    // 如果x在哈希表中，返回x的下标；如果x不在哈希表中，返回x应该插入的位置
+    int find(int x)
+    {
+        int t = (x % N + N) % N;
+        while (h[t] != null &amp;&amp; h[t] != x)//如果这个坑位有人且不是要找的人，找下个坑位，不会死循环是因为开的空间是数据的两倍
+        {
+            t ++ ;
+            if (t == N) t = 0;
+        }
+        return t;
+    }
+</code></pre>
+<h5>字符串哈希</h5>
+<p>判断串里是否有一段串跟另一段串一样</p>
+<p>进制：131</p>
+<p>需要：<code>h[N],x[N]</code></p>
+<p>需要BKDR_hash和geth_hash</p>
+<pre><code>#include&lt;iostream&gt;
+using namespace std;
+typedef unsigned long long ULL;
+const int X = 131;
+const int N = 100010;
+char s[N];
+ULL h[N], x[N];
+void BKDR_hash(string s)
+{
+    h[0] = s[0];
+    x[0] = 1;
+    for(int i = 1 ; i &lt; s.size() ; i++)
+    {
+        h[i] = h[i - 1]*X + s[i];
+        x[i] = x[i - 1]*X;
+    }
+}
+ULL get_hash(int left,int right)
+{
+    return left?h[right]-h[left-1]*x[right-left+1]:h[right];
+}
+int main()
+{
+    int n,m;
+    int l1,r1,l2,r2;
+    scanf(&quot;%d%d&quot;,&amp;n,&amp;m);
+    scanf(&quot;%s&quot;,s);
+    BKDR_hash(s);
+    for(int i=0;i&lt;m;i++)
+    {
+        scanf(&quot;%d%d%d%d&quot;,&amp;l1,&amp;r1,&amp;l2,&amp;r2);
+        if(get_hash(l1-1,r1-1)==get_hash(l2-1,r2-1)) printf(&quot;Yes\n&quot;);
+        else printf(&quot;No\n&quot;);
+    }
+}
+</code></pre>
+<p><a href="https://blog.csdn.net/hyman_yx/article/details/54410619">Trie树和字符串哈希都是用于快速检索的数据结构。Trie树典型应用于快速检索（最长前缀匹配），统计，排序和保存大量的字符串，所以经常被搜索引擎系统用于文本词频统计，搜索提示等场景。它的优点是最大限度地减少无谓的字符串比较，查询效率比较高。Trie树的核心思想是空间换时间，利用字符串的公共前缀来降低查询时间的开销以达到提高效率的目的</a><a href="https://blog.csdn.net/hyman_yx/article/details/54410619">1</a>。</p>
+<p><a href="https://developer.aliyun.com/article/59584">而哈希表则是一种理想情况下不需要任何比较就能一次存取得到所查记录的数据结构。它通过在记录存储位置和关键字之间建立一个确定对应关系f来实现这一点，使每个关键字和一个唯一存储位置相对应。因此，在查找时只需根据这个对应关系f找到给定值K的像f(K)，不需要进行比较便可直接取得所查记录</a><a href="https://developer.aliyun.com/article/59584">2</a>。</p>
+<p><a href="https://blog.csdn.net/hyman_yx/article/details/54410619">Trie树典型应用于快速检索（最长前缀匹配），统计，排序和保存大量的字符串，所以经常被搜索引擎系统用于文本词频统计，搜索提示等场景</a><a href="https://blog.csdn.net/hyman_yx/article/details/54410619">1</a>。哈希表则可以用于快速查找和存储数据。</p>
+<p>例如，在一个字典中查找一个单词是否存在，可以使用Trie树来实现。而在一个数据库中查找某个记录，则可以使用哈希表来实现。</p>
+<p>总之，在处理大量字符串且需要最长前缀匹配时使用Trie树可能更合适；而在其他情况下使用哈希表可能更合适。</p>
+<h4>图论</h4>
+<p>邻接表存储树和图分析</p>
+<p>idx表示边的索引；<br>e[] 表示idx条边的结束节点是什么；<br>ne[] 表示idx条边的同起点的下一条边的idx；<br>h[] 表示节点索引；</p>
+<pre><code class="language-c++">idx = 0;
+for(int i=0;i&lt;n;++i)
+{
+h[i] = -1;
+}
+
+void add(int a, int b)
+{
+    e[idx] = b;
+    ne[idx] = h[a];
+    h[a] = idx;
+    idx++;
+}
+</code></pre>
+<p>注意： idx代表的是边的索引，h[a]返回起点为a的节点出去的第一条边的idx；<br>用e[idx]取出终点，当ne[idx] ！= -1 时，一直用ne去边，用e取终点节点。</p>
+<p>拓扑、dfs、并查集都可以图中判断有没有环， floyd可以找最小环</p>
+<p>1.DFS：递归结束条件的选择+状态标记+递归后的恢复<br>2.BFS：模拟队列 q[N], d[N] 使用d数组标记状态<br>3.搜索：解空间的搜索往往需要dfs+剪枝，bfs用来找最短路<br>4.树和图的存储：邻接表 h[N], e[N], ne[N], idx<br>5.树和图的遍历：遍历不用像搜索解空间一样递归后恢复，只用遍历一次即可</p>
+<h5>思维导图</h5>
+<img src="D:\typora笔记\基础算法.assets\image-20240717104327472.png" alt="image-20240717104327472" style="zoom:50%;" />
+
+<img src="D:\typora笔记\基础算法.assets\image-20240717104924144.png" alt="image-20240717104924144" style="zoom:50%;" />
+
+<h5>Dijkstra算法</h5>
+<p>记忆：外面集合的点与里面集合的点最短的距离</p>
+<p>稠密图 外循环每次选择一条路径，先找到离起始点（这里为1）最近的点，内循环1.for循环找到没选入路径里离起始点最近的点 2.找到后通过这个点对其他点距离更新，把新的点标记表示选上了</p>
+<p>用堆优化，散列表。稀疏图</p>
+<pre><code>#include&lt;iostream&gt;
+#include&lt;string.h&gt;
+#include&lt;stdlib.h&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+const int N = 510;
+int n, m;
+int g[N][N];//稠密图运用矩阵存储
+int dist[N];//dist[i]表示i点到起点的距离
+bool st[N];//存已找到最短路径的点
+int dijkstra()
+{
+    memset(dist,0x3f,sizeof(dist));//初始化距离
+    dist[1]=0;//***一定记得初始化，起点到起点的距离为0
+    for(int i=1;i&lt;n;i++)//每次要选择一条路径，最短路径至少需要n-1条，故1~n-1
+    {
+        int t=-1;//找到离起始点（这里为1）最近的点
+        for(int j=1;j&lt;=n;j++)//把每个点遍历一边找到可以选择的点
+        {
+           if(!st[j]&amp;&amp;(t==-1||dist[t]&gt;dist[j]))//如果这个点没连上且还没开始选或者此时的点比t点离起点更近，更新
+                t=j;
+        }
+
+        for(int j=1;j&lt;=n;j++)//通过新的点进行节点距离更新
+        {
+            dist[j]=min(dist[j],dist[t]+g[t][j]);
+        }
+        st[t]=true;//把新加的点连上
+
+    }
+    if(dist[n]==0x3f3f3f3f) return -1;//如果这个点跟起点的距离仍是0x3f3f3f3f说明到不了n点
+    return dist[n];
+}
+int main()
+{
+    int x,y,z;
+    scanf(&quot;%d%d&quot;,&amp;n,&amp;m);
+    for(int i=1;i&lt;=n;i++)
+    {
+        for(int j=1;j&lt;=n;j++)
+        {
+            if(i==j) g[i][j]=0;
+            else g[i][j]=0x3f3f3f3f;
+        }
+    }
+    for(int i=0;i&lt;m;i++)
+    {
+        scanf(&quot;%d%d%d&quot;,&amp;x,&amp;y,&amp;z);
+        g[x][y]=min(g[x][y],z);//重边把最小的权值换上
+    }
+
+    printf(&quot;%d&quot;,dijkstra());
+
+}
+</code></pre>
+<h5>bellman_ford算法</h5>
+<ol>
+<li><p>可以限制经过边数</p>
+</li>
+<li><p>需要</p>
+<pre><code>sturct Edge{
+
+int a,b,c;//a为边起点，b为边终点，c为边的权
+
+}edges[M],dist[N],last[N]//需要每次外循环备份dist 记得dist和dist[1]要初始化
+</code></pre>
+</li>
+<li><p>内层循环是将每条边进行更新</p>
+<p>两层循环 外层经历边数，</p>
+<p>内层为auto <code>e=edge[j];</code></p>
+<p><code>dist[e.b]=min(dist[e.b],dist[e.a]+e.c);</code></p>
+</li>
+<li><p>备份原因：防止串联<a href="https://blog.csdn.net/qq_52905520/article/details/126453516">(46条消息) Bellman-ford算法详解_真的没事鸭的博客-CSDN博客</a></p>
+</li>
+</ol>
+<h5>spfa（稀疏图）</h5>
+<p>用队列（或者数组来进行优化）优化bellman_ford</p>
+<p>因为bellman_ford算法如果dist[e.a]都没变小就没必要更新</p>
+<p>注意：一定要求题目中不能有负环，所以可以利用这个性质判断是否有负环</p>
+<p>需要变量：</p>
+<pre><code>int h[N], w[N], e[N], ne[N], idx;//用邻接表来存储
+int dist[N];//存距离 记得dist和dist[1]要初始化
+bool st[N];//判断是否在队列存在
+queue&lt;int&gt; q;//队列里存的是节点号
+cnt[N];//可以维护判断是否有负环
+</code></pre>
+<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20221121222707991.png" alt="image-20221121222707991" style="zoom:67%;" />
+
+<p>spfa判断是否有负环通过cnt来记录，如果cnt[j]&gt;=n则说明有负环</p>
+<p>注意要全部入队，因为1并不一定能到负环。</p>
+<p>因为本质上spfa算法是对bellman_ford算法的优化，而<strong>bellman-ford算法遍历k次求出的是从源点经过不超过k条边走到任一点的最短距离</strong>，若两点之间的距离在第n-1次更新后还能更新，不就说明两点之间存在超过n-1条边的最短路了么，那不就是说说存在负环吗。</p>
+<h5>Floyd</h5>
+<p>需要变量</p>
+<pre><code>int d[N][N];//注意初始化
+d[i][j]=min(d[i][j],d[i][k]+d[k][j]);
+</code></pre>
+<h5>Prim</h5>
+<p><img src="C:%5CUsers%5C%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20230225214324918.png" alt="image-20230225214324918"></p>
+<p>朴素Prim（稠密图）</p>
+<p>初始：所有点到集合的距离为正无穷</p>
+<p>没选起始点，迭代n次</p>
+<p>dist[i] &lt;- 正无穷</p>
+<pre><code>for(int i=0;i&lt;n;i++)
+{
+    t&lt;-找到集合外距离最近的点//第一次可以随便选
+    用t更新其他点到集合的距离
+    st[t]=true;
+}
+</code></pre>
+<p>堆优化Prim</p>
+<h5>克鲁斯卡尔算法（稀疏图)</h5>
+<p>需要变量：struct edge 因为只需要保存边的</p>
+<p>算法思路： 先把所有边按权值排序，然后根据并查集找到集合没有的点且该边为所有边最小的边后加入集合，统计集合中点的数量，如果边的数量小于n-1说明没有联通，否则就输出最小生成树的权值</p>
+<h5>染色法</h5>
+<p>判断是否是二分图的算法，通过dfs染色</p>
+<p>注意无向图add的时候</p>
+<pre><code>bool dfs(int u, int color) {
+    st[u] = color;
+
+    for(int i = h[u]; i != -1; i = ne[i]){
+        int j = e[i];
+        if(!st[j]) {
+            if(!dfs(j, 3 - color)) return false;
+        }else if(st[j] == color) return false;
+    }
+
+    return true;
+}
+</code></pre>
+<p>主函数注意每个点如果没染色都染色</p>
+<pre><code> bool flag = true;
+    for(int i = 1; i &lt;= n; i ++){
+        if(!st[i]){
+            if(!dfs(i, 1)){
+                flag = false;
+                break;
+            }
+        }
+    }
+</code></pre>
+<h5>匈牙利算法</h5>
+<pre><code>#include &lt;cstring&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+const int N = 510, M = 100010;
+
+int n1, n2, m;
+int h[N], e[M], ne[M], idx;
+int match[N];  // match[i]：女生i的对象
+bool query[N];  // bool st[N];  // 男生是否询问过女生
+
+void add(int a, int b) {
+    e[idx] = b, ne[idx] = h[a], h[a] = idx ++ ;
+}
+
+int find(int x) {
+    for (int i = h[x]; i != -1; i = ne[i]) {  // 遍历男生x的所有可联系女生
+        int j = e[i];  // 女生的编号j
+        if (!query[j]) {  // 如果没询问过
+            query[j] = true;  // 标记为询问，然后去问她
+            if (!match[j] || find(match[j])){  // 如果女生j没有对象，或者女生j的对象match[j]可以再找一个。  // highlight：query的作用就在这里，递归产生的find栈不会再去询问match[j]自己的对象j
+                match[j] = x;  // 那女生j把男生x作为对象
+                return true;  // 男生x成功找到对象（在未询问女生中）
+            }
+        }
+    }
+
+    return false;  // 男生x没找着对象（在未询问女生中）
+}
+
+int main() {
+    memset(h, -1, sizeof h);
+
+    scanf(&quot;%d%d%d&quot;, &amp;n1, &amp;n2, &amp;m);
+
+    for (int i = 0; i &lt; m; i ++ ) {
+        int a, b;
+        scanf(&quot;%d%d&quot;, &amp;a, &amp;b);
+        add(a, b);
+    }
+
+    int res = 0;
+    for (int i = 1; i &lt;= n1; i ++ ) {
+        memset(query, false, sizeof query);  // 重复使用query，每个男生最初都没有询问过女生
+        if (find(i)) res ++ ;
+    }
+
+    printf(&quot;%d\n&quot;, res);
+
+    return 0;
+}
+</code></pre>
+<h4>数学知识</h4>
+<p>筛质数 埃式筛法 线性筛法</p>
+<p>从小到大枚举每个数</p>
+<p>如果当前数没划掉，必定是质数，记录该质数，枚举当前质数的倍数，必定是合数，划掉合数。</p>
+<p><img src="C:%5CUsers%5C%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20230106164833221.png" alt="image-20230106164833221"></p>
+<p><img src="C:%5CUsers%5C%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20230106181915190.png" alt="image-20230106181915190"></p>
+<pre><code>6.2:埃氏筛(稍加优化版的筛法).
+(1).质数定理:1~n中有n/lnn个质数.
+(2).原理:在朴素筛法的过程中只用质数项去筛.
+(3).时间复杂度:粗略估计:O(n).实际:O(nlog(logn)).
+(4).1~n中,只计算质数项的话,”1/2+1/3+1/4+1/5+…+1/n”的大小约为log(logn).
+6.3:线性筛
+(1).若n在10的6次方的话,线性筛和埃氏筛的时间效率差不多,若n在10的7次方的话,线性筛会比埃氏筛快了大概一倍.
+(2).思考:一:线性筛法为什么是线性的?
+二:线性筛法的原理是什么?
+(3).核心:1~n内的合数p只会被其最小质因子筛掉.
+(4).原理:1~n之内的任何一个合数一定会被筛掉,而且筛的时候只用最小质因子来筛,
+然后每一个数都只有一个最小质因子,因此每个数都只会被筛一次,因此线性筛法是线性的.
+(5).枚举到i的最小质因子的时候就会停下来,即”if(i%primes[j]==0) break;”.
+(6).因为从小到大枚举的所有质数,所以当”i%primes[j]!=0”时,primes[j]一定小于i的最小质因子,
+primes[j]一定是primes[j]i的最小质因子.
+(7).因为是从小到大枚举的所有质数,所以当”i%primes[j]==0”时,primes[j]一定是i的最小质因子,
+而primes[j]又是primes[j]的最小质因子,因此primes[j]是iprimes[j]的最小质因子.
+(8).关于for循环的解释:
+注:首先要把握住一个重点:我们枚举的时候是从小到大枚举的所有质数
+1.当i%primes[j]==0时,因为是从小到大枚举的所有质数,所以primes[j]就是i的最小质因子,而primes[j]又是其本身
+primes[j]的最小质因子,因此当i%primes[j]==0时,primes[j]是primes[j]i的最小质因子.
+2.当i%primes[j]!=0时,因为是从小到大枚举的所有质数,且此时并没有出现过有质数满足i%primes[j]==0,
+因此此时的primes[j]一定小于i的最小质因子,而primes[j]又是其本身primes[j]的最小质因子,
+所以当i%primes[j]!=0时,primes[j]也是primes[j]*i的最小质因子.
+3.综合1,2得知,在内层for循环里面无论何时,primes[j]都是primes[j]i的最小质因子,因此”st[primes[j]*i]=true”
+语句就是用primes[j]i这个数的最小质因子来筛掉这个数.
+</code></pre>
+<p>分解质因数 唯一分解定理 试除法</p>
+<p><img src="C:%5CUsers%5C%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20230107103929896.png" alt="image-20230107103929896"></p>
+<p> <img src="C:%5CUsers%5C%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20230111105948906.png" alt="image-20230111105948906"></p>
+<p><ifram src="//player.bilibili.com/player.html?aid=763614192&bvid=BV19r4y127fu&cid=424201509&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" > </iframe></p>
+<h4>C++ STL</h4>
+<p><a href="https://blog.csdn.net/qq_39838607/article/details/119653496">(14条消息) c++ map通过值找键与通过键找值得方法(全）_c++中map怎么用值查键_落春只在无意间的博客-CSDN博客</a></p>
+<p><a href="https://www.acwing.com/blog/content/25/">求解斐波那契数列的若干方法 - AcWing</a></p>
+<p><a href="https://blog.csdn.net/yas12345678/article/details/52601454">(61条消息) C++中set用法详解_c++ set_Donny-You的博客-CSDN博客</a></p>
+<h4>石子合并</h4>
+<p>每次合并两个最小的</p>
+<p>A B C</p>
+<p>A《B《C</p>
+<p>A+B+A+B+C《B+C+B+C+A</p>
+<p>同时我要知道合并之后此时邻居下一次最小的是谁</p>
+<p>问题变成怎么快速找到一个数组里面a[i]+a[i+1]最小的</p>
+<p>但注意到先合并和较小的两个的结果一般较优，考虑是否能按先合并小的来求最小值，这种方法是错误的</p>
+<p>当其中一个数 与左边合并 和与右边合并消耗相同时，选法不同，结果会不同 ，贪心随机选左边或右边所以不一定正确。</p>
+<p>关键点：最后一次合并一定是左边连续的一部分和右边连续的一部分进行合并</p>
+<p><strong>递归搜索+保存计划结果=记忆化搜索</strong></p>
+<p>把递归的计算结果保存下来，那么下次递归到同样的入参时就直接返回先前保存的结果<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20231129210717353.png" alt="image-20231129210717353" style="zoom:67%;" /></p>
+<p>石子合并</p>
+<p>递归写法（暴力写法）</p>
+<p>思路：递归，hash判断是否这个stock被合了无了。</p>
+<pre><code class="language-c++">#include&lt;iostream&gt;
+const int n=100010;
+int N;
+int stocks[n];
+int hash[n];
+int record[n][2]; 
+int min=0x3f3f3f3f;
+void dfs(int* stocks,int cost,int cnt)
+{
+    if(cnt==0)
+    {
+        //   for(int i=N-1;i&gt;0;i--)
+        //   {
+        //       printf(&quot;%d %d\n&quot;,record[i][0],record[i][1]);
+        //   }
+        //   printf(&quot;cost%d &quot;,cost);
+      if(min&gt;cost) {
+          min = cost;
+        
+        //   printf(&quot;\n&quot;);
+      }
+      
+        return ;
+    }
+    for(int i=0;i&lt;N-1;i++)
+    {
+        if(hash[i]) 
+        {
+            int second=0;
+            for(int j=i+1;j&lt;N;j++)
+            {
+                if(hash[j])
+                {
+                    second = j;
+                    break;
+                }
+                
+        
+            }
+            if(second==N) continue;
+            int tmp = stocks[second];
+            hash[i]=0,stocks[second]=stocks[second]+stocks[i];
+            record[cnt][0]=i;
+            record[cnt][1]=i+1;
+            // printf(&quot;co%d &quot;,cost);
+             dfs(stocks,cost+stocks[second],cnt-1);
+            hash[i]=1,stocks[second]=tmp;
+        }
+    }
+    return ;
+}
+int main()
+{
+    scanf(&quot;%d&quot;,&amp;N);
+    for(int i=0;i&lt;N;i++)
+    {
+        scanf(&quot;%d&quot;,&amp;stocks[i]);
+        hash[i]=1;
+        record[i][0]=-1;
+        record[i][1]=-1;
+    }
+    dfs(stocks,0,N-1);
+    printf(&quot;%d &quot;,min);
+}
+
+</code></pre>
+<p>转化为记忆化搜索</p>
+<img src="D:\typora笔记\基础算法.assets\image-20231202205741869.png" alt="image-20231202205741869" style="zoom:50%;" />
+
+<pre><code class="language-c++">#include&lt;stdio.h&gt;
+#include&lt;string.h&gt;
+using namespace std;
+const int N=310;
+int n;
+int a[N],dp[N][N];
+int s[N];
+int dfs(int l,int r)
+{
+    if(dp[l][r]!=0x3f3f3f3f) return dp[l][r];
+    if(l==r) {
+        dp[l][r]=0;
+        return 0;
+    }
+    int min=0x3f3f3f3f;
+    for(int i=l;i&lt;r;i++)
+    {
+        
+        min=min&gt;dfs(l,i)+dfs(i+1,r)?dfs(l,i)+dfs(i+1,r):min;
+       
+    }
+    dp[l][r]=min+s[r]-s[l-1];
+    // printf(&quot;%d = dp[%d][%d] &quot;,dp[l][r],l,r);
+     return dp[l][r];
+}
+int main()
+{
+    scanf(&quot;%d&quot;,&amp;n);
+    
+    for(int i=1;i&lt;=n;i++)
+    {
+        scanf(&quot;%d&quot;,&amp;a[i]);
+        s[i]=s[i-1]+a[i];
+    }
+    memset(dp,0x3f3f3f3f,sizeof(dp));
+    
+    printf(&quot;%d&quot;,dfs(1,n));
+
+}
+</code></pre>
+<img src="D:\typora笔记\基础算法.assets\image-20231202215110757.png" alt="image-20231202215110757" style="zoom:50%;" />
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

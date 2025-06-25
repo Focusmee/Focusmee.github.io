@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Git学习】如何将Unity项目上传到Github进行管理 | Focusmee</title>
+    <meta name="description" content="【Git学习】如何将Unity项目上传到Github进行管理">
+    <meta property="og:title" content="【Git学习】如何将Unity项目上传到Github进行管理">
+    <meta property="og:description" content="【Git学习】如何将Unity项目上传到Github进行管理">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Git学习】如何将Unity项目上传到Github进行管理</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">3 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Git学习】如何将Unity项目上传到Github进行管理</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>如何将Unity项目上传到Github进行管理</h1>
+<h2>1.下载安装Git</h2>
+<p>忽略，自行安装</p>
+<h2>2.在Github上面新建一个仓库</h2>
+<p>如下图，这里.gitignore文件十分建议选择Unity模板</p>
+<h2>3.复制仓库地址</h2>
+<p>把这里的地址复制一下，后面需要用</p>
+<h2>4.在项目文件夹打开Git Bash</h2>
+<p>进入项目文件夹右击选择Git Bash Here</p>
+<h3>4.1初始化仓库</h3>
+<p>输入</p>
+<p>git init</p>
+<h3>4.2建立远程连接</h3>
+<p>输入</p>
+<p>git remote add origin <a href="https://github.com/xxxx/xxxx.git%EF%BC%88%E4%B9%8B%E5%89%8D%E5%A4%8D%E5%88%B6%E7%9A%84%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80%EF%BC%89">https://github.com/xxxx/xxxx.git（之前复制的仓库地址）</a></p>
+<h3>4.3配置信息</h3>
+<p>输入</p>
+<p>git config user.name &quot;名字&quot;<br>git config user.email &quot;邮箱&quot;</p>
+<p>或</p>
+<p>git config --global user.name &quot;名字&quot;<br>git config --global user.email &quot;邮箱&quot;</p>
+<p>后者只需要一次，以后上传其他仓库仍按保留，不再需要进行配置</p>
+<h3>4.4下载仓库到本地</h3>
+<p>输入</p>
+<p>git pull origin master</p>
+<p>完成后，本地文件夹会下载空仓库中的.gitignore和LICENSE文件，务必确保执行这一步之前本地文件夹没有这两个文件</p>
+<h3>4.5上传项目到仓库</h3>
+<p>输入</p>
+<p>git add .<br>git commit -m &quot;备注&quot;<br>git push origin master</p>
+<p>至此完成本地项目的上传</p>
+<h2>总结</h2>
+<p>github创建新仓库(master)，本地现有项目上传<br>1.git init<br>2.git remote add origin <a href="https://github.com/xxxx/xxxx.git">https://github.com/xxxx/xxxx.git</a><br>3.git pull origin master 这一步经常连接不上<br>4.git add .<br>5.git commit -m “备注”<br>6.git push origin master</p>
+<p>强制添加被ignore的文件<br>1.git add -f Builds/<br>2.git commit -m “备注”<br>3.git push origin master</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

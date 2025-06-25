@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数值常量的类型转换和二进制需要注意的坑 - 技术博客</title>
+    <meta name="description" content="数值常量的类型转换和二进制需要注意的坑 - Go语言相关技术文章">
+    <meta name="keywords" content="Go语言, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">Go语言</span>
+            <span class="separator">›</span>
+            <span class="current-page">数值常量的类型转换和二进制需要注意的坑</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag golang">🚀 Go语言</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 2 分钟阅读</span>
+                </div>
+                <h1 class="post-title">数值常量的类型转换和二进制需要注意的坑</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p>---<br />title:数值常量的类型转换和二进制需要注意的坑<br />---<br /><br /><h2>数值常量</h2><br /><br />数值常量是高精度的 <strong>值</strong>。<br /><br />一个未指定类型的常量由上下文来决定其类型。<br /><br />源代码是这样的<br /><br />```go<br />package main<br /><br />import "fmt"<br /><br />const (<br />	// 将 1 左移 100 位来创建一个非常大的数字<br />	// 即这个数的二进制是 1 后面跟着 100 个 0<br />	Big = 1 << 100<br />	// 再往右移 99 位，即 Small = 1 << 1，或者说 Small = 2<br />	Small = Big >> 99<br />)<br /><br />func needInt(x int) int { return x*10 + 1 }<br />func needFloat(x float64) float64 {<br />	return x * 0.1<br />}<br /><br />func main() {<br />	fmt.Println(needInt(Small))<br />	fmt.Println(needFloat(Small))<br />	fmt.Println(needFloat(Big))<br />}<br /><br />```<br /><br />然后突发奇想试试63测试边界，但是直接报错<br /><br />```<br />./prog.go:19:15: cannot use Big (untyped int constant 9223372036854775808) as int value in argument to fmt.Println (overflows)<br />```<br /><br />```go<br />package main<br /><br />import "fmt"<br /><br />const (<br />	Big = 1 << 63<br />	Small = Big >> 99<br />)<br /><br />func needInt(x int) int { return x*10 + 1 }<br />func needFloat(x float64) float64 {<br />	return x * 0.1<br />}<br /><br />func main() {<br />	fmt.Println(needInt(Small))<br />	fmt.Println(needFloat(Small))<br />	fmt.Println(needFloat(Big))<br />	 fmt.Println(Big)<br />}<br /><br />```<br /><br />这是因为Go 中的常量是 <strong>无类型的</strong>（untyped），会根据使用的上下文来推断类型。在 `1 << 63` 这种表达式中，由于它是一个非常大的数字，Go 会推导它为 `untyped int constant`，这会导致溢出错误。当你尝试将其赋给 `int64` 时，编译器会认为它超出了 `int64` 类型的范围，导致错误。<br /><br />而如果想要得到-9223372036854775808，也就是1作为符号位，就要<br /><br />```go<br />var Big2 int64 = -(1<<63)<br />```<br /><br />手动添加符号</p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">Go语言</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

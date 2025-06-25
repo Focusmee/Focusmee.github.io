@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深入理解Go模块管理：探讨go mod tidy和go mod vendor - 技术博客</title>
+    <meta name="description" content="深入理解Go模块管理：探讨go mod tidy和go mod vendor - Go语言相关技术文章">
+    <meta name="keywords" content="Go语言, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">Go语言</span>
+            <span class="separator">›</span>
+            <span class="current-page">深入理解Go模块管理：探讨go mod tidy和go mod vendor</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag golang">🚀 Go语言</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 1 分钟阅读</span>
+                </div>
+                <h1 class="post-title">深入理解Go模块管理：探讨go mod tidy和go mod vendor</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p>title： 深入理解 Go 模块管理：探讨 `go mod tidy` 和 `go mod vendor`<br /><br />Go 语言的模块管理功能极大地简化了依赖管理。本文深入探讨了 go mod tidy 和 go mod vendor 这两个命令的内部机制、使用场景以及它们如何优化 Go 项目。<br /><br /><h3>go mod tidy：保持依赖整洁</h3><br /><br />#### 内部机制<br /><br />- 扫描项目中所有的 Go 文件，分析 import 声明。<br />- 确定项目真正依赖的模块。<br />- 移除 go.mod 文件中存在但项目未引用的依赖。<br />- 添加缺失的依赖并更新 go.sum 文件，包含所有依赖项的加密校验和。<br /><br />#### 使用场景<br /><br />- <strong>依赖清理</strong>：删除代码中的依赖后清理 go.mod 文件。<br />- <strong>升级和降级</strong>：确保 go.mod 文件反映实际使用的依赖版本。<br />- <strong>持续集成</strong>：自动化构建和部署流程中确保依赖清单的准确性。<br /><br /><h3>go mod vendor：管理 Vendor 目录</h3><br /><br />#### 内部机制<br /><br />- 根据 go.mod 文件中的依赖项，复制依赖的精确版本到 vendor 目录下。<br />- 拷贝依赖项的源代码，确保无网络环境下也能构建项目。<br />- 生成 modules.txt 文件，列出所有 vendored 的依赖和版本信息。<br /><br />#### 使用场景<br /><br />- <strong>网络隔离构建</strong>：无法连接到网络时，提前下载所有依赖。<br />- <strong>确保依赖一致性</strong>：防止因依赖仓库不稳定导致的构建失败。<br />- <strong>支持旧构建系统</strong>：旧的 Go 构建系统或工具可能需要 vendor 目录。<br /><br /><h3>总结</h3><br /><br />go mod tidy 和 go mod vendor 是维护 Go 项目依赖的不可或缺的工具。合理使用这两个命令，可以让 Go 项目的依赖管理更加稳健和可维护。随着 Go 语言在工程领域的不断深入，理解和掌握这些工具至关重要。</p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">Go语言</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

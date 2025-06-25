@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【MinIO】文件存储服务器 | Focusmee</title>
+    <meta name="description" content="【MinIO】文件存储服务器">
+    <meta property="og:title" content="【MinIO】文件存储服务器">
+    <meta property="og:description" content="【MinIO】文件存储服务器">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【MinIO】文件存储服务器</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">7 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【MinIO】文件存储服务器</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <p>本文主要记录一下<code>docker</code>如何安装和启动<code>minio</code>，先看一下成功启动的步骤：</p>
+<p>首先下载相关镜像：</p>
+<pre><code class="language-bash">bash 代码解读复制代码# 搜索minio镜像
+docker search minio
+# 下载minio/minio
+docker pull minio/minio
+</code></pre>
+<p>创建文件挂载目录：</p>
+<pre><code class="language-bash">bash 代码解读复制代码sudo mkdir /opt/docker/minio/miniodata
+# 提供可写的权限，否则启动时会出现如下错误
+# unable to use the drive /data:file access denied: Invalid arguments specified
+sudo chmod 777 /opt/docker/minio/miniodata
+</code></pre>
+<p>启动：<code>minio</code></p>
+<pre><code class="language-bash">bash 代码解读复制代码docker run \
+-p 9000:9000 \
+-p 5001:5001 \
+-v /opt/docker/minio/miniodata:/data \
+-e &quot;ROOT_ACCESS_KEY=minioadmin&quot; \
+-e &quot;ROOT_SECRET_KEY=minioadmin&quot; \
+-d minio/minio server /data --console-address &quot;:5001&quot;
+</code></pre>
+<p>命令说明：</p>
+<blockquote>
+<ol>
+<li>docker run：启动程序</li>
+<li>-p：指定端口号 9000: 是minio默认的端口号</li>
+<li>-v：指定挂载目录，这是因为如果不指定，当容器被删除之后容器的数据将会丢失。</li>
+<li>-e：指定环境变量，这里是指定了<code>minio dashboard</code>的登录账号和密码。</li>
+<li>-d：后台运行 <code>minio/minio</code> 是我们下载的镜像，server /data 是minio的命令指定文件存放的目录。--console-address：指定<code>minio dashbord</code>的端口号。有时在命令后面还会看见 -address参数，该参数指定的是<code>minio s3 api</code> 的端口号。</li>
+</ol>
+</blockquote>
+<p>启动后便可通过<code>docker logs containerId</code>的方式查看<code>log</code>，如果在电脑上安装了<code>docker desktop</code>也可以在容器的<code>logs</code>看到如下信息：</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac95d11aebfb4b2da2e919370801086f~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1484&h=594&s=411864&e=jpg&b=fcfcfc" alt="WechatIMG9.jpg"></p>
+<p>其中<code>s3-api</code>这个地址就可以配置在springboot项目的<code>yaml</code>中，进行文件上传操作。如下所示：</p>
+<pre><code class="language-yml">yml 代码解读复制代码minio:
+  endpoint: http://127.0.0.1:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucketName: minio-first-bucket
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+</code></pre>
+<p>下面的内容就是记录一下踩坑的过程：</p>
+<blockquote>
+<ul>
+<li>本人首先是成功安装启动后，通过<code>spring boot</code>项目上传文件后，文件上传成功但是我的挂载目录本没有这个文件。</li>
+<li>接着从docker官网了解到文件应该是会在挂载目录的，但是由于不知道如何排查这个问题，就将该容器删除，打算重新启动一个容器试一下【大坑】</li>
+<li>在删除之后，按照同样的方式启动，容器就无法启动出现如下信息的错误：<code>unable to rename xxx</code>和<code>unable to use the drive /data:file access denied</code>。</li>
+<li>接着在网上搜寻一番，有的人说是因为之前安装过，不能指定相同的目录，于是呼：换一个目录，失败，删掉之前的目录重新启动，失败！换版本失败！包括但不限于<code>stack overflow</code>或者官网给定的解决方法。 最后在打算放弃的关头：执行了<code>chmod 777 挂载目录</code>，重启成功，不仅重启成功通过<code>java</code>上传文件，在该目录下也有了备份。</li>
+<li>ps: 整个过程大概耗费了三个小时，</li>
+</ul>
+</blockquote>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://link.juejin.cn?target=https%3A%2F%2Fstackoverflow.com%2Fquestions%2F72332735%2Fminio-permission-denied">sof:inio-permission-denied</a></li>
+<li><a href="https://link.juejin.cn?target=https%3A%2F%2Fblog.csdn.net%2FDCTANT%2Farticle%2Fdetails%2F129861486">解决minio启动报ERROR Unable to use the drive ** found backend type fs, expected xl or xl-single</a></li>
+<li><a href="https://link.juejin.cn?target=https%3A%2F%2Fmin.io%2Fdocs%2Fminio%2Fmacos%2Findex.html">MinIO Object Storage for MacOS</a></li>
+</ul>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

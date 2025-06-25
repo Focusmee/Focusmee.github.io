@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>如何使用 VSCode 中的 Code Runner 插件执行 golang 代码 - 技术博客</title>
+    <meta name="description" content="如何使用 VSCode 中的 Code Runner 插件执行 golang 代码 - 开发工具相关技术文章">
+    <meta name="keywords" content="开发工具, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">开发工具</span>
+            <span class="separator">›</span>
+            <span class="current-page">如何使用 VSCode 中的 Code Runner 插件执行 golang 代码</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag tools">🔧 开发工具</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 5 分钟阅读</span>
+                </div>
+                <h1 class="post-title">如何使用 VSCode 中的 Code Runner 插件执行 golang 代码</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p>---<br /><br />title:如何使用 VSCode 中的 Code Runner 插件执行 golang 代码<br /><br />---<br /><br /><br /><br />project 的文档结如下<br /><br />mylab<br />   |—- main.go<br />   |—- test.go<br /><br />main.go<br /><br />```go<br />package main<br /><br />func main() {<br />	test()<br />}<br />```<br /><br />test.go<br /><br />```go<br />package main<br /><br />func test() {<br />	println("in test")<br />}<br />```<br /><br />在<a href="https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner">Code Runner 插件的 Doc 地址</a>中<br />找到如下 Configuration 的配置说明<br /><br />> Configuration<br />> Make sure the executor PATH of each language is set in the environment variable. You could also add entry into code-runner.executorMap to set the executor PATH. e.g. To set the executor PATH for ruby, php and html:<br /><br />```json<br />{<br />  "code-runner.executorMap": {<br />    "javascript": "node",<br />    "php": "C:\\php\\php.exe",<br />    "python": "python",<br />    "perl": "perl",<br />    "ruby": "C:\\Ruby23-x64\\bin\\ruby.exe",<br />    "go": "go run",<br />    "html": "\"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe\"",<br />    "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",<br />    "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"<br />  }<br />}<br />```<br /><br />> Supported customized parameters<br />><br />> - $workspaceRoot: The path of the folder opened in VS Code<br />> - $dir: The directory of the code file being run<br />> - $dirWithoutTrailingSlash: The directory of the code file being run without a trailing slash<br />> - $fullFileName: The full name of the code file being run<br />> - $fileName: The base name of the code file being run, that is the file without the directory<br />> - $fileNameWithoutExt: The base name of the code file being run without its extension<br />> - $driveLetter: The drive letter of the code file being run (Windows only)<br />> - $pythonPath: The path of Python interpreter (set by Python: Select Interpreter command)<br /><br />> Please take care of the back slash and the space in file path of the executor<br />><br />> Back slash: please use \<br />> If there ares spaces in file path, please use " to surround your file path<br /><br />> You could set the executor per filename glob:<br /><br />```json<br />{<br />  "code-runner.executorMapByGlob": {<br />    "pom.xml": "cd $dir && mvn clean package",<br />    "*.test.js": "tap",<br />    "*.js": "node"<br />  }<br />}<br />```<br /><br />可以看到 go 的执行命令默认配置成了 go run, 并且默认执行当前打开的文件。 所以需要利用$dir 这个变量 run 整个 main 包所涉及到的所有文件。并且可以正则匹配文件名。<br /><br />查看一下 go run 这个命令的参数解释，由于众所周知的原因，我们只能上国内的<a href="https://golang.google.cn/cmd/go/#hdr-Compile_and_run_Go_program">替代官网</a>。<br /><br />> Compile and run Go program Usage:<br />><br />> go run [build flags][-exec xprog] package [arguments…] Run compiles and runs the named main Go package. Typically the package is specified as a list of .go source files, but it may also be an import path, file system path, or pattern matching a single known package, as in <strong>‘go run .'</strong> or ‘go run my/cmd’.<br />><br />> By default, ‘go run’ runs the compiled binary directly: ‘a.out arguments…'. If the -exec flag is given, ‘go run’ invokes the binary using xprog:<br />><br />> ‘xprog a.out arguments…'. If the -exec flag is not given, GOOS or GOARCH is different from the system default, and a program named go<em>$GOOS</em>$GOARCH_exec can be found on the current search path, ‘go run’ invokes the binary using that program, for example ‘go_nacl_386_exec a.out arguments…'. This allows execution of cross-compiled programs when a simulator or other execution method is available.<br />><br />> The exit status of Run is not the exit status of the compiled binary.<br />><br />> For more about build flags, see ‘go help build’. For more about specifying packages, see ‘go help packages’.<br /><br />找到了，使用`go run .` 来跑整个 package 的。<br /><br />在 VSCode 的.vscode 目录下创建 settings.json 文件<br /><br />自定义这个 project 的用户配置如下<br /><br />```json<br />{<br />  "code-runner.executorMap": {<br />    "go": "cd $dir && go run ."<br />  },<br />  "code-runner.executorMapByGlob": {<br />    "$dir\\*.go": "go"<br />  }<br />}<br />```<br /><br />点击 Cdoe Runner 在 VSCode GUI 界面提供的 RUN 按钮<br /><br />```<br />[Running] cd "d:\Users\polar\go\src\mylab\" && go run .<br />in test<br /><br />[Done] exited with code=0 in 3.564 seconds<br />```<br /><br />OK!<br /><br />当然也可以用 VSCode Debug 的 launch.json 来配置，但是那是 debug 模式，并不是 go run。</p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">开发工具</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

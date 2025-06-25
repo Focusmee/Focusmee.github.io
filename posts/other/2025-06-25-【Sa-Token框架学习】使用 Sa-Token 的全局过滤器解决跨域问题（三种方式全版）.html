@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Sa Token框架学习】使用 Sa Token 的全局过滤器解决跨域问题（三种方式全版） | Focusmee</title>
+    <meta name="description" content="【Sa Token框架学习】使用 Sa Token 的全局过滤器解决跨域问题（三种方式全版）">
+    <meta property="og:title" content="【Sa Token框架学习】使用 Sa Token 的全局过滤器解决跨域问题（三种方式全版）">
+    <meta property="og:description" content="【Sa Token框架学习】使用 Sa Token 的全局过滤器解决跨域问题（三种方式全版）">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Sa Token框架学习】使用 Sa Token 的全局过滤器解决跨域问题（三种方式全版）</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">2 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Sa Token框架学习】使用 Sa Token 的全局过滤器解决跨域问题（三种方式全版）</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>使用 Sa-Token 的全局过滤器解决跨域问题（三种方式全版）</h1>
+<p>在 web 开发中，跨域绝对是比较折磨新同学的一个问题，本文将讲解三种常见的跨域情形，并讲解如何使用 Sa-Token 框架解决跨域问题。</p>
+<h3>什么情况下会发生跨域</h3>
+<p>简单理解，就是你在 A 域名下的页面，去调用 B 域名的接口，浏览器感觉你这次调用可能是不安全的请求行为，于是它需要用 cors 安全策略来确认一下这个请求是由用户真实的意愿发出的，而不是被 csrf 伪造请求攻击偷偷发送的。（这么说只是为了方便大家理解，不是特别严谨，实际上同域名下部分情形也会出现跨域问题）</p>
+<p>请仔细理解上面这段话，因为它说明了两点：</p>
+<ul>
+<li>跨域不是后端接口对前端浏览器的限制，而是前端浏览器对用户的限制。</li>
+<li>跨域不是在保护后端接口免受攻击，而是浏览器在保护用户，避免用户发送自己不想发送的请求。</li>
+</ul>
+<p>请一定要记住上面跨域的本质，明白了症状和原因，我们才能对症下药。</p>
+<p><a href="https://blog.csdn.net/qq_34905631/article/details/140277487">https://blog.csdn.net/qq_34905631/article/details/140277487</a></p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

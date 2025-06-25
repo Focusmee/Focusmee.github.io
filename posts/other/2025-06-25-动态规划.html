@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态规划 | Focusmee</title>
+    <meta name="description" content="动态规划">
+    <meta property="og:title" content="动态规划">
+    <meta property="og:description" content="动态规划">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">动态规划</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">33 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">动态规划</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <p>[TOC]</p>
+<h1>title: 动态规划</h1>
+<h3>动态规划方法论以及背包问题</h3>
+<p><strong>状态表示</strong>f[i,j]</p>
+<p>​		集合 </p>
+<p>​				所有选法</p>
+<p>​				条件 1. 只从前i个物品中选 2. 总体积&lt;=j</p>
+<p>​				背包问题：所有只从前i个物品选，并且总体积不超过j的选法</p>
+<p>​									只从前i组物品中选，并且总体积不超过j的选法</p>
+<p>​		属性 MAX MIN 个数</p>
+<p><strong>状态计算</strong> 集合的划分</p>
+<p>​				01背包 <code>f[i][j]=Max(f[i-1][j],f[i-1][j-v[i]]+w[i])</code></p>
+<p>​							      优化后：<code>f[j]=Max(f[j],f[j-v[i]]+w[i])</code></p>
+<p>​				完全背包  优化前：<code>f[i][j]=Max(f[i-1][j],f[i][j-v[i]*k]+w[i]*k)</code></p>
+<p>​												注意这里Max里的<code>f[i][j]</code>，因为<code>k</code>从0开始的，所以<code>k=0</code>的时候就是不包含<code>i</code>的集合，然后找到选几个<code>i</code>这个种类的物品价值最大</p>
+<p>​								 优化后：<code>f[i][j]=Max(f[i-1][j],f[i][j-v]+w)</code></p>
+<p>​				多重背包  优化前：<code>f[i][j]=max(f[i][j],f[i-1][j-v[i]*k]+w[i]*k);</code></p>
+<p>​								 二进制优化：多重背包问题通常可转化成01背包问题求解，对物品进行优化，即：一个正整数n，可以被分解成1,2,4,…,2^(k-1)^的形式。其中，k是满足n-2^k^+1&gt;0的最大整数。例如，假设给定价值为2，数量为10的物品，依据二进制优化思想可将10分解为1+2+4+3，则原来价值为2，数量为10的物品可等效转化为价值分别为1<em>2，2</em>2，4<em>2，3</em>2，即价值分别为2，4，8，6，数量均为1的物品。//<a href="https://blog.csdn.net/hnjzsyjyj/article/details/109363826">(43条消息) 多重背包问题（二进制优化）_hnjzsyjyj的博客-CSDN博客_多重背包二进制优化</a></p>
+<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20220920150014343.png" alt="image-20220920150014343" style="zoom: 50%;" /> 
+
+<p><strong>注意遍历顺序</strong>： 如果是排序问题所以需将target放在外循环，将nums放在内循环</p>
+<p>​							如果是组合问题就target放里面，nums放外面</p>
+<p>关于为什么<strong>当问题为组合问题时：先遍历物品，再遍历背包</strong> <strong>当问题为排列问题时：先遍历背包，再遍历物品</strong></p>
+<p>我认为 组合是只考虑我是否选了第i个物品，选择第i个物品后状态发生的变化 当考虑过第i种物品后，考虑后面新的物品时候就不会再往前看第i个物品</p>
+<p>​			而排列，则是我每次考虑到不同容量的时候，都要考虑每种物品是否能填进去，就会造成为了导致填满而发生顺序上的改变</p>
+<p><a href="https://leetcode.cn/problems/unique-binary-search-trees/">96. 不同的二叉搜索树</a></p>
+<p>这个就是组合</p>
+<p>令<code>f(0) = 1</code><br><code>f(1) = f(0)*f(0)</code><br><code>f(2) = f(1)*f(0) + f(0)*f(1)</code><br><code>f(3) = f(2)*f(0) + f(1)*f(1) + f(0)*f(2)</code><br>……<br><code>f(n) = f(n-1)*f(0) + f(n-2)*f(1) +……f(0)*f(n-1)</code></p>
+<p> <a href="https://leetcode.cn/problems/length-of-longest-fibonacci-subsequence/">873. 最长的斐波那契子序列的长度</a></p>
+<p><a href="https://leetcode.cn/problems/get-maximum-in-generated-array/">1646. 获取生成数组中的最大值</a></p>
+<p><a href="https://leetcode.cn/problems/partition-array-for-maximum-sum/">1043. 分隔数组以得到最大和</a></p>
+<pre><code>int maxSumAfterPartitioning(int* arr, int arrSize, int k){
+     int dp[501]={0};
+     for(int i=1;i&lt;arrSize+1;i++)
+     {
+         int max=arr[i-1];
+         dp[i] = dp[i - 1] + arr[i-1];
+         for(int j=i-1;j&gt;i-k&amp;&amp;j&gt;0;j--)
+         {   
+             max=fmax(arr[j-1],max);
+             dp[i]=fmax(dp[i],dp[j-1]+(i-j+1)*max);
+         }
+     }
+     return dp[arrSize];
+}
+</code></pre>
+<h5>完全背包问题</h5>
+<h6><a href="https://leetcode.cn/problems/word-break/">139. 单词拆分</a></h6>
+<p>回溯经典超时</p>
+<pre><code>bool backtracking(char * s,int sSize,char **wordDict,int wordDictSize)
+{
+    if(*s==&#39;\0&#39;) return true;
+    for(int i=0;s[i]!=&#39;\0&#39;;i++)
+    {
+        for(int j=0;j&lt;wordDictSize;j++)
+        {
+            if(i+1==strlen(wordDict[j])){
+                int k;
+                for(k=0;k&lt;=i;k++)
+                {
+                    if(s[k]!=wordDict[j][k]) break;
+                }
+               
+                if(k==i+1)  
+                {
+                    if(backtracking(s+i+1,sSize,wordDict,wordDictSize)==true) return true;
+                }
+            }
+            else continue;
+        }
+    }
+    return false;
+}
+bool wordBreak(char * s, char ** wordDict, int wordDictSize){
+int* memo=(int*)malloc(sizeof(int)*(strlen(s)+1));
+memset(memo,-1,sizeof(int)*(strlen(s)+1));
+    return backtracking(s,strlen(s),wordDict,wordDictSize);
+}
+</code></pre>
+<h6><a href="https://leetcode.cn/problems/coin-change/">322. 零钱兑换</a></h6>
+<p><strong>注意</strong>：这里是组合，所以直接target在内，sum在外，然后完全背包问题</p>
+<p>状态表示f[i,j]	集合：从i种零前拿出amount值的最少硬币选法</p>
+<p>​						  条件：只从前i个选，并且总金额要等于j的选法</p>
+<p>​						  属性：<strong>最少的硬币个数</strong></p>
+<p>状态计算	集合的划分 <code>f[i][j]=min(f[i][j-coins[i]*k]+k,f[i-1][j])</code></p>
+<p>​					完全背包问题的优化后：<code>f[i][j]=min(f[i][j-coins[i]]+1,f[i-1][j])</code></p>
+<p>​							    优化成一位数组：<code>f[j]=min[f[j-coins[j]]+1,f[j]]</code> 注意，因为属性为最少的硬币个数，所以要初始化要注意</p>
+<p>考虑到集合的性质,当还没选的时候不确定是否能可以用硬币表示，则需要硬币的数量是无穷大的，而<code>f[0]</code>注意单独赋值，因为<code>f[0]</code>为表示<code>account=0</code>的时候需要的最少的硬币个数，其实就是0。</p>
+<h6><a href="https://leetcode.cn/problems/coin-change-2/">518. 零钱兑换 II</a></h6>
+<p><strong>注意</strong>：这里并没有将顺序不同的序列被视作不同的组合。 所以这个是组合问题而不是排列问题，<strong>所以需将target放在外循环，将nums放在内循环</strong>。</p>
+<p>状态表示f[i,j]	集合：所有选法：从i种零钱拿出amount值的所有选法</p>
+<p>​									 条件：只从前i个物品选，并且总金额要等于j的选法</p>
+<p>​									 属性：个数</p>
+<p>状态计算	集合的划分</p>
+<h6><a href="https://leetcode.cn/problems/combination-sum-iv/">377. 组合总和 Ⅳ</a></h6>
+<p><strong>注意</strong>：这里将顺序不同的序列被视作不同的组合。//所以这里跟完全背包有明显的细节差异，完全背包是当你包含第i种数字的时候的情况，这样只会出现就不能将顺序不同的序列算进组合。对任意的<code> f[len][target]</code>而言，组合中的最后一个数字可以选择 nums 中的任意数值，因此<code> f[len][target]</code> 应该为以下所有方案总和</p>
+<p>记得初始化 <code>f[0]=1</code></p>
+<p>状态表示<code>f[i,j] </code>集合：所有选法：从i种数字拿出target的所有组合选法</p>
+<p>​									条件：只从前i个数字选，并且总和要等于j的选法</p>
+<p>​									属性：个数</p>
+<p>状态计算 集合的划分 <code>f[i][j]+=f[i-1][j]+f[i][j-v[i]]</code> 优化后：<code>f[j]=f[j]+f[j-v[i]]</code></p>
+<h5><a href="https://leetcode.cn/problems/climbing-stairs/">70. 爬楼梯</a></h5>
+<p>实际上是完全背包问题，还是靠排列的，所以target在外，num在内</p>
+<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20220920183646504.png" alt="image-20220920183646504" style="zoom:67%;" /> 
+
+<p><strong><a href="https://leetcode.cn/problems/word-break/">139. 单词拆分</a></strong></p>
+<p>完全背包问题，单词当作物品，字符串 <code>s</code> 长度当作背包容量，目的是判断物品是否能恰好填满背包。</p>
+<p>能否恰好放入背包 </p>
+<p>一是取决于背包是否留下足够多的空间放下。</p>
+<p>二是前面的空间是填满了的</p>
+<h5><a href="https://www.acwing.com/problem/content/description/900/">898. 数字三角形 - AcWing题库</a></h5>
+<p> memset(f, -0x3f, sizeof f);</p>
+<h5></h5>
+<h4>区间DP</h4>
+<h5><a href="https://www.acwing.com/problem/content/284/">282. 石子合并 - AcWing题库</a></h5>
+<p><code>f[i][j]</code>表示将第i堆石子到第j堆石子合并成一堆石子的最小代价</p>
+<p>状态表示<code>f[i][j]</code> 集合 所有将第i堆石子到第j堆石子合并成一堆石子的合并方式</p>
+<p>​								属性 Min</p>
+<p>状态表示	根据i~j划分成两堆,以分界线 k=j-i+1</p>
+<p>1 2 3 4 ... k-1  </p>
+<p><code>f[i][j]=Min(f[i][j],f[i][k]+f[k+1][j]+s[j]-s[i-1])</code> s这里表示的是前缀和</p>
+<h4>打家劫舍</h4>
+<h5><a href="https://leetcode.cn/problems/house-robber/">198. 打家劫舍</a></h5>
+<p><code>f[i]</code> 集合表示在偷第i号屋子的所有结合</p>
+<p>​		   属性 Max</p>
+<p>状态表示 集合的划分</p>
+<p>没选i号屋子偷窃 选i号屋子偷窃</p>
+<p><code>f[i]=Max(f[i-1],f[i-2]+w[i])</code></p>
+<h5><a href="https://leetcode.cn/problems/house-robber-ii/">213. 打家劫舍 II</a></h5>
+<p><code>f[i][j]</code> 集合表示在偷第i号房子的所有集合 </p>
+<p>​				属性 Max</p>
+<p><code>f[i][j]</code>表示偷了第i号房子且是否偷了第一个的所有集合中的最大值</p>
+<p>状态表示 集合的划分</p>
+<ol>
+<li>选了第一个偷：<ol>
+<li>没选i号屋子偷窃；</li>
+<li>选i号屋子偷窃</li>
+</ol>
+</li>
+<li>没选第一个偷<ol>
+<li>没选i号屋子偷窃；</li>
+<li>选i号屋子偷窃</li>
+</ol>
+</li>
+</ol>
+<p><code>f[i][0]=Math.max(f[i-1][0],f[i-2][0]+nums[i-1]);</code></p>
+<p><code>f[i][1]=Math.max(f[i-1][1],f[i-2][1]+nums[i-1]);</code></p>
+<p>最后单独考虑情况。</p>
+<h6>树形DP</h6>
+<h5><a href="https://leetcode.cn/problems/house-robber-iii/">337. 打家劫舍 III</a></h5>
+<p>二叉树要从下往上判断，需要用到后序遍历</p>
+<p>（如果是从上往下判断是无法知道这个节点到底是取还是不取的，不知道其孩子的情况）</p>
+<p>判断一个节点是否要偷</p>
+<p>要看其两个左右子节点和父节点之和是否大于它本身，大于则取左右子孩子，不大于就取它本身，而且还要考虑如果取它本身，</p>
+<h4>股票问题</h4>
+<p>股票问题最简单的方法就是表示状态</p>
+<p>买卖股票的状态有：</p>
+<ol>
+<li>天数</li>
+<li>当前是否持有股票</li>
+<li>交易次数</li>
+</ol>
+<p><code>f[i][j][k]</code>表示在第i天，是否持有股票，交易次数有k次的最大利益</p>
+<p>状态表示<code>f[i][j][k]</code>集合 所有第i天持有或者不持有股票已经交易了k次的买卖股票方式</p>
+<p>​									  属性 Max</p>
+<p>状态</p>
+<h5><a href="https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/">121. 买卖股票的最佳时机</a></h5>
+<p>一维dp数组，dp含义是当第i天时的最大利润，遍历顺序为从前到后，前i天的最大收益 = max{前i-1天的最大收益，第i天的价格-前i-1天中的最小价格}</p>
+<h5><a href="https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/">122. 买卖股票的最佳时机 II</a></h5>
+<p><img src="C:%5CUsers%5C%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220930093634130.png" alt="image-20220930093634130"></p>
+<p><img src="C:%5CUsers%5C%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220930093658243.png" alt="image-20220930093658243"></p>
+<img src="C:\Users\乌拉拉巴卡巴卡\AppData\Roaming\Typora\typora-user-images\image-20220930094058646.png" alt="image-20220930094058646" style="zoom:50%;" />
+
+<h4>子序列问题</h4>
+<h5>子序列（不连续）</h5>
+<h6><a href="https://leetcode.cn/problems/longest-increasing-subsequence/">300. 最长递增子序列</a></h6>
+<pre><code class="language-c">int max(int a,int b)
+{
+    return a&gt;b?a:b;
+}
+int lengthOfLIS(int* nums, int numsSize){
+int dp[2500]={0};
+int ans=1;
+for(int i=0;i&lt;numsSize;i++)
+{
+    dp[i]=1;
+}
+for(int i=1;i&lt;numsSize;i++)
+{
+    for(int j=0;j&lt;i;j++)
+    {
+        if(nums[i]&gt;nums[j])
+        {
+            dp[i]=max(dp[i],dp[j]+1);
+            ans=max(dp[i],ans);
+        }
+    }
+}
+return ans;
+}
+</code></pre>
+<p>确定状态 状态表示的是以当前为结尾的最长递增子序列。</p>
+<p>初始化 </p>
+<p>遍历</p>
+<h5>子序列（连续）</h5>
+<h6><a href="https://leetcode.cn/problems/longest-common-subsequence/">1143. 最长公共子序列</a></h6>
+<p>状态表示 <code>f[i,j]</code> 集合 <strong>所有在第一个序列的前i个字母中出现，且在第二个序列的前j个字母中出现的子序列</strong></p>
+<p><code>f[i][j]</code>表示在第一个序列的前i个字母中出现并且在第二个序列的前j个字母中出现的最大值</p>
+<p>​								属性 Max</p>
+<p>状态表示 根据公共序列包含a[i]和b[j]来进行集合划分</p>
+<p>​              		<code>f[i,j]</code></p>
+<p>00								01						10							11</p>
+<p><code>f[i-1][j-1]</code>		<code>f[i-1][j]</code>		<code>f[i][j-1]</code>				<code>f[i-1][j-1]</code>+1</p>
+<p><img src="C:%5CUsers%5C%E4%B9%8C%E6%8B%89%E6%8B%89%E5%B7%B4%E5%8D%A1%E5%B7%B4%E5%8D%A1%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20230503172714169.png" alt="image-20230503172714169"></p>
+<p>​								注意中间这两个的情况，例如<code>f[i-1][j]</code>并不是说明b[i]一定包含在公共子序列中，但<code>f[i-1][j]</code>所表示的一个公共子序列的集合中却表示了b[i]在公共子序列中的情况，也就是<code>f[i-1][j]</code>所表示的所有在第一个序列的前i-1个字母中出现，且在第二个序列的前j个字母中出现的子序列所包含了一种情况就是b[i]存在而a[i]严格不存在的子序列，当然<code>f[i-1][j]</code>也不一定说明a[i]一定有或者b[i]一定有，也包含两者都没有的情况，所有00的情况其实就在<code>f[i-1][j]</code>里面。</p>
+<p>10的情况也同理。</p>
+<p>11表示都包含，所有在第一个序列的前i个字母中出现，且在第二个序列的前j个字母中出现的子序列比第一个序列的前i-1个字母中出现，且在第二个序列的前j个字母中出现的子序列长度+1。</p>
+<p>求最大值不能漏情况，但可以重叠情况，<code>f[i-1][j]</code>和<code>f[i][j-1]</code>有重叠的情况，都重复考虑了a[i]和b[i]至多有一个存在的情况，但不影响结果。</p>
+<h5>编辑距离</h5>
+<h6><a href="https://leetcode.cn/problems/is-subsequence/">392. 判断子序列</a></h6>
+<h6><a href="https://leetcode.cn/problems/edit-distance/">72. 编辑距离</a></h6>
+<h5>回文</h5>
+<h6><a href="https://leetcode.cn/problems/palindromic-substrings/">647. 回文子串</a></h6>
+<p>状态表示	<code>dp[i][j]</code>表示在i~j区间的子串里是否是回文子串</p>
+<pre><code>int countSubstrings(char * s){
+    if(s==NULL) return 0;
+  
+    int l=strlen(s);
+      if(l==1) return 1;
+    bool dp[l][l];
+    memset(dp,0,sizeof(dp));
+    int ans=0;
+    for(int i=l-1;i&gt;=0;i--)
+    {
+        for(int j=i;j&lt;l;j++)
+        {
+            if(s[i]==s[j])
+            {
+                if(i==j) 
+                {dp[i][j]=true;
+                continue;}
+                if(j-i==1) 
+                {dp[i][j]=true;
+                continue;}
+                if(j-i&gt;1) dp[i][j]=dp[i+1][j-1];
+            }
+            
+        }
+        
+    }
+    for(int i=0;i&lt;l;i++)
+    {
+        for(int j=0;j&lt;l;j++)
+        {
+            printf(&quot;%d &quot;,dp[i][j]);
+            if(dp[i][j]==true) ans++;
+        }
+        printf(&quot;\n&quot;);
+    }
+
+    return ans;
+}
+</code></pre>
+<h6><a href="https://leetcode.cn/problems/longest-palindromic-subsequence/">516. 最长回文子序列</a></h6>
+<pre><code>int longestPalindromeSubseq(char * s){
+    int l=strlen(s);
+    int dp[l+1][l+1];
+    memset(dp,0,sizeof(dp));
+    for(int i=l;i&gt;=0;i--)
+    {
+        for(int j=i;j&lt;=l;j++)
+        {
+            if(i==0)
+            {
+                dp[i][j]=1;continue;
+            }
+            if(j==i) {
+                dp[i][j]=1;continue;
+            }
+            if(s[i-1]==s[j-1]) dp[i][j]=dp[i+1][j-1]+2;
+            else dp[i][j]=fmax(dp[i+1][j],dp[i][j-1]);
+        }
+    }
+    return dp[1][l];
+}
+</code></pre>
+<h6><a href="https://leetcode.cn/problems/maximum-students-taking-exam/">1349. 参加考试的最大学生数</a></h6>
+<p> <img src="D:%5Ctypora%E7%AC%94%E8%AE%B0%5C%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.assets%5Cimage-20231227214129434.png" alt="image-20231227214129434"></p>
+<p>1001快速得到上一排的作为要求1001 1000 001 0000</p>
+<pre><code class="language-c">for (int i = 0; i &lt; m; ++i) // 遍历每一行
+    for (int l = 0; l &lt; (1 &lt;&lt; n); ++l) // 遍历上一行的所有状态
+        for (int c = 0; c &lt; (1 &lt;&lt; n); ++c) // 遍历当前行的所有状态
+</code></pre>
+<p><strong>c这个状态是表示这一排学生坐的状态，把从0到1&lt;&lt;n的都遍历了一遍，首先就通过c&amp;&amp;(1&lt;&lt;j)来判断是否这个j安排人坐，然后再通过这个位置是不是有座位</strong></p>
+<p>在最内层循环中，使用一系列条件判断来检查当前座位状态是否合法，即是否可以让学生坐在这个位置。主要的条件包括：</p>
+<ul>
+<li>座位没有被占用</li>
+<li>左上、右上、左侧、右侧、左上、右上、左下、右下都没有其他学生（即相邻位置没有学生）</li>
+</ul>
+<p><code>if (!(c &amp; (1 &lt;&lt; j))) continue;</code> 这行代码用于检查座位状态 <code>c</code> 中的第 <code>j</code> 位是否为 0。如果为 0，表示在当前座位状态下，第 <code>j</code> 个座位是空的（没有学生坐在上面），那么 <code>continue</code> 将会跳过当前循环，不再执行后续的代码。</p>
+<p>这个检查的目的是在处理当前座位状态时，只关注空座位，而忽略已经被占用的座位。如果第 <code>j</code> 位为 1，表示座位被占用，那么 <code>continue</code> 就不会执行，继续执行后续的代码。</p>
+<p>在这个程序中，这行代码用于确保当前考虑的座位状态 <code>c</code> 中，只有空座位才会被进一步考虑，而被占用的座位将被跳过。这有助于在动态规划过程中筛选出合法的座位状态。</p>
+<p>假设有一个座位状态 <code>c</code>，它是一个二进制数，例如 <code>c = 10101</code>，表示座位状态为有座位（1）和空座位（0）交替排列。</p>
+<p>现在，假设我们希望检查第 2 位（从右到左，从 0 开始计数）是否为 0，即检查 <code>c</code> 中的第 2 位是否是空座位。我们可以使用位运算来实现这一检查：</p>
+<pre><code>int j = 2; // 第 2 位
+if (!(c &amp; (1 &lt;&lt; j))) {
+    // 如果第 2 位是 0（空座位），则执行以下代码
+    // ...
+} else {
+    // 如果第 2 位是 1（座位被占用），则执行其他操作或跳过
+    // ...
+}
+</code></pre>
+<p>在这个例子中，<code>c &amp; (1 &lt;&lt; j)</code> 表示将 <code>1</code> 左移 <code>j</code> 位，然后与 <code>c</code> 进行按位与运算。如果结果为 0，说明第 <code>j</code> 位是空座位，就会进入 <code>if</code> 语句中的代码块。如果结果不为 0，说明第 <code>j</code> 位是被占用的座位，就会执行 <code>else</code> 语句中的代码块。</p>
+<p>这样，通过 <code>if (!(c &amp; (1 &lt;&lt; j))) continue;</code> 这行代码，可以确保在处理当前座位状态时，只考虑空座位，而跳过已被占用的座位。</p>
+<p><img src="D:%5Ctypora%E7%AC%94%E8%AE%B0%5C%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.assets%5Cimage-20231228152158623.png" alt="image-20231228152158623"></p>
+<pre><code class="language-c++">class Solution {
+public:
+    int count(int n)
+    {
+        int res = 0;
+        while(n != 0)
+        {
+            n = n &amp; (n-1);
+            res++;
+        }
+        return res;
+    }
+    int maxStudents(vector&lt;vector&lt;char&gt;&gt;&amp; seats) {
+        int m = seats.size();
+        int n = seats[0].size();
+        vector&lt;vector&lt;int&gt;&gt; dp(m + 1, vector&lt;int&gt;(1&lt;&lt;n));
+        for(int i=0;i&lt;m;++i)
+        {
+            for(int l=0;l&lt;(1 &lt;&lt; n); ++l)
+                for(int c = 0 ; c &lt; (1&lt;&lt;n);++c)
+                {
+                    bool flag = true;
+                    for(int j=0;j&lt;n&amp;&amp;flag;++j) {
+                        if(!(c&amp;(1&lt;&lt;j))) continue;
+                        if(seats[i][j]==&#39;#&#39;) flag = false;
+                        bool lt = j==0 ? false : (c&amp;(1&lt;&lt;(j-1)));
+                        bool rt = j==n-1? false : (c&amp;(1&lt;&lt;(j+1)));
+                        bool ul = (j==0||i==0)? false:(l&amp;(1&lt;&lt;(j-1)));
+                        bool ur = (j==n-1||i==0)? false:(l&amp;(1&lt;&lt;(j+1)));
+                        if(lt||rt||ul||ur) flag = false;
+                    }
+                    if(flag)
+                     dp[i+1][c] = max(dp[i+1][c],dp[i][l]+count(c));
+                }
+        }
+        return *max_element(begin(dp[m]),end(dp[m]));
+    }
+};
+</code></pre>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

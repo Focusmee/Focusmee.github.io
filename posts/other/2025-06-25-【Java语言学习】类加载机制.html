@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Java语言学习】类加载机制 | Focusmee</title>
+    <meta name="description" content="【Java语言学习】类加载机制">
+    <meta property="og:title" content="【Java语言学习】类加载机制">
+    <meta property="og:description" content="【Java语言学习】类加载机制">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Java语言学习】类加载机制</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">54 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Java语言学习】类加载机制</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>【Java语言学习】类加载机制</h1>
+<h2>前置知识</h2>
+<h3>🧠 1. <strong>懒加载（Lazy Loading）</strong></h3>
+<p><strong>概念</strong>：懒加载是指<strong>延迟加载类或对象，直到真正需要用到时才加载或初始化</strong>，以节省资源、加快启动速度。</p>
+<p><strong>在类加载中体现</strong>：</p>
+<ul>
+<li>Java 中，类的加载是按需触发的。</li>
+<li><strong>静态内部类实现单例模式</strong>就用到了懒加载：</li>
+</ul>
+<pre><code class="language-java">public class Singleton {
+    private Singleton() {}
+    private static class Holder {
+        private static final Singleton INSTANCE = new Singleton();
+    }
+    public static Singleton getInstance() {
+        return Holder.INSTANCE; // 第一次调用才会加载 Holder 类
+    }
+}
+</code></pre>
+<p>比如Launcher就是懒加载</p>
+<h3>🔒 2. <strong>重入锁（ReentrantLock）</strong></h3>
+<p><strong>概念</strong>：Java 中的 <code>ReentrantLock</code> 是 <code>java.util.concurrent.locks</code> 包中的一种<strong>可重入的显式锁</strong>，用于代替 <code>synchronized</code> 实现更灵活的线程同步控制。</p>
+<p><strong>特点</strong>：</p>
+<ul>
+<li><strong>可重入</strong>：同一线程可以多次获取锁而不会死锁。</li>
+<li>提供可中断、超时、公平锁、非公平锁等高级功能。</li>
+</ul>
+<pre><code>ReentrantLock lock = new ReentrantLock();
+lock.lock(); // 加锁
+try {
+    // 临界区
+} finally {
+    lock.unlock(); // 解锁
+}
+</code></pre>
+<h3>🧵 3. <strong>ParallelCapableClassLoader / Parallel 类加载器</strong></h3>
+<p> <strong>Parallel Capable ClassLoader</strong>。这是为了让<strong>类加载器并发加载类</strong>而设计的。</p>
+<h4>为什么需要它？</h4>
+<p>传统的类加载器结构是树形的，多个线程同时加载类时可能会争用同一个类加载器的锁，导致性能下降。</p>
+<h4>Java 7 引入：</h4>
+<ul>
+<li><code>ClassLoader.registerAsParallelCapable()</code> 静态方法。</li>
+<li>它允许自定义类加载器并发加载多个类，而不需要锁住整个加载器。</li>
+</ul>
+<h4>类加载过程中的“只加载一次”：</h4>
+<ul>
+<li>JVM 保证：<strong>一个类在一个类加载器中只会被加载一次</strong>。</li>
+<li>JVM 会用一个 <code>defineClass()</code> 方法来定义类，如果已经加载过就不再重复定义。</li>
+<li>加载时使用了锁和一些并发策略（如上面的 ParallelCapable）来保证线程安全和效率。</li>
+</ul>
+<h3>📌 总结</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>作用</th>
+<th>关键词</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>懒加载</strong></td>
+<td>延迟类或对象初始化</td>
+<td>节省资源</td>
+</tr>
+<tr>
+<td><strong>重入锁</strong></td>
+<td>可控制的线程同步工具</td>
+<td><code>ReentrantLock</code></td>
+</tr>
+<tr>
+<td><strong>ParallelCapableClassLoader</strong></td>
+<td>允许类加载器并发加载多个类</td>
+<td>提高加载效率，避免同步阻塞</td>
+</tr>
+</tbody></table>
+<h2>LoadClass流程</h2>
+<h3>URLClassLoader的findClass（决定自定义类加载器加载方法）</h3>
+<p>你正在看的是 Java 类加载器中的核心方法 <code>findClass</code> 的一种实现（比如在 <code>URLClassLoader</code> 中）。这个方法是当类没有在缓存中，也没被父加载器加载成功时，由<strong>当前类加载器“自己”负责加载类</strong>的逻辑。</p>
+<p>我们来<strong>逐行拆解讲解</strong>这段代码的作用和原理。</p>
+<hr>
+<h4>🔍 方法签名</h4>
+<pre><code class="language-java">protected Class&lt;?&gt; findClass(final String name) throws ClassNotFoundException
+</code></pre>
+<ul>
+<li>子类可以重写该方法，自定义类的加载方式。</li>
+<li>接收类的全限定名，比如：<code>com.example.MyClass</code>。</li>
+<li>若找不到类，则抛出 <code>ClassNotFoundException</code>。</li>
+</ul>
+<hr>
+<h4>1️⃣ <code>AccessController.doPrivileged(...)</code></h4>
+<pre><code class="language-java">result = AccessController.doPrivileged(
+</code></pre>
+<p>🔐 <strong>为什么要这么写？</strong></p>
+<ul>
+<li>在 Java 安全沙箱模型中，如果加载类的路径是受限的（如读取文件、Jar、网络资源），必须使用 <code>doPrivileged()</code> 执行操作，避免权限被限制。</li>
+<li><code>doPrivileged()</code> 会在一个受信任的权限上下文中执行代码。</li>
+</ul>
+<hr>
+<h4>2️⃣ 内部 PrivilegedExceptionAction 的实现</h4>
+<pre><code class="language-java">new PrivilegedExceptionAction&lt;Class&lt;?&gt;&gt;() {
+    public Class&lt;?&gt; run() throws ClassNotFoundException {
+        ...
+    }
+}
+</code></pre>
+<p>这是一个<strong>匿名内部类</strong>，是 <code>doPrivileged()</code> 所需的任务体。核心逻辑都在 <code>run()</code> 方法中。</p>
+<hr>
+<h4>3️⃣ 构建类文件路径</h4>
+<pre><code class="language-java">String path = name.replace(&#39;.&#39;, &#39;/&#39;).concat(&quot;.class&quot;);
+</code></pre>
+<ul>
+<li>把类名转换成文件路径。</li>
+<li>比如 <code>java.lang.String</code> → <code>java/lang/String.class</code></li>
+</ul>
+<hr>
+<h4>4️⃣ 尝试获取资源</h4>
+<pre><code class="language-java">Resource res = ucp.getResource(path, false);
+</code></pre>
+<ul>
+<li><code>ucp</code> 通常是 <code>URLClassPath</code> 类型，负责根据类路径（classpath/jar/url）去找资源。</li>
+<li><code>getResource(path, false)</code> 会尝试加载 <code>.class</code> 文件资源。</li>
+</ul>
+<p>如果找到了，就进入定义流程；否则返回 <code>null</code>。</p>
+<hr>
+<h4>5️⃣ 读取并定义类</h4>
+<pre><code class="language-java">return defineClass(name, res);
+</code></pre>
+<ul>
+<li><code>defineClass(...)</code> 是 <code>ClassLoader</code> 的方法：<ul>
+<li>会从 <code>.class</code> 文件中读取字节数组，进行校验，最终转换为 JVM 中的 <code>Class&lt;?&gt;</code> 对象。</li>
+</ul>
+</li>
+<li>如果 <code>IOException</code> 或 <code>ClassFormatError</code>，说明类文件损坏或非法。</li>
+</ul>
+<pre><code class="language-java">} catch (IOException e) {
+    throw new ClassNotFoundException(name, e);
+}
+</code></pre>
+<ul>
+<li>将 I/O 异常包装为 <code>ClassNotFoundException</code> 抛出。</li>
+</ul>
+<pre><code class="language-java">} catch (ClassFormatError e2) {
+    if (res.getDataError() != null) {
+        e2.addSuppressed(res.getDataError());
+    }
+    throw e2;
+}
+</code></pre>
+<ul>
+<li><code>ClassFormatError</code> 是格式非法的字节码；</li>
+<li>如果 <code>Resource</code> 记录了额外的数据异常，也一起附加到异常中（Java 7 的 suppressed 异常机制）。</li>
+</ul>
+<hr>
+<h4>6️⃣ 外层异常处理</h4>
+<pre><code class="language-java">} catch (java.security.PrivilegedActionException pae) {
+    throw (ClassNotFoundException) pae.getException();
+}
+</code></pre>
+<ul>
+<li><code>doPrivileged()</code> 包裹的是可能抛出异常的动作，所以用 <code>PrivilegedActionException</code> 捕获；</li>
+<li>解包后抛出原始的 <code>ClassNotFoundException</code>。</li>
+</ul>
+<hr>
+<h4>7️⃣ 判断返回结果</h4>
+<pre><code class="language-java">if (result == null) {
+    throw new ClassNotFoundException(name);
+}
+</code></pre>
+<ul>
+<li>如果资源压根没找到，<code>ucp.getResource</code> 返回 null，那么最终也要抛出找不到类。</li>
+</ul>
+<hr>
+<h4>✅ 最终返回</h4>
+<pre><code class="language-java">return result;
+</code></pre>
+<hr>
+<h4>🔚 总结：整个流程如下：</h4>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1️⃣</td>
+<td>转换类名为路径 <code>com.A.B</code> → <code>com/A/B.class</code></td>
+</tr>
+<tr>
+<td>2️⃣</td>
+<td>通过 <code>ucp</code> 查找资源（可能是 jar 或本地路径）</td>
+</tr>
+<tr>
+<td>3️⃣</td>
+<td>找到后读取字节码，调用 <code>defineClass</code> 定义类</td>
+</tr>
+<tr>
+<td>4️⃣</td>
+<td>设置线程上下文类加载器（不在这里，但常常在外层）</td>
+</tr>
+<tr>
+<td>5️⃣</td>
+<td>用 <code>doPrivileged()</code> 保证加载过程不受权限限制</td>
+</tr>
+<tr>
+<td>6️⃣</td>
+<td>如果找不到或格式错误，则抛出异常</td>
+</tr>
+</tbody></table>
+<hr>
+<h4>🔥 举个例子（假设是 URLClassLoader）</h4>
+<p>你给它一个类名 <code>com.abc.HelloWorld</code>，它会：</p>
+<ol>
+<li>查找 <code>/com/abc/HelloWorld.class</code> 对应的 URL；</li>
+<li>读取字节码；</li>
+<li>转换为 <code>Class&lt;?&gt;</code> 对象；</li>
+<li>缓存到类加载器中。</li>
+</ol>
+<hr>
+<h3>URLClassLoader的defineClass（把字节码变成 JVM 中的类对象）</h3>
+<p>你这段代码是 Java 类加载过程中最终“<strong>把字节码变成 JVM 中的类对象</strong>”的实现之一，也就是 <code>defineClass(String name, Resource res)</code> 方法的详细过程。</p>
+<p>它通常出现在 <code>URLClassLoader</code> 或类似类加载器中，用于把 <code>.class</code> 文件内容读取后，<strong>定义成 JVM 可识别的 <code>Class&lt;?&gt;</code> 对象</strong>。</p>
+<p>下面我们<strong>逐行详细拆解</strong>它的意义：</p>
+<hr>
+<h4>🔐 方法签名</h4>
+<pre><code class="language-java">private Class&lt;?&gt; defineClass(String name, Resource res) throws IOException
+</code></pre>
+<ul>
+<li><code>name</code>: 类的全限定名，比如 <code>&quot;com.example.MyClass&quot;</code></li>
+<li><code>res</code>: <code>Resource</code> 是一个封装了 <code>.class</code> 文件字节码、来源 URL、签名、Manifest 等元数据的对象。</li>
+</ul>
+<hr>
+<h4>⏱️ 记录开始时间</h4>
+<pre><code class="language-java">long t0 = System.nanoTime();
+</code></pre>
+<ul>
+<li>用于统计性能开销（后面用 <code>sun.misc.PerfCounter</code> 记录耗时）。</li>
+</ul>
+<hr>
+<h4>📦 获取包名并尝试定义 package</h4>
+<pre><code class="language-java">int i = name.lastIndexOf(&#39;.&#39;);
+URL url = res.getCodeSourceURL();
+if (i != -1) {
+    String pkgname = name.substring(0, i);
+    Manifest man = res.getManifest();
+    definePackageInternal(pkgname, man, url);
+}
+</code></pre>
+<h5>🧠 这部分的意义：</h5>
+<ul>
+<li>如果类有包名（即不是默认包），就提取包名。</li>
+<li>从 <code>res</code> 获取 <code>Manifest</code>（通常是 jar 包中的 <code>META-INF/MANIFEST.MF</code> 文件）。</li>
+<li>使用 <code>definePackageInternal()</code> 方法定义包信息（版本、作者、签名等）。</li>
+<li>如果该包已存在于 JVM，则跳过；否则为包设置相关元信息。</li>
+</ul>
+<p>这样做是为了让包级别的信息（如 <code>Package.getImplementationVersion()</code>）生效。</p>
+<hr>
+<h4>📄 获取字节码数据（两种方式）</h4>
+<pre><code class="language-java">java.nio.ByteBuffer bb = res.getByteBuffer();
+if (bb != null) {
+    // 使用 ByteBuffer
+    CodeSigner[] signers = res.getCodeSigners();
+    CodeSource cs = new CodeSource(url, signers);
+    ...
+    return defineClass(name, bb, cs);
+} else {
+    byte[] b = res.getBytes();
+    CodeSigner[] signers = res.getCodeSigners();
+    CodeSource cs = new CodeSource(url, signers);
+    ...
+    return defineClass(name, b, 0, b.length, cs);
+}
+</code></pre>
+<h4>👇 两种方式分别是：</h4>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>优点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ByteBuffer</code>（直接缓冲区）</td>
+<td>更高效、避免复制开销，常用于大类或 I/O 映射</td>
+</tr>
+<tr>
+<td><code>byte[]</code>（普通字节数组）</td>
+<td>更通用，兼容性更强，资源小时常用</td>
+</tr>
+</tbody></table>
+<hr>
+<h4>📄 什么是 <code>CodeSource</code>？</h4>
+<pre><code class="language-java">CodeSource cs = new CodeSource(url, signers);
+</code></pre>
+<ul>
+<li>表示类的来源及签名信息；</li>
+<li>JVM 在加载类时，使用这个信息进行<strong>安全验证与权限控制</strong>（比如 SecurityManager、沙箱机制）；</li>
+<li><code>signers</code> 是类的签名者（如果 jar 是 signed jar）。</li>
+</ul>
+<hr>
+<h4>💡 关键一步：defineClass</h4>
+<pre><code class="language-java">return defineClass(name, bb, cs);
+// 或
+return defineClass(name, b, 0, b.length, cs);
+</code></pre>
+<ul>
+<li>这是 <code>ClassLoader</code> 提供的方法，最终会调用底层 native 方法（<code>defineClass0</code>）完成以下工作：<ol>
+<li>校验 class 文件格式是否合法（魔数、版本、常量池等）；</li>
+<li>在 JVM 方法区或元空间中注册类元信息；</li>
+<li>返回 Java 层的 <code>Class&lt;?&gt;</code> 对象。</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h4>📊 性能记录</h4>
+<pre><code class="language-java">sun.misc.PerfCounter.getReadClassBytesTime().addElapsedTimeFrom(t0);
+</code></pre>
+<ul>
+<li>用于记录<strong>读取类字节码所花的时间</strong>，这是 JVM 性能监控的一部分（不影响功能，只有 debug 或 profiling 时会用到）。</li>
+</ul>
+<hr>
+<h4>✅ 总结核心流程</h4>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1️⃣</td>
+<td>获取类的包名，并定义包（可选的 Manifest 信息）</td>
+</tr>
+<tr>
+<td>2️⃣</td>
+<td>获取 <code>.class</code> 的字节码（ByteBuffer 或 byte[]）</td>
+</tr>
+<tr>
+<td>3️⃣</td>
+<td>构造 CodeSource（来源和签名信息）</td>
+</tr>
+<tr>
+<td>4️⃣</td>
+<td>调用 <code>defineClass()</code> 将字节码转换为 <code>Class&lt;?&gt;</code> 对象</td>
+</tr>
+<tr>
+<td>5️⃣</td>
+<td>记录加载耗时供性能分析</td>
+</tr>
+</tbody></table>
+<hr>
+<h4>💬 延伸知识</h4>
+<h5>🚀 defineClass 和 defineClass0 区别</h5>
+<ul>
+<li><code>defineClass(...)</code> 是 Java 层的 API；</li>
+<li>它最终会调用 native 的 <code>defineClass0(...)</code>，这是 JVM 实现的一部分（通常用 C/C++ 实现）；</li>
+<li>它才是真正把字节码“变成类”的地方。</li>
+</ul>
+<hr>
+<h4>🧪 实战用途（你可以这样写自己的类加载器）</h4>
+<pre><code class="language-java">public class MyClassLoader extends ClassLoader {
+    @Override
+    protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException {
+        byte[] classBytes = ...; // 从磁盘/网络/加密中获取
+        return defineClass(name, classBytes, 0, classBytes.length);
+    }
+}
+</code></pre>
+<hr>
+<h3>总结：URLClassLoader到底做了什么</h3>
+<p>你的理解整体已经很接近核心，下面我将<strong>逐一验证、澄清和补充</strong>你的理解，同时讲清楚 <code>URLClassLoader</code> 的作用和 <code>defineClass</code> 的真正含义。</p>
+<hr>
+<h2>✅ 一、你当前的理解验证</h2>
+<blockquote>
+<p><strong>你说：</strong>“自定义类加载器找到 parent（一般是 AppClassLoader），然后 AppClassLoader 找到 ExtClassLoader，最后委托到 BootstrapClassLoader 加载类”</p>
+</blockquote>
+<p>这是 ✅ <strong>基本正确的</strong>，但我稍作补充让它更准确：</p>
+<h3>✅ 正确版本应是：</h3>
+<ol>
+<li>自定义类加载器调用 <code>loadClass(name)</code>；</li>
+<li>它会 <strong>先委托给 parent（默认 AppClassLoader）</strong>；</li>
+<li>AppClassLoader 再委托给其 parent，即 ExtClassLoader；</li>
+<li>ExtClassLoader 最终委托给 BootstrapClassLoader（用 <code>null</code> 表示）；</li>
+<li>如果每一层都加载失败（即抛出 <code>ClassNotFoundException</code>），<strong>才回到当前类加载器自己的 <code>findClass(name)</code> 来加载</strong>。</li>
+</ol>
+<p>这就是 Java 的<strong>双亲委派模型</strong>（Parent Delegation Model）：</p>
+<blockquote>
+<p><strong>“总是先委托父加载器加载类，除非父加载器找不到，才由当前加载器尝试加载。”</strong></p>
+</blockquote>
+<hr>
+<h2>🔍 二、那 <code>URLClassLoader</code> 是干什么的？</h2>
+<h3>👉 简答：</h3>
+<p><strong><code>URLClassLoader</code> 是一种可以从 URL（文件、jar 包、网络）加载类和资源的类加载器。</strong></p>
+<p>它是 JDK 提供的最常用的类加载器之一，特别适用于 <strong>动态加载 jar 文件</strong>，例如：</p>
+<pre><code class="language-java">URL[] urls = new URL[] { new URL(&quot;file:/path/to/my-lib.jar&quot;) };
+URLClassLoader loader = new URLClassLoader(urls);
+Class&lt;?&gt; clazz = loader.loadClass(&quot;com.example.MyClass&quot;);
+</code></pre>
+<hr>
+<h3>📦 常见应用场景：</h3>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Java 应用服务器（如 Tomcat）</td>
+<td>为每个 Web 应用分配不同的 <code>URLClassLoader</code></td>
+</tr>
+<tr>
+<td>插件系统</td>
+<td>动态加载第三方 jar 包</td>
+</tr>
+<tr>
+<td>运行时扩展</td>
+<td>脚本引擎、编译器、热更新、Java SPI</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>🧠 三、真正加载类的是不是 <code>defineClass()</code>？</h2>
+<h3>✅ 是的，但注意区分两种方法：</h3>
+<h4>🚩 <code>loadClass(name)</code>（在 <code>ClassLoader</code> 中）</h4>
+<ul>
+<li>是外部调用入口（比如 <code>Class.forName(...)</code> 也是用它）；</li>
+<li>它遵循 <strong>双亲委派模型</strong>，会先委托给 <code>parent.loadClass(...)</code>；</li>
+<li>如果父加载器都没找到，再调用 <code>findClass(name)</code>。</li>
+</ul>
+<h4>🚩 <code>findClass(name)</code>（你自己实现的）</h4>
+<ul>
+<li>如果父加载器失败，就走到这里；</li>
+<li>在这里，你可以使用 <code>defineClass(...)</code> 把二进制字节码转换成 JVM 识别的 <code>Class&lt;?&gt;</code>。</li>
+</ul>
+<h4>🚩 <code>defineClass(...)</code>（最终实现加载的核心方法）</h4>
+<ul>
+<li>它是 JVM 提供的 native 方法，真正完成：<ol>
+<li><strong>验证</strong>：校验 class 文件格式；</li>
+<li><strong>准备</strong>：为类分配内存、生成方法表、字段表；</li>
+<li><strong>连接</strong>：解析依赖、准备静态变量；</li>
+<li><strong>返回</strong>：<code>Class&lt;?&gt;</code> 对象。</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3>📘 总结：URLClassLoader 与类加载流程的关系图</h3>
+<pre><code>        ClassLoader.loadClass(name)
+               ↓
+   ┌──────────双亲委派──────────┐
+   ↓                           ↓
+自定义类加载器              parent.loadClass(name)
+     ↓                          ↓
+findClass(name)         ExtClassLoader → BootstrapClassLoader
+     ↓
+读取URL中的class文件
+     ↓
+defineClass(name, bytes, ...)
+     ↓
+返回Class对象
+</code></pre>
+<hr>
+<h3>✅ 关键要点总结</h3>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>答案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>URLClassLoader</code> 作用是什么？</td>
+<td>可以从本地或网络的 URL（目录、jar 包）中加载类和资源。</td>
+</tr>
+<tr>
+<td>它是否使用双亲委派模型？</td>
+<td>是的，它继承自 <code>ClassLoader</code>，遵循双亲委派模型。</td>
+</tr>
+<tr>
+<td><code>defineClass</code> 是什么时候调用的？</td>
+<td>当 <code>loadClass</code> 中父类加载失败后，调用 <code>findClass()</code>，你才会调用 <code>defineClass()</code> 来真正加载字节码。</td>
+</tr>
+<tr>
+<td>是否所有类都走到 <code>defineClass()</code>？</td>
+<td>否，只有父加载器加载失败时才会走到你自定义的 <code>findClass()</code>，进而调用 <code>defineClass()</code>。</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>✅ 简答：什么时候会用到 <code>URLClassLoader</code>？</h3>
+<p><strong><code>URLClassLoader</code> 是在你需要</strong> <em>“从指定路径或 jar 包中动态加载类”</em> 的时候才会被主动创建和调用。</p>
+<h4>🔍 常见使用场景</h4>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>是否默认调用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Java 命令行运行应用（java xxx）</strong></td>
+<td>✅ JVM 默认用 <code>AppClassLoader</code>，就是一个 <code>URLClassLoader</code></td>
+</tr>
+<tr>
+<td><strong>类路径下 jar 加载</strong></td>
+<td>✅ 默认走 <code>URLClassLoader</code></td>
+</tr>
+<tr>
+<td><strong>自定义加载 jar 插件</strong></td>
+<td>✅ 你手动 new 出 <code>URLClassLoader</code></td>
+</tr>
+<tr>
+<td><strong>Tomcat/Web服务器</strong></td>
+<td>✅ 为每个 Web 应用创建独立的 <code>URLClassLoader</code></td>
+</tr>
+<tr>
+<td><strong>IDE（如 IntelliJ）运行 Java 程序</strong></td>
+<td>✅ 使用 <code>AppClassLoader</code>，本质就是 <code>URLClassLoader</code></td>
+</tr>
+<tr>
+<td><strong>Java SPI</strong></td>
+<td>✅ <code>ServiceLoader</code> 默认使用 <code>Thread.currentThread().getContextClassLoader()</code>，往往是 <code>URLClassLoader</code></td>
+</tr>
+</tbody></table>
+<h3>✅ JVM 启动时的实际类加载器链</h3>
+<pre><code class="language-java">public class LoaderTest {
+    public static void main(String[] args) {
+        ClassLoader cl = LoaderTest.class.getClassLoader();
+        System.out.println(&quot;ClassLoader: &quot; + cl);
+        System.out.println(&quot;Parent: &quot; + cl.getParent());
+        System.out.println(&quot;Grandparent: &quot; + cl.getParent().getParent());
+    }
+}
+</code></pre>
+<p>输出类似：</p>
+<pre><code>ClassLoader: sun.misc.Launcher$AppClassLoader@...
+Parent: sun.misc.Launcher$ExtClassLoader@...
+Grandparent: null
+</code></pre>
+<p>而 <code>AppClassLoader</code> 就是 <code>URLClassLoader</code> 的子类。</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>回答</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>📌 URLClassLoader 是什么时候用到的？</td>
+<td>JVM 启动时作为 <code>AppClassLoader</code> 加载类路径下的所有类；也常用于手动加载 jar、动态插件、SPI 等。</td>
+</tr>
+<tr>
+<td>📌 源码中哪里可以找到 URLClassLoader 的使用？</td>
+<td>见 <code>sun.misc.Launcher$AppClassLoader</code>、<code>ClassLoader.getSystemClassLoader()</code>，实际就是 URLClassLoader。</td>
+</tr>
+<tr>
+<td>📌 为什么你没在核心逻辑里直接看到它？</td>
+<td>因为 JVM 启动时通过 <code>sun.misc.Launcher</code> 创建，非标准公开 API，所以隐藏在内部实现。</td>
+</tr>
+<tr>
+<td>📌 它是否默认存在？</td>
+<td>是的！你运行 Java 应用时默认就使用了 URLClassLoader。</td>
+</tr>
+</tbody></table>
+<h2>问题：试图用自定义类加载器加载JDK的基础类</h2>
+<p>现在遇到的这个错误：</p>
+<pre><code>java.lang.NoClassDefFoundError: java/lang/Object
+</code></pre>
+<p>意味着你的自定义类加载器 <code>MyClassLoader</code> 试图加载 JDK 的基础类 <code>java.lang.Object</code>，而 <strong>根本就不该由你这个类加载器去加载</strong>。</p>
+<p>一般来说使用双亲委派，只加载你需要的类</p>
+<p>你可以进一步限制你的类加载器只处理某些特定包，比如：</p>
+<pre><code class="language-java">if (!name.startsWith(&quot;tech.insight&quot;)) {
+    return super.loadClass(name, resolve); // 用父类加载
+}
+</code></pre>
+<p>比如：</p>
+<pre><code>@Override
+protected Class&lt;?&gt; loadClass(String name, boolean resolve) throws ClassNotFoundException {
+    synchronized (getClassLoadingLock(name)) {
+        Class&lt;?&gt; c = findLoadedClass(name);
+        if (c == null) {
+            // 打破双亲委派，只加载 tech.insight 包下的类
+            if (name.startsWith(&quot;tech.insight&quot;)) {
+                try {
+                    c = findClass(name);
+                } catch (ClassNotFoundException e) {
+                    // 可以选择不处理或 fallback 给父加载器
+                    throw e;
+                }
+            } else {
+                // JDK类或第三方库依然委托父加载器
+                c = getParent().loadClass(name);
+            }
+        }
+
+        if (resolve) {
+            resolveClass(c);
+        }
+
+        return c;
+    }
+}
+</code></pre>
+<p>记住这和-Djava.system.class.loader=tech.insight.MyClassLoader直接配置到虚拟机参数有区别。</p>
+<h2>自定义类加载器和JVM参数设置有区别</h2>
+<p>这是个非常核心的问题，<strong>自定义类加载器</strong>和 <code>-Djava.system.class.loader=...</code> 指定<strong>系统类加载器</strong>，它们之间在 JVM 初始化阶段的行为、权限、影响范围上有本质区别。</p>
+<hr>
+<h3>✅ 简单区别表</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th><code>new MyClassLoader()</code></th>
+<th><code>-Djava.system.class.loader=tech.insight.MyClassLoader</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>加载时机</td>
+<td>程序运行时由你手动实例化</td>
+<td>JVM 启动时初始化，替换整个 SystemClassLoader</td>
+</tr>
+<tr>
+<td>影响范围</td>
+<td>只影响你手动使用它加载的类</td>
+<td>影响所有通过 <code>ClassLoader.getSystemClassLoader()</code> 的类加载</td>
+</tr>
+<tr>
+<td>加载优先级</td>
+<td>不会影响其他类的加载</td>
+<td>会参与 JVM 自身的类加载流程，优先于默认 AppClassLoader</td>
+</tr>
+<tr>
+<td>安全限制</td>
+<td>限于应用代码范围</td>
+<td>JVM 要求必须有合法构造函数：<code>MyClassLoader(ClassLoader parent)</code></td>
+</tr>
+<tr>
+<td>容错风险</td>
+<td>安全，不影响 JVM 启动</td>
+<td>一旦出错（如构造函数不对），JVM 启动直接失败（你就见过了）</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>✅ <code>-Djava.system.class.loader=...</code> 是什么？</h3>
+<p>JVM 启动时，会加载一个<strong>系统类加载器（SystemClassLoader）</strong>，默认是：</p>
+<pre><code>sun.misc.Launcher$AppClassLoader
+</code></pre>
+<p>你可以通过 JVM 参数手动替换这个加载器，比如：</p>
+<pre><code class="language-bash">java -Djava.system.class.loader=tech.insight.MyClassLoader ...
+</code></pre>
+<p>这会让 JVM 在初始化时：</p>
+<pre><code class="language-java">ClassLoader scl = (ClassLoader) Class.forName(&quot;tech.insight.MyClassLoader&quot;)
+    .getDeclaredConstructor(ClassLoader.class)
+    .newInstance(parentLoader);
+</code></pre>
+<p>这就是你看到的报错的来源：</p>
+<pre><code>NoSuchMethodException: tech.insight.MyClassLoader.&lt;init&gt;(java.lang.ClassLoader)
+</code></pre>
+<hr>
+<h3>✅ 使用该参数时要满足的条件</h3>
+<ol>
+<li>类必须能被 Bootstrap 或 Extension 类加载器加载（通常要求该类在 <code>classpath</code> 中）；</li>
+<li>必须定义如下构造函数：</li>
+</ol>
+<pre><code class="language-java">public MyClassLoader(ClassLoader parent) {
+    super(parent);
+}
+</code></pre>
+<ol>
+<li>必须不能抛出异常，出错 JVM 就启动失败；</li>
+</ol>
+<hr>
+<h3>✅ 什么时候用 <code>-Djava.system.class.loader</code> 更合适？</h3>
+<p>适用于：</p>
+<ul>
+<li>想要<strong>拦截/控制所有类加载</strong>行为，比如实现安全隔离、加密 class 文件、动态 patch；</li>
+<li>想写类似 Java Agent、Sandbox、插件容器等底层框架；</li>
+<li>想接管 <code>Class.forName()</code>、SPI、<code>Thread.getContextClassLoader()</code> 行为的场景；</li>
+</ul>
+<hr>
+<h3>✅ 相对地，手动 new 更安全灵活</h3>
+<p>你用：</p>
+<pre><code class="language-java">MyClassLoader cl = new MyClassLoader();
+cl.loadClass(...);
+</code></pre>
+<p>优点：</p>
+<ul>
+<li>不影响其他类的加载；</li>
+<li>容错性强；</li>
+<li>可控粒度细；</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>不会影响 <code>Class.forName</code>、反射加载、SPI 等行为；</li>
+<li>需要手动加载类并调用（像 pluginLoader 的形式）；</li>
+</ul>
+<hr>
+<h3>✅ 总结类比</h3>
+<table>
+<thead>
+<tr>
+<th>类比</th>
+<th>意思</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>new MyClassLoader()</code></td>
+<td>就像你写了个工具类，专门干自己事</td>
+</tr>
+<tr>
+<td><code>-Djava.system.class.loader=...</code></td>
+<td>像你<strong>换了整个操作系统的 class 加载机制</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h3>✅ 实战建议</h3>
+<ul>
+<li>想研究类加载机制、做插件隔离：先用 <code>new MyClassLoader()</code> 安全练手；</li>
+<li>想 hook 整个应用加载流程或加密保护 class 文件，再考虑 <code>-Djava.system.class.loader</code>；</li>
+<li><strong>绝不要盲目替换系统类加载器</strong>，除非你<strong>100%知道你在干什么</strong>。</li>
+</ul>
+<hr>
+<p>需要我写一个 <code>-Djava.system.class.loader</code> 的完整例子，包含启动脚本、构造器实现、示例类加载行为对比吗？</p>
+<h2>问题：设置JVM参数指定系统类加载器没生效</h2>
+<p>在 IDEA 中设置 <code>-Djava.system.class.loader=tech.insight.MyClassLoader</code> 没生效，可能是由于 <strong>系统类加载器设置有严格的时机要求和类路径限制</strong>。以下是常见原因和解决方法：</p>
+<hr>
+<h3>✅ 正确设置的前提</h3>
+<h4>1. <strong>设置位置</strong></h4>
+<p>必须在 <strong>JVM 启动参数</strong>中设置，而不是程序运行时动态设置。</p>
+<h5>IDEA 设置方式：</h5>
+<p>打开 <code>Run | Edit Configurations</code>，在 VM options 中加入：</p>
+<pre><code class="language-bash">-Djava.system.class.loader=tech.insight.MyClassLoader
+</code></pre>
+<hr>
+<h4>2. <strong>你的 ClassLoader 必须能被 Bootstrap ClassLoader 加载</strong></h4>
+<p>系统类加载器的替代类（你的 <code>tech.insight.MyClassLoader</code>）<strong>必须在 bootstrap classpath 或 extension classpath 中</strong>，否则 JVM 根本加载不到。</p>
+<p>也就是说：<code>MyClassLoader</code> <strong>不能通过 AppClassLoader 加载自己</strong>，否则就陷入死循环。</p>
+<h5>解决方案：</h5>
+<p>将 <code>MyClassLoader</code> 所在的 jar 放到启动类路径里：</p>
+<h5>方法一：使用 <code>-Xbootclasspath/a</code> （Java 8 及以前）</h5>
+<pre><code class="language-bash">-Xbootclasspath/a:/path/to/myclassloader.jar
+</code></pre>
+<h5>方法二：Java 9+ 使用模块方式启动，必须加 <code>--patch-module</code> 或其他方式注入。</h5>
+<hr>
+<h4>3. <strong>你的类加载器必须有一个标准的构造函数</strong></h4>
+<p>系统会用反射调用如下构造方法：</p>
+<pre><code class="language-java">public MyClassLoader(ClassLoader parent)
+</code></pre>
+<p>你必须提供这个构造函数。</p>
+<hr>
+<h4>4. <strong>确保主类不在被你加载的范围内</strong></h4>
+<p>如果你自己加载了主类，有可能造成类加载冲突或双重加载（类加载器隔离）。</p>
+<hr>
+<h4>5. <strong>有些 IDE 行为不同于直接命令行</strong></h4>
+<p>IDEA 在调试/运行配置中，可能会额外插入自己的类加载逻辑，导致 <code>-Djava.system.class.loader</code> 被绕过或干扰。</p>
+<hr>
+<h3>✅ 示例</h3>
+<p>比如你有个自定义类加载器：</p>
+<pre><code class="language-java">package tech.insight;
+
+public class MyClassLoader extends ClassLoader {
+    public MyClassLoader(ClassLoader parent) {
+        super(parent);
+        System.out.println(&quot;MyClassLoader initialized&quot;);
+    }
+
+    @Override
+    protected Class&lt;?&gt; loadClass(String name, boolean resolve) throws ClassNotFoundException {
+        // 加载逻辑 ...
+        return super.loadClass(name, resolve);
+    }
+}
+</code></pre>
+<p>你需要：</p>
+<ol>
+<li>编译并打包成 JAR；</li>
+<li>使用如下 JVM 参数：</li>
+</ol>
+<pre><code class="language-bash">-Djava.system.class.loader=tech.insight.MyClassLoader -Xbootclasspath/a:/path/to/myclassloader.jar
+</code></pre>
+<hr>
+<h3>✅ 验证是否生效</h3>
+<p>你可以在 <code>MyClassLoader</code> 构造函数中加一条日志，或者打印当前类加载器：</p>
+<pre><code class="language-java">System.out.println(&quot;SystemClassLoader: &quot; + ClassLoader.getSystemClassLoader());
+</code></pre>
+<p>如果不是你的类，则说明设置失败。</p>
+<hr>
+<h3>🔍 总结排查 checklist：</h3>
+<table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>是否正确</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JVM 参数 <code>-Djava.system.class.loader</code> 设置在 VM options 中</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>自定义类加载器打包并通过 <code>-Xbootclasspath/a</code> 加入启动类路径</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>MyClassLoader</code> 有 <code>(ClassLoader parent)</code> 构造函数</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>IDEA 没有修改类路径或类加载器（可以尝试命令行运行验证）</td>
+<td>✅</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>什么叫native函数</h2>
+<p><code>native</code> 函数是 Java 中的一种<strong>本地方法（Native Method）</strong>，指的是：</p>
+<blockquote>
+<p>使用 Java 语言声明、但在 <strong>非 Java 语言（通常是 C 或 C++）中实现</strong> 的方法。</p>
+</blockquote>
+<hr>
+<h3>🧠 为什么要用 <code>native</code> 方法？</h3>
+<p>Java 虚拟机（JVM）虽然平台无关，但有些底层操作必须依赖操作系统或本地硬件，比如：</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>依赖 native 方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>操作系统调用（如文件、网络、线程）</td>
+<td>是</td>
+</tr>
+<tr>
+<td>系统时间、对象内存布局</td>
+<td>是</td>
+</tr>
+<tr>
+<td>和 C/C++ 共享内存或调用 DLL</td>
+<td>是</td>
+</tr>
+<tr>
+<td>调用第三方本地库（如 OpenCV、FFmpeg）</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>✅ 语法示例</h3>
+<p>在 Java 中声明一个 native 方法：</p>
+<pre><code class="language-java">public class NativeExample {
+    // native 方法声明
+    public native void sayHello();
+
+    static {
+        // 加载本地库，比如 libnative.so / native.dll
+        System.loadLibrary(&quot;native&quot;);
+    }
+}
+</code></pre>
+<p>然后你需要用 C/C++ 来实现：</p>
+<pre><code class="language-c">#include &lt;jni.h&gt;
+#include &lt;stdio.h&gt;
+#include &quot;NativeExample.h&quot;
+
+JNIEXPORT void JNICALL Java_NativeExample_sayHello(JNIEnv *env, jobject obj) {
+    printf(&quot;Hello from native C code!\n&quot;);
+}
+</code></pre>
+<hr>
+<h3>🚀 如何使用 native 方法（流程概览）</h3>
+<ol>
+<li>在 Java 中声明 <code>native</code> 方法；</li>
+<li>使用 <code>javac</code> 编译 Java 文件；</li>
+<li>使用 <code>javah</code>（或 <code>javac -h</code>）生成 C 头文件；</li>
+<li>编写对应的 C/C++ 实现代码；</li>
+<li>编译生成共享库（如 <code>.dll</code> / <code>.so</code> / <code>.dylib</code>）；</li>
+<li>在 Java 中使用 <code>System.loadLibrary</code> 加载；</li>
+<li>运行 Java 程序，调用 native 方法。</li>
+</ol>
+<hr>
+<h3>⚠️ 注意事项</h3>
+<ul>
+<li><code>native</code> 方法本身没有方法体，方法体在 C/C++ 中实现；</li>
+<li>native 方法是 Java 和底层系统之间的桥梁，但 <strong>不安全、不跨平台、难调试</strong>；</li>
+<li>在 Java 里调用 native 方法时，如果参数或指针处理出错，可能导致 <strong>崩溃（JVM core dump）</strong>。</li>
+</ul>
+<hr>
+<h3>✅ 常见的 native 方法例子</h3>
+<p>Java 标准库中有很多 native 方法，比如：</p>
+<pre><code class="language-java">public final class System {
+    public static native long currentTimeMillis(); // 获取系统时间
+}
+</code></pre>
+<hr>
+<h3>总结一句话：</h3>
+<blockquote>
+<p><code>native</code> 方法 = Java 声明 + C/C++ 实现，用来做 Java 做不了的底层事。</p>
+</blockquote>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【JVM学习】方法区 | Focusmee</title>
+    <meta name="description" content="【JVM学习】方法区">
+    <meta property="og:title" content="【JVM学习】方法区">
+    <meta property="og:description" content="【JVM学习】方法区">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【JVM学习】方法区</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">6 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【JVM学习】方法区</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <p>让我详细解释方法区（Method Area）的概念和位置。</p>
+<p>在JVM的内存结构中，方法区是一个非常重要的部分。让我们通过JVM的整体内存结构来理解：</p>
+<ol>
+<li><strong>JVM内存结构</strong>：</li>
+</ol>
+<pre><code>JVM内存
+├── 堆区（Heap）
+│   ├── 新生代
+│   │   ├── Eden区
+│   │   ├── Survivor 0
+│   │   └── Survivor 1
+│   └── 老年代
+├── 方法区（Method Area）
+│   ├── 类信息
+│   ├── 常量
+│   ├── 静态变量
+│   └── 即时编译器编译后的代码
+├── 程序计数器（PC Register）
+└── JVM栈（JVM Stack）
+    ├── 栈帧1
+    ├── 栈帧2
+    └── 栈帧3
+</code></pre>
+<ol start="2">
+<li><strong>方法区的演进</strong>：</li>
+</ol>
+<ul>
+<li><p><strong>JDK 1.7之前</strong>：</p>
+<ul>
+<li>方法区在永久代（PermGen）中</li>
+<li>和堆区连续</li>
+<li>有固定大小限制</li>
+</ul>
+</li>
+<li><p><strong>JDK 1.8及之后</strong>：</p>
+<ul>
+<li>方法区在元空间（Metaspace）中</li>
+<li>直接使用本地内存（Native Memory）</li>
+<li>不再受JVM堆内存的限制</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li><strong>在我们的mini-jvm中查看相关实现</strong>：</li>
+</ol>
+<p>Search files...<br>在我们的mini-jvm实现中，方法区的概念主要体现在<code>ClassFile</code>对象中，它包含了类的所有信息。让我们看看方法区的主要特点：</p>
+<ol>
+<li><strong>方法区存储的内容</strong>：</li>
+</ol>
+<pre><code>方法区
+├── 类型信息
+│   ├── 类名
+│   ├── 修饰符
+│   ├── 父类信息
+│   └── 接口信息
+├── 方法信息
+│   ├── 方法名
+│   ├── 返回类型
+│   ├── 参数列表
+│   └── 方法字节码
+├── 字段信息
+│   ├── 字段名
+│   ├── 类型
+│   └── 修饰符
+└── 其他
+    ├── 运行时常量池
+    ├── 静态变量
+    └── JIT编译的本地代码
+</code></pre>
+<ol start="2">
+<li><strong>方法区的特点</strong>：</li>
+</ol>
+<ul>
+<li>线程共享：所有线程共享方法区</li>
+<li>动态性：运行时会动态加载新的类</li>
+<li>垃圾回收：主要针对常量池的回收和类的卸载</li>
+</ul>
+<ol start="3">
+<li><strong>在mini-jvm中的体现</strong>：</li>
+</ol>
+<pre><code class="language-java">// 类加载时，将类信息加载到&quot;方法区&quot;
+public ClassFile loadClass(String fqcn) throws ClassNotFoundException {
+    return classPath.stream()
+        .map(path -&gt; tryLoad(path, fqcn))
+        .filter(Objects::nonNull)
+        .findAny()
+        .orElseThrow(() -&gt; new ClassNotFoundException(fqcn + &quot;找不到&quot;));
+}
+
+// 方法调用时，从&quot;方法区&quot;获取方法信息
+MethodInfo finalMethodInfo = classFile.getMethods(methodName).get(0);
+StackFrame stackFrame = new StackFrame(finalMethodInfo, classFile.getConstantPool(), args);
+</code></pre>
+<ol start="4">
+<li><strong>方法区的访问过程</strong>：</li>
+</ol>
+<pre><code>Java代码调用方法
+     ↓
+查找常量池中的方法引用
+     ↓
+到方法区找到方法的具体实现
+     ↓
+创建栈帧
+     ↓
+执行方法的字节码
+</code></pre>
+<p>用生动的比喻来说：</p>
+<p>方法区就像一个<strong>图书馆</strong>：</p>
+<ul>
+<li><p><strong>书架</strong>（类信息存储区）：</p>
+<ul>
+<li>每个类就像一本书</li>
+<li>书的目录就是类的结构信息</li>
+<li>书的内容就是类的方法实现</li>
+</ul>
+</li>
+<li><p><strong>图书管理系统</strong>（类加载器）：</p>
+<ul>
+<li>负责把新书（类）放到正确的位置</li>
+<li>记录书的位置信息</li>
+<li>当需要时能快速找到对应的书</li>
+</ul>
+</li>
+<li><p><strong>阅览室</strong>（运行时）：</p>
+<ul>
+<li>读者（线程）需要看书时</li>
+<li>先查目录（常量池）</li>
+<li>找到具体页码（方法）</li>
+<li>在阅览桌（栈）上阅读</li>
+</ul>
+</li>
+</ul>
+<p>所以，方法区是JVM中一个非常重要的内存区域，它：</p>
+<ol>
+<li>存储类的结构信息</li>
+<li>存储方法的具体实现</li>
+<li>被所有线程共享</li>
+<li>在类加载时填充</li>
+<li>在方法调用时提供数据</li>
+</ol>
+<p>这就是为什么它也被称为&quot;永久代&quot;或&quot;元空间&quot;，因为它存储的是类的&quot;元数据&quot;，是Java程序运行的基础设施。</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

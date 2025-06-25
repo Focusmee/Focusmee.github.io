@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【AI工具学习】MCP | Focusmee</title>
+    <meta name="description" content="【AI工具学习】MCP">
+    <meta property="og:title" content="【AI工具学习】MCP">
+    <meta property="og:description" content="【AI工具学习】MCP">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【AI工具学习】MCP</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">3 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【AI工具学习】MCP</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>MCP 和 Function Call</h1>
+<h2>困惑</h2>
+<ol>
+<li>有哪些模型支持MCP？</li>
+<li>只有支持函数调用的模型才能使用MCP吗？</li>
+<li>MCP能脱离LLM调用吗？</li>
+</ol>
+<h2>概念</h2>
+<ul>
+<li>MCP是<strong>协议</strong>，是一套标准</li>
+<li>Function Call / Tool Call是模型的基本<strong>能力</strong>，可以返回格式化工具调用的能力</li>
+</ul>
+<h2>从调用流程角度</h2>
+<p><img src="C:%5CUsers%5CJinju%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20250412164919679.png" alt="image-20250412164919679"></p>
+<p>是否使用MCP的区别发生在FunctionCall完成后</p>
+<p><img src="C:%5CUsers%5CJinju%5Cblog%5Csource%5Cimages%5Cimage-20250414170310829.png" alt="image-20250414170310829"></p>
+<h2>从开发者角度</h2>
+<ul>
+<li><strong>无MCP</strong><ul>
+<li>Host作者制定工具的开发规范 (LobeChat / LibreChat)</li>
+<li>开发者根据规范给某一个Host开发工具</li>
+<li>不同Host之间插件生态不互通</li>
+</ul>
+</li>
+<li><strong>有MCP</strong><ul>
+<li>Host作者根据MCP Client Spec开发客户端</li>
+<li>工具作者根据MCP Server Sepc开发工具服务端</li>
+<li>打通插件/工具生态</li>
+</ul>
+</li>
+</ul>
+<h2>更多</h2>
+<p>MCP的能力不止调用工具</p>
+<p><a href="https://modelcontextprotocol.io/introduction">MCP文档</a></p>
+<h2>总结</h2>
+<p>Mcp只是LLM调用外部工具的一种协议</p>
+<p>Function call是模型的能力它会以json的方式描述调用外部工具的参数和外部工具的名称</p>
+<p>✅ 如何从零开始设置MCP服务器 ✅ 使用API获取实时天气数据 ✅ 将MCP服务器连接到Claude for Desktop ✅ 理解MCP如何使AI与外部数据互动 ✅ 实践演示以实现无缝集成</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOPATH - 技术博客</title>
+    <meta name="description" content="GOPATH - Go语言相关技术文章">
+    <meta name="keywords" content="Go语言, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">Go语言</span>
+            <span class="separator">›</span>
+            <span class="current-page">GOPATH</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag golang">🚀 Go语言</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 3 分钟阅读</span>
+                </div>
+                <h1 class="post-title">GOPATH</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p>---<br /><br />tilte: GoPATH<br /><br />---<br /><br /><br /><br /><strong>一、GOPATH的概念</strong><br /><br />GOPATH 是 Go 语言中使用的一个环境变量，它使用绝对路径提供项目的<strong>工作目录（<em>*也称为*</em>工作区）</strong>。<br /><br />工作目录是一个工程开发的相对参考目录，好比当你要在公司编写一套服务器代码，你的工位所包含的桌面、计算机及椅子就是你的工作区。<br /><br />工作区的概念与工作目录的概念也是类似的。如果不使用工作目录的概念，在多人开发时，每个人有一套自己的目录结构，读取配置文件的位置不统一，<br /><br />输出的二进制运行文件也不统一，这样会导致开发的标准不统一，影响开发效率。<br /><br />GOPATH 适合处理大量 Go语言源码、多个包组合而成的复杂工程。<br /><br />从 Go 1.8 版本开始，Go 开发包在安装完成后，将 GOPATH 赋予了一个默认的目录，参见下表<br /><br /><img alt="img" src="https://img2020.cnblogs.com/blog/907091/202008/907091-20200810145305229-244770147.png" /><br /><br />可以通过go env命令查看Go的环境变量，我使用的mac效果如下（安装后，更改过）<br /><br /><img alt="img" src="https://img2020.cnblogs.com/blog/907091/202011/907091-20201102150001647-651359307.png" /><br /><br /><strong>二、GOPATH的使用</strong><br /><br />`GOPATH`目录一般为：<br /><br />```<br />$HOME/go<br />  --bin      # 存放编译后的可执行文件<br />  --pkg      # 依赖包编译后的*.a文件<br />  --src      # 存放源码文件，以代码包为组织形式<br />```<br /><br />如下是一个完整的Go项目的开发目录：<br /><br /><a href="javascript:void(0"><img alt="复制代码" src="https://assets.cnblogs.com/images/copycode.gif" /></a>;)<br /><br />```<br />my-go                 // my-go为GOPATH目录<br />  -- bin<br />     -- myApp1        // 编译生成<br />     -- myApp2        // 编译生成<br />     -- myApp3        // 编译生成<br />  -- pkg                             依赖包编译后的*.a文件//<br />  -- src<br />     -- MyApp1        // 项目1<br />        -- models<br />        -- controllers<br />        -- others<br />        -- main.go <br />     -- MyApp2        // 项目2<br />        -- models<br />        -- controllers<br />        -- others<br />        -- main.go <br />```<br /><br /><a href="javascript:void(0"><img alt="复制代码" src="https://assets.cnblogs.com/images/copycode.gif" /></a>;)<br /><br />设置GOPATH后，工程中使用 <strong>import的根目录是GOPATH中的src目录</strong><br /><br />GOPATH为/Users/lxxxxxk/GolandProjects，工程为/Users/lxxxxxk/Desktop/my-go/src/MyApp1<br /><br />那么MyApp1中使用import导入本地包的时候，这样写：<br /><br />```<br />import "MyApp1/models"  // models为包名<br />```<br /><br />也就是说，<strong>GOPATH下必须要有src目录</strong>，不然import导包的时候会找不到<br /><br />import导包规则：<br /><br />　　1、先去GOROOT/src/路径下找   /usr/local/go/src/MyApp1 (系统环境变量 $GOROOT，即使用go env命令显示的GOROOT)<br /><br />　　2、如果1没有，就去Project GOPATH/src/路径下找   /Users/lxxxxxk/Desktop/my-go/src/MyApp1<br /><br />　　3、如果2还没找到，就去Global GOPATH路径下找   /Users/lxxxxxk/GolandProjects（系统环境变量 $GOPATH，即使用go env命令显示的GOPATH）<br /><br /><strong>三、GoLand设置GOPATH</strong><br /><br /><img alt="img" src="https://img2020.cnblogs.com/blog/907091/202011/907091-20201102150212911-986971053.png" /><br /><br />图中的 Global GOPATH 代表全局 GOPATH，一般来源于系统环境变量中的 GOPATH；<br /><br />Project GOPATH 代表项目所使用的 GOPATH，该设置会被保存在工作目录的 <strong>.idea</strong>目录下，不会被设置到环境变量的 GOPATH 中，但会在编译时使用到这个目录。<br /><br />建议在开发时填写项目 GOPATH，<strong>每一个项目尽量只设置一个 GOPATH，不使用多个 GOPATH 和全局的 GOPATH</strong>。<br /><br />否则可能会出现如下麻烦：<br /><br />```<br />将某项目代码保存在 /home/davy/projectA 目录下，将该目录设置为 GOPATH。<br />随着开发进行，需要再次获取一份工程项目的源码，此时源码保存在 /home/davy/projectB 目录下，<br />如果此时需要编译 projectB 目录的项目，但开发者忘记设置 GOPATH 而直接使用命令行编译，<br />则当前的 GOPATH 指向的是 /home/davy/projectA 目录，而不是开发者编译时期望的 projectB 目录。<br />编译完成后，开发者就会将错误的工程版本发布到外网。<br />```</p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">Go语言</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

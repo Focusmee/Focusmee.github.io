@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP - 技术博客</title>
+    <meta name="description" content="MCP - AI工具相关技术文章">
+    <meta name="keywords" content="AI工具, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">AI工具</span>
+            <span class="separator">›</span>
+            <span class="current-page">MCP</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag ai-tools">🤖 AI工具</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 1 分钟阅读</span>
+                </div>
+                <h1 class="post-title">MCP</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p><h1>MCP 和 Function Call</h1><br /><br /><h2>困惑</h2><br /><br />1. 有哪些模型支持MCP？<br />2. 只有支持函数调用的模型才能使用MCP吗？<br />3. MCP能脱离LLM调用吗？<br /><br /><h2>概念</h2><br /><br />- MCP是<strong>协议</strong>，是一套标准<br />- Function Call / Tool Call是模型的基本<strong>能力</strong>，可以返回格式化工具调用的能力<br /><br /><h2>从调用流程角度</h2><br /><br /><br /><br /><img alt="image-20250412164919679" src="C:\Users\Jinju\AppData\Roaming\Typora\typora-user-images\image-20250412164919679.png" /><br /><br /><br /><br />是否使用MCP的区别发生在FunctionCall完成后<br /><br /><img alt="image-20250414170310829" src="C:\Users\Jinju\blog\source\images\image-20250414170310829.png" /><br /><br /><h2>从开发者角度</h2><br /><br />- <strong>无MCP</strong><br />  - Host作者制定工具的开发规范 (LobeChat / LibreChat)<br />  - 开发者根据规范给某一个Host开发工具<br />  - 不同Host之间插件生态不互通<br />- <strong>有MCP</strong><br />  - Host作者根据MCP Client Spec开发客户端<br />  - 工具作者根据MCP Server Sepc开发工具服务端<br />  - 打通插件/工具生态<br /><br /><h2>更多</h2><br /><br />MCP的能力不止调用工具<br /><br /><a href="https://modelcontextprotocol.io/introduction">MCP文档</a><br /><br /><br /><br /><h2>总结</h2><br /><br />Mcp只是LLM调用外部工具的一种协议<br /><br />Function call是模型的能力它会以json的方式描述调用外部工具的参数和外部工具的名称<br /><br /><br /><br /><br /><br /><br /><br />✅ 如何从零开始设置MCP服务器 ✅ 使用API获取实时天气数据 ✅ 将MCP服务器连接到Claude for Desktop ✅ 理解MCP如何使AI与外部数据互动 ✅ 实践演示以实现无缝集成</p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">AI工具</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

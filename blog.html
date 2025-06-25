@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>技术博客 | 梁峰铭</title>
+    <title>技术博客 | Focusmee</title>
     <meta name="description" content="分享Java后端开发、物联网技术等领域的技术心得与学习笔记">
+    <link rel="stylesheet" href="styles/fonts.css">
+    <link rel="stylesheet" href="styles/icons.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/blog.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/blog-new.css">
+    <script src="scripts/posts-data.js"></script>
+    <script src="scripts/category-manager.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -49,15 +50,15 @@
                 </p>
                 <div class="blog-stats">
                     <div class="stat-item">
-                        <span class="stat-number" id="totalPosts">12</span>
+                        <span class="stat-number" id="totalPosts">2</span>
                         <span class="stat-label">篇文章</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number" id="totalViews">2.3k</span>
+                        <span class="stat-number" id="totalViews">0</span>
                         <span class="stat-label">总阅读</span>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-number" id="totalCategories">6</span>
+                    <div class="stat-item">  
+                        <span class="stat-number" id="totalCategories">2</span>
                         <span class="stat-label">个分类</span>
                     </div>
                 </div>
@@ -69,14 +70,11 @@
     <section class="blog-filter">
         <div class="container">
             <div class="filter-container">
-                <div class="filter-tabs">
-                    <button class="filter-tab active" data-category="all">全部</button>
-                    <button class="filter-tab" data-category="java">Java</button>
-                    <button class="filter-tab" data-category="distributed">分布式</button>
-                    <button class="filter-tab" data-category="iot">物联网</button>
-                    <button class="filter-tab" data-category="spring">Spring</button>
-                    <button class="filter-tab" data-category="database">数据库</button>
-                    <button class="filter-tab" data-category="other">其他</button>
+                <div class="filter-header">
+                    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="显示分类目录">
+                        <i class="fas fa-bars"></i>
+                        <span>分类目录</span>
+                    </button>
                 </div>
                 <div class="search-container">
                     <input type="text" id="searchInput" placeholder="搜索文章..." class="search-input">
@@ -86,166 +84,211 @@
         </div>
     </section>
 
-    <!-- Blog Content -->
-    <section class="blog-content">
-        <div class="container">
-            <div class="blog-layout">
-                <!-- Featured Post -->
-                <div class="featured-post">
-                    <article class="post-card featured" data-category="java">
-                        <div class="post-image">
-                            <div class="post-image-placeholder">
-                                <i class="fas fa-code"></i>
-                            </div>
-                        </div>
-                        <div class="post-content">
-                            <div class="post-meta">
-                                <span class="post-category">Java</span>
-                                <span class="post-date">2025-01-15</span>
-                                <span class="post-read-time">8 分钟阅读</span>
-                            </div>
-                            <h2 class="post-title">深入理解Java类加载机制</h2>
-                            <p class="post-excerpt">
-                                深入探讨JVM类加载器的工作原理，从双亲委派模型到自定义类加载器的实现。通过源码分析和实践案例，全面理解Java类加载的核心机制。
-                            </p>
-                            <div class="post-tags">
-                                <span class="post-tag">JVM</span>
-                                <span class="post-tag">类加载器</span>
-                                <span class="post-tag">源码分析</span>
-                            </div>
-                            <a href="#" class="post-link">阅读全文</a>
-                        </div>
-                    </article>
+    <!-- 侧边栏分类目录 -->
+    <div class="category-sidebar" id="categorySidebar">
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3>文章分类</h3>
+                <button class="sidebar-close-btn" id="sidebarCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="sidebar-body">
+                <div class="filter-tabs vertical" id="categoryFilterTabs">
+                    <button class="filter-tab active" data-category="all">
+                        <span class="tab-content">
+                            <span class="tab-emoji">📚</span>
+                            <span class="tab-text">全部</span>
+                        </span>
+                    </button>
+                    <!-- 分类标签将动态生成 -->
                 </div>
-
-                <!-- Blog Posts Grid -->
-                <div class="blog-posts">
-                    <article class="post-card" data-category="distributed">
-                        <div class="post-content">
-                            <div class="post-meta">
-                                <span class="post-category">分布式</span>
-                                <span class="post-date">2025-01-10</span>
-                                <span class="post-read-time">12 分钟阅读</span>
-                            </div>
-                            <h3 class="post-title">从零开始构建RPC框架</h3>
-                            <p class="post-excerpt">
-                                详细介绍如何设计和实现一个分布式RPC框架，涵盖网络通信、序列化、服务发现、负载均衡等核心模块的设计思路。
-                            </p>
-                            <div class="post-tags">
-                                <span class="post-tag">RPC</span>
-                                <span class="post-tag">Netty</span>
-                                <span class="post-tag">分布式</span>
-                            </div>
-                            <a href="#" class="post-link">阅读全文</a>
-                        </div>
-                    </article>
-
-                    <article class="post-card" data-category="iot">
-                        <div class="post-content">
-                            <div class="post-meta">
-                                <span class="post-category">物联网</span>
-                                <span class="post-date">2025-01-05</span>
-                                <span class="post-read-time">6 分钟阅读</span>
-                            </div>
-                            <h3 class="post-title">MQTT协议在物联网中的应用实践</h3>
-                            <p class="post-excerpt">
-                                基于实际项目经验，分析MQTT协议的特点和优势，以及在物联网数据传输中的应用场景和最佳实践。
-                            </p>
-                            <div class="post-tags">
-                                <span class="post-tag">MQTT</span>
-                                <span class="post-tag">物联网</span>
-                                <span class="post-tag">消息队列</span>
-                            </div>
-                            <a href="#" class="post-link">阅读全文</a>
-                        </div>
-                    </article>
-
-                    <article class="post-card" data-category="spring">
-                        <div class="post-content">
-                            <div class="post-meta">
-                                <span class="post-category">Spring</span>
-                                <span class="post-date">2024-12-28</span>
-                                <span class="post-read-time">10 分钟阅读</span>
-                            </div>
-                            <h3 class="post-title">Spring Boot 微服务架构最佳实践</h3>
-                            <p class="post-excerpt">
-                                总结基于Spring Boot构建微服务架构的最佳实践，包括服务拆分、配置管理、API网关、监控等方面的设计经验。
-                            </p>
-                            <div class="post-tags">
-                                <span class="post-tag">Spring Boot</span>
-                                <span class="post-tag">微服务</span>
-                                <span class="post-tag">架构设计</span>
-                            </div>
-                            <a href="#" class="post-link">阅读全文</a>
-                        </div>
-                    </article>
-
-                    <article class="post-card" data-category="database">
-                        <div class="post-content">
-                            <div class="post-meta">
-                                <span class="post-category">数据库</span>
-                                <span class="post-date">2024-12-20</span>
-                                <span class="post-read-time">7 分钟阅读</span>
-                            </div>
-                            <h3 class="post-title">MySQL索引优化实战指南</h3>
-                            <p class="post-excerpt">
-                                深入分析MySQL索引的工作原理，通过实际案例演示如何进行索引优化，提升数据库查询性能。
-                            </p>
-                            <div class="post-tags">
-                                <span class="post-tag">MySQL</span>
-                                <span class="post-tag">索引优化</span>
-                                <span class="post-tag">性能优化</span>
-                            </div>
-                            <a href="#" class="post-link">阅读全文</a>
-                        </div>
-                    </article>
-
-                    <article class="post-card" data-category="java">
-                        <div class="post-content">
-                            <div class="post-meta">
-                                <span class="post-category">Java</span>
-                                <span class="post-date">2024-12-15</span>
-                                <span class="post-read-time">9 分钟阅读</span>
-                            </div>
-                            <h3 class="post-title">Java NIO深入解析</h3>
-                            <p class="post-excerpt">
-                                详细讲解Java NIO的核心概念和工作原理，通过代码示例演示Channel、Buffer、Selector的使用方法。
-                            </p>
-                            <div class="post-tags">
-                                <span class="post-tag">Java</span>
-                                <span class="post-tag">NIO</span>
-                                <span class="post-tag">并发编程</span>
-                            </div>
-                            <a href="#" class="post-link">阅读全文</a>
-                        </div>
-                    </article>
-
-                    <article class="post-card" data-category="other">
-                        <div class="post-content">
-                            <div class="post-meta">
-                                <span class="post-category">其他</span>
-                                <span class="post-date">2024-12-10</span>
-                                <span class="post-read-time">5 分钟阅读</span>
-                            </div>
-                            <h3 class="post-title">程序员必备的Git技巧</h3>
-                            <p class="post-excerpt">
-                                分享日常开发中常用的Git命令和技巧，帮助提升版本控制和团队协作的效率。
-                            </p>
-                            <div class="post-tags">
-                                <span class="post-tag">Git</span>
-                                <span class="post-tag">版本控制</span>
-                                <span class="post-tag">工具使用</span>
-                            </div>
-                            <a href="#" class="post-link">阅读全文</a>
-                        </div>
-                    </article>
+                <div class="sidebar-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="sidebarTotalPosts">2</span>
+                        <span class="stat-label">篇文章</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="sidebarTotalCategories">2</span>
+                        <span class="stat-label">个分类</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+
+    <!-- Blog Content -->
+    <div class="blog-content-main">
+        <!-- Content Header -->
+        <div class="content-header">
+            <div class="header-info">
+                <h2 class="content-title">
+                    <i class="fas fa-book-open"></i>
+                    技术博客文章
+                </h2>
+                <p class="content-subtitle">分享技术心得，记录成长历程</p>
+            </div>
+            <div class="content-controls">
+                <div class="view-mode-toggle">
+                    <button class="view-btn active" data-view="grid" title="网格视图">
+                        📊 网格
+                    </button>
+                    <button class="view-btn" data-view="list" title="列表视图">
+                        📋 列表
+                    </button>
+                </div>
+                <select class="sort-select" id="sortSelect">
+                    <option value="newest">最新发布</option>
+                    <option value="oldest">最早发布</option>
+                    <option value="popular">最受欢迎</option>
+                    <option value="title">按标题排序</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 加载状态 -->
+        <div id="loadingContainer" class="loading-container">
+            <div class="loading-animation">
+                <div class="loading-emoji">🚀</div>
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <h3 class="loading-title">正在加载精彩内容</h3>
+            <p class="loading-text">请稍候，我们在为您准备最新的技术文章...</p>
+        </div>
+
+        <!-- 精选文章聚光区 -->
+        <div id="featuredSpotlight" class="featured-spotlight" style="display: none;">
+            <div class="spotlight-header">
+                <h2 class="spotlight-title">
+                    <i class="fas fa-star"></i>
+                    精选推荐
+                </h2>
+                <span class="spotlight-badge">Featured</span>
+            </div>
+            <div class="featured-content" id="featuredPostContainer">
+                <!-- 精选文章将动态生成 -->
+            </div>
+        </div>
+
+        <!-- 文章集合区域 -->
+        <div id="postsCollection" class="posts-collection" style="display: none;">
+            <div class="collection-header">
+                <div class="collection-info">
+                    <h2 class="collection-title">最新文章</h2>
+                    <div class="collection-stats">
+                        <span><i class="fas fa-file-alt"></i> <span id="postsCount">0</span> 篇文章</span>
+                        <span><i class="fas fa-eye"></i> 总浏览 <span id="totalViewsInCollection">1.2k</span></span>
+                        <span><i class="fas fa-clock"></i> 总阅读时间 <span id="totalReadingTime"><span>0</span> 分钟</span></span>
+                    </div>
+                </div>
+                <div class="collection-actions">
+                    <button class="action-btn" id="refreshBtn" title="刷新列表">
+                        🔄
+                    </button>
+                    <button class="action-btn view-mode-btn" data-view="grid" title="网格视图">
+                        📊
+                    </button>
+                    <button class="action-btn view-mode-btn" data-view="list" title="列表视图">
+                        📋
+                    </button>
+                    <button class="action-btn" id="bookmarkAllBtn" title="收藏全部">
+                        🔖
+                    </button>
+                </div>
+            </div>
+
+            <!-- 文章容器 -->
+            <div class="posts-container">
+                <div id="postsGrid" class="posts-grid-view">
+                    <!-- 文章将动态生成 -->
+                </div>
+                <div id="postsList" class="posts-list-view" style="display: none;">
+                    <!-- 列表视图文章将动态生成 -->
+                </div>
+            </div>
+
+            <!-- 空状态 -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-illustration">🔍</div>
+                <h3 class="empty-title">暂无文章</h3>
+                <p class="empty-text">还没有发布任何文章，请稍后再来看看</p>
+                <button class="empty-action-btn" onclick="window.location.reload()">
+                    刷新页面
+                </button>
+            </div>
+
+            <!-- 加载更多区域 -->
+            <div class="load-more-section">
+                <button class="load-more-btn modern" id="loadMoreBtn">
+                    <div class="btn-content">
+                        <span>加载更多精彩内容</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="btn-loading">
+                        <span>加载中...</span>
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </button>
+                <div class="load-complete-message">
+                    <i class="fas fa-check-circle"></i>
+                    已为您展示全部内容
+                </div>
+            </div>
+        </div>
+
+        <!-- 内容底部 -->
+        <div id="contentFooter" class="content-footer" style="display: none;">
+            <div class="footer-stats">
+                <div class="stat-item">
+                    <i class="fas fa-book-open"></i>
+                    <span>知识分享</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-heart"></i>
+                    <span>用心创作</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-rocket"></i>
+                    <span>持续进步</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-calendar"></i>
+                    <span>最后更新: <span id="lastUpdate">--</span></span>
+                </div>
+            </div>
+            <div class="footer-tip">
+                <i class="fas fa-lightbulb"></i>
+                <span>每篇文章都是技术成长路上的足迹</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 快速操作栏 -->
+    <div class="quick-actions-bar">
+        <button class="quick-action" id="categoryToggleBtn" title="分类目录">
+            <i class="fas fa-list"></i>
+        </button>
+        <button class="quick-action" id="scrollTopBtn" title="回到顶部">
+            ⬆️
+        </button>
+        <button class="quick-action" id="randomPostBtn" title="随机文章">
+            🎲
+        </button>
+        <button class="quick-action" id="shareBtn" title="分享页面">
+            📤
+        </button>
+        <button class="quick-action" title="深色模式">
+            🌙
+        </button>
+    </div>
 
     <!-- Newsletter Section -->
-    <section class="newsletter">
+    <section class="newsletter" id="newsletter">
         <div class="container">
             <div class="newsletter-content">
                 <h2 class="newsletter-title">订阅技术动态</h2>
@@ -263,11 +306,14 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 梁峰铭. 专注技术，分享成长。</p>
+            <p>&copy; 2025 Focusmee. 专注技术，分享成长。</p>
         </div>
     </footer>
 
     <script src="scripts/main.js"></script>
     <script src="scripts/blog.js"></script>
+    <script src="scripts/blog-enhanced.js"></script>
+    
+
 </body>
 </html> 

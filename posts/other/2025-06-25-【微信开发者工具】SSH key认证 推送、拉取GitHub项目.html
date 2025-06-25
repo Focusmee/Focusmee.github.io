@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【微信开发者工具】SSH key认证 推送、拉取GitHub项目 | Focusmee</title>
+    <meta name="description" content="【微信开发者工具】SSH key认证 推送、拉取GitHub项目">
+    <meta property="og:title" content="【微信开发者工具】SSH key认证 推送、拉取GitHub项目">
+    <meta property="og:description" content="【微信开发者工具】SSH key认证 推送、拉取GitHub项目">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【微信开发者工具】SSH key认证 推送、拉取GitHub项目</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">4 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【微信开发者工具】SSH key认证 推送、拉取GitHub项目</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <p>微信开发者工具 SSH key认证 推送、拉取GitHub项目<br>因为从2021年8月14日之后，使用git对github进行身份验证操作的时候不再接受使用账号密码形式clone和push代码，今天就琢磨了下ssh key的方式来上传下拉代码，要注意的细节还是有的所以记录一下。</p>
+<p>1.下载安装、配置git。<br>git官网地址<a href="https://git-scm.com/%EF%BC%8C%E5%AE%89%E8%A3%85%E5%AE%8C%E5%90%8E%E8%AE%B0%E5%BE%97%E8%AE%BE%E7%BD%AE%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%E5%9C%B0%E5%9D%80%EF%BC%88GitHub%E6%88%96%E8%80%85gitee%E7%9A%84%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E9%82%AE%E7%AE%B1%EF%BC%89%E5%85%B7%E4%BD%93%E6%96%B9%E6%B3%95%E7%99%BE%E5%BA%A6%E3%80%82">https://git-scm.com/，安装完后记得设置用户名和邮箱地址（GitHub或者gitee的用户名和邮箱）具体方法百度。</a></p>
+<p>2.生成SSH Key<br>右键桌面进入Git Bash Here终端</p>
+<p>输入ssh-keygen -t ed25519 -C “<a href="mailto:your_email@example.com">your_email@example.com</a>” ( <a href="mailto:your_email@example.com">your_email@example.com</a>是你GitHub的邮箱),连续回车3次</p>
+<p>注意：因密钥安全性问题 GitHub 自 2022 年 3 月 15 日起不再支持 DSA 密钥 (ssh-dss)。</p>
+<p>之前使用如下命令生成的密钥对无效：</p>
+<p>ssh-keygen -t rsa -C “<a href="mailto:your_email@example.com">your_email@example.com</a>”</p>
+<p>于是用下面的方法重新生成，这样生成的文件会自动保存在，C:\Users\帅气陈.ssh目录下（这个路径不能有中文‘帅气陈’卡了我半天，可以将.ssh剪切到纯英文目录）</p>
+<p>ssh-keygen -t ed25519 -C “<a href="mailto:your_email@example.com">your_email@example.com</a>”</p>
+<p>该目录下会生成两个文件，id_ed25519.pub为公钥，id_ed25519为私钥。</p>
+<p>输入 ssh -T <a href="mailto:git@github.com">git@github.com</a>回车，因为是第一次流程提示输入yes回车。这里的-T区分大小写。如果返回【Hi ***! You’ve successfully authenticated, but GitHub does not provide shell access.】 说明配置成功</p>
+<p>右键id_ed25519.pub选择记事本打开全选复制里面内容</p>
+<p>打开GitHub点击右上角头像——Settings——SSH and GPG keys——New SSH key</p>
+<p>title给key命名，key里面粘贴刚刚复制的id_ed25519.pub中的内容——Add SSH key成功之后返回上级页面会出现一个key。</p>
+<p>3.微信开发者工具绑定远程仓库<br>1.微信开发者工具点击“版本管理”——设置——通用——用户名编辑，输入自己GitHub上的用户名和邮箱</p>
+<p>2.网络和认证：网络代理设置默认自动不用管，认证方式使用SSH key指定密钥</p>
+<p>3.远程——添加，名称填GitHub上的库的名称，url复制库的ssh地址，点击确定。</p>
+<p>4.代码上传、下拉</p>
+<p>具体怎么用b站有教程</p>
+<p>【【微信开发者工具+github】本地代码上传至远端仓库以及从仓库拉取代码到本地】 <a href="https://www.bilibili.com/video/BV15f4y1m7rA?share_source=copy_web&vd_source=b5b2a4b0a89cf17fc65c77bb0686404e">https://www.bilibili.com/video/BV15f4y1m7rA?share_source=copy_web&amp;vd_source=b5b2a4b0a89cf17fc65c77bb0686404e</a></p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

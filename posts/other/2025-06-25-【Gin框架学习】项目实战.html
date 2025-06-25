@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Gin框架学习】项目实战 | Focusmee</title>
+    <meta name="description" content="【Gin框架学习】项目实战">
+    <meta property="og:title" content="【Gin框架学习】项目实战">
+    <meta property="og:description" content="【Gin框架学习】项目实战">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Gin框架学习】项目实战</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">13 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Gin框架学习】项目实战</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h2>购物外部开发进阶实战笔记</h2>
+<p>本文介绍了购物外部开发进阶实战的相关内容，包括框架源码解析、数据库连接、脚手架搭建及项目实战等。</p>
+<h3>知识点1：框架源码解析</h3>
+<ul>
+<li>深入解析购物框架源码，理解其内部机制。 &gt; 原文引用：第一部分就是正框架的一个源码解析。</li>
+</ul>
+<h3>知识点2：数据库连接</h3>
+<ul>
+<li>使用database/sql标准库或ready-go库连接MySQL，支持哨兵、主从模式。</li>
+<li>使用标准库或第三方库连接Redis。 &gt; 原文引用：连接my和red is啊，这些我们常见的模块。第一个就是我们连接my的话呢，我们通常会用到呃构语言内置的database SQL这个标准库啊，当然呢，我们在这个课程中呢，还会向大家介绍功能啊，比我们常见的ready go啊，可能更稍微强大一点，它支持我们的哨兵模式，还有我们的主从模式啊等等等。</li>
+</ul>
+<h3>知识点3：脚手架搭建</h3>
+<ul>
+<li>搭建现代购物语言web项目通用脚手架，包括日志库、配置管理、优雅关机与平滑重启方案。 &gt; 原文引用：搭建购物外部开发脚手架啊，就是带领大家手把手的。带你搭建一套现代购物语言，在企业中开发web项目的话，一个一套比较通用的脚手架。日志库的一个使用由Uber啊开源的一个非常优秀的一个高性能的日志库啊，这样的一个使用呃，第二个部分呢就是viper啊，一个比较出名的购物语言配置管理的一个神器啊就是。viper这个库我们要学习一下，第三个呢。就是我们购外部项目，我们做外部项目肯定会遇到一些呃升级呀呃或者一些。那么我们怎么样去实现优雅关机和平滑重启呢。</li>
+</ul>
+<h3>知识点4：项目实战</h3>
+<ul>
+<li>实现仿Reddit论坛项目，涉及分布式ID生成、JWT认证、业务逻辑及投票功能。</li>
+<li>使用Docker及Docker Compose搭建开发环境，讲解代码发布与项目部署。 &gt; 原文引用：我们实现的是一个仿reddit论坛的这样一个项目啊，在这个项目中呢，我们将学到哪些东西呢。呃，分布式ID生成啊，基于水化算法的一个实现，还有前后端分类项目里面用应用比较广泛的一个gwt认证啊，我们会讲解一下gwt是什么，它的原理是什么，以及我们怎么样去编写。一个比较通用的一个gwt认证的一个中间件呃，第三部分呢，就是基于my我们实现一个主要的业务逻辑，第四个呢，就是基于red is实现一个投票的一个。当然呢，我们在开发中呢，可能会涉及到啊，基于docker去开发一个搭建开发环境的这样一个呃场景啊，以及docker compose的一些使用。以及代码开发完了之后呢，我们可能会去需要去发布到线上，对吧。</li>
+</ul>
+<h2>HTTP请求方法与路由树结构学习笔记</h2>
+<p>本文介绍了在Gin框架中，如何根据HTTP请求方法查找对应的路由处理函数，并详细解析了相关结构体和字段。</p>
+<h3>知识点1：请求方法查找机制</h3>
+<ul>
+<li>Gin框架通过for循环遍历trees切片，查找与请求方法相同的元素，并获取其root字段（树结构的根节点）。<br>&gt; 原文引用：通过for循环遍历去查找到当前的这个元素的请求方法和method相同的那个元素，我把它它的root字段是不是给拿出来了。</li>
+</ul>
+<h3>知识点2：通过_ IRouter = &amp;Engine{}来确保Engine结构体实现了接口，把问题暴露到编译阶段</h3>
+<h3>知识点3：engineer结构体与trees字段</h3>
+<ul>
+<li>engineer结构体包含trees字段，类型为method trees切片，每个元素对应一个请求方法及其树结构。</li>
+<li>trees字段在初始化时一次性申请内存，减少内存申请和扩容的频率。<br>&gt; 原文引用：engineer引擎的这个结构体，那找到最后的这个trees trees，它这个字段是什么类型呢...初始化这个结构体的时候，一次性的把内存申请到位了。</li>
+</ul>
+<h3>知识点4：HTTP请求方法与树结构</h3>
+<ul>
+<li>HTTP请求方法数量固定且较少（HTTP/1.1协议中九个方法），因此采用for循环遍历slice切片的方式查找，节省内存。</li>
+<li>每个请求方法对应一个树结构，树的节点为node类型，包含路径、子节点、处理函数链条等字段。<br>&gt; 原文引用：这个请求方法对应一个...是一个请求方法对应的一个什么。请求方法一个树结构...它其实就是一个节点啊，一个节点的指针...这个node其实就是这个框架里面，我们刚才说的那个构造那个路由树的那个节点的这样一个结构体。</li>
+</ul>
+<h2>框架中通过请求方法找到对应的路由并注册到框架中</h2>
+<h3>1. <strong>Gin 路由的注册过程</strong></h3>
+<p>在 Gin 中，路由注册的核心流程如下：</p>
+<p>先从默认引擎进去可以看到</p>
+<pre><code class="language-go">// GET is a shortcut for router.Handle(&quot;GET&quot;, path, handlers).
+func (group *RouterGroup) GET(relativePath string, handlers ...HandlerFunc) IRoutes {
+    return group.handle(http.MethodGet, relativePath, handlers)
+}
+</code></pre>
+<p>因为<img src="C:%5CUsers%5CJinju%5Cblog%5Csource%5Cimages%5Cimage-20250224144839816.png" alt="image-20250224144839816">可以看到Engine包含了RouterGroup</p>
+<p>所以能够调用<img src="C:%5CUsers%5CJinju%5Cblog%5Csource%5Cimages%5Cimage-20250224144919692.png" alt="image-20250224144919692"></p>
+<p>以下我用router来说明，RouterGroup除了先要 先计算路径，</p>
+<h4><strong>（1）调用 <code>router.Handle()</code> 方法</strong></h4>
+<p>所有的 <code>GET</code>、<code>POST</code>、<code>PUT</code>、<code>DELETE</code> 方法最终都会调用 <code>router.Handle()</code>，它负责将路由注册到 <code>Engine</code> 中：</p>
+<pre><code>func (engine *Engine) GET(relativePath string, handlers ...HandlerFunc) IRoutes {
+    return engine.addRoute(&quot;GET&quot;, relativePath, handlers)
+}
+
+func (engine *Engine) POST(relativePath string, handlers ...HandlerFunc) IRoutes {
+    return engine.addRoute(&quot;POST&quot;, relativePath, handlers)
+}
+</code></pre>
+<p>这些方法都会调用 <code>addRoute()</code>，用于存储路由信息。</p>
+<hr>
+<h4><strong>（2）核心路由注册方法 <code>addRoute()</code></strong></h4>
+<pre><code>func (engine *Engine) addRoute(method, path string, handlers HandlersChain) {
+    engine.router.addRoute(method, path, handlers)
+}
+</code></pre>
+<p>这里的 <code>engine.router</code> 是 <code>routerGroup</code> 类型，最终调用 <code>engine.router.addRoute()</code>。</p>
+<hr>
+<h4><strong>（3）将路由存入前缀树</strong></h4>
+<pre><code>func (r *router) addRoute(method, path string, handlers HandlersChain) {
+    root := r.trees[method]
+    if root == nil {
+        root = new(node)
+        r.trees[method] = root
+    }
+    root.addRoute(path, handlers)
+}
+</code></pre>
+<ul>
+<li><code>r.trees</code> 是一个 <code>map[string]*node</code>，存储不同 HTTP 方法的路由树。</li>
+<li><code>addRoute(path, handlers)</code> 会将路径存入前缀树（Trie 树）。</li>
+</ul>
+<hr>
+<h3>2. <strong>Gin 路由的查找过程</strong></h3>
+<p>当客户端发送 HTTP 请求时，Gin 会根据请求方法（如 <code>GET</code>、<code>POST</code>）查找匹配的路由。</p>
+<h4><strong>（1）请求到来时调用 <code>ServeHTTP()</code></strong></h4>
+<p><code>gin.Engine</code> 继承了 <code>http.Handler</code>，所以 <code>ServeHTTP()</code> 处理所有 HTTP 请求：</p>
+<pre><code>go复制编辑func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+    c := engine.pool.Get().(*Context)
+    c.reset()
+    c.Request = req
+    engine.router.handleHTTPRequest(c)
+}
+</code></pre>
+<ul>
+<li>这里 <code>engine.router.handleHTTPRequest(c)</code> 负责查找路由。</li>
+</ul>
+<hr>
+<h4><strong>（2）查找对应方法的路由树</strong></h4>
+<pre><code>func (r *router) handleHTTPRequest(c *Context) {
+    t := r.trees[c.Request.Method]
+    if t != nil {
+        value := t.getValue(c.Request.URL.Path)
+        if value.handlers != nil {
+            c.handlers = value.handlers
+            c.Next()
+            return
+        }
+    }
+    c.handlers = r.allNoRoute
+    c.Next()
+}
+</code></pre>
+<ul>
+<li><code>r.trees</code> 里存储不同 HTTP 方法的前缀树。</li>
+<li>通过 <code>t.getValue(c.Request.URL.Path)</code> 在前缀树中查找对应的 <code>handlers</code>，如果找到，就执行 <code>handlers</code>。</li>
+<li>如果找不到，执行 <code>c.handlers = r.allNoRoute</code>（404 处理）。</li>
+</ul>
+<hr>
+<h3>3. <strong>总结</strong></h3>
+<ul>
+<li><strong>注册时</strong>：Gin 通过 <code>addRoute()</code> 方法将 <code>path</code> 存入 <strong>Trie 树</strong>（<code>r.trees[method]</code>）。</li>
+<li><strong>查找时</strong>：<code>handleHTTPRequest()</code> 通过 <code>method</code> 找到对应的 <code>Trie 树</code>，然后匹配 <code>path</code>，执行相应的 <code>handlers</code>。</li>
+<li><strong>Trie 树</strong> 结构优化了路由匹配效率，支持动态参数 <code>:param</code> 和通配符 <code>*path</code>。</li>
+</ul>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

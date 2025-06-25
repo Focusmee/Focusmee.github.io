@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一个Mini_JVM实现 - 技术博客</title>
+    <meta name="description" content="一个Mini_JVM实现 - Java相关技术文章">
+    <meta name="keywords" content="Java, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">Java</span>
+            <span class="separator">›</span>
+            <span class="current-page">一个Mini_JVM实现</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag java">☕ Java</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 2 分钟阅读</span>
+                </div>
+                <h1 class="post-title">一个Mini_JVM实现</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p><h2><strong>类加载系统（ClassLoader）</strong>：</h2><br /><br />让我们看看BootstrapClassLoader的实现：<br /><br />Read file: src/main/java/club/shengsheng/jvm/BootstrapClassLoader.java<br />类加载器的工作原理：<br />1. 接收类路径列表（classpath）<br />2. 根据全限定类名（如：java.lang.String）在类路径中查找.class文件<br />3. 读取类文件的字节码<br />4. 解析字节码生成ClassFile对象<br /><br /><h2><strong>栈帧（StackFrame）</strong>：</h2><br /><br />让我们看看栈帧的实现：<br /><br />Read file: src/main/java/club/shengsheng/jvm/StackFrame.java<br />栈帧的关键组成：<br />1. 局部变量表（localVariable）：存储方法的参数和局部变量<br />2. 操作数栈（operandStack）：用于存储指令操作的临时数据<br />3. 字节码指令列表（codes）：方法的执行指令<br />4. 常量池引用（constantPool）：用于访问类的常量信息<br /><br /><h2><strong>JVM栈（JvmStack）</strong>：</h2><br /><br />Read file: src/main/java/club/shengsheng/jvm/JvmStack.java<br />JVM栈的特点：<br />1. 使用双端队列存储栈帧<br />2. 支持基本的栈操作：压栈（push）、出栈（pop）、查看栈顶（peek）<br />3. 每个线程都有自己的JVM栈<br /><br /><h2><strong>用一个生动的例子来全面理解JVM</strong>：</h2><br /><br />想象JVM就像一个工厂，这个工厂是这样运作的：<br /><br />1. <strong>类加载就像原料入库</strong>：<br />   - 工厂（JVM）需要先把生产图纸（.class文件）从仓库（硬盘）运到车间（内存）<br />   - 类加载器就像叉车，负责这个搬运和整理的工作<br />   - 图纸被整理好后放在固定的架子上（方法区）<br /><br />2. <strong>栈帧就像工作台</strong>：<br />   - 每个工人（线程）都有自己的工作台（JVM栈）<br />   - 工作台上有工具盒（局部变量表）和临时放置工件的托盘（操作数栈）<br />   - 还有一份生产指令（字节码）和参考手册（常量池）<br /><br />3. <strong>执行过程就像流水线</strong>：<br />   - 工人（线程）按照指令一步步操作<br />   - 需要零件时从工具盒（局部变量表）拿<br />   - 加工过程中用托盘（操作数栈）暂存<br />   - 完成一个产品（方法调用）就清理工作台（栈帧出栈）<br />   - 开始下一个产品的制作（新的方法调用）<br /><br />所以，JVM的核心就是：一个能够加载Java字节码（类加载），为每个任务分配工作空间（栈帧），并按照特定规则（字节码）执行程序的软件系统。它让Java代码能够在不同的硬件平台上运行，就像一个标准化的工厂，能在世界各地用相同的图纸生产出相同的产品。</p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">Java</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

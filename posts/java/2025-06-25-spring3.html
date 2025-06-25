@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring项目快速学习（3天） - 技术博客</title>
+    <meta name="description" content="Spring项目快速学习（3天） - Java相关技术文章">
+    <meta name="keywords" content="Java, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">Java</span>
+            <span class="separator">›</span>
+            <span class="current-page">Spring项目快速学习（3天）</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag java">☕ Java</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 1 分钟阅读</span>
+                </div>
+                <h1 class="post-title">Spring项目快速学习（3天）</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p><h1>【Mini-Spring】Spring项目快速学习（3天）</h1><br /><br /><h2>第一章 IOC基础</h2><br /><br />使用IOC容器解决同类服务灵活切换问题<br /><br /><strong>依赖注入（Dependency Injection, DI）<em>* 是一种 **设计模式**，用于**管理类与其依赖对象之间的关系**。它的核心思想是*</em>将依赖项（对象）从外部传递给需要它的类，而不是在类内部创建或查找依赖项</strong>。这样可以降低代码的耦合度，提高可测试性和可维护性。<br /><br />✅ <strong>使用依赖注入</strong><br /><br /><strong>依赖注入的做法是：</strong><br /><br />- <strong>不在类内部创建依赖，而是从外部提供</strong>（注入）。<br />- <strong>可以使用接口，让依赖可替换</strong>，增强灵活性。<br /><br /><h2>🎯 <strong>总结</strong></h2><br /><br />| 方式             | 适用场景                   | 优点                         | 缺点                                |<br />| ---------------- | -------------------------- | ---------------------------- | ----------------------------------- |<br />| <strong>构造函数注入</strong> | 依赖对象必须在创建时提供   | 代码清晰、解耦、便于单元测试 | 可能导致构造函数参数过多            |<br />| <strong>方法注入</strong>     | 只在某些方法调用时需要依赖 | 灵活、减少长期依赖           | 依赖关系不明显                      |<br />| <strong>属性注入</strong>     | 依赖可以动态修改           | 适用于框架（如 Spring）      | Go 里较少使用，容易导致全局状态问题 |<br /><br />💡</p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">Java</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

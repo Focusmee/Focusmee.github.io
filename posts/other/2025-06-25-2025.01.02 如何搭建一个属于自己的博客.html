@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【2025.01.02】开始搭建个人博客 | Focusmee</title>
+    <meta name="description" content="【2025.01.02】开始搭建个人博客">
+    <meta property="og:title" content="【2025.01.02】开始搭建个人博客">
+    <meta property="og:description" content="【2025.01.02】开始搭建个人博客">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【2025.01.02】开始搭建个人博客</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">16 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【2025.01.02】开始搭建个人博客</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>2024年，如何使用 github pages + Hexo + Next 搭建个人博客</h1>
+<h2>为什么要搭建个人博客？</h2>
+<p>细细回想，今年已经是我踏足计算机领域的第5年了。从最开始懵懂无知的大一新生，经过大学四年专业课的学习与磨练，对于计算机科学有了最为基本的了解，到现在步入研究生阶段，选定了自己感兴趣且愿意深耕的领域，进行深入的学习与探索。在这个过程中接触 + 学习了太多太多知识、技能。但是正所谓用进废退，很多技能由于各种原因（课程结束、项目结题）慢慢被搁置、遗忘，这是我非常不愿意看到的。此前也进行过一些努力，比如在 github 上专门开一个仓库，用 markdown 记录自己的所学所想，但是现在看来，那些内容显得非常杂乱，有时候着急赶项目，单纯往里面扔一些博客链接啥的，现在点开都不知道当初为什么记录它，它的哪些内容解答了我的疑惑。综上，我选择搭建个人博客，定期总结所学所想，方便日后回忆，也希望能够帮助到和我遇到同样bug的家人们。</p>
+<p>第一篇blog就从如何搭建个人博客开始吧，哈哈。</p>
+<h2>小白科普向：github pages、Hexo、Next是什么？有什么关联？</h2>
+<h3>1. github pages：</h3>
+<blockquote>
+<p>GitHub Pages 是一项静态站点托管服务，它直接从 GitHub 上获取 HTML、CSS 和 JavaScript 文件，通过构建过程运行文件，然后发布网站。</p>
+<p>你可以在 GitHub 的 <code>github.io</code> 域或自己的自定义域上托管站点。</p>
+</blockquote>
+<p>可以总结为以下几点：</p>
+<ul>
+<li>Github Pages 是 Github 提供的<strong>网页寄存服务</strong>，用于存放<strong>静态网页</strong>，也就是我们的博客。</li>
+<li>我们可以使用专业软件将文档转换成静态网页（如：Hexo），然后上传至 Github</li>
+<li>最后的结果就像现在这样，你们可以通过我的<code>github.io</code>子域名访问到我生成的静态网页，即本篇博客</li>
+</ul>
+<h3>2. Hexo：</h3>
+<ul>
+<li>Hexo 是一款基于 Node.js 的快速、简洁且高效的<strong>静态博客框架</strong>。</li>
+<li>Hexo 使用 <strong>Markdown</strong>（或其他渲染引擎）解析文章，安装十分方便，配置简单，自定义功能强大，在几秒内，即可利用靓丽的主题生成静态网页。</li>
+<li>使用起来的效果就是：我仍然可以使用 Markdown 写博客内容，然后使用部署在本地的Hexo框架进行解析，生成相应的静态网页，最后一键上传即可。</li>
+</ul>
+<h3>3. Next：</h3>
+<ul>
+<li>仔细看看本篇博客的界面布局和操作逻辑，不知你是否有一种似曾相识的感觉？没错，这就是<strong>主题</strong>的功效！我和网上很多博主使用的都是名为 Next 的主题，所以我们的博客界面千篇一律，只有一些细微差异。</li>
+<li>说到底，Next 是一个高品质的 Hexo <strong>主题</strong></li>
+</ul>
+<h3>4. 总结：</h3>
+<p>Hexo 结合 Markdown 格式的博客内容和 Next 主题生成<strong>静态页面</strong>，该页面被托管在 Github Pages 服务上，供大家浏览。</p>
+<h2>实践！搭建自己的个人博客！</h2>
+<h3>Step1：创建 github 账号和 <code>&lt;username&gt;.github.io</code> 仓库</h3>
+<h3>Step2：在本地部署 Hexo 环境（以 windows 为例）</h3>
+<ul>
+<li><p>安装 Hexo： <code>npm install -g hexo-cli</code></p>
+</li>
+<li><p>初始化 Hexo 框架：<code>hexo init blog</code></p>
+</li>
+<li><p>进入上条命令所创建的 blog 文件夹中：<code>cd blog</code></p>
+</li>
+<li><p>安装相关依赖：<code>npm install</code></p>
+</li>
+<li><p>启动 Hexo 服务：<code>hexo server</code></p>
+</li>
+<li><p>访问默认界面，测试是否安装成功：浏览器访问<code>localhost:4000</code></p>
+</li>
+<li><p>ref：<a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
+</li>
+<li><p><strong>这一步可能出现的问题：</strong></p>
+<ul>
+<li><p><strong>执行 <code>hexo server</code> 命令时报错！</strong></p>
+<ul>
+<li><p>报错信息如下所示：</p>
+<pre><code>hexo : 无法加载文件 C:\Users\Administrator\AppData\Roaming\npm\hexo.ps1，
+因为在此系统上禁止运行脚本。有关详细信息，请参阅 
+https:/go.microsoft.com/fwlink/?LinkID=135170 中的about_Execution_Policies。
+所在位置 行:1 字符: 1
++ hexo new &quot;PowerShell：因为在此系统上禁止运行脚本，解决方法&quot;
++
+    + CategoryInfo          : SecurityError: (:) []，PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+</code></pre>
+</li>
+<li><p>这是 powershell 执行策略的问题，不用担心。</p>
+</li>
+<li><p>**解决方案：**设置-&gt;隐私和安全性-&gt;开发者选项-&gt;<strong>允许本地PowerShell脚本未签名的情况下运行</strong></p>
+</li>
+</ul>
+</li>
+<li><p><strong>浏览器访问<code>localhost:4000</code>时出错！</strong></p>
+<ul>
+<li><p>浏览器显示内容如下所示：</p>
+<pre><code>{% extends &#39;_layout.swig&#39; %} {% import &#39;_macro/post.swig&#39; as post_template %} {% import &#39;_macro/sidebar.swig&#39; as 
+sidebar_template %} {% block title %}{{ config.title }}{% if theme.index_with_subtitle and config.subtitle %} - 
+{{config.subtitle }}{% endif %}{% endblock %} {%  block page_class %} {% if is_home() %}page-home{% endif -%} {% 
+endblock %} {% block content %} {% for post in page.posts %} {{ post_template.render(post, true) }} {% endfor %} {% 
+include &#39;_partials/pagination.swig&#39; %} {% endblock %} {% block sidebar %} {{ sidebar_template.render(false) }} {% 
+endblock %}
+</code></pre>
+</li>
+<li><p>这是因为 hexo 在5.0之后把 swig 删除了，需要自己手动安装</p>
+</li>
+<li><p><strong>解决方案：</strong><code>npm i hexo-renderer-swig</code></p>
+</li>
+<li><p>ref：<a href="https://kt-learn.cn/2018/12/16/hello_my_blog/">https://kt-learn.cn/2018/12/16/hello_my_blog/</a></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Step3：配置 Next 主题</h3>
+<ul>
+<li>进入上一步创建的 blog 文件夹中，将 Next 主题相关文件从 github 克隆到 themes 文件夹中<ul>
+<li>命令：<code>git clone https://github.com/iissnan/hexo-theme-next themes/next</code></li>
+</ul>
+</li>
+<li>配置 Hexo 的主题参数（在根目录的 <code>_config.yml</code> 文件中），选择使用 Next 主题<ul>
+<li>修改参数为：<code>theme: next</code></li>
+</ul>
+</li>
+<li>启动 Hexo 服务，验证 Next 主题是否启用<ul>
+<li>命令行执行：<code>hexo server</code></li>
+<li>浏览器访问：<code>localhost:4000</code></li>
+</ul>
+</li>
+<li>ref：<a href="http://theme-next.iissnan.com/getting-started.html">http://theme-next.iissnan.com/getting-started.html</a></li>
+</ul>
+<h3>Step4：添加博客内容</h3>
+<ul>
+<li>将写好的 Markdown 放到 <code>source\_posts</code> 目录</li>
+<li>将相应的图片放到 <code>source\images</code>目录</li>
+<li>启动 Hexo 服务（如果之前没有关闭，请忽略此步骤）</li>
+<li>通过浏览器访问博客主页，可以发现更改已生效</li>
+</ul>
+<h3>Step5：对 Next 主题进行小修改</h3>
+<ul>
+<li><p>这一步有两大任务：<strong>根据个人喜好配置主题</strong> 和 <strong>修一些小bug</strong>，下面我们分别来看看</p>
+</li>
+<li><p><strong>优化1：<strong>Next 主题默认首页文章不折叠，但是个人认为这种不美观，所以</strong>配置首页文章折叠</strong></p>
+<ul>
+<li><p>在<code>主题配置文件</code>中找到<code>auto_excerpt</code>，这个属性可以设置为自动折叠，比如设置成只显示<code>300</code>个字，这样的后面的内容就会折叠起来，配置如下：</p>
+<pre><code>auto_excerpt:
+  enable: true
+  length: 300
+</code></pre>
+</li>
+<li><p>ref：<a href="https://cloud.tencent.com/developer/article/2317861">https://cloud.tencent.com/developer/article/2317861</a></p>
+</li>
+</ul>
+</li>
+<li><p>**BUG1：**Next 图标丢失，显示为问号</p>
+<ul>
+<li><p>问题效果如下图所示：<a href="https://mini-pi.github.io/images/how-to-make-blog-wedsite/webp.png"><img src="https://mini-pi.github.io/images/how-to-make-blog-wedsite/webp.png" alt="img"></a></p>
+</li>
+<li><p>问题出在主题配置文件（<code>blog\themes\next\_config.yml</code>）。。。官方文档误人啊！</p>
+</li>
+<li><p>将 menu 配置修正为这样即可：（<code>||</code>后面是图标类型啊！千万不能删！不能照抄官方文档！）</p>
+<pre><code>menu:
+  home: /|| home
+  about: /about/|| user
+  tags: /tags/|| tags
+  categories: /categories/|| th
+  archives: /archives|| archive
+</code></pre>
+</li>
+<li><p>ref：<a href="https://www.jianshu.com/p/a1777c2098b0">https://www.jianshu.com/p/a1777c2098b0</a></p>
+</li>
+</ul>
+</li>
+<li><p>**BUG2：**图片不能加载</p>
+<ul>
+<li><strong>问题描述：<strong>按照正常 Markdown 的写法，将<code>.md</code>文件放在<code>source\_posts</code>文件夹中，将图片放在<code>source\images</code>文件夹中，然后在 Markdown 中通过相对路径引用图片。Markdown 中图片显示正常，但是在浏览器中</strong>图片加载不出来</strong>。</li>
+<li>**解决方案：**在网上查了很多博客，还是没弄懂问题产生的原因，但是有一种行之有效的解决方案。**具体操作是：**将 Markdown 中的图片引用路径最前面的<code>..</code>删掉。即 将<code>../images/pic1</code>改为<code>/images/pic1</code>。这样一通操作下来，Markdown 中的图片不能正常显示了，但是浏览器中的图片就恢复了。真TM奇怪，哈哈哈。</li>
+<li>ref：<a href="https://blog.csdn.net/zzy0222/article/details/129073797">https://blog.csdn.net/zzy0222/article/details/129073797</a></li>
+</ul>
+</li>
+<li><p>**BUG3：**头像下面的名称和描述不显示</p>
+<ul>
+<li><p>**问题描述：**下图所示的部分在根目录的<code>yml</code>文件中填写了，但是在浏览器中检查的时候就是不显示！</p>
+<p><a href="https://mini-pi.github.io/images/how-to-make-blog-wedsite/image-20240228205455131.png"><img src="https://mini-pi.github.io/images/how-to-make-blog-wedsite/image-20240228205455131.png" alt="image-20240228205455131"></a></p>
+</li>
+<li><p><strong>解决方案：</strong></p>
+<ul>
+<li>在 Next 主题的目录 _config.yml 中加入：<code>author: xxxx</code> 和 <code>subtitle: xxxxxx</code>就行了</li>
+<li>ref：<a href="https://github.com/litten/hexo-theme-yilia/issues/878">https://github.com/litten/hexo-theme-yilia/issues/878</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Step6：将生成的静态页面部署到 github 上</h3>
+<ul>
+<li><p>通过上面 5 步的操作，我们已经可以在本地通过 <code>localhost:4000</code> 查看博客页面了。</p>
+</li>
+<li><p>因此，这里我们要将 Hexo 框架生成的内容部署到 github 上，让其他家人也能看到 。</p>
+</li>
+<li><p>**具体操作：**修改站点配置文件<code>_config.yml</code>的最后部分</p>
+<pre><code>deploy:
+  type: git
+  repo: https://github.com/YourgithubName/YourgithubName.github.io.git
+  branch: master
+</code></pre>
+<p>要先安装deploy-git，才能用命令部署到GitHub</p>
+<pre><code>npm install hexo-deployer-git --save
+</code></pre>
+<p>然后</p>
+<pre><code>hexo clean #清除之前生成的东西
+hexo generate  #生成静态文章，缩写hexo g
+hexo deploy  #部署文章，缩写hexo d
+</code></pre>
+<p>过一会儿就可以在<code>http://yourname.github.io</code>这个网站看到你的博客了！</p>
+</li>
+<li><p>ref：<a href="https://zhengyujie.github.io/2019/07/26/hexo%E7%AE%80%E4%BB%8B%E5%92%8C%E5%AE%89%E8%A3%85/">https://zhengyujie.github.io/2019/07/26/hexo%E7%AE%80%E4%BB%8B%E5%92%8C%E5%AE%89%E8%A3%85/</a></p>
+</li>
+</ul>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

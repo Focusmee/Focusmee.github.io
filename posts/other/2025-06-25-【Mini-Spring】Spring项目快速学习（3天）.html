@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Mini Spring】Spring项目快速学习（3天） | Focusmee</title>
+    <meta name="description" content="【Mini Spring】Spring项目快速学习（3天）">
+    <meta property="og:title" content="【Mini Spring】Spring项目快速学习（3天）">
+    <meta property="og:description" content="【Mini Spring】Spring项目快速学习（3天）">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Mini Spring】Spring项目快速学习（3天）</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">3 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Mini Spring】Spring项目快速学习（3天）</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>【Mini-Spring】Spring项目快速学习（3天）</h1>
+<h2>第一章 IOC基础</h2>
+<p>使用IOC容器解决同类服务灵活切换问题</p>
+<p><strong>依赖注入（Dependency Injection, DI）</strong> 是一种 <strong>设计模式</strong>，用于<strong>管理类与其依赖对象之间的关系</strong>。它的核心思想是<strong>将依赖项（对象）从外部传递给需要它的类，而不是在类内部创建或查找依赖项</strong>。这样可以降低代码的耦合度，提高可测试性和可维护性。</p>
+<p>✅ <strong>使用依赖注入</strong></p>
+<p><strong>依赖注入的做法是：</strong></p>
+<ul>
+<li><strong>不在类内部创建依赖，而是从外部提供</strong>（注入）。</li>
+<li><strong>可以使用接口，让依赖可替换</strong>，增强灵活性。</li>
+</ul>
+<h2>🎯 <strong>总结</strong></h2>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>适用场景</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>构造函数注入</strong></td>
+<td>依赖对象必须在创建时提供</td>
+<td>代码清晰、解耦、便于单元测试</td>
+<td>可能导致构造函数参数过多</td>
+</tr>
+<tr>
+<td><strong>方法注入</strong></td>
+<td>只在某些方法调用时需要依赖</td>
+<td>灵活、减少长期依赖</td>
+<td>依赖关系不明显</td>
+</tr>
+<tr>
+<td><strong>属性注入</strong></td>
+<td>依赖可以动态修改</td>
+<td>适用于框架（如 Spring）</td>
+<td>Go 里较少使用，容易导致全局状态问题</td>
+</tr>
+</tbody></table>
+<p>💡</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

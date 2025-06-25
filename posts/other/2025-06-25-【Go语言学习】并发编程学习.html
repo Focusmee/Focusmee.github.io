@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Go语言学习】并发编程学习 | Focusmee</title>
+    <meta name="description" content="【Go语言学习】并发编程学习">
+    <meta property="og:title" content="【Go语言学习】并发编程学习">
+    <meta property="og:description" content="【Go语言学习】并发编程学习">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Go语言学习】并发编程学习</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">4 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Go语言学习】并发编程学习</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>并发编程学习</h1>
+<p>同步就是按照某个特定顺序进行操作</p>
+<p>同步关系:进程之间的操作事件存在时序关系，比如先后关系，我们在真题会遇到这种说法&quot;操作C必须在操作 A、B之后完成”，也就是在告诉你这里有一个同步关系，需要你用信号量去定义。</p>
+<p>并发就是在一个时间段内完成一系列任务（比如在一个时间段内你给两个人聊天）</p>
+<p>异步：执行时互不影响，执行时没有先后顺序</p>
+<p>同步：执行时有一定的次序关系</p>
+<p>什么条件下用同步？</p>
+<pre><code>   比如向银行ATM取钱时，客户端同时有两个线程向服务器发起取钱请求，第一个线程读出还有2000，取走了1000，将数据更改为余额还有一千；第二个线程，在第一个线程取钱前也读到还有2000，取走1000后，仍然将数据改成1000，这就造成了数据的不一致性。
+</code></pre>
+<p>同步的前提条件：</p>
+<p>1.有多个线程</p>
+<p>2.需要访问数据</p>
+<p>3.涉及对数据的修改工作</p>
+<p><img src="C:%5CUsers%5CJinju%5Cblog%5Csource%5Cimages%5Cimage-20250227005636972.png" alt="image-20250227005636972"></p>
+<p>可以看出来同步是阻塞的，会等待结束</p>
+<p><img src="C:%5CUsers%5CJinju%5Cblog%5Csource%5Cimages%5Cimage-20250227005715232.png" alt="image-20250227005715232"></p>
+<p>异步的就不会阻塞，直接调用立马返回继续处理parsefile函数，通过回调函数来说明读取完成。</p>
+<p><img src="C:%5CUsers%5CJinju%5Cblog%5Csource%5Cimages%5Cimage-20250314154248421.png" alt="image-20250314154248421"></p>
+<p>readfile函数实现由很多：</p>
+<ol>
+<li>开启一个线程</li>
+<li>直接调用异步文件操作</li>
+</ol>
+<p>什么情况下用同步?<br>什么情况下用异步?<br>有什么差异?<br>RPC接口同步异步?</p>
+<p>【3分钟彻底理解回调函数】 <a href="https://www.bilibili.com/video/BV1cW421N7P2/?share_source=copy_web&vd_source=654a4e361961dcce96893993981165f5">https://www.bilibili.com/video/BV1cW421N7P2/?share_source=copy_web&amp;vd_source=654a4e361961dcce96893993981165f5</a></p>
+<p>回调函数就是为了实现我能够在调用不同包的函数的时候，我想在一个包下的函数funcA里面执行另一个包下的函数funcB，我想让funcB在funcA进行调用，这时候就要在funcA传参，参数为函数，这样就可以在funcA里面调用funcB</p>
+<p>【程序中的同步和异步到底是什么？】 <a href="https://www.bilibili.com/video/BV1MC411a7rY/?share_source=copy_web&vd_source=654a4e361961dcce96893993981165f5">https://www.bilibili.com/video/BV1MC411a7rY/?share_source=copy_web&amp;vd_source=654a4e361961dcce96893993981165f5</a></p>
+<p>如何在实际运行中迭代需求</p>
+<p>如何设计需求 结合技术高并发高可用性</p>
+<p>结合需求</p>
+<p>需求上中下游 性能评定</p>
+<p>故事的完整性</p>
+<p>八股文： 先用、后为什么用、在之后为什么这样设计，优缺点</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

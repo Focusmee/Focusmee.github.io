@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作数栈（Operand Stack） - 技术博客</title>
+    <meta name="description" content="操作数栈（Operand Stack） - Java相关技术文章">
+    <meta name="keywords" content="Java, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">Java</span>
+            <span class="separator">›</span>
+            <span class="current-page">操作数栈（Operand Stack）</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag java">☕ Java</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 2 分钟阅读</span>
+                </div>
+                <h1 class="post-title">操作数栈（Operand Stack）</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p>操作数栈（Operand Stack）的概念。<br /><br />操作数栈是用来存储<strong>操作的数据</strong>的，而不是存储操作命令。我用一个简单的例子来说明：<br /><br />假设我们有这样一段Java代码：<br />```java<br />int a = 1;<br />int b = 2;<br />int c = a + b;<br />```<br /><br />这段代码在JVM中的执行过程是这样的：<br /><br />1. <strong>加载数据到操作数栈</strong>：<br />```<br />iconst_1        // 将常量1压入操作数栈<br />istore_1        // 将栈顶的1存入局部变量表位置1（变量a）<br />iconst_2        // 将常量2压入操作数栈<br />istore_2        // 将栈顶的2存入局部变量表位置2（变量b）<br />iload_1         // 将局部变量表位置1的值（a=1）压入操作数栈<br />iload_2         // 将局部变量表位置2的值（b=2）压入操作数栈<br />iadd            // 将栈顶的两个值相加，结果压入栈顶<br />istore_3        // 将栈顶的结果存入局部变量表位置3（变量c）<br />```<br /><br />让我们看看操作数栈在这个过程中的变化：<br /><br />```<br />// 初始状态<br />操作数栈: []<br /><br />// 执行 iconst_1 后<br />操作数栈: [1]<br /><br />// 执行 istore_1 后<br />操作数栈: []<br />局部变量表: [a=1]<br /><br />// 执行 iconst_2 后<br />操作数栈: [2]<br /><br />// 执行 istore_2 后<br />操作数栈: []<br />局部变量表: [a=1, b=2]<br /><br />// 执行 iload_1 后<br />操作数栈: [1]<br /><br />// 执行 iload_2 后<br />操作数栈: [1, 2]<br /><br />// 执行 iadd 后<br />操作数栈: [3]<br /><br />// 执行 istore_3 后<br />操作数栈: []<br />局部变量表: [a=1, b=2, c=3]<br />```<br /><br />所以：<br /><br />1. <strong>操作数栈的作用</strong>：<br />   - 临时存储数据<br />   - 为指令提供操作数<br />   - 存储指令的计算结果<br /><br />2. <strong>操作命令（字节码指令）在哪里</strong>？<br />   - 字节码指令存储在方法的Code属性中<br />   - 由PC寄存器（程序计数器）指向当前要执行的指令<br />   - 指令本身不存在操作数栈中<br /><br />3. <strong>操作数栈的特点</strong>：<br />   - 后进先出（LIFO）的栈结构<br />   - 只存储实际的数据值<br />   - 与局部变量表配合工作<br /><br />在我们的mini-jvm实现中，可以看到操作数栈的定义：<br />```java<br />final Deque<Object> operandStack = new ArrayDeque<>();<br />```<br /><br />它就像一个临时的工作区：<br />- 当需要进行计算时，先把需要的值都压入栈<br />- 指令执行时从栈顶取出所需的值进行运算<br />- 运算结果再压回栈顶<br />- 最后将结果存入局部变量表或用于其他操作<br /><br />比如在Thread.java中的指令执行：<br />```java<br />case iconst_1 -> stack.peek().pushObjectToOperandStack(1);  // 压入常量1<br />case iadd -> {  // 处理加法<br />    int value2 = (int) stack.peek().operandStack.pop();  // 弹出第二个操作数<br />    int value1 = (int) stack.peek().operandStack.pop();  // 弹出第一个操作数<br />    stack.peek().pushObjectToOperandStack(value1 + value2);  // 压入结果<br />}<br />```<br /><br />所以，操作数栈就像是一个计算器的内存，存储的是要参与运算的数据和运算的结果，而不是操作命令本身。操作命令是由JVM的执行引擎按照字节码指令一条一条执行的。</p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">Java</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

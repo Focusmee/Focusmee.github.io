@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Python框架学习】Flask 的基本使用 | Focusmee</title>
+    <meta name="description" content="【Python框架学习】Flask 的基本使用">
+    <meta property="og:title" content="【Python框架学习】Flask 的基本使用">
+    <meta property="og:description" content="【Python框架学习】Flask 的基本使用">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Python框架学习】Flask 的基本使用</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">7 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Python框架学习】Flask 的基本使用</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <p>Flask 是一个轻量级的 Python Web 框架，它被广泛用于构建 Web 应用程序和 API。Flask 简单易用，具有灵活性和可扩展性，是许多开发者喜欢用其构建项目的原因。本文将介绍 Flask 是什么以及如何使用它来构建 Web 应用程序，同时提供一个实践案例，让你能够在 IDE 编辑器中运行代码。</p>
+<p>Flask 官网地址：<a href="https://flask.palletsprojects.com/en/2.3.x/quickstart/">https://flask.palletsprojects.com/en/2.3.x/quickstart/</a></p>
+<p><img src="http://apifox.com/apiskills/content/images/2023/07/image-887.png" alt="Flask 是什么？怎么使用">Flask 官网</p>
+<h2>Flask 的基本使用</h2>
+<p>首先，确保你已经安装了 Flask。你可以通过以下命令使用 pip 安装 Flask：</p>
+<pre><code class="language-python">pip install flask
+</code></pre>
+<p>接下来，我们将创建一个简单的 Flask 应用程序并运行它。请在你的 IDE 编辑器中创建一个名为 <code>app.py</code> 的文件，并将以下代码粘贴到其中：</p>
+<pre><code class="language-python">from flask import Flask
+
+app = Flask(__name__)
+
+
+@app.route(&#39;/&#39;)
+def hello():
+    return &#39;Hello, Flask!&#39;
+
+
+if __name__ == &#39;__main__&#39;:
+    app.run()
+</code></pre>
+<p>在上面的代码中，我们导入了 Flask 类并创建了一个应用程序实例。然后，我们定义了一个根路由 <code>/</code>，并在该路由上定义了一个简单的处理函数 <code>hello()</code>。该处理函数返回一个字符串 &quot;Hello, Flask!&quot;。</p>
+<p>最后，我们使用 <code>app.run()</code> 方法运行应用程序。这将在本地主机上的默认端口（通常是 5000）上启动应用程序。你可以在浏览器中访问 <code>http://localhost:5000/</code>，你将看到 &quot;Hello, Flask!&quot; 的输出。</p>
+<p><img src="http://apifox.com/apiskills/content/images/2023/07/image-892.png" alt="Flask 是什么？怎么使用？"></p>
+<h2>进阶案例</h2>
+<p>现在，我们将展示一个稍微复杂一点的实践案例，其中涉及到一个动态路由和模板渲染。在你的 <code>app.py</code> 文件中添加以下代码：</p>
+<pre><code class="language-python">from flask import Flask, render_template
+
+app = Flask(__name__)
+
+
+@app.route(&#39;/&#39;)
+def hello():
+    return &#39;Hello, Flask!&#39;
+
+
+@app.route(&#39;/user/&lt;username&gt;&#39;)
+def show_user(username):
+    return render_template(&#39;user.html&#39;, name=username)
+
+
+if __name__ == &#39;__main__&#39;:
+    app.run()
+</code></pre>
+<p>在上面的代码中，我们定义了一个新的路由 <code>/user/&lt;username&gt;</code>，其中 <code>&lt;username&gt;</code> 是一个动态参数。在处理函数 <code>show_user()</code> 中，我们使用 <code>render_template()</code> 方法来渲染一个名为 <code>user.html</code> 的模板，并将参数 <code>name</code> 设置为动态参数 <code>username</code>。</p>
+<p>为了使这个案例能够运行，我们需要创建一个名为 <code>user.html</code> 的模板文件。在你的项目目录中创建一个名为 <code>templates</code> 的文件夹，并在其中创建 <code>user.html</code> 文件。将以下代码粘贴到 <code>user.html</code> 文件中：</p>
+<pre><code class="language-python">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;User Profile&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome, {{ name }}!&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>现在，运行 <code>app.py</code>，并访问 <code>http://localhost:5000/user/liziqi</code>，你将看到 &quot;Welcome, liziqi!&quot; 的输出。</p>
+<p><img src="http://apifox.com/apiskills/content/images/2023/07/image-894.png" alt="Flask 是什么？怎么使用？"></p>
+<h2>使用 Apifox 调试 Flask 接口</h2>
+<p>如果你是 Flask 开发者，你经常需要与 API 打交道，确保你的应用程序能够正常工作。这时，一个强大的接口测试工具就会派上用场。</p>
+<p><a href="https://apifox.com/">Apifox</a> 是一个集 API 文档、API 调试、API Mock和API 自动化测试于一体的 API 协作平台，支持 http(s)、gRPC、WebSocket 等协议，我们可以通过 <a href="https://apifox.com/">Apifox </a>来更方便的调试 Flask 接口。</p>
+<p>如果想快速的调试一条接口，新建一个项目后，在项目中选择**“调试模式”**，填写请求地址后即可快速发送请求，并获得响应结果，上文的实践案例如图所示：</p>
+<p><a href="https://app.apifox.com/">立即体验 Apifox</a></p>
+<p><img src="http://apifox.com/apiskills/content/images/2023/07/image-895.png" alt="Flask 是什么？怎么使用？">Apifox 调试</p>
+<h2>总结</h2>
+<p>本文介绍了 Flask 是什么以及如何使用它来构建 Web 应用程序。Flask 是一个轻量级的 Python Web 框架，提供了简单易用的 API，并具有灵活性和可扩展性。</p>
+<p>Flask 提供了更多功能和扩展，可以帮助你构建出强大的 Web 应用程序，开始使用 Flask，构建出出色的 Web 应用程序吧！</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

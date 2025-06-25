@@ -1,0 +1,31 @@
+{
+  "name": "focusmee-blog",
+  "version": "1.0.0",
+  "description": "个人博客静态生成器",
+  "main": "index.js",
+  "scripts": {
+    "generate": "node scripts/generate.js",
+    "serve": "live-server",
+    "clean": "node scripts/clean.js",
+    "build": "npm run clean && npm run generate",
+    "deploy": "npm run build && git add . && git commit -m \"Auto deploy: $(date)\" && git push",
+    "update-posts": "node scripts/update-posts-list.js"
+  },
+  "keywords": [
+    "blog",
+    "static",
+    "generator"
+  ],
+  "author": "Focusmee",
+  "license": "MIT",
+  "dependencies": {
+    "front-matter": "^4.0.2",
+    "fs-extra": "^11.2.0",
+    "highlight.js": "^11.9.0",
+    "marked": "^9.1.6"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0",
+    "live-server": "^1.2.2"
+  }
+}

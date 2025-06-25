@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Go语言学习】GOPATH | Focusmee</title>
+    <meta name="description" content="【Go语言学习】GOPATH">
+    <meta property="og:title" content="【Go语言学习】GOPATH">
+    <meta property="og:description" content="【Go语言学习】GOPATH">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Go语言学习】GOPATH</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">7 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Go语言学习】GOPATH</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <p><strong>一、GOPATH的概念</strong></p>
+<p>GOPATH 是 Go 语言中使用的一个环境变量，它使用绝对路径提供项目的<strong>工作目录（<strong>也称为</strong>工作区）</strong>。</p>
+<p>工作目录是一个工程开发的相对参考目录，好比当你要在公司编写一套服务器代码，你的工位所包含的桌面、计算机及椅子就是你的工作区。</p>
+<p>工作区的概念与工作目录的概念也是类似的。如果不使用工作目录的概念，在多人开发时，每个人有一套自己的目录结构，读取配置文件的位置不统一，</p>
+<p>输出的二进制运行文件也不统一，这样会导致开发的标准不统一，影响开发效率。</p>
+<p>GOPATH 适合处理大量 Go语言源码、多个包组合而成的复杂工程。</p>
+<p>从 Go 1.8 版本开始，Go 开发包在安装完成后，将 GOPATH 赋予了一个默认的目录，参见下表</p>
+<p><img src="https://img2020.cnblogs.com/blog/907091/202008/907091-20200810145305229-244770147.png" alt="img"></p>
+<p>可以通过go env命令查看Go的环境变量，我使用的mac效果如下（安装后，更改过）</p>
+<p><img src="https://img2020.cnblogs.com/blog/907091/202011/907091-20201102150001647-651359307.png" alt="img"></p>
+<p><strong>二、GOPATH的使用</strong></p>
+<p><code>GOPATH</code>目录一般为：</p>
+<pre><code>$HOME/go
+  --bin      # 存放编译后的可执行文件
+  --pkg      # 依赖包编译后的*.a文件
+  --src      # 存放源码文件，以代码包为组织形式
+</code></pre>
+<p>如下是一个完整的Go项目的开发目录：</p>
+<p><a href="javascript:void(0);"><img src="https://assets.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
+<pre><code>my-go                 // my-go为GOPATH目录
+  -- bin
+     -- myApp1        // 编译生成
+     -- myApp2        // 编译生成
+     -- myApp3        // 编译生成
+  -- pkg                             依赖包编译后的*.a文件//
+  -- src
+     -- MyApp1        // 项目1
+        -- models
+        -- controllers
+        -- others
+        -- main.go 
+     -- MyApp2        // 项目2
+        -- models
+        -- controllers
+        -- others
+        -- main.go 
+</code></pre>
+<p><a href="javascript:void(0);"><img src="https://assets.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
+<p>设置GOPATH后，工程中使用 <strong>import的根目录是GOPATH中的src目录</strong></p>
+<p>GOPATH为/Users/lxxxxxk/GolandProjects，工程为/Users/lxxxxxk/Desktop/my-go/src/MyApp1</p>
+<p>那么MyApp1中使用import导入本地包的时候，这样写：</p>
+<pre><code>import &quot;MyApp1/models&quot;  // models为包名
+</code></pre>
+<p>也就是说，<strong>GOPATH下必须要有src目录</strong>，不然import导包的时候会找不到</p>
+<p>import导包规则：</p>
+<p>　　1、先去GOROOT/src/路径下找   /usr/local/go/src/MyApp1 (系统环境变量 $GOROOT，即使用go env命令显示的GOROOT)</p>
+<p>　　2、如果1没有，就去Project GOPATH/src/路径下找   /Users/lxxxxxk/Desktop/my-go/src/MyApp1</p>
+<p>　　3、如果2还没找到，就去Global GOPATH路径下找   /Users/lxxxxxk/GolandProjects（系统环境变量 $GOPATH，即使用go env命令显示的GOPATH）</p>
+<p><strong>三、GoLand设置GOPATH</strong></p>
+<p><img src="https://img2020.cnblogs.com/blog/907091/202011/907091-20201102150212911-986971053.png" alt="img"></p>
+<p>图中的 Global GOPATH 代表全局 GOPATH，一般来源于系统环境变量中的 GOPATH；</p>
+<p>Project GOPATH 代表项目所使用的 GOPATH，该设置会被保存在工作目录的 <strong>.idea</strong>目录下，不会被设置到环境变量的 GOPATH 中，但会在编译时使用到这个目录。</p>
+<p>建议在开发时填写项目 GOPATH，<strong>每一个项目尽量只设置一个 GOPATH，不使用多个 GOPATH 和全局的 GOPATH</strong>。</p>
+<p>否则可能会出现如下麻烦：</p>
+<pre><code>将某项目代码保存在 /home/davy/projectA 目录下，将该目录设置为 GOPATH。
+随着开发进行，需要再次获取一份工程项目的源码，此时源码保存在 /home/davy/projectB 目录下，
+如果此时需要编译 projectB 目录的项目，但开发者忘记设置 GOPATH 而直接使用命令行编译，
+则当前的 GOPATH 指向的是 /home/davy/projectA 目录，而不是开发者编译时期望的 projectB 目录。
+编译完成后，开发者就会将错误的工程版本发布到外网。
+</code></pre>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

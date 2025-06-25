@@ -1,0 +1,196 @@
+/* 代码高亮样式 - 本地版本 */
+
+/* 基础代码块样式 */
+pre {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    line-height: 1.4;
+}
+
+code {
+    font-family: 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.9em;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+    border: none;
+    color: #333;
+}
+
+/* 行内代码 */
+p code,
+li code,
+td code {
+    background: #f1f3f4;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    border: 1px solid #e1e5e9;
+    font-size: 0.9em;
+}
+
+/* 语法高亮颜色 */
+.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 0;
+    color: #333;
+    background: transparent;
+}
+
+/* 关键字 */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+    color: #d73a49;
+    font-weight: bold;
+}
+
+/* 字符串 */
+.hljs-string,
+.hljs-attr,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+    color: #032f62;
+}
+
+/* 数字 */
+.hljs-number,
+.hljs-literal {
+    color: #005cc5;
+}
+
+/* 注释 */
+.hljs-comment,
+.hljs-quote {
+    color: #6a737d;
+    font-style: italic;
+}
+
+/* 函数名 */
+.hljs-function,
+.hljs-title {
+    color: #6f42c1;
+}
+
+/* 类型 */
+.hljs-type,
+.hljs-class .hljs-title {
+    color: #d73a49;
+}
+
+/* 变量 */
+.hljs-variable,
+.hljs-template-variable {
+    color: #e36209;
+}
+
+/* 标签属性 */
+.hljs-attribute {
+    color: #e36209;
+}
+
+/* 元信息 */
+.hljs-meta,
+.hljs-meta-keyword {
+    color: #005cc5;
+}
+
+/* 标签 */
+.hljs-tag {
+    color: #22863a;
+}
+
+/* 删除 */
+.hljs-deletion {
+    background: #ffeef0;
+}
+
+/* 强调 */
+.hljs-emphasis {
+    font-style: italic;
+}
+
+/* 加粗 */
+.hljs-strong {
+    font-weight: bold;
+}
+
+/* 深色主题适配 */
+@media (prefers-color-scheme: dark) {
+    pre {
+        background: #1e1e1e;
+        border-color: #333;
+        color: #d4d4d4;
+    }
+    
+    p code,
+    li code,
+    td code {
+        background: #2d2d30;
+        border-color: #404040;
+        color: #d4d4d4;
+    }
+    
+    .hljs {
+        color: #d4d4d4;
+    }
+    
+    .hljs-keyword,
+    .hljs-selector-tag,
+    .hljs-subst {
+        color: #569cd6;
+    }
+    
+    .hljs-string,
+    .hljs-attr,
+    .hljs-symbol,
+    .hljs-bullet,
+    .hljs-addition {
+        color: #ce9178;
+    }
+    
+    .hljs-number,
+    .hljs-literal {
+        color: #b5cea8;
+    }
+    
+    .hljs-comment,
+    .hljs-quote {
+        color: #6a9955;
+    }
+    
+    .hljs-function,
+    .hljs-title {
+        color: #dcdcaa;
+    }
+    
+    .hljs-type,
+    .hljs-class .hljs-title {
+        color: #4ec9b0;
+    }
+    
+    .hljs-variable,
+    .hljs-template-variable {
+        color: #9cdcfe;
+    }
+    
+    .hljs-attribute {
+        color: #92c5f8;
+    }
+    
+    .hljs-meta,
+    .hljs-meta-keyword {
+        color: #569cd6;
+    }
+    
+    .hljs-tag {
+        color: #569cd6;
+    }
+} 

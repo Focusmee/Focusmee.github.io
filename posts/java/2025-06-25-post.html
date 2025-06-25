@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>架构以及交互基本流程 - 技术博客</title>
+    <meta name="description" content="架构以及交互基本流程 - Java相关技术文章">
+    <meta name="keywords" content="Java, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">Java</span>
+            <span class="separator">›</span>
+            <span class="current-page">架构以及交互基本流程</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag java">☕ Java</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 4 分钟阅读</span>
+                </div>
+                <h1 class="post-title">架构以及交互基本流程</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p>我将使用两种方式来展示JVM的主要架构：目录结构和Mermaid图。<br /><br />1. <strong>目录结构形式</strong>：<br />```<br />JVM架构<br />├── 类加载子系统 (Class Loading Subsystem)<br />│   ├── 加载 (Loading)<br />│   │   ├── Bootstrap ClassLoader<br />│   │   ├── Extension ClassLoader<br />│   │   └── Application ClassLoader<br />│   ├── 链接 (Linking)<br />│   │   ├── 验证 (Verification)<br />│   │   ├── 准备 (Preparation)<br />│   │   └── 解析 (Resolution)<br />│   └── 初始化 (Initialization)<br />│<br />├── 运行时数据区 (Runtime Data Areas)<br />│   ├── 方法区 (Method Area) - 线程共享<br />│   │   ├── 类信息<br />│   │   ├── 常量<br />│   │   ├── 静态变量<br />│   │   └── JIT编译代码<br />│   ├── 堆区 (Heap) - 线程共享<br />│   │   ├── 新生代 (Young Generation)<br />│   │   │   ├── Eden区<br />│   │   │   ├── Survivor 0<br />│   │   │   └── Survivor 1<br />│   │   └── 老年代 (Old Generation)<br />│   ├── 栈区 (Stack) - 线程私有<br />│   │   └── 栈帧 (Stack Frame)<br />│   │       ├── 局部变量表<br />│   │       ├── 操作数栈<br />│   │       ├── 动态链接<br />│   │       └── 返回地址<br />│   ├── 程序计数器 (PC Register) - 线程私有<br />│   └── 本地方法栈 (Native Method Stack) - 线程私有<br />│<br />├── 执行引擎 (Execution Engine)<br />│   ├── 解释器 (Interpreter)<br />│   ├── JIT编译器 (JIT Compiler)<br />│   │   ├── 中间代码生成器<br />│   │   ├── 代码优化器<br />│   │   └── 目标代码生成器<br />│   └── 垃圾回收器 (Garbage Collector)<br />│       ├── Serial GC<br />│       ├── Parallel GC<br />│       ├── CMS GC<br />│       └── G1 GC<br />│<br />└── 本地方法接口 (Native Method Interface)<br />    └── 本地方法库 (Native Method Libraries)<br />```<br /><br />2. <strong>Mermaid图形式</strong>：<br />```mermaid<br />graph TB<br />    JVM[JVM架构]<br />    <br />    %% 类加载子系统<br />    CLS[类加载子系统]<br />    L[加载]<br />    LK[链接]<br />    I[初始化]<br />    <br />    %% 运行时数据区<br />    RDA[运行时数据区]<br />    MA[方法区]<br />    HP[堆]<br />    STK[栈]<br />    PC[程序计数器]<br />    NMS[本地方法栈]<br />    <br />    %% 执行引擎<br />    EE[执行引擎]<br />    INT[解释器]<br />    JIT[JIT编译器]<br />    GC[垃圾回收器]<br />    <br />    %% 本地方法接口<br />    NMI[本地方法接口]<br />    NML[本地方法库]<br />    <br />    %% 连接关系<br />    JVM --> CLS<br />    JVM --> RDA<br />    JVM --> EE<br />    JVM --> NMI<br />    <br />    %% 类加载子系统详细<br />    CLS --> L<br />    CLS --> LK<br />    CLS --> I<br />    L --> BCL[Bootstrap ClassLoader]<br />    L --> ECL[Extension ClassLoader]<br />    L --> ACL[Application ClassLoader]<br />    LK --> V[验证]<br />    LK --> P[准备]<br />    LK --> R[解析]<br />    <br />    %% 运行时数据区详细<br />    RDA --> MA<br />    RDA --> HP<br />    RDA --> STK<br />    RDA --> PC<br />    RDA --> NMS<br />    <br />    HP --> YG[新生代]<br />    HP --> OG[老年代]<br />    YG --> Eden<br />    YG --> S0[Survivor 0]<br />    YG --> S1[Survivor 1]<br />    <br />    STK --> SF[栈帧]<br />    SF --> LVT[局部变量表]<br />    SF --> OS[操作数栈]<br />    SF --> DL[动态链接]<br />    SF --> RA[返回地址]<br />    <br />    %% 执行引擎详细<br />    EE --> INT<br />    EE --> JIT<br />    EE --> GC<br />    <br />    JIT --> ICG[中间代码生成器]<br />    JIT --> CO[代码优化器]<br />    JIT --> TCG[目标代码生成器]<br />    <br />    GC --> SGC[Serial GC]<br />    GC --> PGC[Parallel GC]<br />    GC --> CMS[CMS GC]<br />    GC --> G1[G1 GC]<br />    <br />    %% 本地方法接口详细<br />    NMI --> NML<br />```<br /><br />3. <strong>主要组件之间的交互流程</strong>：<br /><br />1. <strong>类的生命周期</strong>：<br />   - 源代码(.java) -> 字节码(.class) -> 类加载 -> 链接 -> 初始化 -> 使用 -> 卸载<br /><br />2. <strong>方法调用流程</strong>：<br />   - 代码定位 -> 常量池查找 -> 方法区获取信息 -> 创建栈帧 -> 执行字节码<br /><br />3. <strong>内存管理流程</strong>：<br />   - 对象创建 -> 新生代分配 -> 垃圾回收 -> 对象晋升 -> 老年代回收<br /><br />4. <strong>代码执行优化</strong>：<br />   - 解释执行 -> 热点检测 -> JIT编译 -> 本地代码执行<br /><br />这个架构展示了JVM的四个主要组件：<br />1. <strong>类加载子系统</strong>：负责加载、链接和初始化类<br />2. <strong>运行时数据区</strong>：管理JVM的内存结构<br />3. <strong>执行引擎</strong>：负责执行字节码和优化<br />4. <strong>本地方法接口</strong>：处理与本地代码的交互<br /><br />每个组件都有其特定的职责，它们协同工作确保Java程序能够正确、高效地运行。这种模块化的设计使得JVM能够在不同平台上提供一致的执行环境，同时也便于优化和维护。</p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">Java</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

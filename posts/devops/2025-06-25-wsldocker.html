@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WSL、Docker 迁移 - 技术博客</title>
+    <meta name="description" content="WSL、Docker 迁移 - DevOps相关技术文章">
+    <meta name="keywords" content="DevOps, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">DevOps</span>
+            <span class="separator">›</span>
+            <span class="current-page">WSL、Docker 迁移</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag devops">🐳 DevOps</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 3 分钟阅读</span>
+                </div>
+                <h1 class="post-title">WSL、Docker 迁移</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p><h1>WSL、Docker 迁移</h1><br /><br />Windows WSL Docker 默认安装路径在C盘的，导致岌岌可危的C盘空间😱更加吃紧，一不小心就要出现👇这种情况了<br /><br /><img alt="image" src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815143048352-1440225869.png" /><br /><br />接下来我们一起迁移它们吧<br /><br /><h2>迁移 WSL</h2><br /><br />WSL2 默认安装在 C 盘，我们可以通过以下步骤迁移安装位置<br />通过以下命令列出已安装的 Linux 发行版：<br /><br />```<br />wsl -l -v<br />```<br /><br /><img alt="image" src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815145222644-1202975402.png" /><br />可以看到已安装了 Ubuntu，其运行状态为：Stopped<br /><br /><h3>导出分发版</h3><br /><br />如果运行状态为 Running，需先通过以下命令关闭：<br /><br />```<br />wsl --shutdown<br />```<br /><br />然后我们通过以下命令将 Ubuntu 导出为 tar 文件：<br /><br />```<br />wsl --export Ubuntu d:\wsl\Ubuntu.tar<br />```<br /><br /><img alt="image" src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815145856500-292128290.png" /><br /><br />> ⚠️<br />> wsl --export <Distribution Name> <FileName><br />> `<Distribution Name>` 为目标 Linux 发行版的名称，我安装的为： `Ubuntu`<br />> `<FileName>` 为导出的文件名，这里我导出到 `d:\wsl\Ubuntu.tar`<br />> 当然可以是任意位置<br /><br /><h3>注销并卸载</h3><br /><br />然后注销并卸载 Ubuntu<br /><br />```<br />wsl --unregister Ubuntu<br />```<br /><br />这时候可以执行验证是否完成注销并卸载<br />`wsl -l -v`<br /><br /><img alt="image" src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815160735996-160221150.png" /><br /><br /><img alt="image" src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815160813251-615510379.png" /><br /><br />👍完美，符合预期！！！<br /><br /><h3>导入安装</h3><br /><br />将 Ubuntu 从新位置导入：<br />`wsl --import Ubuntu d:\wsl\Ubuntu d:\wsl\Ubuntu.tar`<br />再次查看已安装的 Linux 发行版<br />`wsl -l -v`<br /><img alt="image" src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815161553829-1503338969.png" /><br /><br />设置默认用户<br />`Ubuntu config --default-user bigroc`<br /><br />> ⚠️<br />> <DistributionName> config --default-user <Username><br />> `<DistributionName>` 为目标 Linux 发行版的名称，我安装的为： `Ubuntu`，命令里要写为：`Ubuntu`<br />> 假如你的是`Ubuntu-22.04`，命令里要写为：`Ubuntu2204`<br />> `<Username>` 为 WSL 发行版中存在的用户名，在设置 Linux 用户名和密码时我创建的用户为：`bigroc` ，所以命令里的 `<Username>` 这里就为：`bigroc`<br /><br /><h2>迁移 docker-desktop-data 和 docker-desktop</h2><br /><br />Docker Desktop 会创建两个发行版：`docker-desktop-data` 和 `docker-desktop`，它们的默认位置在 `C:\Users\<你电脑的用户名>\AppData\Local\Docker\wsl`，我们同样可以参考上面导入导出 `Ubuntu` 的过程将`docker-desktop-data` 和 `docker-desktop` 迁移到其他位置<br /><br />过程一致⬇️<br /><br /><h3>导出</h3><br /><br />```<br />wsl --export docker-desktop-data d:\wsl\docker-desktop-data.tar`<br />`wsl --export docker-desktop-data d:\wsl\docker-desktop.tar<br />```<br /><br /><h3>注销卸载</h3><br /><br />```<br />wsl --unregister docker-desktop-data`<br />`wsl --unregister docker-desktop<br />```<br /><br /><h3>导入安装</h3><br /><br />```<br />wsl --import docker-desktop-data d:\wsl\docker-desktop-data d:\wsl\docker-desktop-data.tar`<br />`wsl --import docker-desktop d:\wsl\docker-desktop d:\wsl\docker-desktop.tar<br />```<br /><br />至此 公司的电脑又一次成功复活<br /><img alt="image" src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815165529003-2038965666.png" /><br /><br /><h2>参考</h2><br /><br />1. 【microsoft】<a href="https://learn.microsoft.com/zh-cn/windows/wsl/basic-commands">WSL 的基本命令</a><br />2. 【csdn】<a href="https://blog.csdn.net/cn_ljr/article/details/132047516">Win11 安装 Docker Desktop 和 WSL2 并进行安装位置迁移</a><br />3. 【bilibili】【2025【Docker Windows】C盘满了通过WSL将docker数据迁移到D盘】 https://www.bilibili.com/video/BV17qdpYGEEE/?share_source=copy_web&vd_source=654a4e361961dcce96893993981165f5</p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">DevOps</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

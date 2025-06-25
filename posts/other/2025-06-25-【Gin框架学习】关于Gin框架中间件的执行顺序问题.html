@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Gin框架学习】关于Gin框架中间件的执行顺序问题 | Focusmee</title>
+    <meta name="description" content="【Gin框架学习】关于Gin框架中间件的执行顺序问题">
+    <meta property="og:title" content="【Gin框架学习】关于Gin框架中间件的执行顺序问题">
+    <meta property="og:description" content="【Gin框架学习】关于Gin框架中间件的执行顺序问题">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Gin框架学习】关于Gin框架中间件的执行顺序问题</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">5 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Gin框架学习】关于Gin框架中间件的执行顺序问题</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>title:关于Gin框架中间件的执行顺序问题</h1>
+<p>代码如下：</p>
+<pre><code class="language-go">package main
+
+// lesson18 中间件
+
+import (
+    &quot;fmt&quot;
+    &quot;net/http&quot;
+    &quot;time&quot;
+
+    &quot;github.com/gin-gonic/gin&quot;
+)
+
+// 属于handlerFunc类型
+func indexHandler(c *gin.Context) {
+    c.JSON(http.StatusOK, gin.H{
+        &quot;msg&quot;: &quot;index&quot;,
+    })
+}
+
+// 定义一个中间件m1 用来计时
+func m1(c *gin.Context) {
+    fmt.Println(&quot;m1 in&quot;)
+    start := time.Now()
+    c.Next() // 继续执行后续的函数
+    fmt.Println(&quot;m1 out&quot;, time.Since(start))
+}
+
+// 定义一个中间件m2 用来测试c.Abort()
+func m2(c *gin.Context) {
+    fmt.Println(&quot;m2 in&quot;)
+    c.Abort() // 终止执行后续的函数,但是m2和m1的out还是会执行的
+    fmt.Println(&quot;m2 out&quot;)
+}
+
+func m3(c *gin.Context) {
+    fmt.Println(&quot;m3 in&quot;)
+    c.JSON(http.StatusOK, gin.H{
+        &quot;msg&quot;: &quot;m3&quot;,
+    })
+}
+
+func main() {
+    r := gin.Default()
+
+    r.Use(m1, m2)
+    r.GET(&quot;/index&quot;, indexHandler)
+    // 遇到全局都需要m1中间件,则使用Use方法,这样不需要每个路由都写m1,m1只作用后面的函数，且执行顺序在最前，如果改变执行顺序
+
+    // r.GET(&quot;/index&quot;, m1, indexHandler)
+    r.GET(&quot;/hello&quot;, func(c *gin.Context) {
+        c.JSON(http.StatusOK, gin.H{
+            &quot;msg&quot;: &quot;hello&quot;,
+        })
+    })
+    r.GET(&quot;/test&quot;, func(c *gin.Context) {
+        c.JSON(http.StatusOK, gin.H{
+            &quot;msg&quot;: &quot;test&quot;,
+        })
+    })
+    r.Run(&quot;:8080&quot;)
+}
+</code></pre>
+<p>在 Gin 中（以及大多数类似框架中），中间件的执行顺序是根据<strong>注册的顺序</strong>来确定的，具体来说：</p>
+<ol>
+<li><strong>全局中间件</strong><br>使用 <code>r.Use()</code> 注册的中间件会被添加到所有路由的处理链中。无论你在后续注册哪条路由，只要是在全局中间件之后注册的，这些路由都会在进入具体的路由处理函数之前先执行全局中间件。<br><strong>注意</strong>：如果你在调用 <code>r.Use()</code> 之后再注册路由，那么这些路由会包含该全局中间件；反之，之前注册的路由可能不包含后续添加的全局中间件。</li>
+<li><strong>路由组中间件</strong><br>当你为某个路由组（例如通过 <code>r.Group(&quot;/path&quot;)</code> 得到的组）调用 <code>group.Use()</code> 时，这些中间件会在全局中间件执行之后，再依照它们的注册顺序加入到该组的处理链中。<br>最终的执行链顺序是：<br><strong>全局中间件（按照注册顺序） → 路由组中间件（按照注册顺序） → 具体的路由处理函数</strong></li>
+<li><strong>如何改变这种顺序？</strong><br>由于全局中间件始终会在路由组中间件之前执行，这是 Gin 的设计决定，无法直接通过简单的 API 调用改变。如果你希望局部（路由组）中间件的逻辑在某些全局中间件之前执行，有以下几种思路：<ul>
+<li><strong>调整中间件注册的位置</strong>：可以将原本全局中间件的逻辑提取出来，放在一个单独的中间件中，然后在需要特定顺序的路由组中单独使用，而不是作为全局中间件。这样你可以完全控制顺序。</li>
+<li><strong>组合中间件</strong>：将需要前置执行的逻辑与局部中间件组合到一起，统一在路由组内注册，从而覆盖全局中间件默认的顺序。</li>
+</ul>
+</li>
+</ol>
+<p>总之，默认情况下，全局中间件的顺序是固定在所有路由之前，无法直接与路由组中间件进行“交叉排序”。如果业务上确实需要特定的执行顺序，就需要在设计时将相关中间件统一注册到同一个级别中，或者调整注册的时机与位置。</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【毕业设计】单体应用升级微服务拆分方案 | Focusmee</title>
+    <meta name="description" content="【毕业设计】单体应用升级微服务拆分方案">
+    <meta property="og:title" content="【毕业设计】单体应用升级微服务拆分方案">
+    <meta property="og:description" content="【毕业设计】单体应用升级微服务拆分方案">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【毕业设计】单体应用升级微服务拆分方案</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">39 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【毕业设计】单体应用升级微服务拆分方案</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <p>我先了解一下您的应用结构，以便给出适合的微服务改造建议。</p>
+<p>Ran tool</p>
+<p>Ran tool</p>
+<p>Read file: app_order/pom.xml</p>
+<p>Ran tool</p>
+<p>Ran tool</p>
+<p>Read file: app_order/src/main/java/com/jf3q/order/AppOrderApplication.java</p>
+<p>Search files...</p>
+<p>Ran tool<br>基于对您的代码结构的分析，我现在为您提供将单体应用改造为微服务架构的建议：</p>
+<h2>微服务拆分方案</h2>
+<h3>1. 领域拆分</h3>
+<p>根据您的系统功能，建议将应用拆分为以下几个微服务：</p>
+<ol>
+<li><p><strong>用户服务 (user-service)</strong></p>
+<ul>
+<li>负责用户管理、认证授权</li>
+<li>包含现有的 User 相关功能</li>
+</ul>
+</li>
+<li><p><strong>摄影师服务 (photographer-service)</strong></p>
+<ul>
+<li>负责摄影师信息管理</li>
+<li>包含 Photographer 和 PhotographerNews 相关功能</li>
+</ul>
+</li>
+<li><p><strong>订单服务 (order-service)</strong></p>
+<ul>
+<li>负责订单处理和管理</li>
+<li>包含 Orders 和 ReceivingOrders 相关功能</li>
+</ul>
+</li>
+<li><p><strong>套餐服务 (package-service)</strong></p>
+<ul>
+<li>负责摄影套餐管理</li>
+<li>包含 Package 相关功能</li>
+</ul>
+</li>
+<li><p><strong>反馈服务 (feedback-service)</strong></p>
+<ul>
+<li>负责用户反馈管理</li>
+<li>包含 Feedback 相关功能</li>
+</ul>
+</li>
+<li><p><strong>文件服务 (file-service)</strong></p>
+<ul>
+<li>负责文件上传下载</li>
+<li>包含现有的文件和头像处理功能</li>
+</ul>
+</li>
+</ol>
+<h3>2. 技术架构升级</h3>
+<ol>
+<li><p><strong>服务注册与发现</strong></p>
+<ul>
+<li>引入 Spring Cloud Alibaba Nacos 作为服务注册中心</li>
+<li>每个微服务向 Nacos 注册，并通过 Nacos 发现其他服务</li>
+</ul>
+</li>
+<li><p><strong>网关服务</strong></p>
+<ul>
+<li>引入 Spring Cloud Gateway 作为 API 网关</li>
+<li>统一入口、路由转发、认证授权</li>
+</ul>
+</li>
+<li><p><strong>配置中心</strong></p>
+<ul>
+<li>使用 Nacos Config 进行配置管理</li>
+<li>集中管理各服务配置，支持动态配置更新</li>
+</ul>
+</li>
+<li><p><strong>服务间通信</strong></p>
+<ul>
+<li>使用 OpenFeign 进行服务间的声明式 HTTP 调用</li>
+<li>使用 Spring Cloud Stream 进行事件驱动的异步通信</li>
+</ul>
+</li>
+<li><p><strong>服务熔断与降级</strong></p>
+<ul>
+<li>使用 Sentinel 实现服务熔断、限流、降级</li>
+<li>提高系统稳定性和可用性</li>
+</ul>
+</li>
+<li><p><strong>链路追踪</strong></p>
+<ul>
+<li>引入 SkyWalking 或 Zipkin 进行分布式链路追踪</li>
+<li>方便排查跨服务调用问题</li>
+</ul>
+</li>
+<li><p><strong>分布式事务</strong></p>
+<ul>
+<li>使用 Seata 处理跨服务的分布式事务</li>
+<li>确保数据一致性</li>
+</ul>
+</li>
+</ol>
+<h2>具体实施步骤</h2>
+<h3>1. 搭建基础设施</h3>
+<ol>
+<li><p><strong>创建父项目</strong>：</p>
+<pre><code class="language-xml">&lt;groupId&gt;com.jf3q&lt;/groupId&gt;
+&lt;artifactId&gt;ssc-parent&lt;/artifactId&gt;
+&lt;packaging&gt;pom&lt;/packaging&gt;
+&lt;modules&gt;
+    &lt;module&gt;ssc-gateway&lt;/module&gt;
+    &lt;module&gt;ssc-common&lt;/module&gt;
+    &lt;module&gt;ssc-user&lt;/module&gt;
+    &lt;module&gt;ssc-photographer&lt;/module&gt;
+    &lt;module&gt;ssc-order&lt;/module&gt;
+    &lt;module&gt;ssc-package&lt;/module&gt;
+    &lt;module&gt;ssc-feedback&lt;/module&gt;
+    &lt;module&gt;ssc-file&lt;/module&gt;
+&lt;/modules&gt;
+</code></pre>
+</li>
+<li><p><strong>搭建注册中心和配置中心</strong>：</p>
+<ul>
+<li>部署 Nacos 服务器</li>
+<li>将各微服务注册到 Nacos</li>
+</ul>
+</li>
+<li><p><strong>设置网关服务</strong>：创建 ssc-gateway 模块，配置路由规则</p>
+</li>
+</ol>
+<h3>2. 创建公共模块</h3>
+<p>创建 ssc-common 模块，包含：</p>
+<ul>
+<li>公共实体类</li>
+<li>通用工具类</li>
+<li>统一返回结果</li>
+<li>全局异常处理</li>
+<li>安全认证相关配置</li>
+</ul>
+<h3>3. 拆分业务服务</h3>
+<ol>
+<li><p><strong>创建每个微服务的基本结构</strong>：</p>
+<ul>
+<li>配置文件：application.yml, bootstrap.yml</li>
+<li>启动类：添加 <code>@EnableDiscoveryClient</code> 等注解</li>
+<li>基本包结构：controller, service, mapper, entity</li>
+</ul>
+</li>
+<li><p><strong>迁移业务代码</strong>：</p>
+<ul>
+<li>将原有代码按业务领域迁移到对应微服务</li>
+<li>调整服务间依赖，使用 Feign 替代直接调用</li>
+</ul>
+</li>
+<li><p><strong>数据库拆分</strong>：</p>
+<ul>
+<li>为每个微服务创建独立数据库</li>
+<li>将原单体数据库中的表迁移到对应服务的数据库</li>
+</ul>
+</li>
+</ol>
+<h3>4. 调整服务间通信</h3>
+<ol>
+<li><p><strong>同步调用</strong>：</p>
+<pre><code class="language-java">@FeignClient(name = &quot;ssc-user&quot;)
+public interface UserFeignClient {
+    @GetMapping(&quot;/users/{id}&quot;)
+    Result&lt;User&gt; getUserById(@PathVariable(&quot;id&quot;) Long id);
+}
+</code></pre>
+</li>
+<li><p><strong>异步通信</strong>：</p>
+<ul>
+<li>使用消息队列（如RocketMQ）处理跨服务异步事件</li>
+</ul>
+</li>
+</ol>
+<h3>5. 安全认证改造</h3>
+<ol>
+<li><p><strong>基于 OAuth2 + JWT 的统一认证</strong>：</p>
+<ul>
+<li>在网关层统一处理认证</li>
+<li>使用 JWT 在微服务间传递用户信息</li>
+</ul>
+</li>
+<li><p><strong>资源服务器配置</strong>：</p>
+<pre><code class="language-java">@Configuration
+@EnableResourceServer
+public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+            .antMatchers(&quot;/public/**&quot;).permitAll()
+            .anyRequest().authenticated();
+    }
+}
+</code></pre>
+</li>
+</ol>
+<h3>6. 部署与监控</h3>
+<ol>
+<li><p><strong>容器化部署</strong>：</p>
+<ul>
+<li>使用 Docker 容器化每个微服务</li>
+<li>使用 Kubernetes 编排和管理容器</li>
+</ul>
+</li>
+<li><p><strong>监控系统</strong>：</p>
+<ul>
+<li>使用 Prometheus + Grafana 监控系统运行状态</li>
+<li>使用 ELK 收集分析日志</li>
+</ul>
+</li>
+</ol>
+<h2>迁移注意事项</h2>
+<ol>
+<li><p><strong>渐进式迁移</strong>：不要一次性全部拆分，可先拆分边缘服务，逐步向核心服务迁移</p>
+</li>
+<li><p><strong>数据一致性</strong>：注意跨服务的事务处理，合理使用分布式事务或最终一致性方案</p>
+</li>
+<li><p><strong>接口兼容性</strong>：保持接口的向后兼容，避免影响现有功能</p>
+</li>
+<li><p><strong>测试</strong>：编写完善的集成测试确保服务拆分后的功能正确性</p>
+</li>
+<li><p><strong>服务治理</strong>：关注服务依赖关系，避免出现循环依赖</p>
+</li>
+<li><p><strong>性能优化</strong>：注意网络延迟增加带来的性能影响，合理使用缓存</p>
+</li>
+</ol>
+<p>通过以上步骤，您可以平稳地将单体应用迁移到微服务架构，同时保持业务功能的正常运行和扩展能力的提升。</p>
+<p>在3天内完成基本微服务框架搭建是有挑战性的，但可以实现一个简化版本。以下是3天内的精简计划：</p>
+<h2>3天微服务框架搭建计划</h2>
+<h3>第1天：基础设施搭建</h3>
+<ol>
+<li><p><strong>搭建基础环境</strong></p>
+<ul>
+<li>安装部署Nacos（可使用Docker快速部署）</li>
+<li>创建父项目和基础架构</li>
+</ul>
+</li>
+<li><p><strong>创建核心模块</strong></p>
+<ul>
+<li>创建父工程ssc-parent</li>
+<li>创建公共模块ssc-common</li>
+<li>创建网关模块ssc-gateway</li>
+</ul>
+</li>
+<li><p><strong>配置父项目依赖</strong></p>
+<pre><code class="language-xml">&lt;!-- 统一管理版本 --&gt;
+&lt;properties&gt;
+    &lt;spring-boot.version&gt;2.3.12.RELEASE&lt;/spring-boot.version&gt;
+    &lt;spring-cloud.version&gt;Hoxton.SR12&lt;/spring-cloud.version&gt;
+    &lt;spring-cloud-alibaba.version&gt;2.2.7.RELEASE&lt;/spring-cloud-alibaba.version&gt;
+&lt;/properties&gt;
+
+&lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+        &lt;!-- Spring Boot --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-dependencies&lt;/artifactId&gt;
+            &lt;version&gt;${spring-boot.version}&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;!-- Spring Cloud --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+            &lt;version&gt;${spring-cloud.version}&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;!-- Spring Cloud Alibaba --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-alibaba-dependencies&lt;/artifactId&gt;
+            &lt;version&gt;${spring-cloud-alibaba.version}&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+</code></pre>
+</li>
+</ol>
+<h3>第2天：核心服务拆分</h3>
+<ol>
+<li><p><strong>创建两个核心微服务</strong></p>
+<ul>
+<li>用户服务（ssc-user）</li>
+<li>订单服务（ssc-order）</li>
+</ul>
+</li>
+<li><p><strong>实现公共模块</strong></p>
+<ul>
+<li>移植Result类和通用工具类</li>
+<li>定义统一异常处理</li>
+<li>创建跨服务数据传输对象(DTO)</li>
+</ul>
+</li>
+<li><p><strong>用户服务实现</strong></p>
+<ul>
+<li>移植User实体和用户相关代码</li>
+<li>实现基本认证功能</li>
+<li>注册到Nacos</li>
+</ul>
+</li>
+<li><p><strong>订单服务实现</strong></p>
+<ul>
+<li>移植Orders实体和订单相关代码</li>
+<li>通过Feign调用用户服务</li>
+<li>注册到Nacos</li>
+</ul>
+</li>
+</ol>
+<h3>第3天：网关和服务集成</h3>
+<ol>
+<li><p><strong>网关服务配置</strong></p>
+<ul>
+<li>配置路由规则</li>
+<li>实现简单认证过滤器</li>
+<li>配置跨域处理</li>
+</ul>
+</li>
+<li><p><strong>服务间调用测试</strong></p>
+<ul>
+<li>实现用户服务Feign客户端</li>
+<li>测试订单服务调用用户服务</li>
+<li>验证网关路由功能</li>
+</ul>
+</li>
+<li><p><strong>部署与联调</strong></p>
+<ul>
+<li>打包各服务</li>
+<li>测试完整调用链路</li>
+<li>编写简单文档</li>
+</ul>
+</li>
+</ol>
+<h2>快速实现的关键代码片段</h2>
+<h3>1. 网关配置（ssc-gateway）</h3>
+<pre><code class="language-yaml"># application.yml
+server:
+  port: 9000
+
+spring:
+  application:
+    name: ssc-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: user-service
+          uri: lb://ssc-user
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - StripPrefix=1
+        - id: order-service
+          uri: lb://ssc-order
+          predicates:
+            - Path=/api/orders/**
+          filters:
+            - StripPrefix=1
+</code></pre>
+<h3>2. 用户服务（ssc-user）</h3>
+<pre><code class="language-yaml"># application.yml
+server:
+  port: 9001
+spring:
+  application:
+    name: ssc-user
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  datasource:
+    url: jdbc:mysql:///photographer_order?serverTimezone=Asia/Shanghai
+    username: root
+    password:
+</code></pre>
+<h3>3. 订单服务（ssc-order）</h3>
+<pre><code class="language-yaml"># application.yml
+server:
+  port: 9002
+spring:
+  application:
+    name: ssc-order
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  datasource:
+    url: jdbc:mysql:///photographer_order?serverTimezone=Asia/Shanghai
+    username: root
+    password:
+</code></pre>
+<h3>4. 用户服务Feign客户端（在ssc-order中）</h3>
+<pre><code class="language-java">// UserClient.java
+@FeignClient(name = &quot;ssc-user&quot;)
+public interface UserClient {
+    @GetMapping(&quot;/users/{id}&quot;)
+    Result&lt;UserDTO&gt; getUserById(@PathVariable(&quot;id&quot;) Long id);
+}
+</code></pre>
+<h3>5. 简化版本的订单服务实现</h3>
+<pre><code class="language-java">// OrdersServiceImpl.java
+@Service
+public class OrdersServiceImpl implements OrdersService {
+    
+    @Autowired
+    private OrdersMapper ordersMapper;
+    
+    @Autowired
+    private UserClient userClient;
+    
+    @Override
+    public Orders getOrderWithUserInfo(Long orderId) {
+        // 获取订单信息
+        Orders order = ordersMapper.selectById(orderId);
+        if (order != null) {
+            // 调用用户服务获取用户信息
+            Result&lt;UserDTO&gt; userResult = userClient.getUserById(order.getUserId());
+            if (userResult.isSuccess()) {
+                // 设置用户信息
+                UserDTO userDTO = userResult.getData();
+                order.setUserName(userDTO.getUsername());
+            }
+        }
+        return order;
+    }
+}
+</code></pre>
+<h2>实现建议</h2>
+<ol>
+<li><p><strong>简化数据库结构</strong></p>
+<ul>
+<li>初期可先使用共享数据库</li>
+<li>保持原有表结构不变，减少迁移成本</li>
+</ul>
+</li>
+<li><p><strong>重点关注</strong></p>
+<ul>
+<li>服务注册与发现</li>
+<li>基本服务间调用</li>
+<li>网关路由功能</li>
+</ul>
+</li>
+<li><p><strong>暂缓处理项</strong></p>
+<ul>
+<li>复杂的认证授权</li>
+<li>分布式事务</li>
+<li>高级监控体系</li>
+<li>容器化部署</li>
+</ul>
+</li>
+</ol>
+<p>3天时间内，可以搭建一个基础但功能可用的微服务框架，主要完成服务注册发现、网关路由和简单服务间调用功能。这将为后续完整微服务改造打下基础，同时能够验证技术路线的可行性。</p>
+<p>请注意，这个时间框架非常紧，建议集中精力于核心架构搭建，避免深入实现业务细节，以确保能在3天内看到一个基本可运行的框架。</p>
+<h3>一、网关配置的特殊路由</h3>
+<ol>
+<li>登录路由</li>
+</ol>
+<ul>
+<li><p>路径: /api/login</p>
+</li>
+<li><p>方法: POST</p>
+</li>
+<li><p>实际转发到: /users/login</p>
+</li>
+<li><p>服务: ssc-user</p>
+</li>
+</ul>
+<ol>
+<li>注册路由</li>
+</ol>
+<ul>
+<li><p>路径: /api/register</p>
+</li>
+<li><p>方法: POST</p>
+</li>
+<li><p>实际转发到: /users/register</p>
+</li>
+<li><p>服务: ssc-user</p>
+</li>
+</ul>
+<h3>二、用户服务接口 (通过网关访问需添加前缀 /api)</h3>
+<ol>
+<li>根据ID获取用户</li>
+</ol>
+<ul>
+<li><p>路径: /api/users/{id}</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>描述: 获取指定ID的用户信息</p>
+</li>
+</ul>
+<ol>
+<li>用户登录</li>
+</ol>
+<ul>
+<li><p>路径: /api/users/login</p>
+</li>
+<li><p>方法: POST</p>
+</li>
+<li><p>描述: 用户登录认证</p>
+</li>
+</ul>
+<ol>
+<li>用户注册</li>
+</ol>
+<ul>
+<li><p>路径: /api/users/register</p>
+</li>
+<li><p>方法: POST</p>
+</li>
+<li><p>描述: 用户注册</p>
+</li>
+</ul>
+<ol>
+<li>更新用户信息</li>
+</ol>
+<ul>
+<li><p>路径: /api/users/{id}</p>
+</li>
+<li><p>方法: PUT</p>
+</li>
+<li><p>描述: 更新指定用户的信息</p>
+</li>
+</ul>
+<ol>
+<li>更新用户头像</li>
+</ol>
+<ul>
+<li><p>路径: /api/users/{id}/avatar</p>
+</li>
+<li><p>方法: PUT</p>
+</li>
+<li><p>描述: 更新指定用户的头像</p>
+</li>
+</ul>
+<ol>
+<li>根据角色获取用户列表</li>
+</ol>
+<ul>
+<li><p>路径: /api/users/role/{role}</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>描述: 获取指定角色的所有用户</p>
+</li>
+</ul>
+<ol>
+<li>分页查询用户</li>
+</ol>
+<ul>
+<li><p>路径: /api/users/page</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>参数: current(默认1), size(默认10), keyword(可选)</p>
+</li>
+<li><p>描述: 分页查询用户信息</p>
+</li>
+</ul>
+<h3>三、订单服务接口 (通过网关访问需添加前缀 /api)</h3>
+<ol>
+<li>创建订单</li>
+</ol>
+<ul>
+<li><p>路径: /api/orders</p>
+</li>
+<li><p>方法: POST</p>
+</li>
+<li><p>描述: 创建新订单</p>
+</li>
+</ul>
+<ol>
+<li>获取订单详情</li>
+</ol>
+<ul>
+<li><p>路径: /api/orders/{id}</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>描述: 获取指定ID订单的详细信息</p>
+</li>
+</ul>
+<ol>
+<li>获取用户的订单列表</li>
+</ol>
+<ul>
+<li><p>路径: /api/orders/user/{userId}</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>描述: 获取指定用户的所有订单</p>
+</li>
+</ul>
+<ol>
+<li>获取摄影师的订单列表</li>
+</ol>
+<ul>
+<li><p>路径: /api/orders/photographer/{photographerId}</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>描述: 获取指定摄影师的所有订单</p>
+</li>
+</ul>
+<ol>
+<li>更新订单状态</li>
+</ol>
+<ul>
+<li><p>路径: /api/orders/{id}/status</p>
+</li>
+<li><p>方法: PUT</p>
+</li>
+<li><p>参数: status(必填)</p>
+</li>
+<li><p>描述: 更新指定订单的状态</p>
+</li>
+</ul>
+<ol>
+<li>分页查询订单</li>
+</ol>
+<ul>
+<li><p>路径: /api/orders/page</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>参数: current(默认1), size(默认10), keyword(可选)</p>
+</li>
+<li><p>描述: 分页查询订单信息</p>
+</li>
+</ul>
+<h3>四、测试接口</h3>
+<ol>
+<li>测试订单服务</li>
+</ol>
+<ul>
+<li><p>路径: /api/orders/test</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>描述: 测试订单服务是否正常运行</p>
+</li>
+</ul>
+<ol>
+<li>测试服务调用</li>
+</ol>
+<ul>
+<li><p>路径: /api/orders/test/user/{id}</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>描述: 测试订单服务调用用户服务获取用户信息</p>
+</li>
+</ul>
+<h1>Sa-token引入</h1>
+<p>使用Postman测试Sa-Token认证系统需要进行以下步骤：</p>
+<h2>1. 测试注册功能</h2>
+<ol>
+<li>打开Postman</li>
+<li>创建一个新的POST请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/register</code></li>
+<li>选择Headers选项卡，添加头部：<ul>
+<li>Key: <code>Content-Type</code></li>
+<li>Value: <code>application/json</code></li>
+</ul>
+</li>
+<li>选择Body选项卡，选择raw，然后选择JSON格式</li>
+<li>输入注册信息：</li>
+</ol>
+<pre><code class="language-json">{
+  &quot;username&quot;: &quot;testuser&quot;,
+  &quot;password&quot;: &quot;password123&quot;,
+  &quot;name&quot;: &quot;测试用户&quot;,
+  &quot;role&quot;: &quot;user&quot;,
+  &quot;email&quot;: &quot;test@example.com&quot;,
+  &quot;phone&quot;: &quot;13800138000&quot;
+}
+</code></pre>
+<ol start="7">
+<li>点击Send发送请求</li>
+<li>检查响应，应该返回成功信息和用户数据（不含密码）</li>
+</ol>
+<h2>2. 测试登录功能</h2>
+<ol>
+<li>创建一个新的POST请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/login</code></li>
+<li>在Headers中添加：<ul>
+<li>Key: <code>Content-Type</code></li>
+<li>Value: <code>application/json</code></li>
+</ul>
+</li>
+<li>在Body中输入：</li>
+</ol>
+<pre><code class="language-json">{
+  &quot;username&quot;: &quot;testuser&quot;,
+  &quot;password&quot;: &quot;password123&quot;
+}
+</code></pre>
+<ol start="5">
+<li><p>点击Send发送请求</p>
+</li>
+<li><p>检查响应，应该包含：</p>
+<ul>
+<li>用户信息</li>
+<li>tokenName (通常是&quot;Authorization&quot;)</li>
+<li>tokenValue (JWT令牌值)</li>
+</ul>
+</li>
+<li><p><strong>重要：复制响应中的tokenName和tokenValue，后续请求需要使用</strong></p>
+</li>
+</ol>
+<h2>3. 使用token获取用户信息</h2>
+<ol>
+<li>创建一个新的GET请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/api/user/info</code></li>
+<li>在Headers中添加从登录响应获取的token：<ul>
+<li>Key: <code>Authorization</code> (使用tokenName的值)</li>
+<li>Value: 登录响应中的tokenValue值</li>
+</ul>
+</li>
+<li>点击Send发送请求</li>
+<li>检查响应，应该返回当前登录用户的详细信息</li>
+</ol>
+<h2>4. 测试权限控制</h2>
+<h3>4.1 测试管理员角色的接口</h3>
+<ol>
+<li>创建一个新的GET请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/api/admin/users</code> (假设这是一个管理员接口)</li>
+<li>在Headers中添加token</li>
+<li>点击Send发送请求</li>
+<li>如果使用的是普通用户token，应该返回权限不足的错误</li>
+<li>如果使用的是管理员token，应该能够正常访问</li>
+</ol>
+<h3>4.2 测试摄影师角色的接口</h3>
+<ol>
+<li>创建一个新的GET请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/api/photographer/profile</code> (假设这是一个摄影师接口)</li>
+<li>在Headers中添加token</li>
+<li>发送请求并检查响应</li>
+</ol>
+<h2>5. 测试退出登录</h2>
+<ol>
+<li>创建一个新的POST请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/logout</code></li>
+<li>在Headers中添加token</li>
+<li>点击Send发送请求</li>
+<li>检查响应，应该返回退出成功的信息</li>
+<li>然后再尝试使用同一个token访问需要登录的接口，应该会返回&quot;未登录&quot;的错误</li>
+</ol>
+<h2>6. 使用Postman的Collection和Environment功能</h2>
+<p>为了更方便地测试，可以使用Postman的集合和环境变量：</p>
+<ol>
+<li><p>创建一个新的环境，命名为&quot;Sa-Token测试&quot;</p>
+</li>
+<li><p>添加以下环境变量：</p>
+<ul>
+<li><code>baseUrl</code>: <code>http://localhost:9999</code></li>
+<li><code>token</code>: 空值(登录后自动填充)</li>
+</ul>
+</li>
+<li><p>创建一个新的Collection，命名为&quot;用户认证测试&quot;</p>
+</li>
+<li><p>在Collection中创建上述所有请求，并使用环境变量，如：</p>
+<ul>
+<li>登录URL: <code>{{baseUrl}}/login</code></li>
+<li>用户信息URL: <code>{{baseUrl}}/api/user/info</code></li>
+<li>授权Header: <code>Authorization: {{token}}</code></li>
+</ul>
+</li>
+<li><p>在登录请求的Tests选项卡中添加以下JavaScript代码，自动保存token：</p>
+</li>
+</ol>
+<pre><code class="language-javascript">if (pm.response.code === 200) {
+    var jsonData = pm.response.json();
+    if (jsonData.code === &quot;200&quot; &amp;&amp; jsonData.data &amp;&amp; jsonData.data.tokenValue) {
+        pm.environment.set(&quot;token&quot;, jsonData.data.tokenValue);
+        console.log(&quot;Token saved to environment variable&quot;);
+    }
+}
+</code></pre>
+<h2>7. 测试无效或过期token</h2>
+<ol>
+<li>创建一个需要登录的请求，如获取用户信息</li>
+<li>在Headers中添加一个无效的token值</li>
+<li>发送请求，应该返回未登录或token无效的错误</li>
+</ol>
+<h2>8. 调试技巧</h2>
+<ol>
+<li>使用Postman控制台查看请求和响应的详细信息</li>
+<li>检查服务器端日志，特别是与Sa-Token相关的日志</li>
+<li>如果遇到问题，可以在Postman中使用预请求脚本进行调试</li>
+</ol>
+<h2>9. 常见问题及解决方案</h2>
+<ol>
+<li><strong>CORS错误</strong>：确保网关的CorsConfig正确配置并暴露了Authorization头</li>
+<li><strong>token不生效</strong>：检查token名称和值是否正确，以及请求URL是否正确</li>
+<li><strong>token过期</strong>：尝试重新登录获取新的token</li>
+<li><strong>权限错误</strong>：检查用户角色和接口要求的权限是否匹配</li>
+</ol>
+<p>通过以上步骤，你可以全面测试Sa-Token认证系统的功能，确保用户注册、登录、权限控制和注销功能都正常工作。</p>
+<p>在Postman中测试头像上传功能的详细步骤如下：</p>
+<h2>步骤1: 用户登录获取Token</h2>
+<ol>
+<li>打开Postman，创建一个新的POST请求</li>
+<li>设置URL: <code>http://localhost:9999/login</code></li>
+<li>选择Body选项卡，选择raw，格式为JSON</li>
+<li>输入登录信息：</li>
+</ol>
+<pre><code class="language-json">{
+  &quot;username&quot;: &quot;testuser&quot;,
+  &quot;password&quot;: &quot;password123&quot;
+}
+</code></pre>
+<ol start="5">
+<li>发送请求</li>
+<li>从响应中获取Sa-Token的token值，记录下来：<ul>
+<li>tokenName (通常是&quot;Authorization&quot;)</li>
+<li>tokenValue (后续请求需要使用)</li>
+</ul>
+</li>
+</ol>
+<h2>步骤2: 设置头像上传请求</h2>
+<ol>
+<li><p>创建一个新的POST请求</p>
+</li>
+<li><p>设置URL: <code>http://localhost:9999/api/uploadAvatar</code></p>
+</li>
+<li><p>添加Header：</p>
+<ul>
+<li>Key: <code>Authorization</code> (或者登录响应中的tokenName值)</li>
+<li>Value: 登录响应中的tokenValue值</li>
+</ul>
+</li>
+<li><p>选择Body选项卡，选择form-data</p>
+</li>
+<li><p>添加一个键值对：</p>
+<ul>
+<li>Key: <code>avatar</code></li>
+<li>在Key右侧下拉菜单选择File类型</li>
+<li>Value: 点击&quot;Select Files&quot;按钮，选择一个本地图片文件（如.jpg, .png）</li>
+</ul>
+</li>
+</ol>
+<h2>步骤3: 发送请求并检查响应</h2>
+<ol>
+<li>点击Send发送请求</li>
+<li>如果成功，应该收到类似以下的响应：</li>
+</ol>
+<pre><code class="language-json">{
+  &quot;code&quot;: &quot;200&quot;,
+  &quot;msg&quot;: &quot;请求成功&quot;,
+  &quot;data&quot;: &quot;http://yourserver:9999/file/view/someuniquefilename.jpg&quot;
+}
+</code></pre>
+<h2>步骤4: 测试头像预览和查看</h2>
+<h3>测试当前用户头像预览：</h3>
+<ol>
+<li>创建一个新的GET请求</li>
+<li>设置URL: <code>http://localhost:9999/api/avatar/my/preview</code></li>
+<li>添加Header（使用与上传相同的token）</li>
+<li>发送请求并检查返回的预览URL</li>
+</ol>
+<h3>测试头像下载：</h3>
+<ol>
+<li>创建一个新的GET请求</li>
+<li>设置URL: <code>http://localhost:9999/api/avatar/{userId}</code> (将{userId}替换为实际用户ID)</li>
+<li>添加Header（使用与上传相同的token）</li>
+<li>发送请求，获取下载链接</li>
+<li>在浏览器中访问下载链接验证文件是否可以下载</li>
+</ol>
+<h2>使用Postman中的Environment变量（可选但推荐）</h2>
+<p>为了更便捷地进行测试，您可以设置Postman环境变量：</p>
+<ol>
+<li><p>在Postman右上角点击&quot;No Environment&quot;下拉菜单，然后点击&quot;New&quot;</p>
+</li>
+<li><p>创建一个名为&quot;微服务测试&quot;的环境</p>
+</li>
+<li><p>添加以下变量：</p>
+<ul>
+<li><code>baseUrl</code>: <code>http://localhost:9999</code></li>
+<li><code>token</code>: 空值(登录后自动填充)</li>
+</ul>
+</li>
+<li><p>点击&quot;Save&quot;保存环境</p>
+</li>
+<li><p>在登录请求的Tests选项卡中添加以下代码，以便在登录时自动保存token：</p>
+</li>
+</ol>
+<pre><code class="language-javascript">if (pm.response.code === 200) {
+    var jsonData = pm.response.json();
+    if (jsonData.code === &quot;200&quot; &amp;&amp; jsonData.data) {
+        pm.environment.set(&quot;token&quot;, jsonData.data.tokenValue);
+        console.log(&quot;Token saved: &quot; + jsonData.data.tokenValue);
+    }
+}
+</code></pre>
+<ol start="6">
+<li>然后所有请求都可以使用环境变量：<ul>
+<li>URL: <code>{{baseUrl}}/api/uploadAvatar</code></li>
+<li>Headers: <code>Authorization: {{token}}</code></li>
+</ul>
+</li>
+</ol>
+<h2>常见问题排查</h2>
+<p>如果上传过程中遇到问题，请检查以下几点：</p>
+<ol>
+<li><p><strong>Token问题：</strong> 确保已正确设置了Authorization头部，且token值有效。您可以再次登录获取新token测试。</p>
+</li>
+<li><p><strong>文件大小：</strong> 确保上传的文件不超过配置的大小限制（在application.yml中配置的multipart大小）。</p>
+</li>
+<li><p><strong>Content-Type：</strong> 确保使用的是form-data方式，而不是binary或其他方式，否则服务器可能无法正确解析文件。</p>
+</li>
+<li><p><strong>文件格式：</strong> 确保上传的是图片文件（code中校验了文件类型必须以image/开头）。</p>
+</li>
+<li><p><strong>网络问题：</strong> 检查网关服务和用户服务是否正常运行，可以通过访问一些简单的接口（如/）来确认。</p>
+</li>
+<li><p><strong>跨域问题：</strong> 如果在实际前端应用中测试，可能会遇到跨域问题，确保网关的CORS配置正确。</p>
+</li>
+<li><p><strong>日志检查：</strong> 查看服务器日志，特别注意与文件上传相关的异常信息。</p>
+</li>
+</ol>
+<p>通过以上步骤，您应该能够在Postman中成功测试头像上传功能，并验证整个流程是否正常工作。</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

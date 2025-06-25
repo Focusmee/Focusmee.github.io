@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件存储服务器 - 技术博客</title>
+    <meta name="description" content="文件存储服务器 - DevOps相关技术文章">
+    <meta name="keywords" content="DevOps, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">DevOps</span>
+            <span class="separator">›</span>
+            <span class="current-page">文件存储服务器</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag devops">🐳 DevOps</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 3 分钟阅读</span>
+                </div>
+                <h1 class="post-title">文件存储服务器</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p>本文主要记录一下`docker`如何安装和启动`minio`，先看一下成功启动的步骤：<br /><br />首先下载相关镜像：<br /><br />```bash<br />bash 代码解读复制代码# 搜索minio镜像<br />docker search minio<br /><h1>下载minio/minio</h1><br />docker pull minio/minio<br />```<br /><br />创建文件挂载目录：<br /><br />```bash<br />bash 代码解读复制代码sudo mkdir /opt/docker/minio/miniodata<br /><h1>提供可写的权限，否则启动时会出现如下错误</h1><br /><h1>unable to use the drive /data:file access denied: Invalid arguments specified</h1><br />sudo chmod 777 /opt/docker/minio/miniodata<br />```<br /><br />启动：`minio`<br /><br />```bash<br />bash 代码解读复制代码docker run \<br />-p 9000:9000 \<br />-p 5001:5001 \<br />-v /opt/docker/minio/miniodata:/data \<br />-e "ROOT_ACCESS_KEY=minioadmin" \<br />-e "ROOT_SECRET_KEY=minioadmin" \<br />-d minio/minio server /data --console-address ":5001"<br />```<br /><br />命令说明：<br /><br />> 1. docker run：启动程序<br />> 2. -p：指定端口号 9000: 是minio默认的端口号<br />> 3. -v：指定挂载目录，这是因为如果不指定，当容器被删除之后容器的数据将会丢失。<br />> 4. -e：指定环境变量，这里是指定了`minio dashboard`的登录账号和密码。<br />> 5. -d：后台运行 `minio/minio` 是我们下载的镜像，server /data 是minio的命令指定文件存放的目录。--console-address：指定`minio dashbord`的端口号。有时在命令后面还会看见 -address参数，该参数指定的是`minio s3 api` 的端口号。<br /><br />启动后便可通过`docker logs containerId`的方式查看`log`，如果在电脑上安装了`docker desktop`也可以在容器的`logs`看到如下信息：<br /><br /><img alt="WechatIMG9.jpg" src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac95d11aebfb4b2da2e919370801086f~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.awebp#?w=1484&h=594&s=411864&e=jpg&b=fcfcfc" /><br /><br />其中`s3-api`这个地址就可以配置在springboot项目的`yaml`中，进行文件上传操作。如下所示：<br /><br />```yml<br />yml 代码解读复制代码minio:<br />  endpoint: http://127.0.0.1:9000<br />  accessKey: minioadmin<br />  secretKey: minioadmin<br />  bucketName: minio-first-bucket<br />spring:<br />  servlet:<br />    multipart:<br />      max-file-size: 10MB<br />      max-request-size: 100MB<br />```<br /><br />下面的内容就是记录一下踩坑的过程：<br /><br />> - 本人首先是成功安装启动后，通过`spring boot`项目上传文件后，文件上传成功但是我的挂载目录本没有这个文件。<br />> - 接着从docker官网了解到文件应该是会在挂载目录的，但是由于不知道如何排查这个问题，就将该容器删除，打算重新启动一个容器试一下【大坑】<br />> - 在删除之后，按照同样的方式启动，容器就无法启动出现如下信息的错误：`unable to rename xxx`和`unable to use the drive /data:file access denied`。<br />> - 接着在网上搜寻一番，有的人说是因为之前安装过，不能指定相同的目录，于是呼：换一个目录，失败，删掉之前的目录重新启动，失败！换版本失败！包括但不限于`stack overflow`或者官网给定的解决方法。 最后在打算放弃的关头：执行了`chmod 777 挂载目录`，重启成功，不仅重启成功通过`java`上传文件，在该目录下也有了备份。<br />> - ps: 整个过程大概耗费了三个小时，<br /><br />参考资料：<br /><br />- <a href="https://link.juejin.cn?target=https%3A%2F%2Fstackoverflow.com%2Fquestions%2F72332735%2Fminio-permission-denied">sof:inio-permission-denied</a><br />- <a href="https://link.juejin.cn?target=https%3A%2F%2Fblog.csdn.net%2FDCTANT%2Farticle%2Fdetails%2F129861486">解决minio启动报ERROR Unable to use the drive <em></em> found backend type fs, expected xl or xl-single</a><br />- <a href="https://link.juejin.cn?target=https%3A%2F%2Fmin.io%2Fdocs%2Fminio%2Fmacos%2Findex.html">MinIO Object Storage for MacOS</a><br /><br /></p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">DevOps</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

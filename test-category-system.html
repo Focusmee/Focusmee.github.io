@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分类系统测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .success { color: green; }
+        .error { color: red; }
+        .category-item { margin: 5px 0; padding: 5px; background: #f5f5f5; }
+        .post-item { margin: 10px 0; padding: 10px; background: #e8f4fd; }
+    </style>
+</head>
+<body>
+    <h1>分类目录系统测试</h1>
+    
+    <div class="test-section">
+        <h2>1. 分类目录结构测试</h2>
+        <div id="directoryTest">正在测试...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. 文章数据加载测试</h2>
+        <div id="postsDataTest">正在测试...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. 分类信息测试</h2>
+        <div id="categoriesTest">正在测试...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. 文章链接测试</h2>
+        <div id="linksTest">正在测试...</div>
+    </div>
+
+    <script src="scripts/posts-data.js"></script>
+    <script src="scripts/category-manager.js"></script>
+    <script>
+        async function runTests() {
+            console.log('开始运行分类系统测试...');
+            
+            // 测试1: 分类目录结构
+            testDirectoryStructure();
+            
+            // 测试2: 文章数据加载
+            await testPostsDataLoading();
+            
+            // 测试3: 分类信息
+            await testCategoriesInfo();
+            
+            // 测试4: 文章链接
+            testPostLinks();
+        }
+        
+        function testDirectoryStructure() {
+            const testDiv = document.getElementById('directoryTest');
+            
+            try {
+                // 检查分类管理器是否加载
+                if (typeof categoryManager !== 'undefined') {
+                    testDiv.innerHTML = '<span class="success">✓ 分类管理器已加载</span>';
+                } else {
+                    testDiv.innerHTML = '<span class="error">✗ 分类管理器未加载</span>';
+                }
+            } catch (error) {
+                testDiv.innerHTML = `<span class="error">✗ 错误: ${error.message}</span>`;
+            }
+        }
+        
+        async function testPostsDataLoading() {
+            const testDiv = document.getElementById('postsDataTest');
+            
+            try {
+                // 初始化文章数据
+                await initPostsData();
+                const posts = getAllPosts();
+                
+                if (posts && posts.length > 0) {
+                    let html = `<span class="success">✓ 成功加载 ${posts.length} 篇文章</span><br>`;
+                    posts.forEach(post => {
+                        html += `<div class="post-item">
+                            <strong>${post.title}</strong><br>
+                            分类: ${post.categoryDisplayName} (${post.category})<br>
+                            路径: ${post.filePath || post.fileName}
+                        </div>`;
+                    });
+                    testDiv.innerHTML = html;
+                } else {
+                    testDiv.innerHTML = '<span class="error">✗ 没有加载到文章数据</span>';
+                }
+            } catch (error) {
+                testDiv.innerHTML = `<span class="error">✗ 错误: ${error.message}</span>`;
+            }
+        }
+        
+        async function testCategoriesInfo() {
+            const testDiv = document.getElementById('categoriesTest');
+            
+            try {
+                const categories = await categoryManager.loadCategoriesFromFileSystem();
+                
+                if (categories && categories.length > 0) {
+                    let html = `<span class="success">✓ 成功获取 ${categories.length} 个分类</span><br>`;
+                    categories.forEach(category => {
+                        html += `<div class="category-item">
+                            <strong>${category.displayName}</strong> (${category.name})<br>
+                            图标: ${category.icon} | 文章数: ${category.count}<br>
+                            描述: ${category.description}
+                        </div>`;
+                    });
+                    testDiv.innerHTML = html;
+                } else {
+                    testDiv.innerHTML = '<span class="error">✗ 没有获取到分类信息</span>';
+                }
+            } catch (error) {
+                testDiv.innerHTML = `<span class="error">✗ 错误: ${error.message}</span>`;
+            }
+        }
+        
+        function testPostLinks() {
+            const testDiv = document.getElementById('linksTest');
+            
+            try {
+                const posts = getAllPosts();
+                
+                if (posts && posts.length > 0) {
+                    let html = '<span class="success">✓ 文章链接检查</span><br>';
+                    posts.forEach(post => {
+                        const url = getPostUrl(post.id);
+                        html += `<div class="post-item">
+                            <strong>${post.title}</strong><br>
+                            生成的URL: <a href="${url}" target="_blank">${url}</a><br>
+                            分类目录: posts/${post.category}/
+                        </div>`;
+                    });
+                    testDiv.innerHTML = html;
+                } else {
+                    testDiv.innerHTML = '<span class="error">✗ 没有文章数据进行链接测试</span>';
+                }
+            } catch (error) {
+                testDiv.innerHTML = `<span class="error">✗ 错误: ${error.message}</span>`;
+            }
+        }
+        
+        // 页面加载完成后运行测试
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(runTests, 1000); // 等待脚本加载完成
+        });
+    </script>
+</body>
+</html> 

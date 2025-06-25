@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Go语言学习】status | Focusmee</title>
+    <meta name="description" content="【Go语言学习】status">
+    <meta property="og:title" content="【Go语言学习】status">
+    <meta property="og:description" content="【Go语言学习】status">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Go语言学习】status</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">11 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Go语言学习】status</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>title:Status</h1>
+<p><code>Status</code> 是一个自定义的枚举类型，而 <code>String()</code> 是一个方法，用于实现 <code>fmt.Stringer</code> 接口，从而为 <code>Status</code> 类型提供字符串表示。这是 Go 语言中非常常见的模式。</p>
+<p>接下来，将详细解释枚举类型、<code>String()</code> 方法的作用，以及其他常见的接口和方法。</p>
+<hr>
+<h3><strong>1. 枚举类型与 <code>String()</code> 方法</strong></h3>
+<p>在 Go 中，枚举类型通常通过自定义类型和常量来实现。例如：</p>
+<pre><code class="language-go">type Status int
+
+const (
+    Pending Status = iota // 0
+    Active                // 1
+    Completed             // 2
+)
+</code></pre>
+<p>为了实现枚举值的字符串表示，可以为枚举类型实现 <code>String()</code> 方法：</p>
+<pre><code class="language-go">func (s Status) String() string {
+    return [...]string{&quot;Pending&quot;, &quot;Active&quot;, &quot;Completed&quot;}[s]
+}
+</code></pre>
+<p>这样，<code>Status</code> 类型就实现了 <code>fmt.Stringer</code> 接口，可以在 <code>fmt.Println</code> 等函数中自动调用：</p>
+<pre><code class="language-go">fmt.Println(Pending) // 输出: Pending
+</code></pre>
+<hr>
+<h3><strong>2. 其他常见的接口和方法</strong></h3>
+<p>除了 <code>fmt.Stringer</code> 接口，Go 语言中还有许多其他常见的接口和方法，适用于不同的场景。以下是一些典型的例子：</p>
+<hr>
+<h4><strong>（1）<code>error</code> 接口</strong></h4>
+<p><code>error</code> 是 Go 语言中用于表示错误的接口，定义如下：</p>
+<pre><code class="language-go">type error interface {
+    Error() string
+}
+</code></pre>
+<p>你可以为自定义类型实现 <code>Error()</code> 方法，使其满足 <code>error</code> 接口：</p>
+<pre><code class="language-go">type MyError struct {
+    Code    int
+    Message string
+}
+
+func (e MyError) Error() string {
+    return fmt.Sprintf(&quot;Error %d: %s&quot;, e.Code, e.Message)
+}
+
+func main() {
+    err := MyError{Code: 404, Message: &quot;Not Found&quot;}
+    fmt.Println(err) // 输出: Error 404: Not Found
+}
+</code></pre>
+<hr>
+<h4><strong>（2）<code>sort.Interface</code> 接口</strong></h4>
+<p><code>sort.Interface</code> 是用于排序的接口，定义如下：</p>
+<pre><code class="language-go">type Interface interface {
+    Len() int
+    Less(i, j int) bool
+    Swap(i, j int)
+}
+</code></pre>
+<p>你可以为自定义类型实现 <code>sort.Interface</code>，从而使用 <code>sort.Sort</code> 进行排序：</p>
+<pre><code class="language-go">type ByAge []Person
+
+type Person struct {
+    Name string
+    Age  int
+}
+
+func (a ByAge) Len() int           { return len(a) }
+func (a ByAge) Less(i, j int) bool { return a[i].Age &lt; a[j].Age }
+func (a ByAge) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+
+func main() {
+    people := []Person{
+        {&quot;Alice&quot;, 25},
+        {&quot;Bob&quot;, 20},
+        {&quot;Charlie&quot;, 30},
+    }
+    sort.Sort(ByAge(people))
+    fmt.Println(people) // 输出: [{Bob 20} {Alice 25} {Charlie 30}]
+}
+</code></pre>
+<hr>
+<h4><strong>（3）<code>io.Reader</code> 和 <code>io.Writer</code> 接口</strong></h4>
+<p><code>io.Reader</code> 和 <code>io.Writer</code> 是用于输入输出的接口，定义如下：</p>
+<pre><code class="language-go">type Reader interface {
+    Read(p []byte) (n int, err error)
+}
+
+type Writer interface {
+    Write(p []byte) (n int, err error)
+}
+</code></pre>
+<p>你可以为自定义类型实现这些接口，从而支持文件、网络等操作：</p>
+<pre><code class="language-go">type MyBuffer struct {
+    data []byte
+}
+
+func (b *MyBuffer) Write(p []byte) (n int, err error) {
+    b.data = append(b.data, p...)
+    return len(p), nil
+}
+
+func (b *MyBuffer) String() string {
+    return string(b.data)
+}
+
+func main() {
+    var buf MyBuffer
+    fmt.Fprintf(&amp;buf, &quot;Hello, %s!&quot;, &quot;Go&quot;)
+    fmt.Println(buf.String()) // 输出: Hello, Go!
+}
+</code></pre>
+<hr>
+<h4><strong>（4）<code>json.Marshaler</code> 和 <code>json.Unmarshaler</code> 接口</strong></h4>
+<p><code>json.Marshaler</code> 和 <code>json.Unmarshaler</code> 是用于 JSON 序列化和反序列化的接口，定义如下：</p>
+<pre><code class="language-go">type Marshaler interface {
+    MarshalJSON() ([]byte, error)
+}
+
+type Unmarshaler interface {
+    UnmarshalJSON([]byte) error
+}
+</code></pre>
+<p>你可以为自定义类型实现这些接口，从而自定义 JSON 的编码和解码行为：</p>
+<pre><code class="language-go">type Person struct {
+    Name string
+    Age  int
+}
+
+func (p Person) MarshalJSON() ([]byte, error) {
+    return []byte(fmt.Sprintf(`{&quot;name&quot;:&quot;%s&quot;,&quot;age&quot;:%d}`, p.Name, p.Age)), nil
+}
+
+func main() {
+    p := Person{Name: &quot;Alice&quot;, Age: 25}
+    jsonData, _ := json.Marshal(p)
+    fmt.Println(string(jsonData)) // 输出: {&quot;name&quot;:&quot;Alice&quot;,&quot;age&quot;:25}
+}
+</code></pre>
+<hr>
+<h4><strong>（5）<code>http.Handler</code> 接口</strong></h4>
+<p><code>http.Handler</code> 是用于处理 HTTP 请求的接口，定义如下：</p>
+<pre><code class="language-go">type Handler interface {
+    ServeHTTP(ResponseWriter, *Request)
+}
+</code></pre>
+<p>你可以为自定义类型实现 <code>ServeHTTP</code> 方法，从而创建自定义的 HTTP 处理器：</p>
+<pre><code class="language-go">type MyHandler struct{}
+
+func (h MyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, &quot;Hello, World!&quot;)
+}
+
+func main() {
+    handler := MyHandler{}
+    http.Handle(&quot;/&quot;, handler)
+    http.ListenAndServe(&quot;:8080&quot;, nil)
+}
+</code></pre>
+<hr>
+<h3><strong>3. 总结</strong></h3>
+<ul>
+<li><strong>枚举类型</strong>：通过自定义类型和常量实现。</li>
+<li><strong><code>String()</code> 方法</strong>：用于实现 <code>fmt.Stringer</code> 接口，提供字符串表示。</li>
+<li><strong>其他常见接口</strong>：<ul>
+<li><code>error</code>：用于错误处理。</li>
+<li><code>sort.Interface</code>：用于排序。</li>
+<li><code>io.Reader</code> 和 <code>io.Writer</code>：用于输入输出。</li>
+<li><code>json.Marshaler</code> 和 <code>json.Unmarshaler</code>：用于 JSON 序列化和反序列化。</li>
+<li><code>http.Handler</code>：用于处理 HTTP 请求。</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Go语言学习】深入理解Go模块管理：探讨go mod tidy和go mod vendor | Focusmee</title>
+    <meta name="description" content="【Go语言学习】深入理解Go模块管理：探讨go mod tidy和go mod vendor">
+    <meta property="og:title" content="【Go语言学习】深入理解Go模块管理：探讨go mod tidy和go mod vendor">
+    <meta property="og:description" content="【Go语言学习】深入理解Go模块管理：探讨go mod tidy和go mod vendor">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Go语言学习】深入理解Go模块管理：探讨go mod tidy和go mod vendor</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">3 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Go语言学习】深入理解Go模块管理：探讨go mod tidy和go mod vendor</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <p>title： 深入理解 Go 模块管理：探讨 <code>go mod tidy</code> 和 <code>go mod vendor</code></p>
+<p>Go 语言的模块管理功能极大地简化了依赖管理。本文深入探讨了 go mod tidy 和 go mod vendor 这两个命令的内部机制、使用场景以及它们如何优化 Go 项目。</p>
+<h3>go mod tidy：保持依赖整洁</h3>
+<h4>内部机制</h4>
+<ul>
+<li>扫描项目中所有的 Go 文件，分析 import 声明。</li>
+<li>确定项目真正依赖的模块。</li>
+<li>移除 go.mod 文件中存在但项目未引用的依赖。</li>
+<li>添加缺失的依赖并更新 go.sum 文件，包含所有依赖项的加密校验和。</li>
+</ul>
+<h4>使用场景</h4>
+<ul>
+<li><strong>依赖清理</strong>：删除代码中的依赖后清理 go.mod 文件。</li>
+<li><strong>升级和降级</strong>：确保 go.mod 文件反映实际使用的依赖版本。</li>
+<li><strong>持续集成</strong>：自动化构建和部署流程中确保依赖清单的准确性。</li>
+</ul>
+<h3>go mod vendor：管理 Vendor 目录</h3>
+<h4>内部机制</h4>
+<ul>
+<li>根据 go.mod 文件中的依赖项，复制依赖的精确版本到 vendor 目录下。</li>
+<li>拷贝依赖项的源代码，确保无网络环境下也能构建项目。</li>
+<li>生成 modules.txt 文件，列出所有 vendored 的依赖和版本信息。</li>
+</ul>
+<h4>使用场景</h4>
+<ul>
+<li><strong>网络隔离构建</strong>：无法连接到网络时，提前下载所有依赖。</li>
+<li><strong>确保依赖一致性</strong>：防止因依赖仓库不稳定导致的构建失败。</li>
+<li><strong>支持旧构建系统</strong>：旧的 Go 构建系统或工具可能需要 vendor 目录。</li>
+</ul>
+<h3>总结</h3>
+<p>go mod tidy 和 go mod vendor 是维护 Go 项目依赖的不可或缺的工具。合理使用这两个命令，可以让 Go 项目的依赖管理更加稳健和可维护。随着 Go 语言在工程领域的不断深入，理解和掌握这些工具至关重要。</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【SpringBoot框架学习】@Configuration没生效可能的原因 & 解决方案 | Focusmee</title>
+    <meta name="description" content="【SpringBoot框架学习】@Configuration没生效可能的原因 & 解决方案">
+    <meta property="og:title" content="【SpringBoot框架学习】@Configuration没生效可能的原因 & 解决方案">
+    <meta property="og:description" content="【SpringBoot框架学习】@Configuration没生效可能的原因 & 解决方案">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【SpringBoot框架学习】@Configuration没生效可能的原因 & 解决方案</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">7 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【SpringBoot框架学习】@Configuration没生效可能的原因 & 解决方案</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <p>title: SpringBoot中@Configuration没有生效</p>
+<ul>
+<li><p><code>@Configuration</code> 没有生效，可能的原因如下：</p>
+<h3><strong>🔍 可能的原因 &amp; 解决方案</strong></h3>
+<hr>
+<h3><strong>1️⃣ <code>@Configuration</code> 所在的包不在 Spring Boot 扫描范围内</strong></h3>
+<p><strong>问题</strong>：<br> Spring Boot 只会自动扫描<strong>启动类</strong>所在包及其<strong>子包</strong>，如果你的 <code>@Configuration</code> 类在其他包中，就不会被加载。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li><p><strong>方法 1：</strong> 把 <code>@Configuration</code> 类放在 <code>@SpringBootApplication</code> 类的<strong>同级或子包</strong>内。</p>
+</li>
+<li><p>方法 2：</p>
+<p> 在 </p>
+<pre><code>@SpringBootApplication
+</code></pre>
+<p> 上添加 </p>
+<pre><code>@ComponentScan
+</code></pre>
+<p> 指定包路径：</p>
+<pre><code class="language-java">@SpringBootApplication
+@ComponentScan(basePackages = {&quot;com.example.config&quot;}) // 指定你的 @Configuration 类所在包
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+</code></pre>
+</li>
+</ul>
+<hr>
+<h3><strong>2️⃣ <code>@Configuration</code> 类没有被 Spring 管理</strong></h3>
+<p><strong>问题</strong>：<br> <code>@Configuration</code> 需要被 Spring 容器管理，否则不会生效。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>确保 <strong>没有</strong> 用 <code>new</code> 手动创建 <code>@Configuration</code> 类对象。</li>
+<li>确保 <code>@ComponentScan</code> 的扫描路径<strong>包含</strong> <code>@Configuration</code> 类的包。</li>
+</ul>
+<p><strong>错误示例 ❌：</strong></p>
+<pre><code class="language-java">public static void main(String[] args) {
+    ThreadPoolConfig config = new ThreadPoolConfig(); // ❌ 这样不会交给 Spring 管理
+    ExecutorService executorService = config.taskExecutor();
+}
+</code></pre>
+<p><strong>正确示例 ✅：</strong></p>
+<pre><code class="language-java">@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+</code></pre>
+<hr>
+<h3><strong>3️⃣ 你使用的是 <code>@Bean</code> 但 <code>@Configuration</code> 没有生效</strong></h3>
+<p>如果 <code>@Configuration</code> 失效，<code>@Bean</code> 方法不会被调用。</p>
+<p><strong>测试是否生效的方法</strong>：</p>
+<pre><code class="language-java">@Component
+public class TestService {
+    @Autowired
+    private ExecutorService executorService;
+
+    public void test() {
+        System.out.println(executorService); // 如果是 null，说明 @Configuration 没生效
+    }
+}
+</code></pre>
+<p>如果 <code>executorService</code> 为 <code>null</code>，请检查是否符合 <strong>第 1 条 和 第 2 条</strong> 规则。</p>
+<hr>
+<h3><strong>4️⃣ 可能是 <code>@EnableXXX</code> 相关的 Spring 组件未开启</strong></h3>
+<p>如果你的 <code>@Configuration</code> 里使用了 <code>@EnableXXX</code>（比如 <code>@EnableTransactionManagement</code>、<code>@EnableScheduling</code> 等），可能需要手动开启：</p>
+<pre><code class="language-java">@SpringBootApplication
+@EnableTransactionManagement // 开启事务管理
+@EnableScheduling // 开启定时任务
+public class Application { ... }
+</code></pre>
+<hr>
+<h3><strong>5️⃣ <code>@Configuration</code> 可能被 Spring Boot 禁用了</strong></h3>
+<p>如果 <code>spring.main.allow-bean-definition-overriding</code> 设为 <code>false</code>，可能会影响 <code>@Configuration</code> 的生效。<br> <strong>解决方案</strong>：在 <code>application.yml</code> 中添加：</p>
+<pre><code class="language-yaml">spring:
+  main:
+    allow-bean-definition-overriding: true
+</code></pre>
+<hr>
+<h3><strong>🚀 结论</strong></h3>
+<p>如果 <code>@Configuration</code> 没生效，先按顺序检查： ✅ <strong>包扫描范围</strong> (<code>@ComponentScan</code>)<br> ✅ <strong>不要用 <code>new</code> 手动创建</strong><br> ✅ <strong>检查 <code>@Bean</code> 方法是否返回 null</strong><br> ✅ <strong>是否需要 <code>@EnableXXX</code></strong><br> ✅ <strong>检查 <code>application.yml</code> 配置</strong></p>
+</li>
+</ul>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

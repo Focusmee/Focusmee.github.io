@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Gin框架学习】关于Go热部署踩坑 | Focusmee</title>
+    <meta name="description" content="【Gin框架学习】关于Go热部署踩坑">
+    <meta property="og:title" content="【Gin框架学习】关于Go热部署踩坑">
+    <meta property="og:description" content="【Gin框架学习】关于Go热部署踩坑">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【Gin框架学习】关于Go热部署踩坑</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">6 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【Gin框架学习】关于Go热部署踩坑</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <h1>关于go开发环境热部署踩坑</h1>
+<p><a href="https://blog.csdn.net/Theirsky/article/details/135349503">https://blog.csdn.net/Theirsky/article/details/135349503</a></p>
+<h3>在终端中使用air命令,一直出现air windows找不到文件 &#39;APP_ENV=dev’这个错误</h3>
+<h4>解决方法是直接在配置文件里做文章</h4>
+<p>将air.conf 里将配置文件换成</p>
+<pre><code># [Air](https://github.com/cosmtrek/air) TOML 格式的配置文件
+
+# 工作目录
+# 使用 . 或绝对路径，请注意 `tmp_dir` 目录必须在 `root` 目录下
+root = &quot;.&quot;
+tmp_dir = &quot;tmp&quot;
+
+[build]
+# 只需要写你平常编译使用的shell命令。你也可以使用 `make`
+cmd = &quot;go build -o ./tmp/main.exe .&quot;
+# 由`cmd`命令得到的二进制文件名
+bin = &quot;tmp/main.exe&quot;
+# 自定义的二进制，可以添加额外的编译标识例如添加 GIN_MODE=release
+full_bin = &quot;SET APP_ENV=dev &amp; SET APP_USER=air &amp; .\tmp\main.exe&quot;
+# 监听以下文件扩展名的文件.
+include_ext = [&quot;go&quot;, &quot;tpl&quot;, &quot;tmpl&quot;, &quot;html&quot;]
+# 忽略这些文件扩展名或目录
+exclude_dir = [&quot;assets&quot;, &quot;tmp&quot;, &quot;vendor&quot;, &quot;frontend/node_modules&quot;]
+# 监听以下指定目录的文件
+include_dir = []
+# 排除以下文件
+exclude_file = []
+# 如果文件更改过于频繁，则没有必要在每次更改时都触发构建。可以设置触发构建的延迟时间
+delay = 1000 # ms
+# 发生构建错误时，停止运行旧的二进制文件。
+stop_on_error = true
+# air的日志文件名，该日志文件放置在你的`tmp_dir`中
+log = &quot;air_errors.log&quot;
+
+[log]
+# 显示日志时间
+time = true
+
+[color]
+# 自定义每个部分显示的颜色。如果找不到颜色，使用原始的应用程序日志。
+main = &quot;magenta&quot;
+watcher = &quot;cyan&quot;
+build = &quot;yellow&quot;
+runner = &quot;green&quot;
+
+[misc]
+# 退出时删除tmp目录
+clean_on_exit = true
+Linux版
+
+Copy
+# [Air](https://github.com/cosmtrek/air) TOML 格式的配置文件
+
+# 工作目录
+# 使用 . 或绝对路径，请注意 `tmp_dir` 目录必须在 `root` 目录下
+root = &quot;.&quot;
+tmp_dir = &quot;tmp&quot;
+
+[build]
+# 只需要写你平常编译使用的shell命令。你也可以使用 `make`
+cmd = &quot;go build -o ./tmp/main .&quot;
+# 由`cmd`命令得到的二进制文件名
+bin = &quot;tmp/main&quot;
+# 自定义的二进制，可以添加额外的编译标识例如添加 GIN_MODE=release
+full_bin = &quot;APP_ENV=dev APP_USER=air ./tmp/main&quot;
+# 监听以下文件扩展名的文件.
+include_ext = [&quot;go&quot;, &quot;tpl&quot;, &quot;tmpl&quot;, &quot;html&quot;]
+# 忽略这些文件扩展名或目录
+exclude_dir = [&quot;assets&quot;, &quot;tmp&quot;, &quot;vendor&quot;, &quot;frontend/node_modules&quot;]
+# 监听以下指定目录的文件
+include_dir = []
+# 排除以下文件
+exclude_file = []
+# 如果文件更改过于频繁，则没有必要在每次更改时都触发构建。可以设置触发构建的延迟时间
+delay = 1000 # ms
+# 发生构建错误时，停止运行旧的二进制文件。
+stop_on_error = true
+# air的日志文件名，该日志文件放置在你的`tmp_dir`中
+log = &quot;air_errors.log&quot;
+
+[log]
+# 显示日志时间
+time = true
+
+[color]
+# 自定义每个部分显示的颜色。如果找不到颜色，使用原始的应用程序日志。
+main = &quot;magenta&quot;
+watcher = &quot;cyan&quot;
+build = &quot;yellow&quot;
+runner = &quot;green&quot;
+
+[misc]
+# 退出时删除tmp目录
+clean_on_exit = true
+</code></pre>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

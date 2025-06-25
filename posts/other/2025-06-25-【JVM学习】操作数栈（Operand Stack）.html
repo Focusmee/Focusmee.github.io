@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【JVM学习】操作数栈（Operand Stack） | Focusmee</title>
+    <meta name="description" content="【JVM学习】操作数栈（Operand Stack）">
+    <meta property="og:title" content="【JVM学习】操作数栈（Operand Stack）">
+    <meta property="og:description" content="【JVM学习】操作数栈（Operand Stack）">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">【JVM学习】操作数栈（Operand Stack）</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">5 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">【JVM学习】操作数栈（Operand Stack）</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <p>操作数栈（Operand Stack）的概念。</p>
+<p>操作数栈是用来存储<strong>操作的数据</strong>的，而不是存储操作命令。我用一个简单的例子来说明：</p>
+<p>假设我们有这样一段Java代码：</p>
+<pre><code class="language-java">int a = 1;
+int b = 2;
+int c = a + b;
+</code></pre>
+<p>这段代码在JVM中的执行过程是这样的：</p>
+<ol>
+<li><strong>加载数据到操作数栈</strong>：</li>
+</ol>
+<pre><code>iconst_1        // 将常量1压入操作数栈
+istore_1        // 将栈顶的1存入局部变量表位置1（变量a）
+iconst_2        // 将常量2压入操作数栈
+istore_2        // 将栈顶的2存入局部变量表位置2（变量b）
+iload_1         // 将局部变量表位置1的值（a=1）压入操作数栈
+iload_2         // 将局部变量表位置2的值（b=2）压入操作数栈
+iadd            // 将栈顶的两个值相加，结果压入栈顶
+istore_3        // 将栈顶的结果存入局部变量表位置3（变量c）
+</code></pre>
+<p>让我们看看操作数栈在这个过程中的变化：</p>
+<pre><code>// 初始状态
+操作数栈: []
+
+// 执行 iconst_1 后
+操作数栈: [1]
+
+// 执行 istore_1 后
+操作数栈: []
+局部变量表: [a=1]
+
+// 执行 iconst_2 后
+操作数栈: [2]
+
+// 执行 istore_2 后
+操作数栈: []
+局部变量表: [a=1, b=2]
+
+// 执行 iload_1 后
+操作数栈: [1]
+
+// 执行 iload_2 后
+操作数栈: [1, 2]
+
+// 执行 iadd 后
+操作数栈: [3]
+
+// 执行 istore_3 后
+操作数栈: []
+局部变量表: [a=1, b=2, c=3]
+</code></pre>
+<p>所以：</p>
+<ol>
+<li><p><strong>操作数栈的作用</strong>：</p>
+<ul>
+<li>临时存储数据</li>
+<li>为指令提供操作数</li>
+<li>存储指令的计算结果</li>
+</ul>
+</li>
+<li><p><strong>操作命令（字节码指令）在哪里</strong>？</p>
+<ul>
+<li>字节码指令存储在方法的Code属性中</li>
+<li>由PC寄存器（程序计数器）指向当前要执行的指令</li>
+<li>指令本身不存在操作数栈中</li>
+</ul>
+</li>
+<li><p><strong>操作数栈的特点</strong>：</p>
+<ul>
+<li>后进先出（LIFO）的栈结构</li>
+<li>只存储实际的数据值</li>
+<li>与局部变量表配合工作</li>
+</ul>
+</li>
+</ol>
+<p>在我们的mini-jvm实现中，可以看到操作数栈的定义：</p>
+<pre><code class="language-java">final Deque&lt;Object&gt; operandStack = new ArrayDeque&lt;&gt;();
+</code></pre>
+<p>它就像一个临时的工作区：</p>
+<ul>
+<li>当需要进行计算时，先把需要的值都压入栈</li>
+<li>指令执行时从栈顶取出所需的值进行运算</li>
+<li>运算结果再压回栈顶</li>
+<li>最后将结果存入局部变量表或用于其他操作</li>
+</ul>
+<p>比如在Thread.java中的指令执行：</p>
+<pre><code class="language-java">case iconst_1 -&gt; stack.peek().pushObjectToOperandStack(1);  // 压入常量1
+case iadd -&gt; {  // 处理加法
+    int value2 = (int) stack.peek().operandStack.pop();  // 弹出第二个操作数
+    int value1 = (int) stack.peek().operandStack.pop();  // 弹出第一个操作数
+    stack.peek().pushObjectToOperandStack(value1 + value2);  // 压入结果
+}
+</code></pre>
+<p>所以，操作数栈就像是一个计算器的内存，存储的是要参与运算的数据和运算的结果，而不是操作命令本身。操作命令是由JVM的执行引擎按照字节码指令一条一条执行的。</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

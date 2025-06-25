@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025.01.02 记录搭建博客的坑 | Focusmee</title>
+    <meta name="description" content="2025.01.02 记录搭建博客的坑">
+    <meta property="og:title" content="2025.01.02 记录搭建博客的坑">
+    <meta property="og:description" content="2025.01.02 记录搭建博客的坑">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../../styles/fonts.css">
+    <link rel="stylesheet" href="../../styles/icons.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="logo-link">
+                    <span class="logo-text">Focusmee</span>
+                    <div class="logo-subtitle">全栈开发工程师</div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html#about" class="nav-link">关于</a>
+                <a href="../../index.html#work" class="nav-link">项目</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+                <a href="../../index.html#contact" class="nav-link">联系</a>
+                <div class="nav-social">
+                    <a href="https://github.com/Focusmee" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="mailto:2105735259@qq.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reading Toolbar -->
+    <div id="readingToolbar" class="reading-toolbar">
+        <div class="toolbar-handle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="toolbar-content">
+            <div class="toolbar-header">
+                <h4>阅读工具</h4>
+                <button class="toolbar-toggle" title="展开/收起">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            <div class="toolbar-controls">
+                <div class="control-group">
+                    <label>字体大小</label>
+                    <div class="font-size-controls">
+                        <button class="font-btn" data-action="decrease">A-</button>
+                        <span class="font-size-display">16px</span>
+                        <button class="font-btn" data-action="increase">A+</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>主题模式</label>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                        <span>深色模式</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <label>阅读进度</label>
+                    <div class="reading-progress-info">
+                        <span id="readingPercentage">0%</span>
+                        <div class="progress-bar-mini">
+                            <div class="progress-fill-mini"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i>
+                        <span>分享文章</span>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <button class="tool-btn" id="printBtn">
+                        <i class="fas fa-print"></i>
+                        <span>打印文章</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <article class="post">
+        <div class="container">
+            <header class="post-header">
+                <nav class="breadcrumb">
+                    <a href="../../blog.html">博客</a>
+                    <span class="separator">/</span>
+                    <span class="category-breadcrumb">其他</span>
+                    <span class="separator">/</span>
+                    <span class="current">2025.01.02 记录搭建博客的坑</span>
+                </nav>
+                
+                <div class="post-meta">
+                    <time class="post-date">2025/6/25 08:00:00</time>
+                    <span class="post-category">其他</span>
+                    <span class="post-read-time">11 分钟阅读</span>
+                </div>
+                
+                <h1 class="post-title">2025.01.02 记录搭建博客的坑</h1>
+                
+                <div class="post-tags">
+                    
+                </div>
+            </header>
+            
+            <div class="post-content">
+                <hr>
+<h2>title: 【2025.01.02】记录搭建博客时候的坑</h2>
+<h3>在克隆github上面的Next主题的时候遇到问题</h3>
+<pre><code> git clone --branch v5.1.2 https://github.com/iissnan/hexo-theme-next themes/next
+</code></pre>
+<pre><code>fatal: unable to access &#39; &#39;: Failed to connect to github.com port 443 after 21058 ms: Couldn&#39;t connect to server，
+</code></pre>
+<p>如果你使用VPN，你可以尝试<code>git config --global http.proxy http://127.0.0.1:7890</code>（7890是你的vpn端口）和<code>git config --global https.proxy https://127.0.0.1:7890</code>。<br>如果没有，你可以尝试<code>git config --global unset http.proxy</code>和<code>git config --global unset https.proxy</code>。</p>
+<h3><strong>为什么需要 Git 代理？</strong></h3>
+<ul>
+<li><strong>网络限制</strong>：某些地区或网络环境对 GitHub 等国外资源访问有限制，导致无法正常克隆或下载代码。</li>
+<li><strong>公司防火墙</strong>：某些企业网络会阻止直接访问外部服务。</li>
+<li><strong>连接速度慢</strong>：直接访问 GitHub 等服务器的速度可能很慢。</li>
+<li><strong>VPN 的特殊配置</strong>：如果使用 VPN 或代理软件，需要让 Git 通过代理服务器连接外部资源。</li>
+</ul>
+<hr>
+<h3><strong>2. 错误的含义</strong></h3>
+<p>错误信息如下：</p>
+<pre><code>fatal: unable to access &#39;URL&#39;: Failed to connect to github.com port 443 after 21058 ms: Couldn&#39;t connect to server
+</code></pre>
+<p>解释：</p>
+<ul>
+<li><strong>URL 无法访问</strong>：Git 无法连接到指定的远程仓库地址。</li>
+<li><strong>443 端口问题</strong>：这是 HTTPS 的默认端口，连接超时意味着 Git 客户端尝试建立 HTTPS 连接失败。</li>
+<li><strong>网络问题</strong>：可能是由于本地网络配置、DNS 问题、防火墙或网络封锁导致的。</li>
+</ul>
+<hr>
+<h3>3. 为什么设置代理后能解决问题？</h3>
+<p>通过设置代理：</p>
+<ol>
+<li><strong>请求转发</strong>：Git 的网络请求会通过指定的代理服务器发送，而不是直接访问目标地址。</li>
+<li><strong>绕过限制</strong>：如果目标服务器被本地网络限制，代理服务器可以帮助绕过这些限制。</li>
+<li><strong>优化速度</strong>：代理服务器可能有更快的连接路径到目标服务器。</li>
+</ol>
+<p>例如：</p>
+<pre><code class="language-bash">git config --global http.proxy http://127.0.0.1:7890
+git config --global https.proxy https://127.0.0.1:7890
+</code></pre>
+<ul>
+<li><code>127.0.0.1:7890</code> 是本地运行的代理服务器（例如，某些 VPN 软件会在本地开启代理）。</li>
+<li><code>http.proxy</code> 和 <code>https.proxy</code> 告诉 Git 客户端通过该代理连接目标服务器。</li>
+</ul>
+<hr>
+<h3><strong>4. 如何设置和取消 Git 代理？</strong></h3>
+<h4><strong>设置代理</strong></h4>
+<p>根据你的代理类型（HTTP 或 HTTPS），使用以下命令：</p>
+<pre><code>git config --global http.proxy http://代理地址:端口
+git config --global https.proxy https://代理地址:端口
+</code></pre>
+<p>例如：</p>
+<pre><code>git config --global http.proxy http://127.0.0.1:7890
+git config --global https.proxy https://127.0.0.1:7890
+</code></pre>
+<h4><strong>取消代理</strong></h4>
+<p>如果不再需要代理，可以取消设置：</p>
+<pre><code>git config --global --unset http.proxy
+git config --global --unset https.proxy
+</code></pre>
+<h4><strong>检查代理设置</strong></h4>
+<p>确认当前的代理配置：</p>
+<pre><code>git config --global --get http.proxy
+git config --global --get https.proxy
+</code></pre>
+<hr>
+<h3><strong>5. 常见场景</strong></h3>
+<h4><strong>使用 VPN 或本地代理工具</strong></h4>
+<ul>
+<li>代理工具（如 Shadowsocks、Clash 等）会在本地提供一个代理服务。</li>
+<li>配置 Git 的代理地址为工具的代理端口（例如，<code>127.0.0.1:7890</code>）。</li>
+</ul>
+<h4><strong>没有 VPN 时的解决方法</strong></h4>
+<ul>
+<li><strong>取消代理</strong>：当没有代理或代理配置不当时，使用 <code>unset</code> 命令取消代理。</li>
+<li><strong>使用其他网络</strong>：尝试切换到更稳定的网络。</li>
+<li><strong>使用 SSH 代替 HTTPS</strong>：改用 SSH 协议可能绕过 HTTPS 的连接问题。</li>
+</ul>
+<hr>
+<h3><strong>总结</strong></h3>
+<ul>
+<li><strong>问题原因</strong>：网络限制或连接不稳定。</li>
+<li><strong>解决方法</strong>：配置代理可以帮助绕过限制或优化连接。如果代理不可用，可以取消代理设置。</li>
+<li><strong>重要提示</strong>：确保代理配置正确，VPN 或代理工具运行正常。</li>
+</ul>
+<h2>hexo主题切换可能出现的错误</h2>
+<h3>1.1上传时出现error：spawn failed...问题</h3>
+<h4>方法一</h4>
+<pre><code class="language-git">rm -rf .deploy_git/ //删除提交内容文件夹
+
+git config --global core.autocrlf false //执行
+
+hexo clean
+
+hexo g
+
+hexo d
+</code></pre>
+<h4>方法二</h4>
+<p>修改 _config.yml 文件，将配置地址http方式切换成ssh方式</p>
+<pre><code>git bash 进入博客根目录
+
+vim _config.yml //删除git提交内容文件夹
+</code></pre>
+<p>修改最后一行内容</p>
+<pre><code>deploy：
+
+type：git
+
+repository：git@github.com:Uninfo/github用户名.github用户名.io.git
+
+branch：master
+
+hexo clean
+
+hexo g
+
+hexo d
+</code></pre>
+<h3>1.2运行后博客页面为</h3>
+<pre><code>{% extends ‘layout.swig‘ %} {% import ‘macro/post.swig‘ as post_template %}
+原因是hexo5.0后swig被删除，需自己手动安装npm i hexo-renderer-swig
+</code></pre>
+<h3>1.3绑定域名失效</h3>
+<h4>方法一</h4>
+<p>只要在source 目录添加一个新文件CNAME就好</p>
+<p>CNAME –不带任何后缀，内容为域名</p>
+<h4>方法二</h4>
+<p>安装插件</p>
+<p>npm install hexo-generator-cname --save 之后在_config.yml中添加一条</p>
+<p>Plugins:</p>
+<p>hexo-generator-cname 当第一个方法不能用时，应该是把方法二里面的插件也安装啦，两个有冲突，只需要执行</p>
+<p>npm uninstall hexo-generator-cname --save</p>
+<h3>hexo d命令报错 ERROR Deployer not found: git</h3>
+<p>问题描述<br>我已经在站点配置文件中写入了：</p>
+<pre><code>deploy:
+  type: git
+  repo: git@github.com:lanlan2017/lanlan2017.github.io.git  # Github pages地址
+  branch: master
+</code></pre>
+<p>但是执行，hexo d报错：</p>
+<pre><code>ERROR Deployer not found: git
+</code></pre>
+<p>解决方案<br>这是因为没安装hexo-deployer-git插件，在站点目录下输入下面的插件安装就好了：</p>
+<pre><code>npm install hexo-deployer-git --save
+</code></pre>
+<p>然后在使用Hexo d命令就可以推送了。</p>
+<h3>上传github但没有显示</h3>
+<h4>解决方案概览</h4>
+<ol>
+<li>确认你的Hexo环境已正确设置。</li>
+<li>确保你的GitHub仓库设置正确。</li>
+<li>使用正确的命令来生成并部署你的网站。</li>
+<li>检查GitHub Pages的设置。</li>
+<li>清除浏览器缓存。</li>
+</ol>
+<h4>详细步骤</h4>
+<p>第一种：清浏览器缓存试试</p>
+<p>清除一下浏览器缓存试试，例如Chrome清除缓存的快捷键是Ctrl+Shift+Delete,之后Enter(回车)。 再或者换个浏览器试试，很多时候是本地缓存造成的！</p>
+<p>第二种：删除.deploy_git</p>
+<p> 重新hexo clean    hexo g -d  </p>
+<p>第三种</p>
+<p>Shift+F5刷新</p>
+<p>第四种   </p>
+<p>打开github页面仓库，进入settings界面</p>
+<p>设置Branch分支，通常是<code>master</code>或<code>main</code>。</p>
+
+            </div>
+        </div>
+    </article>
+
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/post-enhance.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+</body>
+</html>

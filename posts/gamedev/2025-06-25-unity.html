@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity开发规范 - 技术博客</title>
+    <meta name="description" content="Unity开发规范 - 游戏开发相关技术文章">
+    <meta name="keywords" content="游戏开发, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">游戏开发</span>
+            <span class="separator">›</span>
+            <span class="current-page">Unity开发规范</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag gamedev">🎮 游戏开发</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 3 分钟阅读</span>
+                </div>
+                <h1 class="post-title">Unity开发规范</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p><h1>【Unity学习】Unity开发规范</h1><br /><br /><h1>Unity操作指南</h1><br /><br /><h2>基础操作规范</h2><br /><br /><h3>1. 场景操作</h3><br />- 创建新场景：<br />  1. 在Project窗口中右键 → Create → Scene<br />  2. 将新场景保存到 `Assets/Scenes` 目录下<br />  3. 在Build Settings中添加场景（File → Build Settings）<br /><br /><h3>2. 预制体(Prefab)操作</h3><br />- 创建预制体：<br />  1. 在Hierarchy窗口中创建/设计好游戏对象<br />  2. 将对象拖拽到Project窗口的 `Assets/Prefabs` 目录中<br />  3. 预制体会显示为蓝色，表示创建成功<br /><br /><h3>3. 脚本添加</h3><br />- 添加新脚本：<br />  1. 在Project窗口中右键 → Create → C# Script<br />  2. 将脚本保存到对应的 `Assets/Script/[模块名]` 目录下<br />  3. 将脚本拖拽到Hierarchy中的目标游戏对象上<br />  4. 在Inspector中设置脚本的公共变量<br /><br /><h3>4. 组件操作</h3><br />- 添加组件：<br />  1. 选中游戏对象<br />  2. 在Inspector窗口点击"Add Component"<br />  3. 搜索并选择需要的组件<br />  4. 在Inspector中配置组件参数<br /><br /><h2>常见功能实现指南</h2><br /><br /><h3>1. 角色移动功能</h3><br />```csharp<br />// 在 Assets/Script/Player/PlayerMovement.cs 中实现<br />public class PlayerMovement : MonoBehaviour<br />{<br />    public float moveSpeed = 5f;<br />    private Rigidbody2D rb;<br /><br />    void Start()<br />    {<br />        // 获取刚体组件<br />        rb = GetComponent<Rigidbody2D>();<br />    }<br />}<br />```<br />实现步骤：<br />1. 创建角色游戏对象（Hierarchy → 2D Object → Sprite）<br />2. 添加Rigidbody2D组件（Inspector → Add Component → Rigidbody2D）<br />3. 添加Collider2D组件（Inspector → Add Component → Box Collider 2D）<br />4. 创建并添加移动脚本<br />5. 在Inspector中设置moveSpeed值<br /><br /><h3>2. 动画系统设置</h3><br />实现步骤：<br />1. 创建动画文件夹：`Assets/Animations/[角色名]`<br />2. 导入精灵图：<br />   - 将图片文件放入 `Assets/Sprites` 目录<br />   - 选择图片，在Inspector中设置：<br />     - Texture Type: Sprite (2D and UI)<br />     - Sprite Mode: Multiple (如果是精灵图集)<br />3. 创建动画器：<br />   - 选中角色，添加Animator组件<br />   - 在Project窗口创建Animator Controller<br />   - 将Controller拖拽到角色的Animator组件上<br /><br /><h3>3. UI系统实现</h3><br />实现步骤：<br />1. 创建Canvas：<br />   - Hierarchy → UI → Canvas<br />   - 确保有EventSystem<br />2. 添加UI元素：<br />   - 在Canvas下右键 → UI → 选择需要的UI元素<br />3. 创建UI脚本：<br />   - 在 `Assets/Script/UI` 目录下创建脚本<br />   - 将脚本挂载到对应UI元素上<br /><br /><h3>4. 场景切换</h3><br />实现步骤：<br />1. 确保所有场景都在Build Settings中<br />2. 创建切换脚本：<br />```csharp<br />// 在 Assets/Script/Transition/SceneLoader.cs 中实现<br />public class SceneLoader : MonoBehaviour<br />{<br />    public void LoadScene(string sceneName)<br />    {<br />        SceneManager.LoadScene(sceneName);<br />    }<br />}<br />```<br />3. 在UI按钮上添加点击事件：<br />   - 选择按钮<br />   - 在Inspector中找到Button组件<br />   - 点击 "+" 添加OnClick事件<br />   - 拖拽包含SceneLoader脚本的对象<br />   - 选择LoadScene函数<br /><br /><h2>调试技巧</h2><br />1. 使用Debug.Log()输出信息：<br />   - 在Console窗口查看输出<br />   - 使用不同颜色区分日志级别：<br />     ```csharp<br />     Debug.Log("普通信息");<br />     Debug.LogWarning("警告信息");<br />     Debug.LogError("错误信息");<br />     ```<br />2. 使用Scene视图工具：<br />   - 使用Gizmos可视化碰撞器和路径<br />   - 使用Scene窗口顶部的2D/3D切换按钮<br /><br /><h2>性能优化建议</h2><br />1. 使用对象池而不是频繁创建销毁对象<br />2. 合理使用协程(Coroutine)处理延时任务<br />3. 避免在Update中进行复杂计算<br /><br />请在开发时参考此指南，确保按步骤实现功能。如有疑问，可以查看Unity官方文档或咨询有经验的开发者。</p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">游戏开发</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>status - 技术博客</title>
+    <meta name="description" content="status - Go语言相关技术文章">
+    <meta name="keywords" content="Go语言, 技术博客, 编程, 开发">
+    
+    <!-- CSS样式文件 -->
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/post.css">
+    <link rel="stylesheet" href="../../styles/highlight.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="nav-brand">📚 技术博客</a>
+            <div class="nav-links">
+                <a href="../../index.html" class="nav-link">首页</a>
+                <a href="../../blog.html" class="nav-link">博客</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">首页</a>
+            <span class="separator">›</span>
+            <a href="../../blog.html">博客</a>
+            <span class="separator">›</span>
+            <span class="category-breadcrumb">Go语言</span>
+            <span class="separator">›</span>
+            <span class="current-page">status</span>
+        </div>
+    </div>
+
+    <!-- 文章容器 - 目录功能会在这里动态插入 -->
+    <div class="container">
+        <article class="post-container">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="category-tag golang">🚀 Go语言</span>
+                    <time class="publish-date" datetime="2025-06-25">2025-06-25</time>
+                    <span class="read-time">📖 5 分钟阅读</span>
+                </div>
+                <h1 class="post-title">status</h1>
+            </header>
+            
+            <!-- 文章内容 -->
+            <main class="post-content">
+                <p><h1>title:Status</h1><br /><br />`Status` 是一个自定义的枚举类型，而 `String()` 是一个方法，用于实现 `fmt.Stringer` 接口，从而为 `Status` 类型提供字符串表示。这是 Go 语言中非常常见的模式。<br /><br />接下来，将详细解释枚举类型、`String()` 方法的作用，以及其他常见的接口和方法。<br /><br />---<br /><br /><h3><strong>1. 枚举类型与 `String()` 方法</strong></h3><br />在 Go 中，枚举类型通常通过自定义类型和常量来实现。例如：<br />```go<br />type Status int<br /><br />const (<br />    Pending Status = iota // 0<br />    Active                // 1<br />    Completed             // 2<br />)<br />```<br /><br />为了实现枚举值的字符串表示，可以为枚举类型实现 `String()` 方法：<br />```go<br />func (s Status) String() string {<br />    return [...]string{"Pending", "Active", "Completed"}[s]<br />}<br />```<br /><br />这样，`Status` 类型就实现了 `fmt.Stringer` 接口，可以在 `fmt.Println` 等函数中自动调用：<br />```go<br />fmt.Println(Pending) // 输出: Pending<br />```<br /><br />---<br /><br /><h3><strong>2. 其他常见的接口和方法</strong></h3><br />除了 `fmt.Stringer` 接口，Go 语言中还有许多其他常见的接口和方法，适用于不同的场景。以下是一些典型的例子：<br /><br />---<br /><br />#### <strong>（1）`error` 接口</strong><br />`error` 是 Go 语言中用于表示错误的接口，定义如下：<br />```go<br />type error interface {<br />    Error() string<br />}<br />```<br />你可以为自定义类型实现 `Error()` 方法，使其满足 `error` 接口：<br />```go<br />type MyError struct {<br />    Code    int<br />    Message string<br />}<br /><br />func (e MyError) Error() string {<br />    return fmt.Sprintf("Error %d: %s", e.Code, e.Message)<br />}<br /><br />func main() {<br />    err := MyError{Code: 404, Message: "Not Found"}<br />    fmt.Println(err) // 输出: Error 404: Not Found<br />}<br />```<br /><br />---<br /><br />#### <strong>（2）`sort.Interface` 接口</strong><br />`sort.Interface` 是用于排序的接口，定义如下：<br />```go<br />type Interface interface {<br />    Len() int<br />    Less(i, j int) bool<br />    Swap(i, j int)<br />}<br />```<br />你可以为自定义类型实现 `sort.Interface`，从而使用 `sort.Sort` 进行排序：<br />```go<br />type ByAge []Person<br /><br />type Person struct {<br />    Name string<br />    Age  int<br />}<br /><br />func (a ByAge) Len() int           { return len(a) }<br />func (a ByAge) Less(i, j int) bool { return a[i].Age < a[j].Age }<br />func (a ByAge) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }<br /><br />func main() {<br />    people := []Person{<br />        {"Alice", 25},<br />        {"Bob", 20},<br />        {"Charlie", 30},<br />    }<br />    sort.Sort(ByAge(people))<br />    fmt.Println(people) // 输出: [{Bob 20} {Alice 25} {Charlie 30}]<br />}<br />```<br /><br />---<br /><br />#### <strong>（3）`io.Reader` 和 `io.Writer` 接口</strong><br />`io.Reader` 和 `io.Writer` 是用于输入输出的接口，定义如下：<br />```go<br />type Reader interface {<br />    Read(p []byte) (n int, err error)<br />}<br /><br />type Writer interface {<br />    Write(p []byte) (n int, err error)<br />}<br />```<br />你可以为自定义类型实现这些接口，从而支持文件、网络等操作：<br />```go<br />type MyBuffer struct {<br />    data []byte<br />}<br /><br />func (b *MyBuffer) Write(p []byte) (n int, err error) {<br />    b.data = append(b.data, p...)<br />    return len(p), nil<br />}<br /><br />func (b *MyBuffer) String() string {<br />    return string(b.data)<br />}<br /><br />func main() {<br />    var buf MyBuffer<br />    fmt.Fprintf(&buf, "Hello, %s!", "Go")<br />    fmt.Println(buf.String()) // 输出: Hello, Go!<br />}<br />```<br /><br />---<br /><br />#### <strong>（4）`json.Marshaler` 和 `json.Unmarshaler` 接口</strong><br />`json.Marshaler` 和 `json.Unmarshaler` 是用于 JSON 序列化和反序列化的接口，定义如下：<br />```go<br />type Marshaler interface {<br />    MarshalJSON() ([]byte, error)<br />}<br /><br />type Unmarshaler interface {<br />    UnmarshalJSON([]byte) error<br />}<br />```<br />你可以为自定义类型实现这些接口，从而自定义 JSON 的编码和解码行为：<br />```go<br />type Person struct {<br />    Name string<br />    Age  int<br />}<br /><br />func (p Person) MarshalJSON() ([]byte, error) {<br />    return []byte(fmt.Sprintf(`{"name":"%s","age":%d}`, p.Name, p.Age)), nil<br />}<br /><br />func main() {<br />    p := Person{Name: "Alice", Age: 25}<br />    jsonData, _ := json.Marshal(p)<br />    fmt.Println(string(jsonData)) // 输出: {"name":"Alice","age":25}<br />}<br />```<br /><br />---<br /><br />#### <strong>（5）`http.Handler` 接口</strong><br />`http.Handler` 是用于处理 HTTP 请求的接口，定义如下：<br />```go<br />type Handler interface {<br />    ServeHTTP(ResponseWriter, *Request)<br />}<br />```<br />你可以为自定义类型实现 `ServeHTTP` 方法，从而创建自定义的 HTTP 处理器：<br />```go<br />type MyHandler struct{}<br /><br />func (h MyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {<br />    fmt.Fprintf(w, "Hello, World!")<br />}<br /><br />func main() {<br />    handler := MyHandler{}<br />    http.Handle("/", handler)<br />    http.ListenAndServe(":8080", nil)<br />}<br />```<br /><br />---<br /><br /><h3><strong>3. 总结</strong></h3><br />- <strong>枚举类型</strong>：通过自定义类型和常量实现。<br />- <strong>`String()` 方法</strong>：用于实现 `fmt.Stringer` 接口，提供字符串表示。<br />- <strong>其他常见接口</strong>：<br />  - `error`：用于错误处理。<br />  - `sort.Interface`：用于排序。<br />  - `io.Reader` 和 `io.Writer`：用于输入输出。<br />  - `json.Marshaler` 和 `json.Unmarshaler`：用于 JSON 序列化和反序列化。<br />  - `http.Handler`：用于处理 HTTP 请求。<br /><br /></p>
+            </main>
+            
+            <!-- 文章底部 -->
+            <footer class="post-footer">
+                <div class="post-actions">
+                    <button class="back-button" onclick="history.back()">← 返回上页</button>
+                    <a href="../../blog.html" class="more-posts-link">查看更多文章 →</a>
+                </div>
+                
+                <!-- 文章标签 -->
+                <div class="post-tags">
+                    <span class="tag-label">标签：</span>
+                    <span class="tag">Go语言</span>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="post-copyright">
+                    <p>本文由技术博客原创，转载请注明出处。欢迎分享与交流！</p>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="../../scripts/highlight.js"></script>
+    <script src="../../scripts/reading-toolbar.js"></script>
+    <script src="../../scripts/table-of-contents.js"></script>
+    
+    <!-- 页面性能监控 -->
+    <script>
+        // 简单的页面加载性能监控
+        window.addEventListener('load', function() {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log('页面加载时间:', loadTime + 'ms');
+        });
+    </script>
+</body>
+</html>
