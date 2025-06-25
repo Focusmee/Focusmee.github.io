@@ -17,7 +17,10 @@
 /* 博客头部 */
 .blog-header {
     padding: calc(var(--header-height) + 4rem) 0 4rem;
-    background: linear-gradient(135deg, var(--surface-color) 0%, var(--background-color) 100%);
+    background: linear-gradient(135deg, 
+        rgba(108, 92, 231, 0.08) 0%, 
+        var(--background-color) 50%, 
+        rgba(0, 206, 201, 0.06) 100%);
     text-align: center;
 }
 
@@ -1803,6 +1806,132 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* === 🌙 深色模式活力配色 === */
+.dark-mode {
+    --primary-color: #a29bfe;           /* 浅紫 - 深色下的主色调，柔和活力 */
+    --secondary-color: #55efc4;         /* 薄荷绿 - 深色下的辅助色，清新护眼 */
+    --accent-color: #ff7675;            /* 珊瑚粉 - 深色下的强调色，温暖吸睛 */
+    --background-color: #2d3436;        /* 深灰 - 主背景，舒适护眼 */
+    --surface-color: #636e72;           /* 中灰 - 表面背景，层次分明 */
+    --text-color: #ddd;                 /* 浅灰 - 主文字，清晰易读 */
+    --text-light: #b2bec3;              /* 淡灰 - 辅助文字，柔和平衡 */
+    --text-secondary: #81ecec;          /* 浅青 - 次要文字，活力点缀 */
+    --border-color: #74b9ff;            /* 亮蓝 - 边框色，活力分割 */
+    --hover-color: #474b52;             /* 深灰蓝 - 悬浮背景，交互反馈 */
+    --success-color: #00b894;           /* 鲜绿 - 成功色，生机活力 */
+    --warning-color: #fdcb6e;           /* 亮黄 - 警告色，温暖提醒 */
+    --danger-color: #e84393;            /* 品红 - 危险色，强烈警示 */
+    --info-color: #74b9ff;              /* 天蓝 - 信息色，清新明快 */
+    --shadow-light: 0 4px 20px rgba(162, 155, 254, 0.2);
+    --shadow-medium: 0 8px 40px rgba(162, 155, 254, 0.3);
+    --border-light: rgba(162, 155, 254, 0.2);
+}
+
+/* 深色模式下的导航栏 */
+.dark-mode .nav {
+    background: rgba(45, 52, 54, 0.95);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* 深色模式下的博客头部 */
+.dark-mode .blog-header {
+    background: linear-gradient(135deg, 
+        rgba(162, 155, 254, 0.08) 0%, 
+        var(--background-color) 50%, 
+        rgba(85, 239, 196, 0.06) 100%);
+}
+
+/* 深色模式下的博客过滤器 */
+.dark-mode .blog-filter {
+    background: var(--background-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dark-mode .top-category-filter-integrated {
+    background: rgba(45, 52, 54, 0.95);
+    border: 1px solid var(--border-color);
+}
+
+/* 深色模式下的侧边栏 */
+.dark-mode .sidebar-content {
+    background: var(--background-color);
+    border-right: 1px solid var(--border-color);
+}
+
+.dark-mode .sidebar-header {
+    background: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* 深色模式下的搜索容器 */
+.dark-mode .top-search-container,
+.dark-mode .sidebar-search-container {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+}
+
+.dark-mode .top-search-input,
+.dark-mode .sidebar-search-input {
+    background: transparent;
+    color: var(--text-color);
+}
+
+/* 深色模式下的博客卡片 */
+.dark-mode .post-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+}
+
+.dark-mode .post-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-medium);
+}
+
+.dark-mode .post-card.featured {
+    background: linear-gradient(135deg, var(--surface-color), var(--background-color));
+    border-color: var(--primary-color);
+}
+
+/* 深色模式下的标签 */
+.dark-mode .filter-tab {
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.dark-mode .filter-tab:hover,
+.dark-mode .filter-tab.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+/* 深色模式下的按钮 */
+.dark-mode .quick-action,
+.dark-mode .category-hide-btn,
+.dark-mode .sidebar-close-btn {
+    background: var(--surface-color);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.dark-mode .quick-action:hover,
+.dark-mode .category-hide-btn:hover,
+.dark-mode .sidebar-close-btn:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+/* 深色模式下的加载按钮 */
+.dark-mode .load-more-btn.modern {
+    background: var(--primary-color);
+    color: var(--background-color);
+}
+
+.dark-mode .load-more-btn.modern:hover {
+    background: var(--secondary-color);
 }
 
 /* 精选文章样式优化 */

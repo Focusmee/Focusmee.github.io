@@ -6,24 +6,24 @@
 }
 
 :root {
-    /* 明亮清晰的色彩方案 */
-    --primary-color: #007bff;        /* 明亮蓝色 - 主色调 */
-    --secondary-color: #28a745;      /* 鲜明绿色 - 辅助色 */
-    --accent-color: #fd7e14;         /* 活力橙色 - 强调色 */
-    --background-color: #ffffff;      /* 纯净白色 */
-    --surface-color: #f8f9fa;        /* 浅灰背景 */
-    --text-color: #212529;           /* 深灰文字 */
-    --text-light: #6c757d;           /* 浅灰文字 */
-    --text-secondary: #495057;       /* 次要文字 */
-    --border-color: #dee2e6;         /* 边框颜色 */
-    --hover-color: #e9ecef;          /* 悬浮背景 */
-    --success-color: #28a745;        /* 成功色 */
-    --warning-color: #ffc107;        /* 警告色 */
-    --danger-color: #dc3545;         /* 危险色 */
-    --info-color: #17a2b8;           /* 信息色 */
-    --shadow-light: 0 2px 10px rgba(0, 123, 255, 0.15);
-    --shadow-medium: 0 4px 20px rgba(0, 123, 255, 0.2);
-    --border-light: rgba(0, 123, 255, 0.1);
+    /* 🌈 活力四射配色方案 */
+    --primary-color: #6c5ce7;           /* 鲜艳紫色 - 主色调，充满活力 */
+    --secondary-color: #00cec9;         /* 青绿色 - 辅助色，清新现代 */
+    --accent-color: #fd79a8;            /* 亮粉色 - 强调色，吸引眼球 */
+    --background-color: #fdfdff;        /* 纯净白 - 背景色，突出色彩 */
+    --surface-color: #f1f2f6;           /* 浅灰蓝 - 表面色，柔和过渡 */
+    --text-color: #2d3436;              /* 深灰 - 主文字，清晰易读 */
+    --text-light: #636e72;              /* 中灰 - 浅色文字，层次分明 */
+    --text-secondary: #74b9ff;          /* 亮蓝 - 次要文字，活力点缀 */
+    --border-color: #ddd;               /* 浅边框 - 分割线，简洁明快 */
+    --hover-color: #f8f9ff;             /* 淡紫 - 悬浮背景，呼应主色 */
+    --success-color: #00b894;           /* 鲜绿 - 成功色，生机勃勃 */
+    --warning-color: #fdcb6e;           /* 亮黄 - 警告色，温暖友好 */
+    --danger-color: #e17055;            /* 橙红 - 危险色，温和警示 */
+    --info-color: #74b9ff;              /* 天蓝 - 信息色，清新活泼 */
+    --shadow-light: 0 4px 20px rgba(108, 92, 231, 0.15);      /* 紫色轻阴影 */
+    --shadow-medium: 0 8px 40px rgba(108, 92, 231, 0.25);     /* 紫色中阴影 */
+    --border-light: rgba(108, 92, 231, 0.1);                  /* 紫色轻边框 */
     
     /* 字体 */
     --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -32,8 +32,8 @@
     /* 尺寸 */
     --header-height: 80px;
     --container-max-width: 1200px;
-    --border-radius: 8px;
-    --transition: all 0.3s ease;
+    --border-radius: 12px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* 基础样式 */
@@ -158,7 +158,10 @@ body {
     display: flex;
     align-items: center;
     padding-top: var(--header-height);
-    background: linear-gradient(135deg, var(--surface-color) 0%, var(--background-color) 100%);
+    background: linear-gradient(135deg, 
+        rgba(108, 92, 231, 0.1) 0%, 
+        rgba(0, 206, 201, 0.1) 50%, 
+        var(--background-color) 100%);
 }
 
 .hero-container {
@@ -214,13 +217,14 @@ body {
 }
 
 .btn-primary {
-    background: var(--secondary-color);
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
     color: white;
+    box-shadow: var(--shadow-light);
 }
 
 .btn-primary:hover {
-    background: #2980b9;
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    transform: translateY(-3px);
     box-shadow: var(--shadow-medium);
 }
 
@@ -294,9 +298,9 @@ body {
 }
 
 .tech-tag:hover {
-    background: var(--secondary-color);
+    background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
     color: white;
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.05);
 }
 
 /* 项目区域 */
@@ -369,7 +373,10 @@ body {
 .blog {
     padding: 8rem 0;
     position: relative;
-    background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 50%, #f0f8ff 100%);
+    background: linear-gradient(135deg, 
+        rgba(253, 121, 168, 0.1) 0%, 
+        var(--background-color) 40%, 
+        rgba(116, 185, 255, 0.1) 100%);
     overflow: hidden;
 }
 
@@ -415,8 +422,9 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 30% 70%, rgba(74, 144, 226, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(52, 152, 219, 0.08) 0%, transparent 50%);
+    background: radial-gradient(circle at 30% 70%, rgba(253, 121, 168, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 206, 201, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 90%, rgba(108, 92, 231, 0.08) 0%, transparent 50%);
 }
 
 .blog-content {
@@ -470,7 +478,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 1rem;
-    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color), var(--accent-color));
     color: white;
     padding: 1.2rem 2.5rem;
     border-radius: 50px;
@@ -478,7 +486,7 @@ body {
     font-size: 1.1rem;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+    box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);
     position: relative;
     overflow: hidden;
 }
@@ -499,8 +507,9 @@ body {
 }
 
 .blog-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(74, 144, 226, 0.4);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(108, 92, 231, 0.4);
+    background: linear-gradient(135deg, var(--accent-color), var(--secondary-color), var(--primary-color));
 }
 
 .blog-btn:active {
@@ -622,7 +631,7 @@ body {
     background: var(--secondary-color);
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.25);
 }
 
 /* 博客卡片增强效果已合并到主要定义中 */
@@ -635,8 +644,8 @@ body {
 }
 
 .blog-tag {
-    background: #f8f9fa;
-    color: #6c757d;
+    background: var(--surface-color);
+    color: var(--text-light);
     padding: 0.25rem 0.75rem;
     border-radius: 15px;
     font-size: 0.8rem;
@@ -644,7 +653,7 @@ body {
 }
 
 .blog-read-time {
-    color: #6c757d;
+    color: var(--text-light);
     font-size: 0.9rem;
 }
 
@@ -832,4 +841,88 @@ body {
         padding: 0.9rem 1.8rem;
         font-size: 0.95rem;
     }
+}
+
+/* === 🌙 深色模式活力配色 === */
+.dark-mode {
+    --primary-color: #a29bfe;           /* 浅紫 - 深色下的主色调，柔和活力 */
+    --secondary-color: #55efc4;         /* 薄荷绿 - 深色下的辅助色，清新护眼 */
+    --accent-color: #ff7675;            /* 珊瑚粉 - 深色下的强调色，温暖吸睛 */
+    --background-color: #2d3436;        /* 深灰 - 主背景，舒适护眼 */
+    --surface-color: #636e72;           /* 中灰 - 表面背景，层次分明 */
+    --text-color: #ddd;                 /* 浅灰 - 主文字，清晰易读 */
+    --text-light: #b2bec3;              /* 淡灰 - 辅助文字，柔和平衡 */
+    --text-secondary: #81ecec;          /* 浅青 - 次要文字，活力点缀 */
+    --border-color: #74b9ff;            /* 亮蓝 - 边框色，活力分割 */
+    --hover-color: #474b52;             /* 深灰蓝 - 悬浮背景，交互反馈 */
+    --success-color: #00b894;           /* 鲜绿 - 成功色，生机活力 */
+    --warning-color: #fdcb6e;           /* 亮黄 - 警告色，温暖提醒 */
+    --danger-color: #e84393;            /* 品红 - 危险色，强烈警示 */
+    --info-color: #74b9ff;              /* 天蓝 - 信息色，清新明快 */
+    --shadow-light: 0 4px 20px rgba(162, 155, 254, 0.2);
+    --shadow-medium: 0 8px 40px rgba(162, 155, 254, 0.3);
+    --border-light: rgba(162, 155, 254, 0.2);
+}
+
+/* 深色模式下的导航栏 */
+.dark-mode .nav {
+    background: rgba(26, 29, 41, 0.95);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* 深色模式下的Hero区域 */
+.dark-mode .hero {
+    background: linear-gradient(135deg, 
+        rgba(162, 155, 254, 0.1) 0%, 
+        var(--background-color) 50%, 
+        rgba(85, 239, 196, 0.08) 100%);
+}
+
+/* 深色模式下的项目卡片 */
+.dark-mode .project-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+}
+
+.dark-mode .project-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-medium);
+}
+
+/* 深色模式下的博客区域 */
+.dark-mode .blog {
+    background: linear-gradient(135deg, 
+        rgba(255, 118, 117, 0.1) 0%, 
+        var(--background-color) 40%, 
+        rgba(129, 236, 236, 0.08) 100%);
+}
+
+/* 深色模式下的按钮 */
+.dark-mode .btn-primary {
+    background: var(--primary-color);
+    color: var(--background-color);
+}
+
+.dark-mode .btn-primary:hover {
+    background: var(--secondary-color);
+}
+
+.dark-mode .btn-secondary {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.dark-mode .btn-secondary:hover {
+    background: var(--primary-color);
+    color: var(--background-color);
+}
+
+/* 深色模式下的联系区域 */
+.dark-mode .contact {
+    background: var(--surface-color);
+}
+
+.dark-mode .contact-item {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
 } 

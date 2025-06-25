@@ -323,7 +323,7 @@
 }
 
 .toolbar-handle:hover {
-    background: rgba(74, 144, 226, 0.1);
+    background: rgba(44, 62, 80, 0.1);
     color: var(--accent-color);
 }
 
@@ -373,7 +373,7 @@
 }
 
 .toolbar-toggle:hover {
-    background: rgba(74, 144, 226, 0.1);
+    background: rgba(44, 62, 80, 0.1);
     color: var(--accent-color);
 }
 
@@ -474,7 +474,7 @@
 .progress-bar-mini {
     flex: 1;
     height: 4px;
-    background: rgba(74, 144, 226, 0.2);
+    background: rgba(44, 62, 80, 0.15);
     border-radius: 2px;
     overflow: hidden;
 }
@@ -622,23 +622,106 @@
     opacity: 1;
 }
 
-/* 深色模式样式 */
+/* 🌙 深色模式活力配色方案 */
 .dark-mode {
-    --text-color: #ffffff;
-    --text-secondary: #b3b3b3;
-    --text-muted: #888888;
-    --background-primary: #1a1a1a;
-    --background-secondary: #2d2d2d;
-    --border-color: #404040;
+    --primary-color: #a29bfe;           /* 浅紫 - 深色下的主色调，柔和活力 */
+    --secondary-color: #55efc4;         /* 薄荷绿 - 深色下的辅助色，清新护眼 */
+    --accent-color: #ff7675;            /* 珊瑚粉 - 深色下的强调色，温暖吸睛 */
+    --background-color: #2d3436;        /* 深灰 - 主背景，舒适护眼 */
+    --surface-color: #636e72;           /* 中灰 - 表面背景，层次分明 */
+    --text-color: #ddd;                 /* 浅灰 - 主文字，清晰易读 */
+    --text-light: #b2bec3;              /* 淡灰 - 辅助文字，柔和平衡 */
+    --text-secondary: #81ecec;          /* 浅青 - 次要文字，活力点缀 */
+    --border-color: #74b9ff;            /* 亮蓝 - 边框色，活力分割 */
+    --hover-color: #474b52;             /* 深灰蓝 - 悬浮背景，交互反馈 */
+    --success-color: #00b894;           /* 鲜绿 - 成功色，生机活力 */
+    --warning-color: #fdcb6e;           /* 亮黄 - 警告色，温暖提醒 */
+    --danger-color: #e84393;            /* 品红 - 危险色，强烈警示 */
+    --info-color: #74b9ff;              /* 天蓝 - 信息色，清新明快 */
+    --shadow-light: 0 4px 20px rgba(162, 155, 254, 0.2);
+    --shadow-medium: 0 8px 40px rgba(162, 155, 254, 0.3);
+    --border-light: rgba(162, 155, 254, 0.2);
 }
 
 .dark-mode .reading-toolbar {
-    background: rgba(45, 45, 45, 0.95);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(45, 52, 54, 0.95);
+    border-color: rgba(162, 155, 254, 0.3);
 }
 
 .dark-mode .share-modal-content {
-    background: var(--background-secondary);
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+}
+
+/* 深色模式下的导航栏 */
+.dark-mode .nav {
+    background: rgba(45, 52, 54, 0.95);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* 深色模式下的博客卡片 */
+.dark-mode .post-card,
+.dark-mode .project-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+}
+
+.dark-mode .post-card:hover,
+.dark-mode .project-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-medium);
+}
+
+/* 深色模式下的代码块 */
+.dark-mode .post-content pre {
+    background: #1e2329;
+    border: 1px solid var(--border-color);
+}
+
+.dark-mode .post-content code {
+    background: var(--surface-color);
+    color: var(--primary-color);
+    border: 1px solid var(--border-color);
+}
+
+/* 深色模式下的引用块 */
+.dark-mode .post-content blockquote {
+    background: var(--surface-color);
+    border-left-color: var(--primary-color);
+}
+
+/* 深色模式下的表格 */
+.dark-mode .post-content table {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+}
+
+.dark-mode .post-content th {
+    background: var(--background-color);
+}
+
+.dark-mode .post-content tr:hover {
+    background: var(--hover-color);
+}
+
+/* 深色模式下的按钮 */
+.dark-mode .btn-primary {
+    background: var(--primary-color);
+    color: var(--background-color);
+}
+
+.dark-mode .btn-primary:hover {
+    background: var(--secondary-color);
+}
+
+.dark-mode .btn-secondary {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.dark-mode .btn-secondary:hover {
+    background: var(--primary-color);
+    color: var(--background-color);
 }
 
 /* 动画 */
@@ -685,14 +768,14 @@
 
 .blog-tag {
     display: inline-block;
-    background: rgba(74, 144, 226, 0.1);
+    background: rgba(44, 62, 80, 0.08);
     color: var(--accent-color);
     padding: 3px 8px;
     border-radius: 12px;
     font-size: 0.75rem;
     margin-right: 6px;
     margin-bottom: 4px;
-    border: 1px solid rgba(74, 144, 226, 0.2);
+    border: 1px solid rgba(44, 62, 80, 0.15);
 }
 
 /* 阅读进度条 */
@@ -712,7 +795,7 @@
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent-color), #3b82f6);
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
     width: 0%;
     transition: width 0.3s ease;
 }
@@ -833,7 +916,7 @@ pre {
 }
 
 .scroll-to-top:hover {
-    background: #3b82f6;
+    background: var(--secondary-color);
     transform: translateY(-2px);
 }
 
@@ -890,7 +973,7 @@ pre {
 
 /* 更多卡片样式 */
 .more-card {
-    background: linear-gradient(135deg, var(--accent-color), #3b82f6);
+    background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
     color: white;
     text-align: center;
 }
@@ -1065,7 +1148,7 @@ a:contains("阅读全文"):hover,
     background: var(--background-color);
     border: 2px solid var(--primary-color);
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 123, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(44, 62, 80, 0.15);
     backdrop-filter: blur(10px);
     z-index: 1000;
     transition: all 0.3s ease;
@@ -1073,7 +1156,7 @@ a:contains("阅读全文"):hover,
 }
 
 .toc-container:hover {
-    box-shadow: 0 12px 40px rgba(0, 123, 255, 0.3);
+    box-shadow: 0 12px 40px rgba(44, 62, 80, 0.2);
     transform: translateY(-50%) translateX(-5px);
     border-color: var(--accent-color);
 }
@@ -1298,7 +1381,7 @@ a:contains("阅读全文"):hover,
 
 /* 活动状态 */
 .toc-item.active .toc-link {
-    background: linear-gradient(90deg, rgba(0, 123, 255, 0.1), transparent);
+    background: linear-gradient(90deg, rgba(44, 62, 80, 0.08), transparent);
     color: var(--primary-color);
     border-left-color: var(--primary-color);
     font-weight: 700;
@@ -1331,7 +1414,7 @@ a:contains("阅读全文"):hover,
 .navbar {
     background: var(--background-color);
     border-bottom: 2px solid var(--primary-color);
-    box-shadow: 0 2px 15px rgba(0, 123, 255, 0.1);
+    box-shadow: 0 2px 15px rgba(44, 62, 80, 0.08);
     position: sticky;
     top: 0;
     z-index: 999;
@@ -1396,7 +1479,7 @@ a:contains("阅读全文"):hover,
 
 /* 面包屑导航美化 */
 .breadcrumb {
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
     color: white;
     padding: 12px 0;
     margin-top: 0;
@@ -1453,7 +1536,7 @@ a:contains("阅读全文"):hover,
 
 /* 文章头部美化 */
 .post-header {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
     color: white;
     padding: 40px 40px 30px;
     position: relative;
@@ -1544,7 +1627,7 @@ a:contains("阅读全文"):hover,
 .post-content h4:target,
 .post-content h5:target,
 .post-content h6:target {
-    background: linear-gradient(90deg, rgba(0, 123, 255, 0.1), transparent);
+    background: linear-gradient(90deg, rgba(44, 62, 80, 0.08), transparent);
     padding: 8px 12px;
     margin: 0 -12px;
     border-radius: 6px;
@@ -1553,11 +1636,11 @@ a:contains("阅读全文"):hover,
 
 @keyframes highlightTarget {
     0% {
-        background: rgba(0, 123, 255, 0.3);
+        background: rgba(44, 62, 80, 0.2);
         transform: scale(1.02);
     }
     100% {
-        background: rgba(0, 123, 255, 0.1);
+        background: rgba(44, 62, 80, 0.08);
         transform: scale(1);
     }
 }
@@ -1638,8 +1721,8 @@ a:contains("阅读全文"):hover,
 }
 
 .post-content pre {
-    background: #1e1e1e;
-    color: #d4d4d4;
+    background: var(--background-secondary);
+    color: var(--text-secondary);
     padding: 20px;
     border-radius: 8px;
     overflow-x: auto;
@@ -1741,7 +1824,7 @@ a:contains("阅读全文"):hover,
 /* 版权信息 */
 .post-copyright {
     padding: 16px;
-    background: rgba(0, 123, 255, 0.1);
+    background: rgba(44, 62, 80, 0.06);
     border-left: 4px solid var(--primary-color);
     border-radius: 4px;
     margin-top: 20px;
