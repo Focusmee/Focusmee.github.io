@@ -3,9 +3,21 @@
 // 文章数据存储
 let postsData = [];
 
+// 分页配置
+const POSTS_PER_PAGE = 6; // 每页显示6篇文章
+let currentPage = 1;
+let totalPages = 1;
+
 // 获取所有文章数据
 function getAllPosts() {
     return postsData;
+}
+
+// 获取分页文章数据
+function getPagedPosts(page = 1, pageSize = POSTS_PER_PAGE) {
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return postsData.slice(startIndex, endIndex);
 }
 
 // 获取精选文章
@@ -347,20 +359,74 @@ async function initPostsData() {
     }
     
     try {
+        // 优先从posts-list.json加载数据
+        const response = await fetch('posts-list.json');
+        if (response.ok) {
+            const jsonData = await response.json();
+            if (jsonData && jsonData.length > 0) {
+                postsData = jsonData;
+                // 按发布时间降序排序（最新的在前面）
+                postsData.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+                
+                // 计算总页数
+                totalPages = Math.ceil(postsData.length / POSTS_PER_PAGE);
+                
+                console.log(`从posts-list.json加载了 ${postsData.length} 篇文章，共${totalPages}页`);
+                return postsData;
+            }
+        }
+        
+        // 如果JSON加载失败，尝试从目录加载
+        console.log('JSON文件加载失败，尝试从目录加载文章...');
         postsData = await loadPostsFromDirectory();
-        console.log(`文章数据加载完成，共 ${postsData.length} 篇文章`);
+        
+        if (postsData.length === 0) {
+            console.log('目录加载也失败，使用示例数据');
+            postsData = getExamplePosts();
+        }
+        
+        // 按发布时间降序排序
+        postsData.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+        
+        // 计算总页数
+        totalPages = Math.ceil(postsData.length / POSTS_PER_PAGE);
+        
+        console.log(`文章数据加载完成，共 ${postsData.length} 篇文章，共${totalPages}页`);
+        
     } catch (error) {
         console.error('文章数据加载失败，使用默认数据:', error);
         postsData = getExamplePosts();
-    }
-    
-    // 确保数据不为空
-    if (postsData.length === 0) {
-        console.log('强制使用示例数据');
-        postsData = getExamplePosts();
+        postsData.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+        totalPages = Math.ceil(postsData.length / POSTS_PER_PAGE);
     }
     
     return postsData;
+}
+
+// 获取分页信息
+function getPaginationInfo() {
+    return {
+        currentPage,
+        totalPages,
+        totalPosts: postsData.length,
+        postsPerPage: POSTS_PER_PAGE,
+        hasMore: currentPage < totalPages
+    };
+}
+
+// 设置当前页
+function setCurrentPage(page) {
+    currentPage = Math.max(1, Math.min(page, totalPages));
+    return currentPage;
+}
+
+// 加载下一页
+function loadNextPage() {
+    if (currentPage < totalPages) {
+        currentPage++;
+        return getPagedPosts(currentPage);
+    }
+    return [];
 }
 
 // 获取所有标签

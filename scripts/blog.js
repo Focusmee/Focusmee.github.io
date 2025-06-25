@@ -2,8 +2,11 @@
 
 let currentPosts = [];
 let filteredPosts = [];
+let displayedPosts = []; // 当前显示的文章
 let currentCategory = 'all';
 let currentSearchQuery = '';
+let isLoading = false; // 防止重复加载
+let scrollLoadingEnabled = false; // 滚动加载是否启用
 
 // 初始化博客内容
 async function initBlogContent() {
@@ -18,10 +21,12 @@ async function initBlogContent() {
         }
         
         // 加载文章数据
-        loadBlogData();
+        await loadBlogData();
         
         // 监听分类过滤变化
         updateCategoryFilters();
+        
+        // 注意：这里不立即初始化滚动加载
         
     } catch (error) {
         console.error('初始化博客内容失败:', error);
@@ -35,11 +40,16 @@ async function waitForPostsData() {
     const maxAttempts = 50; // 最多等待5秒
     
     while (attempts < maxAttempts) {
-        if (typeof getAllPosts === 'function') {
-            const posts = getAllPosts();
-            if (posts && posts.length > 0) {
-                console.log('文章数据已就绪，共', posts.length, '篇文章');
-                return true;
+        if (typeof initPostsData === 'function') {
+            try {
+                await initPostsData();
+                const posts = getAllPosts();
+                if (posts && posts.length > 0) {
+                    console.log('文章数据已就绪，共', posts.length, '篇文章');
+                    return true;
+                }
+            } catch (error) {
+                console.warn('加载文章数据时出错:', error);
             }
         }
         
@@ -75,7 +85,7 @@ function showLoadingState() {
 }
 
 // 加载博客数据
-function loadBlogData() {
+async function loadBlogData() {
     try {
         // 从数据源获取文章
         currentPosts = getAllPosts();
@@ -83,10 +93,14 @@ function loadBlogData() {
         
         console.log(`加载了 ${currentPosts.length} 篇文章`);
         
+        // 重置分页状态
+        setCurrentPage(1);
+        displayedPosts = [];
+        
         // 立即生成页面内容
         generateBlogStats();
         generateFeaturedPost();
-        generatePostsList();
+        loadInitialPosts(); // 加载初始文章（前6篇）
         generateSidebar();
         generateCategoryFilterTabs();
         
@@ -118,6 +132,67 @@ function loadBlogData() {
     } catch (error) {
         console.error('加载博客数据失败:', error);
         showEmptyState('加载失败，请稍后再试');
+    }
+}
+
+// 加载初始文章（最新6篇）
+function loadInitialPosts() {
+    // 过滤精选文章，避免重复显示
+    const regularPosts = filteredPosts.filter(post => !post.featured);
+    
+    // 获取最新6篇文章
+    const initialPosts = getPagedPosts(1, 6);
+    displayedPosts = [...initialPosts];
+    
+    generatePostsList();
+    updateLoadMoreButton();
+    
+    // 初始化加载更多按钮事件
+    initLoadMoreBtnEvents();
+}
+
+// 加载更多文章（点击或滚动加载）
+function loadMorePosts() {
+    if (isLoading) return;
+    
+    const pagination = getPaginationInfo();
+    if (!pagination.hasMore) return;
+    
+    isLoading = true;
+    
+    // 显示加载状态
+    showLoadMoreState();
+    
+    setTimeout(() => {
+        // 加载下一页文章
+        const nextPagePosts = loadNextPage();
+        
+        // 过滤精选文章，避免重复显示
+        const regularPosts = nextPagePosts.filter(post => !post.featured);
+        
+        // 添加到已显示的文章中
+        displayedPosts.push(...regularPosts);
+        
+        // 重新生成文章列表
+        generatePostsList();
+        updateLoadMoreButton();
+        
+        isLoading = false;
+        
+        console.log(`加载了第${pagination.currentPage}页文章，当前显示${displayedPosts.length}篇文章`);
+    }, 300); // 模拟加载时间
+}
+
+// 首次点击加载更多（启用滚动加载）
+function firstLoadMore() {
+    // 加载更多文章
+    loadMorePosts();
+    
+    // 启用滚动加载
+    if (!scrollLoadingEnabled) {
+        scrollLoadingEnabled = true;
+        initInfiniteScroll();
+        console.log('滚动加载已启用');
     }
 }
 
@@ -218,47 +293,35 @@ function generatePostsList() {
     
     if (!container) return;
     
-    console.log('生成文章列表，filteredPosts数量:', filteredPosts.length);
-    
-    // 过滤精选文章，避免重复显示
-    const regularPosts = filteredPosts.filter(post => !post.featured);
-    
-    console.log('非精选文章数量:', regularPosts.length);
+    console.log('生成文章列表，displayedPosts数量:', displayedPosts.length);
     
     // 如果没有文章或者没有数据，显示空状态
-    if (filteredPosts.length === 0) {
+    if (displayedPosts.length === 0) {
         container.innerHTML = generateEmptyStateHTML();
         if (postsCountElement) postsCountElement.textContent = '0';
         return;
     }
     
-    // 如果只有精选文章，也显示它们
-    const postsToShow = regularPosts.length > 0 ? regularPosts : filteredPosts;
-    
     // 生成文章HTML
-    const postsHTML = postsToShow.map(post => generatePostCardHTML(post)).join('');
+    const postsHTML = displayedPosts.map(post => generatePostCardHTML(post)).join('');
     
-    // 如果文章数量少，添加占位符
-    let finalHTML = postsHTML;
-    if (postsToShow.length < 3) {
-        const placeholderHTML = `
-            <div class="post-placeholder">
-                <div class="placeholder-content">
-                    <i class="fas fa-plus-circle"></i>
-                    <h4>更多精彩内容即将到来</h4>
-                    <p>我正在努力创作更多高质量的技术文章</p>
-                    <a href="#newsletter" class="subscribe-link">订阅更新通知</a>
-                </div>
-            </div>
-        `;
-        finalHTML += placeholderHTML;
-    }
+    container.innerHTML = postsHTML;
     
-    container.innerHTML = finalHTML;
-    
-    // 更新文章数量
+    // 更新文章数量显示
     if (postsCountElement) {
-        postsCountElement.textContent = postsToShow.length;
+        const pagination = getPaginationInfo();
+        postsCountElement.textContent = displayedPosts.length;
+        
+        // 更新文章计数文本
+        const totalPosts = pagination.totalPosts;
+        const displayText = displayedPosts.length === totalPosts 
+            ? `共 ${totalPosts} 篇文章` 
+            : `显示 ${displayedPosts.length} / ${totalPosts} 篇文章`;
+            
+        const countContainer = postsCountElement.parentElement;
+        if (countContainer) {
+            countContainer.innerHTML = `<i class="fas fa-file-alt"></i> ${displayText}`;
+        }
     }
     
     console.log('文章列表生成完成');
@@ -566,63 +629,230 @@ function filterPosts(category, postCards) {
     updateFilterResults(filteredPosts.filter(post => !post.featured).length, category);
 }
 
-// 博客搜索功能
+// 初始化博客搜索功能
 function initBlogSearch() {
-    const searchInput = document.getElementById('searchInput');
+    // 初始化侧边栏搜索
+    initSidebarSearch();
     
-    if (searchInput) {
-        // 添加防抖处理
-        let searchTimeout;
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value;
-            
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                performSearch(searchTerm);
-            }, 300); // 300ms 防抖
-        });
+    // 初始化顶部搜索
+    initTopSearch();
+    
+    console.log('博客搜索功能初始化完成');
+}
+
+// 初始化侧边栏搜索
+function initSidebarSearch() {
+    const searchInput = document.getElementById('sidebarSearchInput');
+    const searchBtn = document.getElementById('sidebarSearchBtn');
+    const clearBtn = document.getElementById('sidebarSearchClear');
+    
+    if (!searchInput) return;
+    
+    // 搜索输入事件
+    searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.trim();
+        updateClearButton(clearBtn, searchTerm);
         
-        // 支持 Enter 键搜索
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                clearTimeout(searchTimeout);
-                performSearch(this.value);
-            }
+        // 实时搜索（防抖）
+        clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(() => {
+            performAdvancedSearch(searchTerm);
+        }, 300);
+    });
+    
+    // 搜索按钮点击
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function() {
+            const searchTerm = searchInput.value.trim();
+            performAdvancedSearch(searchTerm);
         });
+    }
+    
+    // 清除按钮点击
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function() {
+            searchInput.value = '';
+            updateClearButton(clearBtn, '');
+            performAdvancedSearch('');
+            searchInput.focus();
+        });
+    }
+    
+    // 回车搜索
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            const searchTerm = e.target.value.trim();
+            performAdvancedSearch(searchTerm);
+        }
+    });
+    
+    console.log('侧边栏搜索功能初始化完成');
+}
+
+// 初始化顶部搜索
+function initTopSearch() {
+    const searchInput = document.getElementById('topSearchInput');
+    const searchBtn = document.getElementById('topSearchBtn');
+    const clearBtn = document.getElementById('topSearchClear');
+    
+    if (!searchInput) return;
+    
+    // 搜索输入事件
+    searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.trim();
+        updateClearButton(clearBtn, searchTerm);
+        
+        // 实时搜索（防抖）
+        clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(() => {
+            performAdvancedSearch(searchTerm);
+        }, 300);
+    });
+    
+    // 搜索按钮点击
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function() {
+            const searchTerm = searchInput.value.trim();
+            performAdvancedSearch(searchTerm);
+        });
+    }
+    
+    // 清除按钮点击
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function() {
+            searchInput.value = '';
+            updateClearButton(clearBtn, '');
+            performAdvancedSearch('');
+            searchInput.focus();
+        });
+    }
+    
+    // 回车搜索
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            const searchTerm = e.target.value.trim();
+            performAdvancedSearch(searchTerm);
+        }
+    });
+    
+    console.log('顶部搜索功能初始化完成');
+}
+
+// 更新清除按钮显示状态
+function updateClearButton(clearBtn, searchTerm) {
+    if (!clearBtn) return;
+    
+    if (searchTerm.length > 0) {
+        clearBtn.style.display = 'flex';
+    } else {
+        clearBtn.style.display = 'none';
     }
 }
 
-// 搜索文章函数  
-function performSearch(searchTerm) {
+// 高级搜索功能
+function performAdvancedSearch(searchTerm) {
     currentSearchQuery = searchTerm.toLowerCase().trim();
     
     if (currentSearchQuery === '') {
         // 清空搜索，恢复当前分类的所有文章
         filteredPosts = getPostsByCategory(currentCategory);
     } else {
-        // 在当前分类中搜索
+        // 在当前分类中进行高级搜索
         const categoryPosts = getPostsByCategory(currentCategory);
-        filteredPosts = categoryPosts.filter(post => 
-            post.title.toLowerCase().includes(currentSearchQuery) ||
-            post.description.toLowerCase().includes(currentSearchQuery) ||
-            post.tags.some(tag => tag.toLowerCase().includes(currentSearchQuery))
-        );
+        filteredPosts = categoryPosts.filter(post => {
+            const searchQuery = currentSearchQuery;
+            
+            // 搜索标题
+            const titleMatch = post.title.toLowerCase().includes(searchQuery);
+            
+            // 搜索描述
+            const descMatch = post.description.toLowerCase().includes(searchQuery);
+            
+            // 搜索标签
+            const tagMatch = post.tags.some(tag => tag.toLowerCase().includes(searchQuery));
+            
+            // 搜索文章内容（如果有的话）
+            let contentMatch = false;
+            if (post.content) {
+                contentMatch = post.content.toLowerCase().includes(searchQuery);
+            }
+            
+            // 搜索分类名称
+            const categoryMatch = post.categoryDisplayName.toLowerCase().includes(searchQuery);
+            
+            return titleMatch || descMatch || tagMatch || contentMatch || categoryMatch;
+        });
         
-        // 如果有搜索词，重置分类为全部
+        // 如果有搜索词，重置分类为全部以显示所有搜索结果
         if (currentSearchQuery !== '') {
             currentCategory = 'all';
-            const filterTabs = document.querySelectorAll('.filter-tab');
-            filterTabs.forEach(tab => tab.classList.remove('active'));
-            const allTab = document.querySelector('.filter-tab[data-category="all"]');
-            if (allTab) allTab.classList.add('active');
+            updateActiveFilterTab('all');
         }
     }
+    
+    // 同步搜索框内容
+    syncSearchInputs(searchTerm);
     
     // 重新生成文章列表
     generatePostsList();
     
     // 更新搜索统计
     updateSearchResults(filteredPosts.filter(post => !post.featured).length, currentSearchQuery);
+    
+    // 显示搜索反馈
+    showSearchFeedback(currentSearchQuery, filteredPosts.length);
+}
+
+// 同步所有搜索框的内容
+function syncSearchInputs(searchTerm) {
+    const sidebarInput = document.getElementById('sidebarSearchInput');
+    const topInput = document.getElementById('topSearchInput');
+    
+    if (sidebarInput && sidebarInput.value !== searchTerm) {
+        sidebarInput.value = searchTerm;
+        updateClearButton(document.getElementById('sidebarSearchClear'), searchTerm);
+    }
+    
+    if (topInput && topInput.value !== searchTerm) {
+        topInput.value = searchTerm;
+        updateClearButton(document.getElementById('topSearchClear'), searchTerm);
+    }
+}
+
+// 更新活动的分类标签
+function updateActiveFilterTab(category) {
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    filterTabs.forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.dataset.category === category) {
+            tab.classList.add('active');
+        }
+    });
+}
+
+// 显示搜索反馈
+function showSearchFeedback(searchTerm, resultCount) {
+    if (searchTerm === '') return;
+    
+    let message = '';
+    if (resultCount === 0) {
+        message = `没有找到包含"${searchTerm}"的文章`;
+        showNotification(message, 'info');
+    } else if (resultCount === 1) {
+        message = `找到 1 篇包含"${searchTerm}"的文章`;
+    } else {
+        message = `找到 ${resultCount} 篇包含"${searchTerm}"的文章`;
+    }
+    
+    console.log(message);
+}
+
+// 获取指定分类的文章
+function getPostsByCategory(category) {
+    if (category === 'all') {
+        return [...currentPosts];
+    }
+    return currentPosts.filter(post => post.category === category);
 }
 
 // 更新文章统计
@@ -920,57 +1150,7 @@ function getBookmarks() {
     }
 }
 
-// 按分类过滤
-function filterByCategory(category) {
-    console.log('过滤分类:', category);
-    
-    // 更新当前分类
-    currentCategory = category;
-    
-    // 清空搜索
-    currentSearchQuery = '';
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.value = '';
-    }
-    
-    // 更新分类标签状态
-    const filterTabs = document.querySelectorAll('.filter-tab');
-    filterTabs.forEach(tab => {
-        tab.classList.remove('active');
-        if (tab.dataset.category === category) {
-            tab.classList.add('active');
-        }
-    });
-    
-    // 过滤文章
-    if (category === 'all') {
-        filteredPosts = [...currentPosts];
-    } else {
-        filteredPosts = currentPosts.filter(post => post.category === category);
-    }
-    
-    console.log(`过滤后的文章数量: ${filteredPosts.length}`);
-    
-    // 重新生成文章列表
-    generatePostsList();
-    
-    // 更新统计信息
-    updateFilterResults(filteredPosts.filter(post => !post.featured).length, category);
-    
-    // 关闭侧边栏
-    const sidebar = document.getElementById('categorySidebar');
-    if (sidebar && sidebar.classList.contains('active')) {
-        sidebar.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-    
-    // 滚动到文章区域
-    const blogContent = document.querySelector('.blog-content');
-    if (blogContent) {
-        blogContent.scrollIntoView({ behavior: 'smooth' });
-    }
-}
+// 按分类过滤（旧版本，已被新版本替代）
 
 // 按标签过滤
 function filterByTag(tagText) {
@@ -987,29 +1167,7 @@ function filterByTag(tagText) {
     }
 }
 
-// 初始化加载更多按钮
-function initLoadMoreBtn() {
-    const loadMoreBtn = document.getElementById('loadMoreBtn');
-    const loadMoreInfo = document.querySelector('.load-more-info');
-    
-    if (loadMoreBtn && loadMoreInfo) {
-        // 默认隐藏加载更多按钮，显示完成信息
-        loadMoreBtn.style.display = 'none';
-        loadMoreInfo.style.display = 'block';
-        
-        loadMoreBtn.addEventListener('click', function() {
-            // 如果有更多文章数据，可以在这里实现分页加载
-            this.innerHTML = '<span class="btn-text">加载中...</span><i class="fas fa-spinner fa-spin"></i>';
-            this.disabled = true;
-            
-            setTimeout(() => {
-                this.style.display = 'none';
-                loadMoreInfo.style.display = 'block';
-                showNotification('已显示所有文章', 'info');
-            }, 1000);
-        });
-    }
-}
+// 原有的initLoadMoreBtn函数已被新的实现替代
 
 // 更新搜索结果统计
 function updateSearchResults(count, searchTerm) {
@@ -1075,66 +1233,13 @@ function smoothScrollToAnchor(targetId) {
     }
 }
 
-// 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', async function() {
-    console.log('博客页面初始化开始...');
-    
-    try {
-        // 首先初始化文章数据
-        console.log('开始初始化文章数据...');
-        await initPostsData();
-        
-        // 等待数据加载完成后初始化博客内容
-        console.log('开始初始化博客内容...');
-        await initBlogContent();
-        
-        // 初始化搜索功能
-        initBlogSearch();
-        
-        // 初始化过滤功能
-        initBlogFilter();
-        
-        // 初始化邮件订阅功能
-        initNewsletterForm();
-        
-        // 初始化动画效果
-        initBlogAnimations();
-        
-        // 初始化键盘导航
-        initKeyboardNavigation();
-        
-        // 初始化文章交互功能
-        initPostInteractions();
-        
-        // 初始化加载更多按钮
-        initLoadMoreBtn();
-        
-        // 初始化侧边栏功能
-        initCategorySidebar();
-        
-        // 初始化快速操作栏
-        initQuickActions();
-        
-        // 初始化增强功能
-        if (typeof initBlogEnhancements === 'function') {
-            initBlogEnhancements();
-        }
-        
-        console.log('博客页面初始化完成！');
-        
-    } catch (error) {
-        console.error('博客页面初始化失败:', error);
-        showEmptyState('页面初始化失败，请刷新重试');
-    }
-});
-
 // 初始化分类侧边栏功能
 function initCategorySidebar() {
     const sidebar = document.getElementById('categorySidebar');
-    const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
     const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
     const categoryToggleBtn = document.getElementById('categoryToggleBtn');
+    const layoutToggleBtn = document.getElementById('sidebarLayoutToggleBtn');
     
     if (!sidebar) return;
     
@@ -1153,21 +1258,36 @@ function initCategorySidebar() {
         document.body.style.overflow = '';
     }
     
-    // 绑定事件监听器
-    if (sidebarToggleBtn) {
-        sidebarToggleBtn.addEventListener('click', showSidebar);
-    }
-    
+    // 快速操作栏的分类按钮点击事件
     if (categoryToggleBtn) {
         categoryToggleBtn.addEventListener('click', showSidebar);
     }
     
+    // 侧边栏关闭按钮
     if (sidebarCloseBtn) {
         sidebarCloseBtn.addEventListener('click', hideSidebar);
     }
     
+    // 点击遮罩关闭
     if (sidebarOverlay) {
         sidebarOverlay.addEventListener('click', hideSidebar);
+    }
+    
+    // 布局切换按钮
+    if (layoutToggleBtn) {
+        layoutToggleBtn.addEventListener('click', function() {
+            const currentLayout = this.dataset.layout;
+            
+            if (currentLayout === 'sidebar') {
+                // 切换到顶部模式
+                switchToTopLayout();
+                updateLayoutButton('top');
+            } else {
+                // 切换到侧边栏模式
+                switchToSidebarLayout();
+                updateLayoutButton('sidebar');
+            }
+        });
     }
     
     // ESC键关闭侧边栏
@@ -1178,6 +1298,80 @@ function initCategorySidebar() {
     });
     
     console.log('分类侧边栏功能初始化完成');
+}
+
+// 切换到顶部布局
+function switchToTopLayout() {
+    const topCategoryFilter = document.getElementById('topCategoryFilter');
+    const sidebar = document.getElementById('categorySidebar');
+    const blogFilter = document.querySelector('.blog-filter');
+    
+    // 显示顶部分类过滤器
+    if (topCategoryFilter) {
+        topCategoryFilter.style.display = 'block';
+        generateTopCategoryTabs();
+    }
+    
+    // 为blog-filter容器添加有内容的类
+    if (blogFilter) {
+        blogFilter.classList.add('has-visible-content');
+    }
+    
+    // 关闭侧边栏
+    if (sidebar) {
+        sidebar.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // 保存用户偏好
+    localStorage.setItem('categoryLayoutPreference', 'top');
+    
+    showNotification('已切换到顶部模式', 'success');
+    console.log('已切换到顶部布局模式');
+}
+
+// 切换到侧边栏布局
+function switchToSidebarLayout() {
+    const topCategoryFilter = document.getElementById('topCategoryFilter');
+    const blogFilter = document.querySelector('.blog-filter');
+    
+    // 隐藏顶部分类过滤器
+    if (topCategoryFilter) {
+        topCategoryFilter.style.display = 'none';
+    }
+    
+    // 移除blog-filter容器的有内容类
+    if (blogFilter) {
+        blogFilter.classList.remove('has-visible-content');
+    }
+    
+    // 保存用户偏好
+    localStorage.setItem('categoryLayoutPreference', 'sidebar');
+    
+    showNotification('已切换到侧边栏模式', 'success');
+    console.log('已切换到侧边栏布局模式');
+}
+
+// 更新布局切换按钮状态
+function updateLayoutButton(layout) {
+    const layoutToggleBtn = document.getElementById('sidebarLayoutToggleBtn');
+    if (!layoutToggleBtn) return;
+    
+    const layoutIcon = layoutToggleBtn.querySelector('.layout-icon');
+    const layoutText = layoutToggleBtn.querySelector('.layout-text');
+    const layoutStatus = layoutToggleBtn.querySelector('.layout-status');
+    
+    layoutToggleBtn.dataset.layout = layout;
+    
+    if (layout === 'top') {
+        layoutIcon.textContent = '🔝';
+        layoutText.textContent = '顶部固定模式';
+        layoutStatus.textContent = '当前';
+    } else {
+        layoutIcon.textContent = '📱';
+        layoutText.textContent = '侧边栏模式';
+        layoutStatus.textContent = '当前';
+    }
 }
 
 // 更新侧边栏统计数据
@@ -1255,4 +1449,355 @@ function initQuickActions() {
     });
     
     console.log('快速操作栏功能初始化完成');
-} 
+}
+
+// 生成顶部分类标签
+async function generateTopCategoryTabs() {
+    try {
+        const categories = await categoryManager.loadCategoriesFromFileSystem();
+        const container = document.getElementById('topCategoryFilterTabs');
+        
+        if (!container) return;
+        
+        // 保留"全部"标签，清空其他内容
+        container.innerHTML = `
+            <button class="filter-tab active" data-category="all">
+                <span class="tab-content">
+                    <span class="tab-emoji">📚</span>
+                    <span class="tab-text">全部</span>
+                </span>
+            </button>
+        `;
+        
+        // 分类emoji映射
+        const categoryEmojis = {
+            'java': '☕',
+            'spring': '🌱', 
+            'database': '🗄️',
+            'distributed': '🌐',
+            'iot': '🔌',
+            'frontend': '💻',
+            'backend': '⚙️',
+            'algorithm': '🧮',
+            'system': '🏗️',
+            'ai-tools': '🤖',
+            'golang': '🐹',
+            'python': '🐍',
+            'devops': '🚀',
+            'blog': '📝',
+            'project': '📋',
+            'server': '🖥️',
+            'gamedev': '🎮',
+            'tools': '🔧',
+            'other': '📄'
+        };
+        
+        // 添加分类标签
+        categories.forEach(category => {
+            const tab = document.createElement('button');
+            tab.className = 'filter-tab';
+            tab.setAttribute('data-category', category.name);
+            
+            const emoji = categoryEmojis[category.name] || '📄';
+            tab.innerHTML = `
+                <span class="tab-content">
+                    <span class="tab-emoji">${emoji}</span>
+                    <span class="tab-text">${category.displayName}</span>
+                </span>
+            `;
+            
+            container.appendChild(tab);
+        });
+        
+        // 绑定顶部分类标签点击事件
+        bindTopCategoryEvents();
+        
+        console.log(`生成了 ${categories.length} 个顶部分类标签`);
+        
+    } catch (error) {
+        console.error('生成顶部分类标签失败:', error);
+    }
+}
+
+// 绑定顶部分类标签事件
+function bindTopCategoryEvents() {
+    const topFilterTabs = document.querySelectorAll('#topCategoryFilterTabs .filter-tab');
+    
+    topFilterTabs.forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            const category = this.dataset.category;
+            console.log('点击顶部分类标签:', category);
+            
+            // 更新标签状态
+            topFilterTabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            
+            // 同步更新侧边栏标签状态
+            updateActiveFilterTab(category);
+            
+            // 调用分类过滤函数
+            filterByCategory(category);
+        });
+    });
+    
+    console.log(`绑定了 ${topFilterTabs.length} 个顶部分类事件`);
+}
+
+// 初始化布局偏好
+function initLayoutPreference() {
+    const savedPreference = localStorage.getItem('categoryLayoutPreference');
+    const blogFilter = document.querySelector('.blog-filter');
+    
+    if (savedPreference === 'top') {
+        // 切换到顶部模式
+        switchToTopLayout();
+        updateLayoutButton('top');
+    } else {
+        // 默认侧边栏模式 - 确保blog-filter没有有内容的类
+        if (blogFilter) {
+            blogFilter.classList.remove('has-visible-content');
+        }
+        updateLayoutButton('sidebar');
+    }
+    
+    // 绑定顶部隐藏按钮事件
+    const topCategoryHideBtn = document.getElementById('topCategoryHideBtn');
+    if (topCategoryHideBtn) {
+        topCategoryHideBtn.addEventListener('click', function() {
+            switchToSidebarLayout();
+            updateLayoutButton('sidebar');
+        });
+    }
+    
+    console.log('布局偏好初始化完成，当前模式:', savedPreference || 'sidebar');
+}
+
+// 初始化无限滚动加载
+function initInfiniteScroll() {
+    let ticking = false;
+    
+    function handleScroll() {
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                checkScrollPosition();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }
+    
+    function checkScrollPosition() {
+        // 只有启用滚动加载时才检查位置
+        if (!scrollLoadingEnabled) return;
+        
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        
+        // 当滚动到距离底部 300px 时开始加载
+        const threshold = 300;
+        
+        if (scrollTop + windowHeight >= documentHeight - threshold) {
+            loadMorePosts();
+        }
+    }
+    
+    // 绑定滚动事件
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // 初始化加载更多按钮事件
+    initLoadMoreBtnEvents();
+    
+    console.log('无限滚动加载功能已初始化');
+}
+
+// 初始化加载更多按钮事件
+function initLoadMoreBtnEvents() {
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    
+    if (loadMoreBtn) {
+        // 移除之前的事件监听器
+        loadMoreBtn.removeEventListener('click', loadMorePosts);
+        loadMoreBtn.removeEventListener('click', firstLoadMore);
+        
+        // 根据滚动加载状态添加不同的事件监听器
+        if (!scrollLoadingEnabled) {
+            // 第一次点击：启用滚动加载
+            loadMoreBtn.addEventListener('click', firstLoadMore);
+        } else {
+            // 后续点击：直接加载更多
+            loadMoreBtn.addEventListener('click', loadMorePosts);
+        }
+    }
+}
+
+// 显示加载更多状态
+function showLoadMoreState() {
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    
+    if (loadMoreBtn) {
+        const btnContent = loadMoreBtn.querySelector('.btn-content');
+        const btnLoading = loadMoreBtn.querySelector('.btn-loading');
+        
+        if (btnContent && btnLoading) {
+            btnContent.style.display = 'none';
+            btnLoading.style.display = 'flex';
+        }
+        
+        loadMoreBtn.disabled = true;
+    }
+}
+
+// 更新加载更多按钮状态
+function updateLoadMoreButton() {
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const loadCompleteMessage = document.querySelector('.load-complete-message');
+    const loadMoreSection = document.querySelector('.load-more-section');
+    const loadMoreHint = document.getElementById('loadMoreHint');
+    
+    if (!loadMoreSection) return;
+    
+    const pagination = getPaginationInfo();
+    
+    if (pagination.hasMore) {
+        // 还有更多文章
+        if (loadMoreBtn) {
+            const btnContent = loadMoreBtn.querySelector('.btn-content');
+            const btnLoading = loadMoreBtn.querySelector('.btn-loading');
+            
+            if (btnContent && btnLoading) {
+                btnContent.style.display = 'flex';
+                btnLoading.style.display = 'none';
+            }
+            
+            // 更新按钮文本和提示文本
+            const btnText = btnContent?.querySelector('span');
+            if (btnText && loadMoreHint) {
+                if (!scrollLoadingEnabled) {
+                    btnText.textContent = '点击加载更多内容';
+                    loadMoreHint.textContent = '点击按钮加载更多文章，首次点击后将启用滚动自动加载功能';
+                    loadMoreHint.className = 'load-more-hint first-load';
+                    loadMoreHint.style.display = 'block';
+                } else {
+                    btnText.textContent = '加载更多精彩内容';
+                    loadMoreHint.textContent = '滚动到页面底部即可自动加载更多内容';
+                    loadMoreHint.className = 'load-more-hint scroll-enabled';
+                    loadMoreHint.style.display = 'block';
+                }
+            }
+            
+            loadMoreBtn.disabled = false;
+            loadMoreBtn.style.display = 'block';
+            
+            // 重新绑定事件
+            initLoadMoreBtnEvents();
+        }
+        
+        if (loadCompleteMessage) {
+            loadCompleteMessage.style.display = 'none';
+        }
+    } else {
+        // 所有文章已加载完毕
+        if (loadMoreBtn) {
+            loadMoreBtn.style.display = 'none';
+        }
+        
+        if (loadMoreHint) {
+            loadMoreHint.style.display = 'none';
+        }
+        
+        if (loadCompleteMessage) {
+            loadCompleteMessage.style.display = 'block';
+        }
+    }
+}
+
+// 刷新文章列表（用于分类筛选和搜索）
+function refreshPostsList(posts = null) {
+    if (posts !== null) {
+        filteredPosts = posts;
+    }
+    
+    // 重置分页状态
+    setCurrentPage(1);
+    displayedPosts = [];
+    
+    // 加载初始文章
+    loadInitialPosts();
+}
+
+// 重写分类过滤函数以支持新的分页系统
+function filterByCategory(category) {
+    currentCategory = category;
+    
+    // 更新活动状态
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    filterTabs.forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.getAttribute('data-category') === category) {
+            tab.classList.add('active');
+        }
+    });
+    
+    // 过滤文章
+    if (category === 'all') {
+        refreshPostsList([...currentPosts]);
+    } else {
+        const filtered = currentPosts.filter(post => post.category === category);
+        refreshPostsList(filtered);
+    }
+    
+    // 更新过滤结果统计
+    updateFilterResults(filteredPosts.length, category);
+    
+    console.log(`分类过滤: ${category}, 找到 ${filteredPosts.length} 篇文章`);
+}
+
+// 重写搜索函数以支持新的分页系统  
+function performSearch(searchTerm) {
+    currentSearchQuery = searchTerm.trim().toLowerCase();
+    
+    if (!currentSearchQuery) {
+        // 清空搜索，显示当前分类的所有文章
+        filterByCategory(currentCategory);
+        return;
+    }
+    
+    // 在当前分类中搜索
+    let postsToSearch = currentCategory === 'all' ? currentPosts : 
+                      currentPosts.filter(post => post.category === currentCategory);
+    
+    const searchResults = postsToSearch.filter(post => 
+        post.title.toLowerCase().includes(currentSearchQuery) ||
+        post.description.toLowerCase().includes(currentSearchQuery) ||
+        post.excerpt.toLowerCase().includes(currentSearchQuery) ||
+        post.tags.some(tag => tag.toLowerCase().includes(currentSearchQuery))
+    );
+    
+    refreshPostsList(searchResults);
+    
+    // 更新搜索结果统计
+    updateSearchResults(searchResults.length, searchTerm);
+    
+    console.log(`搜索 "${searchTerm}": 找到 ${searchResults.length} 篇文章`);
+}
+
+// 文档加载完成后初始化
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('博客页面开始初始化...');
+    
+    // 初始化各个功能模块
+    initBlogContent();
+    initBlogFilter(); 
+    initBlogSearch();
+    initNewsletterForm();
+    initBlogAnimations();
+    initKeyboardNavigation();
+    initPostInteractions();
+    initCategorySidebar();
+    initQuickActions();
+    initLayoutPreference();
+    
+    console.log('博客页面初始化完成');
+});

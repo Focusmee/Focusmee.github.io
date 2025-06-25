@@ -66,19 +66,44 @@
         </div>
     </section>
 
-    <!-- Blog Filter -->
+        <!-- Blog Filter - 简化版本 -->
     <section class="blog-filter">
         <div class="container">
-            <div class="filter-container">
-                <div class="filter-header">
-                    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="显示分类目录">
-                        <i class="fas fa-bars"></i>
-                        <span>分类目录</span>
-                    </button>
+        
+            
+            <!-- 顶部分类目录 - 整合到filter中（仅在顶部模式时显示） -->
+            <div class="top-category-filter-integrated" id="topCategoryFilter" style="display: none;">
+                <div class="top-category-header">
+                    <div class="category-header-info">
+                        <h3 class="category-title">
+                            <i class="fas fa-tags"></i>
+                            文章分类
+                        </h3>
+                        <button class="category-hide-btn" id="topCategoryHideBtn" title="隐藏分类目录">
+                            <span class="btn-emoji">🙈</span>
+                            <span class="btn-text">隐藏</span>
+                        </button>
+                    </div>
                 </div>
-                <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="搜索文章..." class="search-input">
-                    <i class="fas fa-search search-icon"></i>
+                <div class="top-category-content">
+                    <div class="top-search-container">
+                        <input type="text" id="topSearchInput" placeholder="搜索文章标题或内容..." class="top-search-input">
+                        <button class="top-search-btn" id="topSearchBtn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="top-search-clear" id="topSearchClear" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="filter-tabs horizontal" id="topCategoryFilterTabs">
+                        <button class="filter-tab active" data-category="all">
+                            <span class="tab-content">
+                                <span class="tab-emoji">📚</span>
+                                <span class="tab-text">全部</span>
+                            </span>
+                        </button>
+                        <!-- 分类标签将动态生成 -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -89,21 +114,73 @@
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
         <div class="sidebar-content">
             <div class="sidebar-header">
-                <h3>文章分类</h3>
-                <button class="sidebar-close-btn" id="sidebarCloseBtn">
-                    <i class="fas fa-times"></i>
+                <h3>
+                    <i class="fas fa-search"></i>
+                    搜索与筛选
+                </h3>
+                <button class="sidebar-close-btn" id="sidebarCloseBtn" title="关闭分类目录">
+                    <span class="btn-emoji">📁</span>
+                    <span class="close-emoji">❌</span>
                 </button>
             </div>
             <div class="sidebar-body">
-                <div class="filter-tabs vertical" id="categoryFilterTabs">
-                    <button class="filter-tab active" data-category="all">
-                        <span class="tab-content">
-                            <span class="tab-emoji">📚</span>
-                            <span class="tab-text">全部</span>
-                        </span>
-                    </button>
-                    <!-- 分类标签将动态生成 -->
+                <!-- 搜索区域 -->
+                <div class="sidebar-search-section">
+                    <h4 class="section-title">
+                        <i class="fas fa-search"></i>
+                        文章搜索
+                    </h4>
+                    <div class="sidebar-search-container">
+                        <input type="text" id="sidebarSearchInput" placeholder="搜索文章标题或内容..." class="sidebar-search-input">
+                        <button class="sidebar-search-btn" id="sidebarSearchBtn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="sidebar-search-clear" id="sidebarSearchClear" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="search-tips">
+                        <span class="tip-item">💡 支持标题和内容搜索</span>
+                        <span class="tip-item">🏷️ 支持标签搜索</span>
+                    </div>
                 </div>
+
+                <!-- 布局切换区域 -->
+                <div class="sidebar-layout-section">
+                    <h4 class="section-title">
+                        <i class="fas fa-layout"></i>
+                        显示模式
+                    </h4>
+                    <div class="layout-toggle-container">
+                        <button class="layout-toggle-btn" id="sidebarLayoutToggleBtn" data-layout="sidebar">
+                            <span class="layout-icon">📱</span>
+                            <span class="layout-text">侧边栏模式</span>
+                            <span class="layout-status">当前</span>
+                        </button>
+                        <div class="layout-description">
+                            点击切换到顶部固定模式，在页面顶部显示分类和搜索
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分类筛选区域 -->
+                <div class="sidebar-category-section">
+                    <h4 class="section-title">
+                        <i class="fas fa-folder"></i>
+                        文章分类
+                    </h4>
+                    <div class="filter-tabs vertical" id="categoryFilterTabs">
+                        <button class="filter-tab active" data-category="all">
+                            <span class="tab-content">
+                                <span class="tab-emoji">📚</span>
+                                <span class="tab-text">全部</span>
+                            </span>
+                        </button>
+                        <!-- 分类标签将动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 统计信息 -->
                 <div class="sidebar-stats">
                     <div class="stat-item">
                         <span class="stat-number" id="sidebarTotalPosts">2</span>
@@ -127,7 +204,6 @@
                     <i class="fas fa-book-open"></i>
                     技术博客文章
                 </h2>
-                <p class="content-subtitle">分享技术心得，记录成长历程</p>
             </div>
             <div class="content-controls">
                 <div class="view-mode-toggle">
@@ -226,7 +302,7 @@
             <div class="load-more-section">
                 <button class="load-more-btn modern" id="loadMoreBtn">
                     <div class="btn-content">
-                        <span>加载更多精彩内容</span>
+                        <span>点击加载更多内容</span>
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="btn-loading">
@@ -234,36 +310,13 @@
                         <i class="fas fa-spinner fa-spin"></i>
                     </div>
                 </button>
+                <div class="load-more-hint first-load" id="loadMoreHint">
+                    点击按钮加载更多文章，首次点击后将启用滚动自动加载功能
+                </div>
                 <div class="load-complete-message">
                     <i class="fas fa-check-circle"></i>
                     已为您展示全部内容
                 </div>
-            </div>
-        </div>
-
-        <!-- 内容底部 -->
-        <div id="contentFooter" class="content-footer" style="display: none;">
-            <div class="footer-stats">
-                <div class="stat-item">
-                    <i class="fas fa-book-open"></i>
-                    <span>知识分享</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-heart"></i>
-                    <span>用心创作</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-rocket"></i>
-                    <span>持续进步</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-calendar"></i>
-                    <span>最后更新: <span id="lastUpdate">--</span></span>
-                </div>
-            </div>
-            <div class="footer-tip">
-                <i class="fas fa-lightbulb"></i>
-                <span>每篇文章都是技术成长路上的足迹</span>
             </div>
         </div>
     </div>
@@ -271,7 +324,7 @@
     <!-- 快速操作栏 -->
     <div class="quick-actions-bar">
         <button class="quick-action" id="categoryToggleBtn" title="分类目录">
-            <i class="fas fa-list"></i>
+            📁
         </button>
         <button class="quick-action" id="scrollTopBtn" title="回到顶部">
             ⬆️
