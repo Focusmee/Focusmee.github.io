@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="我先了解一下您的应用结构，以便给出适合的微服务改造建议。 Ran tool Ran tool Read file: app_order&#x2F;pom.xml Ran tool Ran tool Read file: app_order&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;jf3q&#x2F;order&#x2F;AppOrderApplicat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2025/04/13/%E3%80%90%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E3%80%91%E5%8D%95%E4%BD%93%E5%BA%94%E7%94%A8%E5%8D%87%E7%BA%A7%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%8B%86%E5%88%86%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="我先了解一下您的应用结构，以便给出适合的微服务改造建议。 Ran tool Ran tool Read file: app_order&#x2F;pom.xml Ran tool Ran tool Read file: app_order&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;jf3q&#x2F;order&#x2F;AppOrderApplicat">
+<meta property="og:locale">
+<meta property="article:published_time" content="2025-04-13T12:11:02.261Z">
+<meta property="article:modified_time" content="2025-04-19T16:31:34.297Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2025/04/13/【毕业设计】单体应用升级微服务拆分方案/"/>
+
+
+
+
+
+  <title> | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/13/%E3%80%90%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E3%80%91%E5%8D%95%E4%BD%93%E5%BA%94%E7%94%A8%E5%8D%87%E7%BA%A7%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%8B%86%E5%88%86%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-04-13T20:11:02+08:00">
+                2025-04-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我先了解一下您的应用结构，以便给出适合的微服务改造建议。</p>
+<p>Ran tool</p>
+<p>Ran tool</p>
+<p>Read file: app_order&#x2F;pom.xml</p>
+<p>Ran tool</p>
+<p>Ran tool</p>
+<p>Read file: app_order&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;jf3q&#x2F;order&#x2F;AppOrderApplication.java</p>
+<p>Search files…</p>
+<p>Ran tool<br>基于对您的代码结构的分析，我现在为您提供将单体应用改造为微服务架构的建议：</p>
+<h2 id="微服务拆分方案"><a href="#微服务拆分方案" class="headerlink" title="微服务拆分方案"></a>微服务拆分方案</h2><h3 id="1-领域拆分"><a href="#1-领域拆分" class="headerlink" title="1. 领域拆分"></a>1. 领域拆分</h3><p>根据您的系统功能，建议将应用拆分为以下几个微服务：</p>
+<ol>
+<li><p><strong>用户服务 (user-service)</strong></p>
+<ul>
+<li>负责用户管理、认证授权</li>
+<li>包含现有的 User 相关功能</li>
+</ul>
+</li>
+<li><p><strong>摄影师服务 (photographer-service)</strong></p>
+<ul>
+<li>负责摄影师信息管理</li>
+<li>包含 Photographer 和 PhotographerNews 相关功能</li>
+</ul>
+</li>
+<li><p><strong>订单服务 (order-service)</strong></p>
+<ul>
+<li>负责订单处理和管理</li>
+<li>包含 Orders 和 ReceivingOrders 相关功能</li>
+</ul>
+</li>
+<li><p><strong>套餐服务 (package-service)</strong></p>
+<ul>
+<li>负责摄影套餐管理</li>
+<li>包含 Package 相关功能</li>
+</ul>
+</li>
+<li><p><strong>反馈服务 (feedback-service)</strong></p>
+<ul>
+<li>负责用户反馈管理</li>
+<li>包含 Feedback 相关功能</li>
+</ul>
+</li>
+<li><p><strong>文件服务 (file-service)</strong></p>
+<ul>
+<li>负责文件上传下载</li>
+<li>包含现有的文件和头像处理功能</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-技术架构升级"><a href="#2-技术架构升级" class="headerlink" title="2. 技术架构升级"></a>2. 技术架构升级</h3><ol>
+<li><p><strong>服务注册与发现</strong></p>
+<ul>
+<li>引入 Spring Cloud Alibaba Nacos 作为服务注册中心</li>
+<li>每个微服务向 Nacos 注册，并通过 Nacos 发现其他服务</li>
+</ul>
+</li>
+<li><p><strong>网关服务</strong></p>
+<ul>
+<li>引入 Spring Cloud Gateway 作为 API 网关</li>
+<li>统一入口、路由转发、认证授权</li>
+</ul>
+</li>
+<li><p><strong>配置中心</strong></p>
+<ul>
+<li>使用 Nacos Config 进行配置管理</li>
+<li>集中管理各服务配置，支持动态配置更新</li>
+</ul>
+</li>
+<li><p><strong>服务间通信</strong></p>
+<ul>
+<li>使用 OpenFeign 进行服务间的声明式 HTTP 调用</li>
+<li>使用 Spring Cloud Stream 进行事件驱动的异步通信</li>
+</ul>
+</li>
+<li><p><strong>服务熔断与降级</strong></p>
+<ul>
+<li>使用 Sentinel 实现服务熔断、限流、降级</li>
+<li>提高系统稳定性和可用性</li>
+</ul>
+</li>
+<li><p><strong>链路追踪</strong></p>
+<ul>
+<li>引入 SkyWalking 或 Zipkin 进行分布式链路追踪</li>
+<li>方便排查跨服务调用问题</li>
+</ul>
+</li>
+<li><p><strong>分布式事务</strong></p>
+<ul>
+<li>使用 Seata 处理跨服务的分布式事务</li>
+<li>确保数据一致性</li>
+</ul>
+</li>
+</ol>
+<h2 id="具体实施步骤"><a href="#具体实施步骤" class="headerlink" title="具体实施步骤"></a>具体实施步骤</h2><h3 id="1-搭建基础设施"><a href="#1-搭建基础设施" class="headerlink" title="1. 搭建基础设施"></a>1. 搭建基础设施</h3><ol>
+<li><p><strong>创建父项目</strong>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.jf3q<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>ssc-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">packaging</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">modules</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-gateway<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-common<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-user<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-photographer<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-order<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-package<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-feedback<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span>ssc-file<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">modules</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>搭建注册中心和配置中心</strong>：</p>
+<ul>
+<li>部署 Nacos 服务器</li>
+<li>将各微服务注册到 Nacos</li>
+</ul>
+</li>
+<li><p><strong>设置网关服务</strong>：创建 ssc-gateway 模块，配置路由规则</p>
+</li>
+</ol>
+<h3 id="2-创建公共模块"><a href="#2-创建公共模块" class="headerlink" title="2. 创建公共模块"></a>2. 创建公共模块</h3><p>创建 ssc-common 模块，包含：</p>
+<ul>
+<li>公共实体类</li>
+<li>通用工具类</li>
+<li>统一返回结果</li>
+<li>全局异常处理</li>
+<li>安全认证相关配置</li>
+</ul>
+<h3 id="3-拆分业务服务"><a href="#3-拆分业务服务" class="headerlink" title="3. 拆分业务服务"></a>3. 拆分业务服务</h3><ol>
+<li><p><strong>创建每个微服务的基本结构</strong>：</p>
+<ul>
+<li>配置文件：application.yml, bootstrap.yml</li>
+<li>启动类：添加 <code>@EnableDiscoveryClient</code> 等注解</li>
+<li>基本包结构：controller, service, mapper, entity</li>
+</ul>
+</li>
+<li><p><strong>迁移业务代码</strong>：</p>
+<ul>
+<li>将原有代码按业务领域迁移到对应微服务</li>
+<li>调整服务间依赖，使用 Feign 替代直接调用</li>
+</ul>
+</li>
+<li><p><strong>数据库拆分</strong>：</p>
+<ul>
+<li>为每个微服务创建独立数据库</li>
+<li>将原单体数据库中的表迁移到对应服务的数据库</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-调整服务间通信"><a href="#4-调整服务间通信" class="headerlink" title="4. 调整服务间通信"></a>4. 调整服务间通信</h3><ol>
+<li><p><strong>同步调用</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient(name = &quot;ssc-user&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserFeignClient</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/users/&#123;id&#125;&quot;)</span></span><br><span class="line">    Result&lt;User&gt; <span class="title function_">getUserById</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Long id)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>异步通信</strong>：</p>
+<ul>
+<li>使用消息队列（如RocketMQ）处理跨服务异步事件</li>
+</ul>
+</li>
+</ol>
+<h3 id="5-安全认证改造"><a href="#5-安全认证改造" class="headerlink" title="5. 安全认证改造"></a>5. 安全认证改造</h3><ol>
+<li><p><strong>基于 OAuth2 + JWT 的统一认证</strong>：</p>
+<ul>
+<li>在网关层统一处理认证</li>
+<li>使用 JWT 在微服务间传递用户信息</li>
+</ul>
+</li>
+<li><p><strong>资源服务器配置</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableResourceServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ResourceServerConfig</span> <span class="keyword">extends</span> <span class="title class_">ResourceServerConfigurerAdapter</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        http.authorizeRequests()</span><br><span class="line">            .antMatchers(<span class="string">&quot;/public/**&quot;</span>).permitAll()</span><br><span class="line">            .anyRequest().authenticated();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="6-部署与监控"><a href="#6-部署与监控" class="headerlink" title="6. 部署与监控"></a>6. 部署与监控</h3><ol>
+<li><p><strong>容器化部署</strong>：</p>
+<ul>
+<li>使用 Docker 容器化每个微服务</li>
+<li>使用 Kubernetes 编排和管理容器</li>
+</ul>
+</li>
+<li><p><strong>监控系统</strong>：</p>
+<ul>
+<li>使用 Prometheus + Grafana 监控系统运行状态</li>
+<li>使用 ELK 收集分析日志</li>
+</ul>
+</li>
+</ol>
+<h2 id="迁移注意事项"><a href="#迁移注意事项" class="headerlink" title="迁移注意事项"></a>迁移注意事项</h2><ol>
+<li><p><strong>渐进式迁移</strong>：不要一次性全部拆分，可先拆分边缘服务，逐步向核心服务迁移</p>
+</li>
+<li><p><strong>数据一致性</strong>：注意跨服务的事务处理，合理使用分布式事务或最终一致性方案</p>
+</li>
+<li><p><strong>接口兼容性</strong>：保持接口的向后兼容，避免影响现有功能</p>
+</li>
+<li><p><strong>测试</strong>：编写完善的集成测试确保服务拆分后的功能正确性</p>
+</li>
+<li><p><strong>服务治理</strong>：关注服务依赖关系，避免出现循环依赖</p>
+</li>
+<li><p><strong>性能优化</strong>：注意网络延迟增加带来的性能影响，合理使用缓存</p>
+</li>
+</ol>
+<p>通过以上步骤，您可以平稳地将单体应用迁移到微服务架构，同时保持业务功能的正常运行和扩展能力的提升。</p>
+<p>在3天内完成基本微服务框架搭建是有挑战性的，但可以实现一个简化版本。以下是3天内的精简计划：</p>
+<h2 id="3天微服务框架搭建计划"><a href="#3天微服务框架搭建计划" class="headerlink" title="3天微服务框架搭建计划"></a>3天微服务框架搭建计划</h2><h3 id="第1天：基础设施搭建"><a href="#第1天：基础设施搭建" class="headerlink" title="第1天：基础设施搭建"></a>第1天：基础设施搭建</h3><ol>
+<li><p><strong>搭建基础环境</strong></p>
+<ul>
+<li>安装部署Nacos（可使用Docker快速部署）</li>
+<li>创建父项目和基础架构</li>
+</ul>
+</li>
+<li><p><strong>创建核心模块</strong></p>
+<ul>
+<li>创建父工程ssc-parent</li>
+<li>创建公共模块ssc-common</li>
+<li>创建网关模块ssc-gateway</li>
+</ul>
+</li>
+<li><p><strong>配置父项目依赖</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 统一管理版本 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">spring-boot.version</span>&gt;</span>2.3.12.RELEASE<span class="tag">&lt;/<span class="name">spring-boot.version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">spring-cloud.version</span>&gt;</span>Hoxton.SR12<span class="tag">&lt;/<span class="name">spring-cloud.version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">spring-cloud-alibaba.version</span>&gt;</span>2.2.7.RELEASE<span class="tag">&lt;/<span class="name">spring-cloud-alibaba.version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- Spring Boot --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring-boot.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- Spring Cloud --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring-cloud.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- Spring Cloud Alibaba --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-alibaba-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring-cloud-alibaba.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="第2天：核心服务拆分"><a href="#第2天：核心服务拆分" class="headerlink" title="第2天：核心服务拆分"></a>第2天：核心服务拆分</h3><ol>
+<li><p><strong>创建两个核心微服务</strong></p>
+<ul>
+<li>用户服务（ssc-user）</li>
+<li>订单服务（ssc-order）</li>
+</ul>
+</li>
+<li><p><strong>实现公共模块</strong></p>
+<ul>
+<li>移植Result类和通用工具类</li>
+<li>定义统一异常处理</li>
+<li>创建跨服务数据传输对象(DTO)</li>
+</ul>
+</li>
+<li><p><strong>用户服务实现</strong></p>
+<ul>
+<li>移植User实体和用户相关代码</li>
+<li>实现基本认证功能</li>
+<li>注册到Nacos</li>
+</ul>
+</li>
+<li><p><strong>订单服务实现</strong></p>
+<ul>
+<li>移植Orders实体和订单相关代码</li>
+<li>通过Feign调用用户服务</li>
+<li>注册到Nacos</li>
+</ul>
+</li>
+</ol>
+<h3 id="第3天：网关和服务集成"><a href="#第3天：网关和服务集成" class="headerlink" title="第3天：网关和服务集成"></a>第3天：网关和服务集成</h3><ol>
+<li><p><strong>网关服务配置</strong></p>
+<ul>
+<li>配置路由规则</li>
+<li>实现简单认证过滤器</li>
+<li>配置跨域处理</li>
+</ul>
+</li>
+<li><p><strong>服务间调用测试</strong></p>
+<ul>
+<li>实现用户服务Feign客户端</li>
+<li>测试订单服务调用用户服务</li>
+<li>验证网关路由功能</li>
+</ul>
+</li>
+<li><p><strong>部署与联调</strong></p>
+<ul>
+<li>打包各服务</li>
+<li>测试完整调用链路</li>
+<li>编写简单文档</li>
+</ul>
+</li>
+</ol>
+<h2 id="快速实现的关键代码片段"><a href="#快速实现的关键代码片段" class="headerlink" title="快速实现的关键代码片段"></a>快速实现的关键代码片段</h2><h3 id="1-网关配置（ssc-gateway）"><a href="#1-网关配置（ssc-gateway）" class="headerlink" title="1. 网关配置（ssc-gateway）"></a>1. 网关配置（ssc-gateway）</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># application.yml</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">9000</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">ssc-gateway</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="string">localhost:8848</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">locator:</span></span><br><span class="line">          <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">user-service</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://ssc-user</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/api/users/**</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">StripPrefix=1</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">order-service</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://ssc-order</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/api/orders/**</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">StripPrefix=1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-用户服务（ssc-user）"><a href="#2-用户服务（ssc-user）" class="headerlink" title="2. 用户服务（ssc-user）"></a>2. 用户服务（ssc-user）</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># application.yml</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">9001</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">ssc-user</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="string">localhost:8848</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">jdbc:mysql:///photographer_order?serverTimezone=Asia/Shanghai</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">password:</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-订单服务（ssc-order）"><a href="#3-订单服务（ssc-order）" class="headerlink" title="3. 订单服务（ssc-order）"></a>3. 订单服务（ssc-order）</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># application.yml</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">9002</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">ssc-order</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="string">localhost:8848</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">jdbc:mysql:///photographer_order?serverTimezone=Asia/Shanghai</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">password:</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-用户服务Feign客户端（在ssc-order中）"><a href="#4-用户服务Feign客户端（在ssc-order中）" class="headerlink" title="4. 用户服务Feign客户端（在ssc-order中）"></a>4. 用户服务Feign客户端（在ssc-order中）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UserClient.java</span></span><br><span class="line"><span class="meta">@FeignClient(name = &quot;ssc-user&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserClient</span> &#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/users/&#123;id&#125;&quot;)</span></span><br><span class="line">    Result&lt;UserDTO&gt; <span class="title function_">getUserById</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Long id)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-简化版本的订单服务实现"><a href="#5-简化版本的订单服务实现" class="headerlink" title="5. 简化版本的订单服务实现"></a>5. 简化版本的订单服务实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// OrdersServiceImpl.java</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrdersServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">OrdersService</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> OrdersMapper ordersMapper;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserClient userClient;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Orders <span class="title function_">getOrderWithUserInfo</span><span class="params">(Long orderId)</span> &#123;</span><br><span class="line">        <span class="comment">// 获取订单信息</span></span><br><span class="line">        <span class="type">Orders</span> <span class="variable">order</span> <span class="operator">=</span> ordersMapper.selectById(orderId);</span><br><span class="line">        <span class="keyword">if</span> (order != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 调用用户服务获取用户信息</span></span><br><span class="line">            Result&lt;UserDTO&gt; userResult = userClient.getUserById(order.getUserId());</span><br><span class="line">            <span class="keyword">if</span> (userResult.isSuccess()) &#123;</span><br><span class="line">                <span class="comment">// 设置用户信息</span></span><br><span class="line">                <span class="type">UserDTO</span> <span class="variable">userDTO</span> <span class="operator">=</span> userResult.getData();</span><br><span class="line">                order.setUserName(userDTO.getUsername());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> order;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="实现建议"><a href="#实现建议" class="headerlink" title="实现建议"></a>实现建议</h2><ol>
+<li><p><strong>简化数据库结构</strong></p>
+<ul>
+<li>初期可先使用共享数据库</li>
+<li>保持原有表结构不变，减少迁移成本</li>
+</ul>
+</li>
+<li><p><strong>重点关注</strong></p>
+<ul>
+<li>服务注册与发现</li>
+<li>基本服务间调用</li>
+<li>网关路由功能</li>
+</ul>
+</li>
+<li><p><strong>暂缓处理项</strong></p>
+<ul>
+<li>复杂的认证授权</li>
+<li>分布式事务</li>
+<li>高级监控体系</li>
+<li>容器化部署</li>
+</ul>
+</li>
+</ol>
+<p>3天时间内，可以搭建一个基础但功能可用的微服务框架，主要完成服务注册发现、网关路由和简单服务间调用功能。这将为后续完整微服务改造打下基础，同时能够验证技术路线的可行性。</p>
+<p>请注意，这个时间框架非常紧，建议集中精力于核心架构搭建，避免深入实现业务细节，以确保能在3天内看到一个基本可运行的框架。</p>
+<h3 id="一、网关配置的特殊路由"><a href="#一、网关配置的特殊路由" class="headerlink" title="一、网关配置的特殊路由"></a>一、网关配置的特殊路由</h3><ol>
+<li>登录路由</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;login</p>
+</li>
+<li><p>方法: POST</p>
+</li>
+<li><p>实际转发到: &#x2F;users&#x2F;login</p>
+</li>
+<li><p>服务: ssc-user</p>
+</li>
+</ul>
+<ol>
+<li>注册路由</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;register</p>
+</li>
+<li><p>方法: POST</p>
+</li>
+<li><p>实际转发到: &#x2F;users&#x2F;register</p>
+</li>
+<li><p>服务: ssc-user</p>
+</li>
+</ul>
+<h3 id="二、用户服务接口-通过网关访问需添加前缀-api"><a href="#二、用户服务接口-通过网关访问需添加前缀-api" class="headerlink" title="二、用户服务接口 (通过网关访问需添加前缀 &#x2F;api)"></a>二、用户服务接口 (通过网关访问需添加前缀 &#x2F;api)</h3><ol>
+<li>根据ID获取用户</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;users&#x2F;{id}</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>描述: 获取指定ID的用户信息</p>
+</li>
+</ul>
+<ol>
+<li>用户登录</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;users&#x2F;login</p>
+</li>
+<li><p>方法: POST</p>
+</li>
+<li><p>描述: 用户登录认证</p>
+</li>
+</ul>
+<ol>
+<li>用户注册</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;users&#x2F;register</p>
+</li>
+<li><p>方法: POST</p>
+</li>
+<li><p>描述: 用户注册</p>
+</li>
+</ul>
+<ol>
+<li>更新用户信息</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;users&#x2F;{id}</p>
+</li>
+<li><p>方法: PUT</p>
+</li>
+<li><p>描述: 更新指定用户的信息</p>
+</li>
+</ul>
+<ol>
+<li>更新用户头像</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;users&#x2F;{id}&#x2F;avatar</p>
+</li>
+<li><p>方法: PUT</p>
+</li>
+<li><p>描述: 更新指定用户的头像</p>
+</li>
+</ul>
+<ol>
+<li>根据角色获取用户列表</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;users&#x2F;role&#x2F;{role}</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>描述: 获取指定角色的所有用户</p>
+</li>
+</ul>
+<ol>
+<li>分页查询用户</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;users&#x2F;page</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>参数: current(默认1), size(默认10), keyword(可选)</p>
+</li>
+<li><p>描述: 分页查询用户信息</p>
+</li>
+</ul>
+<h3 id="三、订单服务接口-通过网关访问需添加前缀-api"><a href="#三、订单服务接口-通过网关访问需添加前缀-api" class="headerlink" title="三、订单服务接口 (通过网关访问需添加前缀 &#x2F;api)"></a>三、订单服务接口 (通过网关访问需添加前缀 &#x2F;api)</h3><ol>
+<li>创建订单</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;orders</p>
+</li>
+<li><p>方法: POST</p>
+</li>
+<li><p>描述: 创建新订单</p>
+</li>
+</ul>
+<ol>
+<li>获取订单详情</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;orders&#x2F;{id}</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>描述: 获取指定ID订单的详细信息</p>
+</li>
+</ul>
+<ol>
+<li>获取用户的订单列表</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;orders&#x2F;user&#x2F;{userId}</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>描述: 获取指定用户的所有订单</p>
+</li>
+</ul>
+<ol>
+<li>获取摄影师的订单列表</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;orders&#x2F;photographer&#x2F;{photographerId}</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>描述: 获取指定摄影师的所有订单</p>
+</li>
+</ul>
+<ol>
+<li>更新订单状态</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;orders&#x2F;{id}&#x2F;status</p>
+</li>
+<li><p>方法: PUT</p>
+</li>
+<li><p>参数: status(必填)</p>
+</li>
+<li><p>描述: 更新指定订单的状态</p>
+</li>
+</ul>
+<ol>
+<li>分页查询订单</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;orders&#x2F;page</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>参数: current(默认1), size(默认10), keyword(可选)</p>
+</li>
+<li><p>描述: 分页查询订单信息</p>
+</li>
+</ul>
+<h3 id="四、测试接口"><a href="#四、测试接口" class="headerlink" title="四、测试接口"></a>四、测试接口</h3><ol>
+<li>测试订单服务</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;orders&#x2F;test</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>描述: 测试订单服务是否正常运行</p>
+</li>
+</ul>
+<ol>
+<li>测试服务调用</li>
+</ol>
+<ul>
+<li><p>路径: &#x2F;api&#x2F;orders&#x2F;test&#x2F;user&#x2F;{id}</p>
+</li>
+<li><p>方法: GET</p>
+</li>
+<li><p>描述: 测试订单服务调用用户服务获取用户信息</p>
+</li>
+</ul>
+<h1 id="Sa-token引入"><a href="#Sa-token引入" class="headerlink" title="Sa-token引入"></a>Sa-token引入</h1><p>使用Postman测试Sa-Token认证系统需要进行以下步骤：</p>
+<h2 id="1-测试注册功能"><a href="#1-测试注册功能" class="headerlink" title="1. 测试注册功能"></a>1. 测试注册功能</h2><ol>
+<li>打开Postman</li>
+<li>创建一个新的POST请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/register</code></li>
+<li>选择Headers选项卡，添加头部：<ul>
+<li>Key: <code>Content-Type</code></li>
+<li>Value: <code>application/json</code></li>
+</ul>
+</li>
+<li>选择Body选项卡，选择raw，然后选择JSON格式</li>
+<li>输入注册信息：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;testuser&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;password123&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;测试用户&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;role&quot;</span><span class="punctuation">:</span> <span class="string">&quot;user&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;email&quot;</span><span class="punctuation">:</span> <span class="string">&quot;test@example.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;phone&quot;</span><span class="punctuation">:</span> <span class="string">&quot;13800138000&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li>点击Send发送请求</li>
+<li>检查响应，应该返回成功信息和用户数据（不含密码）</li>
+</ol>
+<h2 id="2-测试登录功能"><a href="#2-测试登录功能" class="headerlink" title="2. 测试登录功能"></a>2. 测试登录功能</h2><ol>
+<li><p>创建一个新的POST请求</p>
+</li>
+<li><p>设置请求URL为 <code>http://localhost:9999/login</code></p>
+</li>
+<li><p>在Headers中添加：</p>
+<ul>
+<li>Key: <code>Content-Type</code></li>
+<li>Value: <code>application/json</code></li>
+</ul>
+</li>
+<li><p>在Body中输入：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;testuser&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;password123&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>点击Send发送请求</p>
+</li>
+<li><p>检查响应，应该包含：</p>
+<ul>
+<li>用户信息</li>
+<li>tokenName (通常是”Authorization”)</li>
+<li>tokenValue (JWT令牌值)</li>
+</ul>
+</li>
+<li><p><strong>重要：复制响应中的tokenName和tokenValue，后续请求需要使用</strong></p>
+</li>
+</ol>
+<h2 id="3-使用token获取用户信息"><a href="#3-使用token获取用户信息" class="headerlink" title="3. 使用token获取用户信息"></a>3. 使用token获取用户信息</h2><ol>
+<li>创建一个新的GET请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/api/user/info</code></li>
+<li>在Headers中添加从登录响应获取的token：<ul>
+<li>Key: <code>Authorization</code> (使用tokenName的值)</li>
+<li>Value: 登录响应中的tokenValue值</li>
+</ul>
+</li>
+<li>点击Send发送请求</li>
+<li>检查响应，应该返回当前登录用户的详细信息</li>
+</ol>
+<h2 id="4-测试权限控制"><a href="#4-测试权限控制" class="headerlink" title="4. 测试权限控制"></a>4. 测试权限控制</h2><h3 id="4-1-测试管理员角色的接口"><a href="#4-1-测试管理员角色的接口" class="headerlink" title="4.1 测试管理员角色的接口"></a>4.1 测试管理员角色的接口</h3><ol>
+<li>创建一个新的GET请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/api/admin/users</code> (假设这是一个管理员接口)</li>
+<li>在Headers中添加token</li>
+<li>点击Send发送请求</li>
+<li>如果使用的是普通用户token，应该返回权限不足的错误</li>
+<li>如果使用的是管理员token，应该能够正常访问</li>
+</ol>
+<h3 id="4-2-测试摄影师角色的接口"><a href="#4-2-测试摄影师角色的接口" class="headerlink" title="4.2 测试摄影师角色的接口"></a>4.2 测试摄影师角色的接口</h3><ol>
+<li>创建一个新的GET请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/api/photographer/profile</code> (假设这是一个摄影师接口)</li>
+<li>在Headers中添加token</li>
+<li>发送请求并检查响应</li>
+</ol>
+<h2 id="5-测试退出登录"><a href="#5-测试退出登录" class="headerlink" title="5. 测试退出登录"></a>5. 测试退出登录</h2><ol>
+<li>创建一个新的POST请求</li>
+<li>设置请求URL为 <code>http://localhost:9999/logout</code></li>
+<li>在Headers中添加token</li>
+<li>点击Send发送请求</li>
+<li>检查响应，应该返回退出成功的信息</li>
+<li>然后再尝试使用同一个token访问需要登录的接口，应该会返回”未登录”的错误</li>
+</ol>
+<h2 id="6-使用Postman的Collection和Environment功能"><a href="#6-使用Postman的Collection和Environment功能" class="headerlink" title="6. 使用Postman的Collection和Environment功能"></a>6. 使用Postman的Collection和Environment功能</h2><p>为了更方便地测试，可以使用Postman的集合和环境变量：</p>
+<ol>
+<li><p>创建一个新的环境，命名为”Sa-Token测试”</p>
+</li>
+<li><p>添加以下环境变量：</p>
+<ul>
+<li><code>baseUrl</code>: <code>http://localhost:9999</code></li>
+<li><code>token</code>: 空值(登录后自动填充)</li>
+</ul>
+</li>
+<li><p>创建一个新的Collection，命名为”用户认证测试”</p>
+</li>
+<li><p>在Collection中创建上述所有请求，并使用环境变量，如：</p>
+<ul>
+<li>登录URL: <code>&#123;&#123;baseUrl&#125;&#125;/login</code></li>
+<li>用户信息URL: <code>&#123;&#123;baseUrl&#125;&#125;/api/user/info</code></li>
+<li>授权Header: <code>Authorization: &#123;&#123;token&#125;&#125;</code></li>
+</ul>
+</li>
+<li><p>在登录请求的Tests选项卡中添加以下JavaScript代码，自动保存token：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pm.<span class="property">response</span>.<span class="property">code</span> === <span class="number">200</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> jsonData = pm.<span class="property">response</span>.<span class="title function_">json</span>();</span><br><span class="line">    <span class="keyword">if</span> (jsonData.<span class="property">code</span> === <span class="string">&quot;200&quot;</span> &amp;&amp; jsonData.<span class="property">data</span> &amp;&amp; jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>) &#123;</span><br><span class="line">        pm.<span class="property">environment</span>.<span class="title function_">set</span>(<span class="string">&quot;token&quot;</span>, jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Token saved to environment variable&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="7-测试无效或过期token"><a href="#7-测试无效或过期token" class="headerlink" title="7. 测试无效或过期token"></a>7. 测试无效或过期token</h2><ol>
+<li>创建一个需要登录的请求，如获取用户信息</li>
+<li>在Headers中添加一个无效的token值</li>
+<li>发送请求，应该返回未登录或token无效的错误</li>
+</ol>
+<h2 id="8-调试技巧"><a href="#8-调试技巧" class="headerlink" title="8. 调试技巧"></a>8. 调试技巧</h2><ol>
+<li>使用Postman控制台查看请求和响应的详细信息</li>
+<li>检查服务器端日志，特别是与Sa-Token相关的日志</li>
+<li>如果遇到问题，可以在Postman中使用预请求脚本进行调试</li>
+</ol>
+<h2 id="9-常见问题及解决方案"><a href="#9-常见问题及解决方案" class="headerlink" title="9. 常见问题及解决方案"></a>9. 常见问题及解决方案</h2><ol>
+<li><strong>CORS错误</strong>：确保网关的CorsConfig正确配置并暴露了Authorization头</li>
+<li><strong>token不生效</strong>：检查token名称和值是否正确，以及请求URL是否正确</li>
+<li><strong>token过期</strong>：尝试重新登录获取新的token</li>
+<li><strong>权限错误</strong>：检查用户角色和接口要求的权限是否匹配</li>
+</ol>
+<p>通过以上步骤，你可以全面测试Sa-Token认证系统的功能，确保用户注册、登录、权限控制和注销功能都正常工作。</p>
+<p>在Postman中测试头像上传功能的详细步骤如下：</p>
+<h2 id="步骤1-用户登录获取Token"><a href="#步骤1-用户登录获取Token" class="headerlink" title="步骤1: 用户登录获取Token"></a>步骤1: 用户登录获取Token</h2><ol>
+<li>打开Postman，创建一个新的POST请求</li>
+<li>设置URL: <code>http://localhost:9999/login</code></li>
+<li>选择Body选项卡，选择raw，格式为JSON</li>
+<li>输入登录信息：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;testuser&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;password123&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li>发送请求</li>
+<li>从响应中获取Sa-Token的token值，记录下来：<ul>
+<li>tokenName (通常是”Authorization”)</li>
+<li>tokenValue (后续请求需要使用)</li>
+</ul>
+</li>
+</ol>
+<h2 id="步骤2-设置头像上传请求"><a href="#步骤2-设置头像上传请求" class="headerlink" title="步骤2: 设置头像上传请求"></a>步骤2: 设置头像上传请求</h2><ol>
+<li><p>创建一个新的POST请求</p>
+</li>
+<li><p>设置URL: <code>http://localhost:9999/api/uploadAvatar</code></p>
+</li>
+<li><p>添加Header：</p>
+<ul>
+<li>Key: <code>Authorization</code> (或者登录响应中的tokenName值)</li>
+<li>Value: 登录响应中的tokenValue值</li>
+</ul>
+</li>
+<li><p>选择Body选项卡，选择form-data</p>
+</li>
+<li><p>添加一个键值对：</p>
+<ul>
+<li>Key: <code>avatar</code></li>
+<li>在Key右侧下拉菜单选择File类型</li>
+<li>Value: 点击”Select Files”按钮，选择一个本地图片文件（如.jpg, .png）</li>
+</ul>
+</li>
+</ol>
+<h2 id="步骤3-发送请求并检查响应"><a href="#步骤3-发送请求并检查响应" class="headerlink" title="步骤3: 发送请求并检查响应"></a>步骤3: 发送请求并检查响应</h2><ol>
+<li>点击Send发送请求</li>
+<li>如果成功，应该收到类似以下的响应：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="string">&quot;200&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;msg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;请求成功&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://yourserver:9999/file/view/someuniquefilename.jpg&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="步骤4-测试头像预览和查看"><a href="#步骤4-测试头像预览和查看" class="headerlink" title="步骤4: 测试头像预览和查看"></a>步骤4: 测试头像预览和查看</h2><h3 id="测试当前用户头像预览："><a href="#测试当前用户头像预览：" class="headerlink" title="测试当前用户头像预览："></a>测试当前用户头像预览：</h3><ol>
+<li>创建一个新的GET请求</li>
+<li>设置URL: <code>http://localhost:9999/api/avatar/my/preview</code></li>
+<li>添加Header（使用与上传相同的token）</li>
+<li>发送请求并检查返回的预览URL</li>
+</ol>
+<h3 id="测试头像下载："><a href="#测试头像下载：" class="headerlink" title="测试头像下载："></a>测试头像下载：</h3><ol>
+<li>创建一个新的GET请求</li>
+<li>设置URL: <code>http://localhost:9999/api/avatar/&#123;userId&#125;</code> (将{userId}替换为实际用户ID)</li>
+<li>添加Header（使用与上传相同的token）</li>
+<li>发送请求，获取下载链接</li>
+<li>在浏览器中访问下载链接验证文件是否可以下载</li>
+</ol>
+<h2 id="使用Postman中的Environment变量（可选但推荐）"><a href="#使用Postman中的Environment变量（可选但推荐）" class="headerlink" title="使用Postman中的Environment变量（可选但推荐）"></a>使用Postman中的Environment变量（可选但推荐）</h2><p>为了更便捷地进行测试，您可以设置Postman环境变量：</p>
+<ol>
+<li><p>在Postman右上角点击”No Environment”下拉菜单，然后点击”New”</p>
+</li>
+<li><p>创建一个名为”微服务测试”的环境</p>
+</li>
+<li><p>添加以下变量：</p>
+<ul>
+<li><code>baseUrl</code>: <code>http://localhost:9999</code></li>
+<li><code>token</code>: 空值(登录后自动填充)</li>
+</ul>
+</li>
+<li><p>点击”Save”保存环境</p>
+</li>
+<li><p>在登录请求的Tests选项卡中添加以下代码，以便在登录时自动保存token：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pm.<span class="property">response</span>.<span class="property">code</span> === <span class="number">200</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> jsonData = pm.<span class="property">response</span>.<span class="title function_">json</span>();</span><br><span class="line">    <span class="keyword">if</span> (jsonData.<span class="property">code</span> === <span class="string">&quot;200&quot;</span> &amp;&amp; jsonData.<span class="property">data</span>) &#123;</span><br><span class="line">        pm.<span class="property">environment</span>.<span class="title function_">set</span>(<span class="string">&quot;token&quot;</span>, jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Token saved: &quot;</span> + jsonData.<span class="property">data</span>.<span class="property">tokenValue</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后所有请求都可以使用环境变量：</p>
+<ul>
+<li>URL: <code>&#123;&#123;baseUrl&#125;&#125;/api/uploadAvatar</code></li>
+<li>Headers: <code>Authorization: &#123;&#123;token&#125;&#125;</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="常见问题排查"><a href="#常见问题排查" class="headerlink" title="常见问题排查"></a>常见问题排查</h2><p>如果上传过程中遇到问题，请检查以下几点：</p>
+<ol>
+<li><p><strong>Token问题：</strong> 确保已正确设置了Authorization头部，且token值有效。您可以再次登录获取新token测试。</p>
+</li>
+<li><p><strong>文件大小：</strong> 确保上传的文件不超过配置的大小限制（在application.yml中配置的multipart大小）。</p>
+</li>
+<li><p><strong>Content-Type：</strong> 确保使用的是form-data方式，而不是binary或其他方式，否则服务器可能无法正确解析文件。</p>
+</li>
+<li><p><strong>文件格式：</strong> 确保上传的是图片文件（code中校验了文件类型必须以image&#x2F;开头）。</p>
+</li>
+<li><p><strong>网络问题：</strong> 检查网关服务和用户服务是否正常运行，可以通过访问一些简单的接口（如&#x2F;）来确认。</p>
+</li>
+<li><p><strong>跨域问题：</strong> 如果在实际前端应用中测试，可能会遇到跨域问题，确保网关的CORS配置正确。</p>
+</li>
+<li><p><strong>日志检查：</strong> 查看服务器日志，特别注意与文件上传相关的异常信息。</p>
+</li>
+</ol>
+<p>通过以上步骤，您应该能够在Postman中成功测试头像上传功能，并验证整个流程是否正常工作。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2025/04/12/%E3%80%90AI%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0%E3%80%91MCP/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2025/04/20/%E3%80%90MinIO%E3%80%91%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%8B%86%E5%88%86%E6%96%B9%E6%A1%88"><span class="nav-number">1.</span> <span class="nav-text">微服务拆分方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%A2%86%E5%9F%9F%E6%8B%86%E5%88%86"><span class="nav-number">1.1.</span> <span class="nav-text">1. 领域拆分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E5%8D%87%E7%BA%A7"><span class="nav-number">1.2.</span> <span class="nav-text">2. 技术架构升级</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E6%96%BD%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">具体实施步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%90%AD%E5%BB%BA%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD"><span class="nav-number">2.1.</span> <span class="nav-text">1. 搭建基础设施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA%E5%85%AC%E5%85%B1%E6%A8%A1%E5%9D%97"><span class="nav-number">2.2.</span> <span class="nav-text">2. 创建公共模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%8B%86%E5%88%86%E4%B8%9A%E5%8A%A1%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.3.</span> <span class="nav-text">3. 拆分业务服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%B0%83%E6%95%B4%E6%9C%8D%E5%8A%A1%E9%97%B4%E9%80%9A%E4%BF%A1"><span class="nav-number">2.4.</span> <span class="nav-text">4. 调整服务间通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%AE%89%E5%85%A8%E8%AE%A4%E8%AF%81%E6%94%B9%E9%80%A0"><span class="nav-number">2.5.</span> <span class="nav-text">5. 安全认证改造</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%9B%91%E6%8E%A7"><span class="nav-number">2.6.</span> <span class="nav-text">6. 部署与监控</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text">迁移注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E5%A4%A9%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E8%AE%A1%E5%88%92"><span class="nav-number">4.</span> <span class="nav-text">3天微服务框架搭建计划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC1%E5%A4%A9%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA"><span class="nav-number">4.1.</span> <span class="nav-text">第1天：基础设施搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC2%E5%A4%A9%EF%BC%9A%E6%A0%B8%E5%BF%83%E6%9C%8D%E5%8A%A1%E6%8B%86%E5%88%86"><span class="nav-number">4.2.</span> <span class="nav-text">第2天：核心服务拆分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC3%E5%A4%A9%EF%BC%9A%E7%BD%91%E5%85%B3%E5%92%8C%E6%9C%8D%E5%8A%A1%E9%9B%86%E6%88%90"><span class="nav-number">4.3.</span> <span class="nav-text">第3天：网关和服务集成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%85%B3%E9%94%AE%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5"><span class="nav-number">5.</span> <span class="nav-text">快速实现的关键代码片段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%BD%91%E5%85%B3%E9%85%8D%E7%BD%AE%EF%BC%88ssc-gateway%EF%BC%89"><span class="nav-number">5.1.</span> <span class="nav-text">1. 网关配置（ssc-gateway）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1%EF%BC%88ssc-user%EF%BC%89"><span class="nav-number">5.2.</span> <span class="nav-text">2. 用户服务（ssc-user）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%AE%A2%E5%8D%95%E6%9C%8D%E5%8A%A1%EF%BC%88ssc-order%EF%BC%89"><span class="nav-number">5.3.</span> <span class="nav-text">3. 订单服务（ssc-order）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1Feign%E5%AE%A2%E6%88%B7%E7%AB%AF%EF%BC%88%E5%9C%A8ssc-order%E4%B8%AD%EF%BC%89"><span class="nav-number">5.4.</span> <span class="nav-text">4. 用户服务Feign客户端（在ssc-order中）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%AE%80%E5%8C%96%E7%89%88%E6%9C%AC%E7%9A%84%E8%AE%A2%E5%8D%95%E6%9C%8D%E5%8A%A1%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.5.</span> <span class="nav-text">5. 简化版本的订单服务实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%BB%BA%E8%AE%AE"><span class="nav-number">6.</span> <span class="nav-text">实现建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%BD%91%E5%85%B3%E9%85%8D%E7%BD%AE%E7%9A%84%E7%89%B9%E6%AE%8A%E8%B7%AF%E7%94%B1"><span class="nav-number">6.1.</span> <span class="nav-text">一、网关配置的特殊路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1%E6%8E%A5%E5%8F%A3-%E9%80%9A%E8%BF%87%E7%BD%91%E5%85%B3%E8%AE%BF%E9%97%AE%E9%9C%80%E6%B7%BB%E5%8A%A0%E5%89%8D%E7%BC%80-api"><span class="nav-number">6.2.</span> <span class="nav-text">二、用户服务接口 (通过网关访问需添加前缀 &#x2F;api)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%AE%A2%E5%8D%95%E6%9C%8D%E5%8A%A1%E6%8E%A5%E5%8F%A3-%E9%80%9A%E8%BF%87%E7%BD%91%E5%85%B3%E8%AE%BF%E9%97%AE%E9%9C%80%E6%B7%BB%E5%8A%A0%E5%89%8D%E7%BC%80-api"><span class="nav-number">6.3.</span> <span class="nav-text">三、订单服务接口 (通过网关访问需添加前缀 &#x2F;api)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%B5%8B%E8%AF%95%E6%8E%A5%E5%8F%A3"><span class="nav-number">6.4.</span> <span class="nav-text">四、测试接口</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sa-token%E5%BC%95%E5%85%A5"><span class="nav-number"></span> <span class="nav-text">Sa-token引入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%B5%8B%E8%AF%95%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">1. 测试注册功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%B5%8B%E8%AF%95%E7%99%BB%E5%BD%95%E5%8A%9F%E8%83%BD"><span class="nav-number">2.</span> <span class="nav-text">2. 测试登录功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8token%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"><span class="nav-number">3.</span> <span class="nav-text">3. 使用token获取用户信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%B5%8B%E8%AF%95%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">4. 测试权限控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E6%B5%8B%E8%AF%95%E7%AE%A1%E7%90%86%E5%91%98%E8%A7%92%E8%89%B2%E7%9A%84%E6%8E%A5%E5%8F%A3"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 测试管理员角色的接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E6%B5%8B%E8%AF%95%E6%91%84%E5%BD%B1%E5%B8%88%E8%A7%92%E8%89%B2%E7%9A%84%E6%8E%A5%E5%8F%A3"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 测试摄影师角色的接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%B5%8B%E8%AF%95%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95"><span class="nav-number">5.</span> <span class="nav-text">5. 测试退出登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E4%BD%BF%E7%94%A8Postman%E7%9A%84Collection%E5%92%8CEnvironment%E5%8A%9F%E8%83%BD"><span class="nav-number">6.</span> <span class="nav-text">6. 使用Postman的Collection和Environment功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E6%B5%8B%E8%AF%95%E6%97%A0%E6%95%88%E6%88%96%E8%BF%87%E6%9C%9Ftoken"><span class="nav-number">7.</span> <span class="nav-text">7. 测试无效或过期token</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7"><span class="nav-number">8.</span> <span class="nav-text">8. 调试技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">9.</span> <span class="nav-text">9. 常见问题及解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A41-%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96Token"><span class="nav-number">10.</span> <span class="nav-text">步骤1: 用户登录获取Token</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A42-%E8%AE%BE%E7%BD%AE%E5%A4%B4%E5%83%8F%E4%B8%8A%E4%BC%A0%E8%AF%B7%E6%B1%82"><span class="nav-number">11.</span> <span class="nav-text">步骤2: 设置头像上传请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A43-%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82%E5%B9%B6%E6%A3%80%E6%9F%A5%E5%93%8D%E5%BA%94"><span class="nav-number">12.</span> <span class="nav-text">步骤3: 发送请求并检查响应</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A44-%E6%B5%8B%E8%AF%95%E5%A4%B4%E5%83%8F%E9%A2%84%E8%A7%88%E5%92%8C%E6%9F%A5%E7%9C%8B"><span class="nav-number">13.</span> <span class="nav-text">步骤4: 测试头像预览和查看</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E5%A4%B4%E5%83%8F%E9%A2%84%E8%A7%88%EF%BC%9A"><span class="nav-number">13.1.</span> <span class="nav-text">测试当前用户头像预览：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%A4%B4%E5%83%8F%E4%B8%8B%E8%BD%BD%EF%BC%9A"><span class="nav-number">13.2.</span> <span class="nav-text">测试头像下载：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Postman%E4%B8%AD%E7%9A%84Environment%E5%8F%98%E9%87%8F%EF%BC%88%E5%8F%AF%E9%80%89%E4%BD%86%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="nav-number">14.</span> <span class="nav-text">使用Postman中的Environment变量（可选但推荐）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="nav-number">15.</span> <span class="nav-text">常见问题排查</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

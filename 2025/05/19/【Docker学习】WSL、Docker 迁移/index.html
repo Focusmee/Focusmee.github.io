@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="WSL、Docker 迁移Windows WSL Docker 默认安装路径在C盘的，导致岌岌可危的C盘空间😱更加吃紧，一不小心就要出现👇这种情况了  接下来我们一起迁移它们吧 迁移 WSLWSL2 默认安装在 C 盘，我们可以通过以下步骤迁移安装位置通过以下命令列出已安装的 Linux 发行版： 1wsl -l -v  可以看到已安装了 Ubuntu，其运行状态为：Stopped 导出分发版">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2025/05/19/%E3%80%90Docker%E5%AD%A6%E4%B9%A0%E3%80%91WSL%E3%80%81Docker%20%E8%BF%81%E7%A7%BB/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="WSL、Docker 迁移Windows WSL Docker 默认安装路径在C盘的，导致岌岌可危的C盘空间😱更加吃紧，一不小心就要出现👇这种情况了  接下来我们一起迁移它们吧 迁移 WSLWSL2 默认安装在 C 盘，我们可以通过以下步骤迁移安装位置通过以下命令列出已安装的 Linux 发行版： 1wsl -l -v  可以看到已安装了 Ubuntu，其运行状态为：Stopped 导出分发版">
+<meta property="og:locale">
+<meta property="og:image" content="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815143048352-1440225869.png">
+<meta property="og:image" content="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815145222644-1202975402.png">
+<meta property="og:image" content="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815145856500-292128290.png">
+<meta property="og:image" content="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815160735996-160221150.png">
+<meta property="og:image" content="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815160813251-615510379.png">
+<meta property="og:image" content="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815161553829-1503338969.png">
+<meta property="og:image" content="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815165529003-2038965666.png">
+<meta property="article:published_time" content="2025-05-19T15:07:43.172Z">
+<meta property="article:modified_time" content="2025-05-19T15:07:43.462Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815143048352-1440225869.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2025/05/19/【Docker学习】WSL、Docker 迁移/"/>
+
+
+
+
+
+  <title> | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/05/19/%E3%80%90Docker%E5%AD%A6%E4%B9%A0%E3%80%91WSL%E3%80%81Docker%20%E8%BF%81%E7%A7%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-05-19T23:07:43+08:00">
+                2025-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="WSL、Docker-迁移"><a href="#WSL、Docker-迁移" class="headerlink" title="WSL、Docker 迁移"></a>WSL、Docker 迁移</h1><p>Windows WSL Docker 默认安装路径在C盘的，导致岌岌可危的C盘空间😱更加吃紧，一不小心就要出现👇这种情况了</p>
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815143048352-1440225869.png" alt="image"></p>
+<p>接下来我们一起迁移它们吧</p>
+<h2 id="迁移-WSL"><a href="#迁移-WSL" class="headerlink" title="迁移 WSL"></a>迁移 WSL</h2><p>WSL2 默认安装在 C 盘，我们可以通过以下步骤迁移安装位置<br>通过以下命令列出已安装的 Linux 发行版：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl -l -v</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815145222644-1202975402.png" alt="image"><br>可以看到已安装了 Ubuntu，其运行状态为：Stopped</p>
+<h3 id="导出分发版"><a href="#导出分发版" class="headerlink" title="导出分发版"></a>导出分发版</h3><p>如果运行状态为 Running，需先通过以下命令关闭：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --shutdown</span><br></pre></td></tr></table></figure>
+
+<p>然后我们通过以下命令将 Ubuntu 导出为 tar 文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --export Ubuntu d:\wsl\Ubuntu.tar</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815145856500-292128290.png" alt="image"></p>
+<blockquote>
+<p>⚠️<br>wsl –export <Distribution Name> <FileName><br><code>&lt;Distribution Name&gt;</code> 为目标 Linux 发行版的名称，我安装的为： <code>Ubuntu</code><br><code>&lt;FileName&gt;</code> 为导出的文件名，这里我导出到 <code>d:\wsl\Ubuntu.tar</code><br>当然可以是任意位置</p>
+</blockquote>
+<h3 id="注销并卸载"><a href="#注销并卸载" class="headerlink" title="注销并卸载"></a>注销并卸载</h3><p>然后注销并卸载 Ubuntu</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --unregister Ubuntu</span><br></pre></td></tr></table></figure>
+
+<p>这时候可以执行验证是否完成注销并卸载<br><code>wsl -l -v</code></p>
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815160735996-160221150.png" alt="image"></p>
+<p><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815160813251-615510379.png" alt="image"></p>
+<p>👍完美，符合预期！！！</p>
+<h3 id="导入安装"><a href="#导入安装" class="headerlink" title="导入安装"></a>导入安装</h3><p>将 Ubuntu 从新位置导入：<br><code>wsl --import Ubuntu d:\wsl\Ubuntu d:\wsl\Ubuntu.tar</code><br>再次查看已安装的 Linux 发行版<br><code>wsl -l -v</code><br><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815161553829-1503338969.png" alt="image"></p>
+<p>设置默认用户<br><code>Ubuntu config --default-user bigroc</code></p>
+<blockquote>
+<p>⚠️<br><DistributionName> config –default-user <Username><br><code>&lt;DistributionName&gt;</code> 为目标 Linux 发行版的名称，我安装的为： <code>Ubuntu</code>，命令里要写为：<code>Ubuntu</code><br>假如你的是<code>Ubuntu-22.04</code>，命令里要写为：<code>Ubuntu2204</code><br><code>&lt;Username&gt;</code> 为 WSL 发行版中存在的用户名，在设置 Linux 用户名和密码时我创建的用户为：<code>bigroc</code> ，所以命令里的 <code>&lt;Username&gt;</code> 这里就为：<code>bigroc</code></p>
+</blockquote>
+<h2 id="迁移-docker-desktop-data-和-docker-desktop"><a href="#迁移-docker-desktop-data-和-docker-desktop" class="headerlink" title="迁移 docker-desktop-data 和 docker-desktop"></a>迁移 docker-desktop-data 和 docker-desktop</h2><p>Docker Desktop 会创建两个发行版：<code>docker-desktop-data</code> 和 <code>docker-desktop</code>，它们的默认位置在 <code>C:\Users\&lt;你电脑的用户名&gt;\AppData\Local\Docker\wsl</code>，我们同样可以参考上面导入导出 <code>Ubuntu</code> 的过程将<code>docker-desktop-data</code> 和 <code>docker-desktop</code> 迁移到其他位置</p>
+<p>过程一致⬇️</p>
+<h3 id="导出"><a href="#导出" class="headerlink" title="导出"></a>导出</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wsl --export docker-desktop-data d:\wsl\docker-desktop-data.tar`</span><br><span class="line">`wsl --export docker-desktop-data d:\wsl\docker-desktop.tar</span><br></pre></td></tr></table></figure>
+
+<h3 id="注销卸载"><a href="#注销卸载" class="headerlink" title="注销卸载"></a>注销卸载</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wsl --unregister docker-desktop-data`</span><br><span class="line">`wsl --unregister docker-desktop</span><br></pre></td></tr></table></figure>
+
+<h3 id="导入安装-1"><a href="#导入安装-1" class="headerlink" title="导入安装"></a>导入安装</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wsl --import docker-desktop-data d:\wsl\docker-desktop-data d:\wsl\docker-desktop-data.tar`</span><br><span class="line">`wsl --import docker-desktop d:\wsl\docker-desktop d:\wsl\docker-desktop.tar</span><br></pre></td></tr></table></figure>
+
+<p>至此 公司的电脑又一次成功复活<br><img src="https://img2024.cnblogs.com/blog/1131701/202408/1131701-20240815165529003-2038965666.png" alt="image"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li>【microsoft】<a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/wsl/basic-commands">WSL 的基本命令</a></li>
+<li>【csdn】<a target="_blank" rel="noopener" href="https://blog.csdn.net/cn_ljr/article/details/132047516">Win11 安装 Docker Desktop 和 WSL2 并进行安装位置迁移</a></li>
+<li>【bilibili】【2025【Docker Windows】C盘满了通过WSL将docker数据迁移到D盘】 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV17qdpYGEEE/?share_source=copy_web&vd_source=654a4e361961dcce96893993981165f5">https://www.bilibili.com/video/BV17qdpYGEEE/?share_source=copy_web&amp;vd_source=654a4e361961dcce96893993981165f5</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2025/05/17/%E3%80%90Unity%E5%AD%A6%E4%B9%A0%E3%80%91Unity%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2025/05/22/%E3%80%90Git%E5%AD%A6%E4%B9%A0%E3%80%91%E5%A6%82%E4%BD%95%E5%B0%86Unity%E9%A1%B9%E7%9B%AE%E4%B8%8A%E4%BC%A0%E5%88%B0Github%E8%BF%9B%E8%A1%8C%E7%AE%A1%E7%90%86/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#WSL%E3%80%81Docker-%E8%BF%81%E7%A7%BB"><span class="nav-number">1.</span> <span class="nav-text">WSL、Docker 迁移</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB-WSL"><span class="nav-number">1.1.</span> <span class="nav-text">迁移 WSL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E5%88%86%E5%8F%91%E7%89%88"><span class="nav-number">1.1.1.</span> <span class="nav-text">导出分发版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E9%94%80%E5%B9%B6%E5%8D%B8%E8%BD%BD"><span class="nav-number">1.1.2.</span> <span class="nav-text">注销并卸载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.3.</span> <span class="nav-text">导入安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB-docker-desktop-data-%E5%92%8C-docker-desktop"><span class="nav-number">1.2.</span> <span class="nav-text">迁移 docker-desktop-data 和 docker-desktop</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA"><span class="nav-number">1.2.1.</span> <span class="nav-text">导出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E9%94%80%E5%8D%B8%E8%BD%BD"><span class="nav-number">1.2.2.</span> <span class="nav-text">注销卸载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E5%AE%89%E8%A3%85-1"><span class="nav-number">1.2.3.</span> <span class="nav-text">导入安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

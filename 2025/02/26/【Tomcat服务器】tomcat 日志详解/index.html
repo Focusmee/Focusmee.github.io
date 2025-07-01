@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="1 tomcat 日志详解1.1 tomcat 日志配置文件　　tomcat 对应日志的配置文件：tomcat目录下的&#x2F;conf&#x2F;logging.properties。 　　tomcat 的日志等级有：日志输出级别：SEVERE (最高级别) &gt; WARNING &gt; INFO &gt; CONFIG &gt; FINE &gt; FINER(精心) &gt; FIN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2025/02/26/%E3%80%90Tomcat%E6%9C%8D%E5%8A%A1%E5%99%A8%E3%80%91tomcat%20%E6%97%A5%E5%BF%97%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1 tomcat 日志详解1.1 tomcat 日志配置文件　　tomcat 对应日志的配置文件：tomcat目录下的&#x2F;conf&#x2F;logging.properties。 　　tomcat 的日志等级有：日志输出级别：SEVERE (最高级别) &gt; WARNING &gt; INFO &gt; CONFIG &gt; FINE &gt; FINER(精心) &gt; FIN">
+<meta property="og:locale">
+<meta property="og:image" content="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif">
+<meta property="og:image" content="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif">
+<meta property="og:image" content="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif">
+<meta property="og:image" content="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif">
+<meta property="article:published_time" content="2025-02-26T13:29:36.952Z">
+<meta property="article:modified_time" content="2025-02-26T13:29:37.185Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2025/02/26/【Tomcat服务器】tomcat 日志详解/"/>
+
+
+
+
+
+  <title> | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/26/%E3%80%90Tomcat%E6%9C%8D%E5%8A%A1%E5%99%A8%E3%80%91tomcat%20%E6%97%A5%E5%BF%97%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-26T21:29:36+08:00">
+                2025-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-tomcat-日志详解"><a href="#1-tomcat-日志详解" class="headerlink" title="1 tomcat 日志详解"></a>1 tomcat 日志详解</h2><h3 id="1-1-tomcat-日志配置文件"><a href="#1-1-tomcat-日志配置文件" class="headerlink" title="1.1 tomcat 日志配置文件"></a>1.1 tomcat 日志配置文件</h3><p>　　<strong>tomcat 对应日志的配置文件</strong>：tomcat目录下的&#x2F;conf&#x2F;logging.properties。</p>
+<p>　　<strong>tomcat 的日志等级有：</strong>日志输出级别：SEVERE (最高级别) &gt; WARNING &gt; INFO &gt; CONFIG &gt; FINE &gt; FINER(精心) &gt; FINEST (所有内容,最低级别)</p>
+<p>　　<strong>tomcat 有五类日志 ：</strong>catalina、localhost、manager、admin、host-manager</p>
+<p>　　&#x2F;conf&#x2F;logging.properties 配置文件：</p>
+<p><img src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="img"> View Code</p>
+<h3 id="1-2-tomcat-日志文件详解"><a href="#1-2-tomcat-日志文件详解" class="headerlink" title="1.2 tomcat 日志文件详解"></a>1.2 tomcat 日志文件详解</h3><p>　<strong>tomcat 有五类日志 ：</strong>catalina、localhost、manager、admin、host-manager</p>
+<h4 id="1-2-1-catalina-out-："><a href="#1-2-1-catalina-out-：" class="headerlink" title="1.2.1 catalina.out ："></a>1.2.1 catalina.out ：</h4><p>catalina.out即标准输出和标准出错，所有输出到这两个位置的都会进入catalina.out，这里包含tomcat运行自己输出的日志以及应用里向console输出的日志。默认这个日志文件是不会进行自动切割的，我们需要借助其他工具进行切割（注意：catalina.out文件如果过大会影响）</p>
+<p><img src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="img"> View Code</p>
+<h4 id="1-2-2-catalina-YYYY-MM-DD-log"><a href="#1-2-2-catalina-YYYY-MM-DD-log" class="headerlink" title="1.2.2 catalina.YYYY-MM-DD.log"></a>1.2.2 catalina.YYYY-MM-DD.log</h4><p>　catalina.{yyyy-MM-dd}.log是tomcat自己运行的一些日志，这些日志还会输出到catalina.out，但是应用向console输出的日志不会输出到catalina.{yyyy-MM-dd}.log,它是tomcat的启动和暂停时的运行日志，<strong>注意，它和catalina.out是里面的内容是不一样的。</strong></p>
+<p><img src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="img"> View Code</p>
+<h4 id="1-2-3-localhost-YYYY-MM-DD-log"><a href="#1-2-3-localhost-YYYY-MM-DD-log" class="headerlink" title="**1.2.3 localhost.**YYYY-MM-DD.log"></a>**1.2.3 localhost.**YYYY-MM-DD.log</h4><p>　localhost.{yyyy-MM-dd}.log主要是应用初始化(listener, filter, servlet)未处理的异常最后被tomcat捕获而输出的日志,它也是包含tomcat的启动和暂停时的运行日志,但它没有catalina.2018-09-19.log 日志全。它只是记录了部分日志。</p>
+<p><img src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="img"> View Code</p>
+<h4 id="1-2-4-localhost-access-log-YYYY-MM-DD-txt"><a href="#1-2-4-localhost-access-log-YYYY-MM-DD-txt" class="headerlink" title="1.2.4 localhost_access_log**.**YYYY-MM-DD.txt"></a>1.2.4 localhost_access_log**.**YYYY-MM-DD.txt</h4><p>　localhost_access_log.2018-09-19.txt：这个是访问tomcat的日志，请求时间和资源，状态码都有记录。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET / HTTP/1.1&quot; 200 11286</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET /tomcat.css HTTP/1.1&quot; 200 5581</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET /tomcat.png HTTP/1.1&quot; 200 5103</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET /bg-button.png HTTP/1.1&quot; 200 713</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET /bg-nav.png HTTP/1.1&quot; 200 1401</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET /asf-logo-wide.svg HTTP/1.1&quot; 200 27235</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET /bg-middle.png HTTP/1.1&quot; 200 1918</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:57:42 -0400] &quot;GET /bg-upper.png HTTP/1.1&quot; 200 3103</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:14 -0400] &quot;GET / HTTP/1.1&quot; 200 11286</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:14 -0400] &quot;GET /favicon.ico HTTP/1.1&quot; 200 21630</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:16 -0400] &quot;GET / HTTP/1.1&quot; 200 11286</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:16 -0400] &quot;GET /favicon.ico HTTP/1.1&quot; 200 21630</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:21 -0400] &quot;GET / HTTP/1.1&quot; 200 11286</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:21 -0400] &quot;GET /favicon.ico HTTP/1.1&quot; 200 21630</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:28 -0400] &quot;GET /docs/setup.html HTTP/1.1&quot; 200 14470</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:28 -0400] &quot;GET /docs/images/docs-stylesheet.css HTTP/1.1&quot; 200 5780</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:28 -0400] &quot;GET /docs/images/tomcat.png HTTP/1.1&quot; 200 5103</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:28 -0400] &quot;GET /docs/images/asf-logo.svg HTTP/1.1&quot; 200 20486</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:28 -0400] &quot;GET /docs/images/fonts/fonts.css HTTP/1.1&quot; 200 1943</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:29 -0400] &quot;GET /docs/images/fonts/OpenSans400.woff HTTP/1.1&quot; 200 21956</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:29 -0400] &quot;GET /docs/images/fonts/OpenSans700.woff HTTP/1.1&quot; 200 22748</span><br><span class="line">192.168.1.220 - - [19/Sep/2018:03:58:29 -0400] &quot;GET /docs/images/fonts/OpenSans600.woff HTTP/1.1&quot; 200 22604</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-5-host-manager-YYYY-MM-DD-log"><a href="#1-2-5-host-manager-YYYY-MM-DD-log" class="headerlink" title="1.2.5 host-manager.YYYY-MM-DD.log"></a>1.2.5 host-manager.YYYY-MM-DD.log</h4><p>  host-manager.2018-09-19.log：这个估计是放tomcat的自带的manager项目的日志信息的，未看到有什么重要的日志信息。</p>
+<h4 id="1-2-6-manager-YYYY-MM-DD-log"><a href="#1-2-6-manager-YYYY-MM-DD-log" class="headerlink" title="1.2.6 manager.YYYY-MM-DD.log"></a><strong>1.2.6 manager.YYYY-MM-DD.log</strong></h4><p>　 manager.2018-09-19.log ：　这个是tomcat manager项目专有的日志文件.</p>
+<h3 id="1-3-tomcat-日志文件切割"><a href="#1-3-tomcat-日志文件切割" class="headerlink" title="1.3 tomcat 日志文件切割"></a>1.3 tomcat 日志文件切割</h3><p>　　tomcat 的 catalina.out 文件tomcat 是不会进行日志切割的，当这个文件大于2G 时，会影响tomcat的运行。那么我们需要对这个文件进行日志切割，切割的方法有很多种：</p>
+<p>　　第一种：</p>
+<p>　　通过系统自带的切割工具：logrotate来进行切割。</p>
+<p>　　第二种:</p>
+<p>　　使用logj4进行切割日志。</p>
+<p>　　第三种：</p>
+<p>　　使用用cronolog分割tomcat的catalina.out文件 </p>
+<p>　　以上三种方法见：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/happy-king/p/9193401.html">https://www.cnblogs.com/happy-king/p/9193401.html</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2025/02/26/%E3%80%90SpringBoot%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0%E3%80%91@Configuration%E6%B2%A1%E7%94%9F%E6%95%88%E5%8F%AF%E8%83%BD%E7%9A%84%E5%8E%9F%E5%9B%A0%20&%20%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2025/02/27/%E3%80%90MySQL%E5%AD%A6%E4%B9%A0%E3%80%91%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E8%AE%B2%E6%B8%85%E6%A5%9AMySQL%E7%9A%84%E8%81%9A%E7%B0%87%E8%81%94%E5%90%88%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95%E3%80%81%E5%9B%9E%E8%A1%A8%E3%80%81%E7%B4%A2%E5%BC%95%E4%B8%8B%E6%8E%A8/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-tomcat-%E6%97%A5%E5%BF%97%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">1 tomcat 日志详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-tomcat-%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 tomcat 日志配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-tomcat-%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 tomcat 日志文件详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-catalina-out-%EF%BC%9A"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.2.1 catalina.out ：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-catalina-YYYY-MM-DD-log"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2.2 catalina.YYYY-MM-DD.log</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-3-localhost-YYYY-MM-DD-log"><span class="nav-number">1.2.3.</span> <span class="nav-text">**1.2.3 localhost.**YYYY-MM-DD.log</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-4-localhost-access-log-YYYY-MM-DD-txt"><span class="nav-number">1.2.4.</span> <span class="nav-text">1.2.4 localhost_access_log**.**YYYY-MM-DD.txt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-5-host-manager-YYYY-MM-DD-log"><span class="nav-number">1.2.5.</span> <span class="nav-text">1.2.5 host-manager.YYYY-MM-DD.log</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-6-manager-YYYY-MM-DD-log"><span class="nav-number">1.2.6.</span> <span class="nav-text">1.2.6 manager.YYYY-MM-DD.log</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-tomcat-%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%88%87%E5%89%B2"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 tomcat 日志文件切割</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

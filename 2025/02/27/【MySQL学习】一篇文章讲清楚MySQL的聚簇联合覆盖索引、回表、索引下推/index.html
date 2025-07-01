@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="一篇文章讲清楚MySQL的聚簇&#x2F;联合&#x2F;覆盖索引、回表、索引下推 迎面走来了你的面试官，身穿格子衫，挺着啤酒肚，发际线严重后移的中年男子。手拿泡着枸杞的保温杯，胳膊夹着MacBook，MacBook上还贴着公司标语：“加班使我快乐”。   面试官： 看你简历上用过MySQL，问你几个简单的问题吧。什么是聚簇索引和非聚簇索引？  这个问题难不住我啊。来之前我看一下一灯MySQL八股">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2025/02/27/%E3%80%90MySQL%E5%AD%A6%E4%B9%A0%E3%80%91%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E8%AE%B2%E6%B8%85%E6%A5%9AMySQL%E7%9A%84%E8%81%9A%E7%B0%87%E8%81%94%E5%90%88%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95%E3%80%81%E5%9B%9E%E8%A1%A8%E3%80%81%E7%B4%A2%E5%BC%95%E4%B8%8B%E6%8E%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一篇文章讲清楚MySQL的聚簇&#x2F;联合&#x2F;覆盖索引、回表、索引下推 迎面走来了你的面试官，身穿格子衫，挺着啤酒肚，发际线严重后移的中年男子。手拿泡着枸杞的保温杯，胳膊夹着MacBook，MacBook上还贴着公司标语：“加班使我快乐”。   面试官： 看你简历上用过MySQL，问你几个简单的问题吧。什么是聚簇索引和非聚簇索引？  这个问题难不住我啊。来之前我看一下一灯MySQL八股">
+<meta property="og:locale">
+<meta property="og:image" content="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111051713-1507542591.jpg">
+<meta property="og:image" content="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111108036-1147402936.png">
+<meta property="og:image" content="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111121011-881324052.png">
+<meta property="og:image" content="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111132063-131242407.png">
+<meta property="og:image" content="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111147031-342000180.png">
+<meta property="og:image" content="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111203139-127132140.png">
+<meta property="article:published_time" content="2025-02-27T13:03:18.247Z">
+<meta property="article:modified_time" content="2025-02-27T13:03:18.761Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111051713-1507542591.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2025/02/27/【MySQL学习】一篇文章讲清楚MySQL的聚簇联合覆盖索引、回表、索引下推/"/>
+
+
+
+
+
+  <title> | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/27/%E3%80%90MySQL%E5%AD%A6%E4%B9%A0%E3%80%91%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E8%AE%B2%E6%B8%85%E6%A5%9AMySQL%E7%9A%84%E8%81%9A%E7%B0%87%E8%81%94%E5%90%88%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95%E3%80%81%E5%9B%9E%E8%A1%A8%E3%80%81%E7%B4%A2%E5%BC%95%E4%B8%8B%E6%8E%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-27T21:03:18+08:00">
+                2025-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一篇文章讲清楚MySQL的聚簇-联合-覆盖索引、回表、索引下推"><a href="#一篇文章讲清楚MySQL的聚簇-联合-覆盖索引、回表、索引下推" class="headerlink" title="一篇文章讲清楚MySQL的聚簇&#x2F;联合&#x2F;覆盖索引、回表、索引下推"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yidengjiagou/p/16410968.html">一篇文章讲清楚MySQL的聚簇&#x2F;联合&#x2F;覆盖索引、回表、索引下推</a></h1><blockquote>
+<p>迎面走来了你的面试官，身穿格子衫，挺着啤酒肚，发际线严重后移的中年男子。<br>手拿泡着枸杞的保温杯，胳膊夹着MacBook，MacBook上还贴着公司标语：“加班使我快乐”。</p>
+</blockquote>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111051713-1507542591.jpg" alt="img"></p>
+<p><strong>面试官：</strong> 看你简历上用过MySQL，问你几个简单的问题吧。什么是聚簇索引和非聚簇索引？</p>
+<blockquote>
+<p>这个问题难不住我啊。来之前我看一下一灯MySQL八股文。</p>
+</blockquote>
+<p><strong>我：</strong> 举个例子：有这么一张用户表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE TABLE</span> `<span class="keyword">user</span>` (</span><br><span class="line">  `id` <span class="type">int</span> COMMENT <span class="string">&#x27;主键ID&#x27;</span>,</span><br><span class="line">  `name` <span class="type">varchar</span>(<span class="number">10</span>) COMMENT <span class="string">&#x27;姓名&#x27;</span>,</span><br><span class="line">  `age` <span class="type">int</span> COMMENT <span class="string">&#x27;年龄&#x27;</span>,</span><br><span class="line">  <span class="keyword">PRIMARY KEY</span> (`id`)</span><br><span class="line">) ENGINE<span class="operator">=</span>InnoDB CHARSET<span class="operator">=</span>utf8 COMMENT<span class="operator">=</span><span class="string">&#x27;用户表&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>用户表中存储了这些数据：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>nane</th>
+<th>age</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>一灯</td>
+<td>18</td>
+</tr>
+<tr>
+<td>2</td>
+<td>张三</td>
+<td>22</td>
+</tr>
+<tr>
+<td>3</td>
+<td>李四</td>
+<td>21</td>
+</tr>
+<tr>
+<td>4</td>
+<td>王二</td>
+<td>19</td>
+</tr>
+<tr>
+<td>5</td>
+<td>麻子</td>
+<td>20</td>
+</tr>
+</tbody></table>
+<p>那么在索引中，这些数据是怎么存储的呢？</p>
+<p>MySQL的InnoDB引擎中索引使用的B+树结构。</p>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111108036-1147402936.png" alt="img"></p>
+<p>别问为什么根节点存储了（1,4）两个元素，左子节点又存储了（1,2,3）三个元素，下面带有三个叶子节点，叶子节点之间又用有序链表相连？</p>
+<p>问就是B+树的特性，不了解的可以翻一下上期的文章。</p>
+<p>如上图所示，叶子节点中存储了全部元素的索引，就是<strong>聚簇索引</strong>。<br>一般主键索引就是<strong>聚簇索引</strong>，如果表中没有主键，MySQL也会默认建立一个隐藏主键做主键索引。</p>
+<p><strong>什么是非聚簇索引？</strong></p>
+<p>假设我们在age（年龄）字段上建一个普通索引，age字段上面的索引存储结构就是下面这样：</p>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111121011-881324052.png" alt="img"></p>
+<p>叶子节点中只存储了当前索引字段和主键ID，这样的存储结构就是非聚簇索引。</p>
+<p><strong>面试官：</strong> 那什么是联合索引呢？</p>
+<p><strong>我：</strong> 有多个字段组成的索引就是联合索引。</p>
+<p><strong>面试官：</strong> 【晕】建联合索引有什么好处？它跟在单个字段上建索引有什么区别？</p>
+<p><strong>我：</strong> 假设有这么一条查询语句。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> age <span class="operator">=</span> <span class="number">18</span> <span class="keyword">and</span> name <span class="operator">=</span> <span class="string">&#x27;张三&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果我们在age和name字段上分别建两个索引，这个查询语句只会用到其中一个索引。</p>
+<p>但是我们在age和name字段建一个联合索引（age，name），它的存储结构就变成这样了。</p>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111132063-131242407.png" alt="img"></p>
+<p>如果只在age上面建索引，会先查询age上面非聚簇索引，有三条age&#x3D;18的记录，主键ID分别是1、4、5，然后再用这三个ID去查询主键ID的聚簇索引。</p>
+<p>如果在age和name上面建联合索引，会先查询age和name上面的非聚簇索引，匹配到一条记录，主键ID是1，然后再用这个ID去查询主键ID的聚簇索引。</p>
+<p>由此可以得出，联合索引的优点：<strong>大大减少扫描行数。</strong></p>
+<p><strong>面试官：</strong> 你再说一下什么是最左匹配原则？</p>
+<p><strong>我：</strong> 最左匹配原则是指在建立联合索引的时候，遵循最左优先，以最左边的为起点任何连续的索引都能匹配上。</p>
+<p>当我们在(age,name)上建立联合索引的时候，where条件中只有age可以用到索引，同时有age和name也可以用到索引。但是只有name的时候是无法用到索引的。</p>
+<p>为什么会出现这种情况呢？</p>
+<p>看上面的图，就理解了，(age,name)的联合索引，是先按照age排序，age相等的行再按照name排序。如果where条件只有一个name，当然无法用到索引。</p>
+<p><strong>面试官：</strong> 什么是覆盖索引和回表查询？</p>
+<p><strong>我：</strong> 这个就更简单了，上面已经提到这个知识点了。</p>
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111147031-342000180.png" alt="img"></p>
+<p>当我们在age上建索引的时候，查询SQL是这样的时候：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> id <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> age <span class="operator">=</span> <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
+
+<p>就会用到覆盖索引，因为ID字段我们使用age索引的时候已经查出来，不需要再二次回表查询了。</p>
+<p>但是当查询SQL是这样的时候：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> age <span class="operator">=</span> <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
+
+<p>想要查询所有字段，就需要二次回表查询。因为我们第一次用age索引的时候只查出来了主键ID，还需要再用主键ID回表查询出所有字段。</p>
+<p><strong>面试官：</strong> 再问一个，你知道什么是索引下推吗？</p>
+<blockquote>
+<p>这么冷门的问题，你都问的出来，真的要面试造火箭啊！</p>
+</blockquote>
+<p><strong>我：</strong> 索引下推（Index Condition Pushdown）是MySQL5.6引入的一个优化索引的特性。</p>
+<p><strong>举例：</strong></p>
+<p>在(age,name)上面建联合索引，并且查询SQL是这样的时候：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> age <span class="operator">=</span> <span class="number">18</span> <span class="keyword">and</span> name <span class="operator">=</span> <span class="string">&#x27;张三&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img2022.cnblogs.com/blog/734446/202206/734446-20220625111203139-127132140.png" alt="img"></p>
+<p>如果没有索引下推，会先匹配出 age &#x3D; 18 的三条记录，再用ID回表查询，筛选出 name &#x3D; ‘张三’ 的记录。</p>
+<p>如果使用索引下推，会先匹配出 age &#x3D; 18 的三条记录，再筛选出 name &#x3D; ‘张三’ 的一条记录，最后再用ID回表查询。</p>
+<p>由此得出，索引下推的优点：减少了回表的扫描行数。</p>
+<p>**面试官： ** 小伙子，八股文背的挺溜啊。我给你出个实战题，看你有没有准备。下面这个查询SQL该怎么建联合索引？</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> b <span class="operator">=</span> <span class="number">1</span> <span class="keyword">and</span> c <span class="operator">=</span> <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>故意***难我？你以为实战题就不能背八股文了吗？</p>
+</blockquote>
+<p><strong>我：</strong> 刚才在讲联合索引的时候已经说了这个知识点了，where条件有b和c的等值查询，联合索引就建成(b,c)，由于select后面有a，我们就建立 (b,c,a) 的联合索引，并且可以用到覆盖索引，查询速度更快。</p>
+<p><strong>面试官：</strong> 小伙子，有点东西。一会儿就给你发offer，明天就来上班，薪资double。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2025/02/26/%E3%80%90Tomcat%E6%9C%8D%E5%8A%A1%E5%99%A8%E3%80%91tomcat%20%E6%97%A5%E5%BF%97%E8%AF%A6%E8%A7%A3/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2025/04/10/%E3%80%90%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7%E3%80%91SSH%20key%E8%AE%A4%E8%AF%81%20%E6%8E%A8%E9%80%81%E3%80%81%E6%8B%89%E5%8F%96GitHub%E9%A1%B9%E7%9B%AE/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E8%AE%B2%E6%B8%85%E6%A5%9AMySQL%E7%9A%84%E8%81%9A%E7%B0%87-%E8%81%94%E5%90%88-%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95%E3%80%81%E5%9B%9E%E8%A1%A8%E3%80%81%E7%B4%A2%E5%BC%95%E4%B8%8B%E6%8E%A8"><span class="nav-number">1.</span> <span class="nav-text">一篇文章讲清楚MySQL的聚簇&#x2F;联合&#x2F;覆盖索引、回表、索引下推</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
