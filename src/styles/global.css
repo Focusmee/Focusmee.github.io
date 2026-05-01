@@ -119,6 +119,7 @@ select {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 0.5rem;
+  max-width: 100%;
 }
 
 .nav-link {
@@ -126,6 +127,7 @@ select {
   border-radius: var(--radius-pill);
   color: var(--muted);
   font-weight: 700;
+  white-space: nowrap;
   transition:
     transform 180ms ease,
     color 180ms ease,
@@ -577,6 +579,10 @@ select {
   line-height: 1.7;
 }
 
+.post-card time {
+  white-space: nowrap;
+}
+
 .tag {
   display: inline-flex;
   align-items: center;
@@ -815,5 +821,30 @@ select {
 
   .house-illustration {
     width: 84%;
+  }
+}
+
+@media (max-width: 760px) {
+  .nav-inner {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 0.85rem 0;
+  }
+
+  .nav-links {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: 0.2rem;
+    scrollbar-width: none;
+  }
+
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .post-card-tags {
+    display: none;
   }
 }

@@ -3,6 +3,19 @@ function normalizeBase() {
   return base === "/" ? "" : base;
 }
 
+function splitSuffix(path: string) {
+  const match = path.match(/^([^?#]*)([?#].*)?$/);
+
+  return {
+    pathname: match?.[1] || path,
+    suffix: match?.[2] || ""
+  };
+}
+
+function isFilePath(pathname: string) {
+  return /\/[^/]+\.[^/]+$/.test(pathname);
+}
+
 export function withBase(path = "/") {
   const base = normalizeBase();
 
@@ -10,8 +23,14 @@ export function withBase(path = "/") {
     return base ? `${base}/` : "/";
   }
 
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  return `${base}${normalizedPath}`;
+  const rawPath = path.startsWith("/") ? path : `/${path}`;
+  const { pathname, suffix } = splitSuffix(rawPath);
+  const normalizedPath =
+    pathname.endsWith("/") || isFilePath(pathname)
+      ? pathname
+      : `${pathname}/`;
+
+  return `${base}${normalizedPath}${suffix}`;
 }
 
 export function stripBase(pathname: string) {

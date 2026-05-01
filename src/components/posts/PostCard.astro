@@ -20,9 +20,11 @@ const readingMinutes = getReadingMinutes(entry.body ?? "");
 >
   <div class="meta-row">
     <Tag label={collection?.title ?? entry.data.category} accent />
-    <span>{formatDate(entry.data.pubDate)}</span>
-    <span>·</span>
-    <span>{readingMinutes} min</span>
+    <time datetime={entry.data.pubDate.toISOString()}>
+      {formatDate(entry.data.pubDate)}
+    </time>
+    <span aria-hidden="true">·</span>
+    <span>{readingMinutes} min read</span>
   </div>
 
   <h3 class="card-title">
@@ -32,14 +34,8 @@ const readingMinutes = getReadingMinutes(entry.body ?? "");
   <p class="card-copy">{entry.data.description}</p>
 
   {entry.data.tags.length > 0 && (
-    <div class="tag-row">
-      {entry.data.tags.slice(0, 3).map((tag) => <Tag label={tag} />)}
+    <div class="tag-row post-card-tags" aria-label="Tags">
+      {entry.data.tags.slice(0, 2).map((tag) => <Tag label={tag} />)}
     </div>
   )}
-
-  <div class="card-footer">
-    <a class="subtle-link" href={withBase(`/logs/${entry.id}`)}>
-      Open this log →
-    </a>
-  </div>
 </article>
