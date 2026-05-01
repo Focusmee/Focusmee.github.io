@@ -1,0 +1,48 @@
+---
+import "../../styles/global.css";
+import SiteNav from "../ui/SiteNav.astro";
+import SiteFooter from "../ui/SiteFooter.astro";
+import { siteConfig } from "../../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = siteConfig.name,
+  description = siteConfig.description
+} = Astro.props as Props;
+
+const pageTitle =
+  title === siteConfig.name ? title : `${title} | ${siteConfig.name}`;
+const canonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).toString()
+  : undefined;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteConfig.name} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <slot name="head" />
+  </head>
+  <body class="site-body">
+    <SiteNav />
+    <main id="content" class="site-main">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

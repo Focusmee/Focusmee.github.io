@@ -1,0 +1,94 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  mapping?: "pathname" | "url" | "title" | "og:title" | "specific" | "number";
+  term?: string;
+  strict?: "0" | "1";
+  showSetupHint?: boolean;
+}
+
+const {
+  title = "Comments",
+  description = "GitHub Discussions powered by Giscus.",
+  mapping = "pathname",
+  term,
+  strict = "0",
+  showSetupHint = false
+} = Astro.props as Props;
+
+const config = {
+  repo: import.meta.env.PUBLIC_GISCUS_REPO,
+  repoId: import.meta.env.PUBLIC_GISCUS_REPO_ID,
+  category: import.meta.env.PUBLIC_GISCUS_CATEGORY,
+  categoryId: import.meta.env.PUBLIC_GISCUS_CATEGORY_ID,
+  reactionsEnabled: import.meta.env.PUBLIC_GISCUS_REACTIONS_ENABLED || "1",
+  emitMetadata: import.meta.env.PUBLIC_GISCUS_EMIT_METADATA || "0",
+  inputPosition: import.meta.env.PUBLIC_GISCUS_INPUT_POSITION || "bottom",
+  theme: import.meta.env.PUBLIC_GISCUS_THEME || "preferred_color_scheme",
+  lang: import.meta.env.PUBLIC_GISCUS_LANG || "zh-CN",
+  loading: import.meta.env.PUBLIC_GISCUS_LOADING || "lazy"
+};
+
+const isConfigured = Boolean(
+  config.repo && config.repoId && config.category && config.categoryId
+);
+---
+
+{
+  (isConfigured || showSetupHint) && (
+    <section class="comments-shell">
+      <div class="section-heading comments-heading">
+        <span class="eyebrow">Giscus</span>
+        <h2 class="headline comments-title">{title}</h2>
+        <p class="lede">{description}</p>
+      </div>
+
+      {isConfigured ? (
+        <div class="comments-panel">
+          <script
+            is:inline
+            src="https://giscus.app/client.js"
+            data-repo={config.repo}
+            data-repo-id={config.repoId}
+            data-category={config.category}
+            data-category-id={config.categoryId}
+            data-mapping={mapping}
+            data-term={mapping === "specific" ? term : undefined}
+            data-strict={strict}
+            data-reactions-enabled={config.reactionsEnabled}
+            data-emit-metadata={config.emitMetadata}
+            data-input-position={config.inputPosition}
+            data-theme={config.theme}
+            data-lang={config.lang}
+            data-loading={config.loading}
+            crossorigin="anonymous"
+            async
+          ></script>
+        </div>
+      ) : (
+        <div class="placeholder-panel">
+          <strong>Giscus is ready, but not configured yet.</strong>
+          <p class="note-line">
+            先在 GitHub 仓库里开启 Discussions，然后把 Giscus 生成的公开参数填进环境变量。
+          </p>
+          <div class="detail-list" style="margin-top: 1rem;">
+            <div class="detail-item">
+              <div class="detail-kicker">Required env</div>
+              <strong>
+                PUBLIC_GISCUS_REPO / REPO_ID / CATEGORY / CATEGORY_ID
+              </strong>
+            </div>
+            <div class="detail-item">
+              <div class="detail-kicker">Recommended</div>
+              <strong>
+                PUBLIC_GISCUS_THEME=preferred_color_scheme,
+                PUBLIC_GISCUS_LANG=zh-CN
+              </strong>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  )
+}

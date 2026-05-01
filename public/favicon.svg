@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title>Blooming Logs</title>
+  <rect width="128" height="128" rx="24" fill="#fff9f0"/>
+  <circle cx="98" cy="36" r="14" fill="#f5c400"/>
+  <path d="M24 78 64 44l40 34v26H24Z" fill="#ffffff" stroke="#232323" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M40 104V76h18v28" fill="#f8f5ef" stroke="#232323" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="95" cy="98" r="12" fill="#6faf5d"/>
+  <circle cx="95" cy="98" r="5" fill="#232323"/>
+  <path d="M95 82v-18" stroke="#6faf5d" stroke-width="5" stroke-linecap="round"/>
+</svg>

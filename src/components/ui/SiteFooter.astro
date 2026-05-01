@@ -1,0 +1,22 @@
+---
+import { siteConfig } from "../../data/site";
+import { withBase } from "../../utils/links";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div>
+    <strong>{siteConfig.name}</strong>
+    <div>{siteConfig.tagline}</div>
+  </div>
+
+  <div class="footer-links">
+    <a href={withBase("/logs")}>Logs</a>
+    <a href={withBase("/collections")}>Collections</a>
+    <a href={withBase("/about")}>About</a>
+    <a href={withBase("/rss.xml")}>RSS</a>
+  </div>
+
+  <div>© {year} {siteConfig.shortName}</div>
+</footer>

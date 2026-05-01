@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../../components/layout/BaseLayout.astro";
+import CollectionGrid from "../../components/collections/CollectionGrid.astro";
+
+---
+
+<BaseLayout
+  title="Collections"
+  description="按栏目浏览 Blooming Logs 的内容入口。"
+>
+  <section class="section-shell">
+    <div class="section-heading">
+      <span class="eyebrow">Collections</span>
+      <h1 class="headline">A small map of the house.</h1>
+      <p class="lede">
+        这些栏目不是普通标签，它们会逐步变成唱片架、花瓶、CRT、照片墙和抽屉。
+      </p>
+    </div>
+
+    <CollectionGrid />
+  </section>
+</BaseLayout>

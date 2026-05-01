@@ -1,0 +1,45 @@
+---
+import Tag from "../ui/Tag.astro";
+import { formatDate, getReadingMinutes } from "../../utils/format";
+import { getCollectionMeta } from "../../data/collections";
+import { withBase } from "../../utils/links";
+import type { LogEntry } from "../../utils/posts";
+
+interface Props {
+  entry: LogEntry;
+}
+
+const { entry } = Astro.props as Props;
+const collection = getCollectionMeta(entry.data.category);
+const readingMinutes = getReadingMinutes(entry.body ?? "");
+---
+
+<article
+  class="post-card"
+  style={`--accent: var(--${collection?.color ?? "sunflower"});`}
+>
+  <div class="meta-row">
+    <Tag label={collection?.title ?? entry.data.category} accent />
+    <span>{formatDate(entry.data.pubDate)}</span>
+    <span>·</span>
+    <span>{readingMinutes} min</span>
+  </div>
+
+  <h3 class="card-title">
+    <a href={withBase(`/logs/${entry.id}`)}>{entry.data.title}</a>
+  </h3>
+
+  <p class="card-copy">{entry.data.description}</p>
+
+  {entry.data.tags.length > 0 && (
+    <div class="tag-row">
+      {entry.data.tags.slice(0, 3).map((tag) => <Tag label={tag} />)}
+    </div>
+  )}
+
+  <div class="card-footer">
+    <a class="subtle-link" href={withBase(`/logs/${entry.id}`)}>
+      Open this log →
+    </a>
+  </div>
+</article>

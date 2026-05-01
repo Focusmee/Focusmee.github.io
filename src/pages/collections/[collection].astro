@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../../components/layout/BaseLayout.astro";
+import PostList from "../../components/posts/PostList.astro";
+import { collections, type CollectionMeta } from "../../data/collections";
+import { getPostsByCategory } from "../../utils/posts";
+
+export async function getStaticPaths() {
+  return collections
+    .filter((item) => item.id !== "archive")
+    .map((collection) => ({
+      params: { collection: collection.id },
+      props: { collection }
+    }));
+}
+
+interface Props {
+  collection: CollectionMeta;
+}
+
+const { collection } = Astro.props as Props;
+const posts = await getPostsByCategory(collection.id);
+---
+
+<BaseLayout title={collection.title} description={collection.description}>
+  <section class="section-shell">
+    <div class="section-heading">
+      <span class="eyebrow">{collection.object}</span>
+      <h1 class="headline">{collection.title}</h1>
+      <p class="lede">
+        {collection.description} 这一页现在先保证结构清晰，后面再继续往里面加入更完整的视觉语言。
+      </p>
+    </div>
+
+    {posts.length > 0 ? (
+      <PostList posts={posts} />
+    ) : (
+      <div class="placeholder-panel">
+        <strong>This shelf is still being arranged.</strong>
+        <p class="note-line">
+          结构已经就位，可以随时往这里放新的文章或项目记录。
+        </p>
+      </div>
+    )}
+  </section>
+</BaseLayout>

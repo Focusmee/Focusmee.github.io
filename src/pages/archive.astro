@@ -1,0 +1,53 @@
+---
+import BaseLayout from "../components/layout/BaseLayout.astro";
+import Tag from "../components/ui/Tag.astro";
+import { formatDate } from "../utils/format";
+import { groupPostsByYear, getPublishedLogs } from "../utils/posts";
+import { getCollectionMeta } from "../data/collections";
+import { withBase } from "../utils/links";
+
+const posts = await getPublishedLogs();
+const grouped = groupPostsByYear(posts);
+const years = Object.keys(grouped).sort((left, right) => Number(right) - Number(left));
+---
+
+<BaseLayout title="Archive" description="按年份和栏目查看归档。">
+  <section class="section-shell">
+    <div class="section-heading">
+      <span class="eyebrow">Archive</span>
+      <h1 class="headline">Open the drawer.</h1>
+      <p class="lede">
+        这里先做成稳定的时间索引页。以后可以继续加月份分组、标签筛选和随机抽取入口。
+      </p>
+    </div>
+
+    {
+      years.map((year) => (
+        <section class="section-shell" style="margin-top: 2rem;">
+          <h2 class="archive-year">{year}</h2>
+          <div class="archive-list">
+            {grouped[year]?.map((entry) => {
+              const collection = getCollectionMeta(entry.data.category);
+
+              return (
+                <article class="archive-item">
+                  <div>
+                    <a class="subtle-link" href={withBase(`/logs/${entry.id}`)}>
+                      {entry.data.title}
+                    </a>
+                    <div class="note-line">{entry.data.description}</div>
+                  </div>
+
+                  <div class="tag-row">
+                    <Tag label={collection?.title ?? entry.data.category} accent />
+                    <span class="detail-kicker">{formatDate(entry.data.pubDate)}</span>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      ))
+    }
+  </section>
+</BaseLayout>

@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../components/layout/BaseLayout.astro";
+import { siteConfig } from "../data/site";
+
+---
+
+<BaseLayout title="About" description="关于 Blooming Logs 和这个站点的主人。">
+  <section class="section-shell split-grid">
+    <div class="intro-slab">
+      <div class="section-heading">
+        <span class="eyebrow">Who lives here?</span>
+        <h1 class="headline">A person building a tiny house for notes.</h1>
+      </div>
+      <p class="lede">
+        Blooming Logs 想做成一个不像“模板博客”的个人空间。它会收纳文章、代码、音乐、图像、慢观察，也会保留一点奇怪但温柔的秩序。
+      </p>
+      <p class="lede">
+        现在这页先提供清晰的自我介绍位置，后面你可以继续替换成更具体的照片、自画像插图和外链。
+      </p>
+    </div>
+
+    <div class="detail-list">
+      <div class="detail-item">
+        <div class="detail-kicker">Site name</div>
+        <strong>{siteConfig.name}</strong>
+        <p class="note-line">{siteConfig.tagline}</p>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-kicker">What goes here</div>
+        <strong>Notes, Lab, Records, Frames, Garden, Archive</strong>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-kicker">Links to replace</div>
+        <p class="note-line">GitHub: {siteConfig.social.github}</p>
+        <p class="note-line">Email: {siteConfig.email}</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../../components/layout/BaseLayout.astro";
+import PostList from "../../components/posts/PostList.astro";
+import Tag from "../../components/ui/Tag.astro";
+import { collections } from "../../data/collections";
+import { withBase } from "../../utils/links";
+import { getPublishedLogs } from "../../utils/posts";
+
+const posts = await getPublishedLogs();
+---
+
+<BaseLayout title="Logs" description="按时间查看所有日志与文章。">
+  <section class="section-shell">
+    <div class="section-heading">
+      <span class="eyebrow">Logs</span>
+      <h1 class="headline">All notes on the shelf.</h1>
+      <p class="lede">
+        这里先保持干净清楚，优先服务阅读和检索。栏目入口已经接好，后面再补搜索和更多筛选。
+      </p>
+    </div>
+
+    <div class="tag-row" style="margin-bottom: 1.5rem;">
+      {collections.map((collection) => (
+        <Tag label={collection.title} href={withBase(collection.href)} accent />
+      ))}
+    </div>
+
+    <PostList posts={posts} />
+  </section>
+</BaseLayout>

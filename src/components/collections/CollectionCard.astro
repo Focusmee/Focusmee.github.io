@@ -1,0 +1,43 @@
+---
+import type { CollectionMeta } from "../../data/collections";
+import { withBase } from "../../utils/links";
+
+interface Props {
+  collection: CollectionMeta;
+  count: number;
+  latestTitle?: string;
+}
+
+const { collection, count, latestTitle } = Astro.props as Props;
+---
+
+<article
+  class="collection-card"
+  style={`--accent: var(--${collection.color});`}
+>
+  <div class="collection-art">
+    <div>
+      <div class="detail-kicker">{collection.object}</div>
+      <h3 class="card-title">{collection.title}</h3>
+    </div>
+    <div class="collection-count">
+      {count > 0 ? `${count} logs` : "seedling"}
+    </div>
+  </div>
+
+  <p class="card-copy">{collection.description}</p>
+  <p class="note-line">{collection.blurb}</p>
+
+  {latestTitle && (
+    <div class="meta-row">
+      <span class="detail-kicker">Latest</span>
+      <span>{latestTitle}</span>
+    </div>
+  )}
+
+  <div class="card-footer">
+    <a class="subtle-link" href={withBase(collection.href)}>
+      Enter {collection.title} →
+    </a>
+  </div>
+</article>

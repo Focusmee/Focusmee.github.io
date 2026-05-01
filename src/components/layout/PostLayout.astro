@@ -1,0 +1,81 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import GiscusComments from "../comments/GiscusComments.astro";
+import Tag from "../ui/Tag.astro";
+import { formatDate, getReadingMinutes } from "../../utils/format";
+import { getCollectionMeta } from "../../data/collections";
+import { withBase } from "../../utils/links";
+import type { LogEntry } from "../../utils/posts";
+
+interface Props {
+  entry: LogEntry;
+  previous?: LogEntry | null;
+  next?: LogEntry | null;
+}
+
+const { entry, previous = null, next = null } = Astro.props as Props;
+
+const collection = getCollectionMeta(entry.data.category);
+const readingMinutes = getReadingMinutes(entry.body ?? "");
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+  <article class="post-shell">
+    <a class="eyebrow-link" href={withBase("/logs")}>Back to Logs</a>
+
+    <header
+      class="post-hero"
+      style={`--accent: var(--${collection?.color ?? "sunflower"});`}
+    >
+      <div class="tag-row">
+        <Tag label={collection?.title ?? entry.data.category} accent />
+        <span class="tag">{formatDate(entry.data.pubDate)}</span>
+        <span class="tag">{readingMinutes} min read</span>
+      </div>
+
+      <h1>{entry.data.title}</h1>
+      <p class="post-summary">{entry.data.description}</p>
+
+      {entry.data.tags.length > 0 && (
+        <div class="tag-row" style="margin-top: 1rem;">
+          {entry.data.tags.map((tag) => <Tag label={tag} />)}
+        </div>
+      )}
+    </header>
+
+    <div class="prose">
+      <slot />
+    </div>
+
+    <GiscusComments
+      title="Discuss this log"
+      description="这篇文章的评论会同步到 GitHub Discussions。"
+    />
+
+    <nav class="post-pagination" aria-label="Post navigation">
+      {next ? (
+        <a class="pagination-card" href={withBase(`/logs/${next.id}`)}>
+          <div class="detail-kicker">Newer</div>
+          <strong>{next.data.title}</strong>
+        </a>
+      ) : (
+        <div class="pagination-card">
+          <div class="detail-kicker">Newer</div>
+          <strong>已经到最前面了</strong>
+        </div>
+      )}
+
+      {previous ? (
+        <a class="pagination-card" href={withBase(`/logs/${previous.id}`)}>
+          <div class="detail-kicker">Older</div>
+          <strong>{previous.data.title}</strong>
+        </a>
+      ) : (
+        <div class="pagination-card">
+          <div class="detail-kicker">Older</div>
+          <strong>抽屉的尽头在这里</strong>
+        </div>
+      )}
+    </nav>
+  </article>
+</BaseLayout>

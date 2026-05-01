@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../components/layout/BaseLayout.astro";
+
+const projects = [
+  {
+    title: "Blooming Logs",
+    status: "in progress",
+    description: "博客骨架、内容系统和首页世界观搭建。",
+    stack: "Astro, MDX, React"
+  },
+  {
+    title: "Future Scene Engine",
+    status: "seed idea",
+    description: "后续把首页升级成真正可进入的空间场景。",
+    stack: "React Three Fiber, GSAP"
+  },
+  {
+    title: "Guestbook Integration",
+    status: "planned",
+    description: "等 GitHub Discussions 准备好之后接入 Giscus。",
+    stack: "Giscus, GitHub Pages"
+  }
+];
+---
+
+<BaseLayout title="Projects" description="项目、作品与实验入口。">
+  <section class="section-shell">
+    <div class="section-heading">
+      <span class="eyebrow">Projects</span>
+      <h1 class="headline">Workbench, not trophy shelf.</h1>
+      <p class="lede">
+        这里先放一个能继续扩展的项目页骨架。以后可以逐渐补上 Demo、GitHub 链接、状态标签和截图。
+      </p>
+    </div>
+
+    <div class="card-grid">
+      {projects.map((project) => (
+        <article class="post-card" style="--accent: var(--leaf);">
+          <div class="meta-row">
+            <span class="tag tag--accent">{project.status}</span>
+            <span>{project.stack}</span>
+          </div>
+          <h2 class="card-title">{project.title}</h2>
+          <p class="card-copy">{project.description}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

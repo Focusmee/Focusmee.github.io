@@ -1,0 +1,112 @@
+---
+import Button from "../ui/Button.astro";
+import { collections } from "../../data/collections";
+import { siteConfig } from "../../data/site";
+import { withBase } from "../../utils/links";
+import { pickRandomItem } from "../../utils/random";
+import { getPublishedLogs } from "../../utils/posts";
+
+const posts = await getPublishedLogs();
+const randomPost = pickRandomItem(posts);
+const spotlight = collections.slice(0, 6);
+---
+
+<section class="hero">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <span class="hero-kicker">Blooming Logs</span>
+      <h1 class="hero-title">A white vinyl house by the sea.</h1>
+      <p class="hero-subtitle">
+        {siteConfig.description} 第一版先把“能长期写、能稳定读、首页有记忆点”这三个部分搭稳。
+      </p>
+
+      <div class="hero-actions">
+        <Button href="#inside-house">Enter the House</Button>
+        {randomPost && (
+          <Button href={withBase(`/logs/${randomPost.id}`)} variant="secondary">
+            Play Something Random
+          </Button>
+        )}
+      </div>
+
+      <dl class="hero-facts">
+        <div>
+          <dt>World</dt>
+          <dd>White vinyl house</dd>
+        </div>
+        <div>
+          <dt>Structure</dt>
+          <dd>Artful home, steady posts</dd>
+        </div>
+        <div>
+          <dt>Mode</dt>
+          <dd>Static first, 3D later</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="hero-stage" aria-hidden="true">
+      <div class="cloud one"></div>
+      <div class="cloud two"></div>
+      <div class="floating-record one"></div>
+      <div class="floating-record two"></div>
+      <div class="floating-record three"></div>
+
+      <div class="sunflower-cluster left">
+        <div class="sunflower">
+          <div class="sunflower-head"></div>
+          <div class="sunflower-stem"></div>
+        </div>
+        <div class="sunflower">
+          <div class="sunflower-head"></div>
+          <div class="sunflower-stem"></div>
+        </div>
+      </div>
+
+      <div class="sunflower-cluster right">
+        <div class="sunflower">
+          <div class="sunflower-head"></div>
+          <div class="sunflower-stem"></div>
+        </div>
+        <div class="sunflower">
+          <div class="sunflower-head"></div>
+          <div class="sunflower-stem"></div>
+        </div>
+      </div>
+
+      <div class="sea-band"></div>
+
+      <div class="house-illustration">
+        <div class="house-roof"></div>
+        <div class="house-body">
+          <div class="house-window"></div>
+          <div class="house-door"></div>
+          <div class="house-window"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene-board" id="inside-house">
+    <div class="section-heading">
+      <span class="eyebrow">Inside the house</span>
+      <h2 class="headline">Objects first, menu second.</h2>
+      <p class="lede">
+        这版先用静态物件卡片代替完整 3D 漫游，但栏目叙事已经按“唱片架、CRT、照片墙、抽屉”来排布了。
+      </p>
+    </div>
+
+    <div class="hotspot-list">
+      {
+        spotlight.map((item) => (
+          <a class="hotspot-card" href={withBase(item.href)}>
+            <div class="status-dot"></div>
+            <strong>{item.title}</strong>
+            <p class="note-line">{item.blurb}</p>
+            <span class="detail-kicker">{item.object}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
