@@ -9,7 +9,7 @@ export async function GET(context: { site?: URL }) {
   return rss({
     title: siteConfig.name,
     description: siteConfig.description,
-    site: context.site?.toString() || "https://example.github.io",
+    site: context.site?.toString() || "https://focusmee.github.io",
     items: posts.map((entry) => ({
       title: entry.data.title,
       pubDate: entry.data.pubDate,

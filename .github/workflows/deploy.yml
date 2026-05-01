@@ -18,8 +18,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      SITE_URL: ${{ vars.SITE_URL }}
-      BASE_PATH: ${{ vars.BASE_PATH }}
+      SITE_URL: ${{ vars.SITE_URL || 'https://focusmee.github.io' }}
+      BASE_PATH: ${{ vars.BASE_PATH || '/' }}
+      PUBLIC_GISCUS_REPO: ${{ vars.PUBLIC_GISCUS_REPO || 'Focusmee/Focusmee.github.io' }}
+      PUBLIC_GISCUS_REPO_ID: ${{ vars.PUBLIC_GISCUS_REPO_ID || 'R_kgDOKjhPEg' }}
+      PUBLIC_GISCUS_CATEGORY: ${{ vars.PUBLIC_GISCUS_CATEGORY || 'Announcements' }}
+      PUBLIC_GISCUS_CATEGORY_ID: ${{ vars.PUBLIC_GISCUS_CATEGORY_ID || 'DIC_kwDOKjhPEs4C8H80' }}
+      PUBLIC_GISCUS_REACTIONS_ENABLED: ${{ vars.PUBLIC_GISCUS_REACTIONS_ENABLED || '1' }}
+      PUBLIC_GISCUS_EMIT_METADATA: ${{ vars.PUBLIC_GISCUS_EMIT_METADATA || '0' }}
+      PUBLIC_GISCUS_INPUT_POSITION: ${{ vars.PUBLIC_GISCUS_INPUT_POSITION || 'bottom' }}
+      PUBLIC_GISCUS_THEME: ${{ vars.PUBLIC_GISCUS_THEME || 'preferred_color_scheme' }}
+      PUBLIC_GISCUS_LANG: ${{ vars.PUBLIC_GISCUS_LANG || 'zh-CN' }}
+      PUBLIC_GISCUS_LOADING: ${{ vars.PUBLIC_GISCUS_LOADING || 'lazy' }}
 
     steps:
       - name: Checkout
