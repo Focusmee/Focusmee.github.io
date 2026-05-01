@@ -6,10 +6,15 @@ import { getPublishedLogs } from "../utils/posts";
 export async function GET(context: { site?: URL }) {
   const posts = await getPublishedLogs();
 
+  const site = new URL(
+    withBase("/"),
+    context.site?.toString() || "https://focusmee.github.io"
+  ).toString();
+
   return rss({
     title: siteConfig.name,
     description: siteConfig.description,
-    site: context.site?.toString() || "https://focusmee.github.io",
+    site,
     items: posts.map((entry) => ({
       title: entry.data.title,
       pubDate: entry.data.pubDate,
