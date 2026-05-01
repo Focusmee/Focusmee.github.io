@@ -27,6 +27,7 @@ const currentPath = stripBase(Astro.url.pathname);
             <a
               class:list={["nav-link", active && "is-active"]}
               href={withBase(item.href)}
+              aria-current={active ? "page" : undefined}
             >
               {item.label}
             </a>
