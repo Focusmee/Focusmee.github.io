@@ -7,6 +7,7 @@ export const siteConfig = {
   locale: "zh-CN",
   author: "Focusmee",
   email: "JinjuSeason@gmail.com",
+  phone: "13407412863",
   social: {
     github: "https://github.com/Focusmee",
     x: "",

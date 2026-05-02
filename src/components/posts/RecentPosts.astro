@@ -11,18 +11,22 @@ interface Props {
 
 const {
   posts,
-  title = "What’s Blooming",
+  title = "What's Blooming",
   eyebrow = "Recently picked from the shelf",
-  lede = "先用最近更新把内容系统跑起来。这里会逐渐长成真正能持续写作的主战场。"
+  lede = "先用最近更新把内容系统跑起来。这里会慢慢长成真正能持续写作的主战场。"
 } = Astro.props as Props;
 ---
 
-<section class="section-shell">
-  <div class="section-heading">
-    <span class="eyebrow">{eyebrow}</span>
-    <h2 class="headline">{title}</h2>
-    <p class="lede">{lede}</p>
-  </div>
+{
+  posts.length > 0 && (
+    <section class="section-shell">
+      <div class="section-heading">
+        <span class="eyebrow">{eyebrow}</span>
+        <h2 class="headline">{title}</h2>
+        <p class="lede">{lede}</p>
+      </div>
 
-  <PostList posts={posts} />
-</section>
+      <PostList posts={posts} />
+    </section>
+  )
+}

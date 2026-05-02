@@ -91,9 +91,15 @@
 
 灵感、自然观察、花、海、季节、感受
 
-### 6) **Archive**
+### 6) **Drawer**
 
-杂记、旧文、未分类想法、收藏
+旧稿、回看、抽屉感内容、被重新翻出来的纸片与笔记
+
+### 命名收口决策
+
+- `Archive` 只保留给 `/archive` 这个全站时间总归档页。
+- 第六个内容栏目统一改名为 `Drawer`。
+- `Drawer` 不是“比较旧的文章集合”，而是带“回看、翻找、再整理”编辑立场的栏目。
 
 1. # 栏目与空间物件映射
 
@@ -107,7 +113,7 @@
 | 桌上的电脑 / CRT 显示器 | Lab（技术/项目）    | 屏幕亮起，进入技术文章列表           |
 | 向日葵花瓶 / 花盆       | Garden / Notes      | 花朵轻微摆动，点击进入随笔与自然记录 |
 | 照片墙 / 胶片相框       | Frames              | 点击不同照片进入摄影或图像笔记       |
-| 抽屉 / 纸箱 / 收纳柜    | Archive             | 拉开抽屉进入旧文归档                 |
+| 抽屉 / 纸箱 / 收纳柜    | Drawer              | 拉开抽屉进入回看内容栏目             |
 | 海边窗户 / 门口         | About               | 点击窗外或走向门口进入关于页         |
 | 桌上的散落便签          | 随机文章 / 最近更新 | hover 后浮起，点击进入随机文章       |
 
@@ -450,7 +456,7 @@ src/
     records/
     frames/
     garden/
-    archive/
+    drawer/
   components/
     scene/
     ui/
@@ -682,7 +688,7 @@ src/
 │  向日葵花瓶 Garden/Notes   └──────┘           │
 │       🌻 🌻 🌻                              │
 │                                             │
-│          抽屉 Archive / Random Notes         │
+│          抽屉 Drawer / Random Notes          │
 │             ┌─────────────┐                  │
 │             │  drawer     │                  │
 │             └─────────────┘                  │
@@ -698,7 +704,7 @@ CRT 显示器 / 电脑    → Lab
 向日葵花瓶 / 花盆    → Garden + Notes
 照片墙 / 胶片相框    → Frames
 窗户 / 门口          → About
-抽屉 / 纸箱          → Archive
+抽屉 / 纸箱          → Drawer
 桌面便签             → Random Post
 ```
 
@@ -789,8 +795,8 @@ who lives here?
 显示：
 
 ```Plain
-Archive
-old notes, loose thoughts
+Drawer
+revisits, old papers, rescued drafts
 [Open the Drawer]
 ```
 
@@ -854,7 +860,7 @@ old notes, loose thoughts
 ├─────────────────────────────────────────────┤
 │                                             │
 │  Records     Lab      Garden                │
-│  Frames      Notes    Archive               │
+│  Frames      Notes    Drawer                │
 │                                             │
 │  每个分类是一个大色块 + 物件图标              │
 │                                             │
@@ -1070,7 +1076,7 @@ Lab
 Garden
 Notes
 Frames
-Archive
+Drawer
 ```
 
 每个栏目对应一个大卡片，带：
@@ -1162,6 +1168,8 @@ Archive
 
 归档页。
 
+它是全站时间索引，不属于六个内容栏目之一。
+
 视觉上像一个打开的抽屉。
 
 支持：
@@ -1251,7 +1259,7 @@ lab
 records
 frames
 garden
-archive
+drawer
 ```
 
 ## mood 可选值
@@ -1460,7 +1468,8 @@ blooming-logs/
 │   │   │   ├── lab.astro
 │   │   │   ├── records.astro
 │   │   │   ├── frames.astro
-│   │   │   └── garden.astro
+│   │   │   ├── garden.astro
+│   │   │   └── drawer.astro
 │   │   ├── archive.astro
 │   │   ├── projects.astro
 │   │   ├── about.astro
@@ -1502,7 +1511,7 @@ const logs = defineCollection({
       "records",
       "frames",
       "garden",
-      "archive",
+      "drawer",
     ]),
     tags: z.array(z.string()).default([]),
     mood: z.enum([
@@ -1571,11 +1580,11 @@ export const collections = [
     color: "sea",
   },
   {
-    id: "archive",
-    title: "Archive",
-    description: "old notes, drawers, loose thoughts",
+    id: "drawer",
+    title: "Drawer",
+    description: "revisits, old papers, rescued drafts",
     object: "drawer",
-    href: "/archive",
+    href: "/collections/drawer",
     color: "mud",
   },
 ];
@@ -1672,7 +1681,7 @@ type HotspotId =
   | "notes"
   | "frames"
   | "about"
-  | "archive";
+  | "drawer";
 ```
 
 基本逻辑：

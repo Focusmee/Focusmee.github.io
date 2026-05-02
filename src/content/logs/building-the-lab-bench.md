@@ -4,7 +4,7 @@ description: "从任务分解、状态维护到执行反馈，我对 Agent 规�
 pubDate: 2026-04-28
 updatedDate: 2026-05-02
 category: "lab"
-tags: ["Agent", "Planning", "Workflow", "Reasoning"]
+tags: ["Agent", "Workflow"]
 mood: "noisy"
 season: "spring"
 featured: true

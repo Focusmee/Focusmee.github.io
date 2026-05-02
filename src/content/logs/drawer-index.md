@@ -3,7 +3,7 @@ title: "Agent 记忆系统：上下文窗口之外，知识如何留下来"
 description: "短期状态、工作记忆、长期记忆和检索策略，决定 Agent 是否真的会成长。"
 pubDate: 2026-04-10
 updatedDate: 2026-05-02
-category: "archive"
+category: "drawer"
 tags: ["Agent", "Memory", "RAG", "State"]
 mood: "muddy"
 season: "spring"

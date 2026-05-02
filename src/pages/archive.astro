@@ -11,13 +11,17 @@ const grouped = groupPostsByYear(posts);
 const years = Object.keys(grouped).sort((left, right) => Number(right) - Number(left));
 ---
 
-<BaseLayout title="Archive" description="按年份和栏目查看归档。">
+<BaseLayout
+  title="Archive"
+  description="Browse the full timeline across every shelf."
+>
   <section class="section-shell">
     <div class="section-heading">
       <span class="eyebrow">Archive</span>
-      <h1 class="headline">Open the drawer.</h1>
+      <h1 class="headline">The whole house, by time.</h1>
       <p class="lede">
-        这里先做成稳定的时间索引页。以后可以继续加月份分组、标签筛选和随机抽取入口。
+        This page is the house-wide time index. Drawer stays a separate
+        collection for revisits, old papers, and rescued drafts.
       </p>
     </div>
 

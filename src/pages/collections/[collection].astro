@@ -5,12 +5,10 @@ import { collections, type CollectionMeta } from "../../data/collections";
 import { getPostsByCategory } from "../../utils/posts";
 
 export async function getStaticPaths() {
-  return collections
-    .filter((item) => item.id !== "archive")
-    .map((collection) => ({
-      params: { collection: collection.id },
-      props: { collection }
-    }));
+  return collections.map((collection) => ({
+    params: { collection: collection.id },
+    props: { collection }
+  }));
 }
 
 interface Props {

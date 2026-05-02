@@ -10,7 +10,7 @@
 
 - [x] 确认部署方式：`username.github.io`、项目子路径部署，还是自定义域名
 - [x] 确认主导航结构：`Home / Logs / Collections / Projects / About / Guestbook`
-- [x] 确认 6 个内容栏目：`Notes / Lab / Records / Frames / Garden / Archive`
+- [x] 确认 6 个内容栏目：`Notes / Lab / Records / Frames / Garden / Drawer`
 - [x] 确认首页主标题、副标题和中英文文案语气
 - [x] 确认栏目与空间物件映射关系
 - [x] 确认配色 token：奶油白、暖白、深灰、向日葵黄、海蓝、泥土棕、叶绿、粉色点缀
@@ -31,7 +31,7 @@
 
 - [x] 配置 `Astro Content Collections`
 - [x] 建立文章 frontmatter 规范：`title / description / pubDate / updatedDate / category / tags / mood / season / cover / draft`
-- [x] 建立栏目枚举：`notes / lab / records / frames / garden / archive`
+- [x] 建立栏目枚举：`notes / lab / records / frames / garden / drawer`
 - [x] 建立 mood 枚举：`sunny / weird / soft / noisy / blue / muddy / bright`
 - [x] 建立文章工具函数：排序、筛选、相关文章、随机文章
 
@@ -74,7 +74,7 @@
 - [x] 新建 3 到 5 篇种子文章，验证内容模型可用
 - [x] 为每篇文章补齐 frontmatter
 - [ ] 确认标签体系不要过度发散
-- [ ] 准备首页展示用的精选文章
+- [x] 准备首页展示用的精选文章
 
 ### 7. 部署与验证
 
@@ -99,7 +99,7 @@
 - [ ] 为 Lab 设计 CRT 电脑视觉
 - [ ] 为 Garden/Notes 设计向日葵花瓶视觉
 - [ ] 为 Frames 设计照片墙/胶片相框视觉
-- [ ] 为 Archive 设计抽屉/纸箱视觉
+- [ ] 为 Drawer 设计抽屉/纸箱视觉
 - [ ] 为 About 设计窗边海景入口
 
 ### 3. 栏目页视觉语言
@@ -108,7 +108,7 @@
 - [ ] Lab 页加入终端、屏幕、实验台元素，但避免赛博风过重
 - [ ] Garden 页加入花、泥土、植物标签视觉
 - [ ] Frames 页加入胶片、拍立得、照片墙元素
-- [ ] Archive 页做成抽屉索引/旧纸张归档风格
+- [ ] Drawer 栏目页做成抽屉索引 / 旧纸张风格
 
 ### 4. 文章页细节
 

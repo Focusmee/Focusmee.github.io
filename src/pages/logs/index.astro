@@ -9,13 +9,17 @@ import { getPublishedLogs } from "../../utils/posts";
 const posts = await getPublishedLogs();
 ---
 
-<BaseLayout title="Logs" description="按时间查看所有日志与文章。">
+<BaseLayout
+  title="Logs"
+  description="Browse every published log across shelves and timeline."
+>
   <section class="section-shell">
     <div class="section-heading">
       <span class="eyebrow">Logs</span>
       <h1 class="headline">All notes on the shelf.</h1>
       <p class="lede">
-        这里先保持干净清楚，优先服务阅读和检索。栏目入口已经接好，后面再补搜索和更多筛选。
+        This page stays clean for reading and scanning. Use the six shelves for
+        editorial groupings, or open Archive for the full house-wide timeline.
       </p>
     </div>
 
@@ -23,6 +27,7 @@ const posts = await getPublishedLogs();
       {collections.map((collection) => (
         <Tag label={collection.title} href={withBase(collection.href)} accent />
       ))}
+      <Tag label="Archive timeline" href={withBase("/archive")} accent />
     </div>
 
     <PostList posts={posts} />

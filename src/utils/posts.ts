@@ -16,6 +16,11 @@ export async function getRecentLogs(limit = 3) {
   return logs.slice(0, limit);
 }
 
+export async function getFeaturedLogs(limit = 3) {
+  const logs = await getPublishedLogs();
+  return logs.filter((entry) => entry.data.featured).slice(0, limit);
+}
+
 export async function getPostsByCategory(category: CollectionId) {
   const logs = await getPublishedLogs();
   return logs.filter((entry) => entry.data.category === category);

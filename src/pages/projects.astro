@@ -1,49 +1,171 @@
 ---
 import BaseLayout from "../components/layout/BaseLayout.astro";
+import { manualProjects } from "../data/projects";
+import { getGitHubProjects } from "../utils/github";
+import { formatDate } from "../utils/format";
 
-const projects = [
-  {
-    title: "Blooming Logs",
-    status: "in progress",
-    description: "博客骨架、内容系统和首页世界观搭建。",
-    stack: "Astro, MDX, React"
-  },
-  {
-    title: "Future Scene Engine",
-    status: "seed idea",
-    description: "后续把首页升级成真正可进入的空间场景。",
-    stack: "React Three Fiber, GSAP"
-  },
-  {
-    title: "Guestbook Integration",
-    status: "planned",
-    description: "等 GitHub Discussions 准备好之后接入 Giscus。",
-    stack: "Giscus, GitHub Pages"
-  }
-];
+const githubProjects = await getGitHubProjects();
 ---
 
-<BaseLayout title="Projects" description="项目、作品与实验入口。">
+<BaseLayout
+  title="Projects"
+  description="公开项目、正在关心的系统、以及比仓库链接更重要的工作说明。"
+>
   <section class="section-shell">
     <div class="section-heading">
       <span class="eyebrow">Projects</span>
-      <h1 class="headline">Workbench, not trophy shelf.</h1>
+      <h1 class="headline">Public builds, selected systems, ongoing work.</h1>
       <p class="lede">
-        这里先放一个能继续扩展的项目页骨架。以后可以逐渐补上 Demo、GitHub 链接、状态标签和截图。
+        这里放的不是一份按时间排序的简历，而是我愿意继续照料的一些项目和系统。它们有的已经公开在 GitHub 上，有的更适合由我自己补充背景，因为真正重要的部分并不总能从仓库结构里直接看出来。
+      </p>
+    </div>
+  </section>
+
+  <section class="section-shell split-grid">
+    <div class="intro-slab">
+      <div class="section-heading">
+        <span class="eyebrow">From GitHub</span>
+        <h2 class="headline">Public repositories, synced at build time.</h2>
+      </div>
+      <p class="lede">
+        这部分是已经公开的项目。它们更像工作台上已经摆出来的东西：可以被看到、被打开、被继续迭代。页面会在构建时拉取公开仓库信息，并和我自己写的说明拼在一起。
       </p>
     </div>
 
-    <div class="card-grid">
-      {projects.map((project) => (
-        <article class="post-card" style="--accent: var(--leaf);">
-          <div class="meta-row">
-            <span class="tag tag--accent">{project.status}</span>
-            <span>{project.stack}</span>
-          </div>
-          <h2 class="card-title">{project.title}</h2>
-          <p class="card-copy">{project.description}</p>
-        </article>
-      ))}
+    <div class="detail-list">
+      <div class="detail-item">
+        <div class="detail-kicker">What gets synced</div>
+        <strong>Repo links, stars, language, last updated time</strong>
+      </div>
+      <div class="detail-item">
+        <div class="detail-kicker">What stays hand-written</div>
+        <strong>为什么做、为什么重要、它在我的工作线上代表什么</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell">
+    <div class="project-grid">
+      {
+        githubProjects.map((project) => (
+          <article class="post-card project-card" style={`--accent: var(--${project.accent});`}>
+            <div class="meta-row">
+              <span class="tag tag--accent">{project.status}</span>
+              <span>{project.stack}</span>
+            </div>
+            <h2 class="card-title">{project.title}</h2>
+            <p class="card-copy">{project.description}</p>
+            <div class="meta-row">
+              {project.language && <span>Primary language: {project.language}</span>}
+              {project.stargazersCount > 0 && <span>{project.stargazersCount} stars</span>}
+              {project.updatedAt && (
+                <span>Updated {formatDate(new Date(project.updatedAt))}</span>
+              )}
+            </div>
+            <div class="project-links">
+              <a class="button button-secondary" href={project.url} target="_blank" rel="noreferrer">
+                View Repo
+              </a>
+              {project.homepage && (
+                <a
+                  class="button button-secondary"
+                  href={project.homepage}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open Site
+                </a>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section-shell split-grid">
+    <div class="intro-slab">
+      <div class="section-heading">
+        <span class="eyebrow">Selected Work</span>
+        <h2 class="headline">Systems that need more than a repo link.</h2>
+      </div>
+      <p class="lede">
+        这部分保留给那些不能只靠 GitHub 链接来理解的项目。对我来说，项目真正有意思的地方往往不是“用了什么技术”，而是它试图解决什么问题、系统是如何被组织起来的、以及它为什么值得继续被记住。
+      </p>
+    </div>
+
+    <div class="detail-list">
+      <div class="detail-item">
+        <div class="detail-kicker">Why these stay manual</div>
+        <strong>研究背景、执行机制和系统判断，比仓库入口更重要。</strong>
+      </div>
+      <div class="detail-item">
+        <div class="detail-kicker">What this section holds</div>
+        <strong>Agent 执行系统、实时交互链路、脑机接口与复杂系统协作经验</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell">
+    <div class="project-stack">
+      {
+        manualProjects.map((project) => (
+          <article class="post-card project-card" style={`--accent: var(--${project.accent});`}>
+            <div class="meta-row">
+              <span class="tag tag--accent">{project.status}</span>
+              <span>{project.period}</span>
+            </div>
+            <h2 class="card-title">{project.title}</h2>
+            <p class="card-copy">{project.description}</p>
+            <div class="detail-kicker">Stack</div>
+            <strong>{project.stack}</strong>
+            <ul class="project-points">
+              {project.highlights.map((item) => <li>{item}</li>)}
+            </ul>
+          </article>
+        ))
+      }
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .profile-list,
+  .project-points {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .project-grid,
+  .project-stack {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .project-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .project-stack {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project-card {
+    gap: 1rem;
+  }
+
+  .project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+
+  @media (max-width: 900px) {
+    .project-grid,
+    .project-stack {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

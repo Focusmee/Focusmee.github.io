@@ -4,15 +4,31 @@ import CollectionGrid from "../components/collections/CollectionGrid.astro";
 import RecentPosts from "../components/posts/RecentPosts.astro";
 import HeroScene from "../components/scene/HeroScene.astro";
 import { siteConfig } from "../data/site";
-import { getRecentLogs } from "../utils/posts";
+import { getFeaturedLogs, getPublishedLogs } from "../utils/posts";
 
-const recentPosts = await getRecentLogs(3);
+const featuredPosts = await getFeaturedLogs(3);
+const featuredIds = new Set(featuredPosts.map((entry) => entry.id));
+const recentPosts = (await getPublishedLogs())
+  .filter((entry) => !featuredIds.has(entry.id))
+  .slice(0, 3);
 ---
 
 <BaseLayout title={siteConfig.name} description={siteConfig.description}>
   <HeroScene />
 
-  <RecentPosts posts={recentPosts} />
+  <RecentPosts
+    posts={featuredPosts}
+    eyebrow="Curated for the front room"
+    title="Featured on the Shelf"
+    lede="首页精选固定保留三篇：一篇入口文、一篇代表作、一篇带气味的文章。它们不是最新的三篇，而是最适合把人带进 Blooming Logs 的三篇。"
+  />
+
+  <RecentPosts
+    posts={recentPosts}
+    eyebrow="Recently picked from the shelf"
+    title="What's Blooming"
+    lede="最近更新继续保留在后面，让首页既有策展感，也有持续生长的更新流。"
+  />
 
   <section class="section-shell">
     <div class="section-heading">
@@ -41,11 +57,11 @@ const recentPosts = await getRecentLogs(3);
     <div class="detail-list">
       <div class="detail-item">
         <div class="detail-kicker">Ready now</div>
-        <strong>MDX 写作、栏目导航、GitHub Pages 静态构建</strong>
+        <strong>MDX 写作、精选策展、栏目导航、GitHub Pages 静态构建</strong>
       </div>
       <div class="detail-item">
         <div class="detail-kicker">Later</div>
-        <strong>3D 场景、镜头推进、声音、Pagefind、Giscus</strong>
+        <strong>3D 场景、镜头推进、声音、Pagefind、更多首页微交互</strong>
       </div>
     </div>
   </section>

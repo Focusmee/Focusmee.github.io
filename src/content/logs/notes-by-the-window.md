@@ -4,7 +4,7 @@ description: "真正有价值的 multi-agent system，需要角色边界、共�
 pubDate: 2026-04-24
 updatedDate: 2026-05-02
 category: "notes"
-tags: ["Agent", "Multi-Agent", "Evaluation", "Orchestration"]
+tags: ["Agent", "Workflow"]
 mood: "bright"
 season: "spring"
 featured: false
