@@ -1,0 +1,38 @@
+---
+import { getCollectionTransitionNames } from "../../../utils/transitions";
+import { withBase } from "../../../utils/links";
+import { homeHotspots } from "../homeHotspots";
+---
+
+<div class="record-store-map" id="store-map">
+  <div class="record-store-map__heading">
+    <span class="record-store-eyebrow">Inside the store</span>
+    <h2>Six corners, six ways in.</h2>
+    <p>
+      The poster is the front room. These objects keep the existing content
+      system intact while making the collections feel like places you can walk
+      toward.
+    </p>
+  </div>
+
+  <div class="record-store-map__grid">
+    {
+      homeHotspots.map((item) => {
+        const transitionNames = getCollectionTransitionNames(item.id);
+
+        return (
+          <a class={`store-object store-object--${item.id}`} href={withBase(item.href)}>
+            <span
+              class="store-object__kicker"
+              transition:name={transitionNames.eyebrow}
+            >
+              {item.objectLabel}
+            </span>
+            <strong transition:name={transitionNames.title}>{item.title}</strong>
+            <p>{item.detail}</p>
+          </a>
+        );
+      })
+    }
+  </div>
+</div>

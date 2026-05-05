@@ -4,16 +4,35 @@ import { siteConfig } from "../../data/site";
 import { withBase } from "../../utils/links";
 import { pickRandomItem } from "../../utils/random";
 import { getPublishedLogs } from "../../utils/posts";
-import { getCollectionTransitionNames } from "../../utils/transitions";
-import { homeHotspots } from "./homeHotspots";
+import { homeDialogChoices } from "./homeDialogChoices";
+import RecordStoreDialog from "./record-store/RecordStoreDialog";
+import RecordStoreInteriorScene from "./record-store/RecordStoreInteriorScene.astro";
+import RecordStoreMap from "./record-store/RecordStoreMap.astro";
+import RecordStoreScrollController from "./record-store/RecordStoreScrollController";
 import "../../styles/home-record-store.css";
+import "../../styles/home-record-store-interior.css";
 
 const posts = await getPublishedLogs();
 const randomPost = pickRandomItem(posts);
+const dialogChoices = homeDialogChoices.map((choice) => ({
+  ...choice,
+  href: withBase(choice.href)
+}));
 ---
 
-<section class="record-store-hero" aria-labelledby="record-store-title">
-  <div class="record-store-poster" aria-label="A layered seaside record store poster">
+<section
+  id="record-store-hero"
+  class="record-store-hero"
+  data-scroll-ready="false"
+  data-scroll-phase="outside"
+  aria-labelledby="record-store-title"
+>
+  <div class="record-store-scroll-stage" data-record-store-stage>
+  <div
+    class="record-store-poster"
+    data-record-store-poster
+    aria-label="A layered seaside record store poster"
+  >
     <svg class="poster-asset-defs" aria-hidden="true" focusable="false">
       <defs>
         <linearGradient id="record-store-palm-trunk" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -160,6 +179,8 @@ const randomPost = pickRandomItem(posts);
       </svg>
     </div>
 
+    <RecordStoreInteriorScene />
+
     <div class="poster-layer record-store-building" data-poster-layer="store">
       <div class="store-shadow"></div>
       <div class="store-back-shadow"></div>
@@ -183,7 +204,7 @@ const randomPost = pickRandomItem(posts);
           <div class="mini-poster mini-poster--one"></div>
           <div class="mini-poster mini-poster--two"></div>
           <div class="mini-poster mini-poster--three"></div>
-          <div class="crt-workbench">
+          <div class="crt-workbench" data-interior-object="lab">
             <span></span>
           </div>
           <div class="interior-shelf interior-shelf--left"></div>
@@ -202,15 +223,16 @@ const randomPost = pickRandomItem(posts);
           <div class="hanging-light hanging-light--one"></div>
           <div class="hanging-light hanging-light--two"></div>
           <div class="hanging-light hanging-light--three"></div>
+          <div class="interior-plant" data-interior-object="garden"></div>
           <div class="interior-shelf interior-shelf--right"></div>
         </div>
-        <div class="wall-poster">
+        <div class="wall-poster" data-interior-object="frames">
           <span>City Pop</span>
           <div class="poster-palm"></div>
           <div class="poster-sunset"></div>
           <div class="poster-wave"></div>
         </div>
-        <div class="record-rack">
+        <div class="record-rack" data-interior-object="records">
           {
             Array.from({ length: 10 }).map((_, index) => (
               <span
@@ -219,13 +241,13 @@ const randomPost = pickRandomItem(posts);
             ))
           }
         </div>
-        <div class="counter-notes">
+        <div class="counter-notes" data-interior-object="notes">
           <span></span>
           <span></span>
           <span></span>
         </div>
         <div class="vinyl-bin-shadow"></div>
-        <div class="under-drawer">
+        <div class="under-drawer" data-interior-object="drawer">
           <span></span>
         </div>
       </div>
@@ -244,6 +266,15 @@ const randomPost = pickRandomItem(posts);
     <div class="poster-layer poster-effects" data-poster-layer="effects">
       <div class="poster-noise"></div>
     </div>
+
+    <RecordStoreDialog
+      rootId="record-store-hero"
+      choices={dialogChoices}
+      client:load
+    />
+  </div>
+
+  <RecordStoreScrollController rootId="record-store-hero" client:load />
   </div>
 
   <div class="record-store-hero__intro">
@@ -265,36 +296,5 @@ const randomPost = pickRandomItem(posts);
     </div>
   </div>
 
-  <div class="record-store-map" id="store-map">
-    <div class="record-store-map__heading">
-      <span class="record-store-eyebrow">Inside the store</span>
-      <h2>Six corners, six ways in.</h2>
-      <p>
-        The poster is the front room. These objects keep the existing content
-        system intact while making the collections feel like places you can
-        walk toward.
-      </p>
-    </div>
-
-    <div class="record-store-map__grid">
-      {
-        homeHotspots.map((item) => {
-          const transitionNames = getCollectionTransitionNames(item.id);
-
-          return (
-            <a class={`store-object store-object--${item.id}`} href={withBase(item.href)}>
-              <span
-                class="store-object__kicker"
-                transition:name={transitionNames.eyebrow}
-              >
-                {item.objectLabel}
-              </span>
-              <strong transition:name={transitionNames.title}>{item.title}</strong>
-              <p>{item.detail}</p>
-            </a>
-          );
-        })
-      }
-    </div>
-  </div>
+  <RecordStoreMap />
 </section>
