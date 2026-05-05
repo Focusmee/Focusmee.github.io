@@ -3,14 +3,13 @@ import BaseLayout from "../../components/layout/BaseLayout.astro";
 import PostList from "../../components/posts/PostList.astro";
 import { collections, type CollectionMeta } from "../../data/collections";
 import { getPostsByCategory } from "../../utils/posts";
+import { getCollectionTransitionNames } from "../../utils/transitions";
 
 export async function getStaticPaths() {
-  return collections
-    .filter((item) => item.id !== "archive")
-    .map((collection) => ({
-      params: { collection: collection.id },
-      props: { collection }
-    }));
+  return collections.map((collection) => ({
+    params: { collection: collection.id },
+    props: { collection }
+  }));
 }
 
 interface Props {
@@ -19,13 +18,18 @@ interface Props {
 
 const { collection } = Astro.props as Props;
 const posts = await getPostsByCategory(collection.id);
+const transitionNames = getCollectionTransitionNames(collection.id);
 ---
 
 <BaseLayout title={collection.title} description={collection.description}>
   <section class="section-shell">
     <div class="section-heading">
-      <span class="eyebrow">{collection.object}</span>
-      <h1 class="headline">{collection.title}</h1>
+      <span class="eyebrow" transition:name={transitionNames.eyebrow}>
+        {collection.object}
+      </span>
+      <h1 class="headline" transition:name={transitionNames.title}>
+        {collection.title}
+      </h1>
       <p class="lede">
         {collection.description} 这一页现在先保证结构清晰，后面再继续往里面加入更完整的视觉语言。
       </p>

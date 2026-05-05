@@ -9,10 +9,9 @@ const posts = await getPublishedLogs();
 <div class="card-grid">
   {
     collections.map((collection) => {
-      const items =
-        collection.id === "archive"
-          ? posts
-          : posts.filter((entry) => entry.data.category === collection.id);
+      const items = posts.filter(
+        (entry) => entry.data.category === collection.id
+      );
 
       return (
         <CollectionCard

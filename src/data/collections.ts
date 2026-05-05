@@ -4,7 +4,7 @@ export const COLLECTION_IDS = [
   "records",
   "frames",
   "garden",
-  "archive"
+  "drawer"
 ] as const;
 
 export const MOOD_IDS = [
@@ -77,13 +77,13 @@ export const collections: CollectionMeta[] = [
     blurb: "film, fragments, frozen light"
   },
   {
-    id: "archive",
-    title: "Archive",
-    description: "old notes, drawers, and loose thoughts",
+    id: "drawer",
+    title: "Drawer",
+    description: "revisits, old papers, and rescued drafts",
     object: "drawer",
-    href: "/archive",
+    href: "/collections/drawer",
     color: "mud",
-    blurb: "old paper, still warm"
+    blurb: "old paper, brought back out"
   }
 ];
 

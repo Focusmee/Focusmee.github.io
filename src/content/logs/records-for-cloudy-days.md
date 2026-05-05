@@ -4,7 +4,7 @@ description: "语音识别、打断、延迟、情绪与工具调用一起决定
 pubDate: 2026-04-19
 updatedDate: 2026-05-02
 category: "records"
-tags: ["Agent", "Voice", "Realtime", "Interaction"]
+tags: ["Agent", "Voice"]
 mood: "blue"
 season: "spring"
 featured: false

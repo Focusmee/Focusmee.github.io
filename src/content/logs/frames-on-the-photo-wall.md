@@ -4,7 +4,7 @@ description: "从截图理解到 GUI 操作，多模态 Agent 真正困难的部
 pubDate: 2026-04-15
 updatedDate: 2026-05-02
 category: "frames"
-tags: ["Agent", "Multimodal", "Vision", "GUI"]
+tags: ["Agent", "Multimodal"]
 mood: "weird"
 season: "spring"
 featured: false

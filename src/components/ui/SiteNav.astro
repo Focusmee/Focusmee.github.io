@@ -8,7 +8,7 @@ const currentPath = stripBase(Astro.url.pathname);
 
 <a class="skip-link" href="#content">Skip to content</a>
 
-<header class="site-nav">
+<header class="site-nav" transition:animate="none">
   <div class="nav-inner">
     <a class="brand" href={withBase("/")}>
       <span class="brand-mark">{siteConfig.name}</span>

@@ -5,6 +5,7 @@ import { siteConfig } from "../../data/site";
 import { withBase } from "../../utils/links";
 import { pickRandomItem } from "../../utils/random";
 import { getPublishedLogs } from "../../utils/posts";
+import { getCollectionTransitionNames } from "../../utils/transitions";
 
 const posts = await getPublishedLogs();
 const randomPost = pickRandomItem(posts);
@@ -98,14 +99,23 @@ const spotlight = collections.slice(0, 6);
 
     <div class="hotspot-list">
       {
-        spotlight.map((item) => (
-          <a class="hotspot-card" href={withBase(item.href)}>
-            <div class="status-dot"></div>
-            <strong>{item.title}</strong>
-            <p class="note-line">{item.blurb}</p>
-            <span class="detail-kicker">{item.object}</span>
-          </a>
-        ))
+        spotlight.map((item) => {
+          const transitionNames = getCollectionTransitionNames(item.id);
+
+          return (
+            <a class="hotspot-card" href={withBase(item.href)}>
+              <div class="status-dot"></div>
+              <strong transition:name={transitionNames.title}>{item.title}</strong>
+              <p class="note-line">{item.blurb}</p>
+              <span
+                class="detail-kicker"
+                transition:name={transitionNames.eyebrow}
+              >
+                {item.object}
+              </span>
+            </a>
+          );
+        })
       }
     </div>
   </div>

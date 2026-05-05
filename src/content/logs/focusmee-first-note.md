@@ -4,7 +4,7 @@ description: "从示例内容切换到真实博客的第一步，是先放上一
 pubDate: 2026-05-02
 updatedDate: 2026-05-02
 category: "notes"
-tags: ["Intro", "Blog", "Focusmee"]
+tags: ["Site"]
 mood: "bright"
 season: "spring"
 featured: true
