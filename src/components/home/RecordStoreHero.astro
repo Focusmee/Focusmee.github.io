@@ -1,0 +1,300 @@
+---
+import Button from "../ui/Button.astro";
+import { siteConfig } from "../../data/site";
+import { withBase } from "../../utils/links";
+import { pickRandomItem } from "../../utils/random";
+import { getPublishedLogs } from "../../utils/posts";
+import { getCollectionTransitionNames } from "../../utils/transitions";
+import { homeHotspots } from "./homeHotspots";
+import "../../styles/home-record-store.css";
+
+const posts = await getPublishedLogs();
+const randomPost = pickRandomItem(posts);
+---
+
+<section class="record-store-hero" aria-labelledby="record-store-title">
+  <div class="record-store-poster" aria-label="A layered seaside record store poster">
+    <svg class="poster-asset-defs" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="record-store-palm-trunk" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#6b3a19" />
+          <stop offset="42%" stop-color="#a45d2a" />
+          <stop offset="68%" stop-color="#c47b39" />
+          <stop offset="100%" stop-color="#5a2b15" />
+        </linearGradient>
+        <linearGradient id="record-store-palm-leaf-a" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#02c86a" />
+          <stop offset="58%" stop-color="#00a95e" />
+          <stop offset="100%" stop-color="#047a4f" />
+        </linearGradient>
+        <linearGradient id="record-store-palm-leaf-b" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#a8db38" />
+          <stop offset="52%" stop-color="#44b44c" />
+          <stop offset="100%" stop-color="#038854" />
+        </linearGradient>
+      </defs>
+
+      <symbol id="record-store-palm-asset" viewBox="0 0 380 650">
+        <path
+          d="M232 646 C249 541 244 446 223 357 C203 274 181 207 162 128 L137 134 C156 231 170 321 174 416 C178 509 172 587 159 646 Z"
+          fill="#07205e"
+          opacity="0.24"
+        />
+        <path
+          d="M183 649 C200 652 223 648 235 639 C248 538 241 444 218 354 C198 275 179 204 159 126 C154 113 136 112 131 127 C154 226 170 318 176 415 C181 508 180 588 183 649 Z"
+          fill="url(#record-store-palm-trunk)"
+        />
+        <path
+          d="M145 133 C168 224 184 319 190 417 C195 510 194 586 190 638"
+          fill="none"
+          stroke="#f4a866"
+          stroke-linecap="round"
+          stroke-width="5"
+          opacity="0.34"
+        />
+        <path
+          d="M136 154 C148 164 160 168 173 164 M143 196 C156 207 174 214 190 210 M151 244 C166 257 190 264 207 259 M159 296 C176 311 204 319 224 314 M166 352 C185 368 216 376 236 371 M171 411 C191 428 222 436 241 431 M176 473 C196 489 222 497 240 493 M179 538 C198 553 221 560 236 557 M181 600 C197 613 216 619 228 616"
+          fill="none"
+          stroke="#4b2411"
+          stroke-linecap="round"
+          stroke-width="4"
+          opacity="0.36"
+        />
+        <g class="palm-svg__crown">
+          <path
+            d="M143 130 C96 59 46 27 0 39 C59 54 105 87 134 151 Z"
+            fill="url(#record-store-palm-leaf-a)"
+          />
+          <path
+            d="M151 117 C133 48 158 9 225 0 C190 39 169 80 160 140 Z"
+            fill="url(#record-store-palm-leaf-b)"
+          />
+          <path
+            d="M161 118 C218 46 284 25 360 52 C288 68 222 93 169 145 Z"
+            fill="url(#record-store-palm-leaf-b)"
+          />
+          <path
+            d="M167 143 C243 116 312 129 377 178 C300 166 232 167 168 160 Z"
+            fill="url(#record-store-palm-leaf-a)"
+          />
+          <path
+            d="M136 149 C77 121 27 132 0 181 C55 169 98 166 138 164 Z"
+            fill="url(#record-store-palm-leaf-a)"
+          />
+          <path
+            d="M148 110 C101 32 55 6 14 24 C70 37 112 62 141 136 Z"
+            fill="#00c95f"
+          />
+          <path
+            d="M158 105 C198 29 249 4 318 26 C254 43 205 70 166 136 Z"
+            fill="#9bd23f"
+          />
+          <path
+            d="M154 134 C116 79 81 55 39 55 C83 76 116 105 144 154 Z"
+            fill="#80d748"
+          />
+          <path
+            d="M166 136 C212 88 260 69 323 79 C263 96 216 118 171 153 Z"
+            fill="#5fc64c"
+          />
+          <path
+            d="M139 168 C84 174 38 210 12 267 C75 242 112 212 145 186 Z"
+            fill="#00ad63"
+          />
+          <path
+            d="M163 168 C229 178 286 215 323 272 C255 245 207 207 162 185 Z"
+            fill="#43b54e"
+          />
+          <path
+            d="M143 141 C103 91 62 61 3 39 M153 126 C156 82 175 39 223 1 M163 129 C210 84 270 59 358 52 M168 151 C229 139 302 150 376 178 M137 160 C91 147 43 154 1 181 M150 146 C112 104 76 74 39 55 M166 148 C218 116 271 92 323 79 M144 181 C100 193 58 224 12 267 M164 180 C217 194 271 226 323 272"
+            fill="none"
+            stroke="#087d4e"
+            stroke-linecap="round"
+            stroke-width="3.5"
+            opacity="0.46"
+          />
+        </g>
+      </symbol>
+    </svg>
+
+    <div class="poster-layer poster-sky" data-poster-layer="sky">
+      <div class="poster-horizon-glow"></div>
+      <div class="poster-sun"></div>
+      <div class="poster-cloud poster-cloud--one"></div>
+      <div class="poster-cloud poster-cloud--two"></div>
+      <div class="poster-cloud poster-cloud--three"></div>
+      <div class="poster-cloud-bank poster-cloud-bank--low"></div>
+      <div class="poster-cloud-bank poster-cloud-bank--far"></div>
+    </div>
+
+    <div class="poster-layer poster-sea" data-poster-layer="sea">
+      <div class="sea-horizon"></div>
+      <div class="sea-stripe sea-stripe--one"></div>
+      <div class="sea-stripe sea-stripe--two"></div>
+      <div class="sea-stripe sea-stripe--three"></div>
+      <div class="sea-stripe sea-stripe--four"></div>
+      <div class="sea-line sea-line--one"></div>
+      <div class="sea-line sea-line--two"></div>
+      <div class="sea-line sea-line--three"></div>
+      <div class="sea-line sea-line--four"></div>
+      <div class="sea-line sea-line--five"></div>
+      {
+        Array.from({ length: 12 }).map((_, index) => (
+          <span
+            class="sea-sparkle"
+            style={`--spark-x:${6 + index * 8}%;--spark-y:${22 + (index % 4) * 15}%;--spark-w:${2 + (index % 3) * 1.4}rem`}
+          ></span>
+        ))
+      }
+      <div class="sailboat sailboat--left">
+        <span></span>
+      </div>
+      <div class="sailboat sailboat--right">
+        <span></span>
+      </div>
+    </div>
+
+    <div class="poster-layer poster-backlot" data-poster-layer="backlot">
+      <svg class="palm-tree palm-tree--rear" viewBox="0 0 380 650" aria-hidden="true" focusable="false">
+        <use href="#record-store-palm-asset"></use>
+      </svg>
+    </div>
+
+    <div class="poster-layer record-store-building" data-poster-layer="store">
+      <div class="store-shadow"></div>
+      <div class="store-back-shadow"></div>
+      <div class="store-sign">
+        <span class="store-sign__micro">Summer archive</span>
+        <h1 id="record-store-title" class="store-sign__title">Seaside Records</h1>
+      </div>
+      <div class="store-trim store-trim--top"></div>
+      <div class="store-awning-shadow"></div>
+      <div class="store-awning"></div>
+      <div class="store-body">
+        <div class="store-wall-cut store-wall-cut--left"></div>
+        <div class="store-wall-cut store-wall-cut--right"></div>
+        <div class="store-column store-column--left"></div>
+        <div class="store-column store-column--center-left"></div>
+        <div class="store-column store-column--center-right"></div>
+        <div class="store-column store-column--right"></div>
+        <div class="store-glass store-glass--left">
+          <div class="glass-reflection glass-reflection--wide"></div>
+          <div class="window-ocean-view"></div>
+          <div class="mini-poster mini-poster--one"></div>
+          <div class="mini-poster mini-poster--two"></div>
+          <div class="mini-poster mini-poster--three"></div>
+          <div class="crt-workbench">
+            <span></span>
+          </div>
+          <div class="interior-shelf interior-shelf--left"></div>
+        </div>
+        <div class="store-doors">
+          <div class="door-reflection door-reflection--left"></div>
+          <div class="door-reflection door-reflection--right"></div>
+          <div class="door-panel"></div>
+          <div class="door-panel"></div>
+          <div class="door-handles"></div>
+          <div class="door-threshold"></div>
+        </div>
+        <div class="store-glass store-glass--right">
+          <div class="glass-reflection glass-reflection--thin"></div>
+          <div class="window-ocean-view window-ocean-view--small"></div>
+          <div class="hanging-light hanging-light--one"></div>
+          <div class="hanging-light hanging-light--two"></div>
+          <div class="hanging-light hanging-light--three"></div>
+          <div class="interior-shelf interior-shelf--right"></div>
+        </div>
+        <div class="wall-poster">
+          <span>City Pop</span>
+          <div class="poster-palm"></div>
+          <div class="poster-sunset"></div>
+          <div class="poster-wave"></div>
+        </div>
+        <div class="record-rack">
+          {
+            Array.from({ length: 10 }).map((_, index) => (
+              <span
+                style={`--cover-a:${190 + index * 18};--cover-b:${330 + index * 10}`}
+              ></span>
+            ))
+          }
+        </div>
+        <div class="counter-notes">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="vinyl-bin-shadow"></div>
+        <div class="under-drawer">
+          <span></span>
+        </div>
+      </div>
+      <div class="store-step">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="poster-layer poster-foreground-road" data-poster-layer="road">
+      <div class="road-curb"></div>
+      <div class="road-surface"></div>
+    </div>
+
+    <div class="poster-layer poster-effects" data-poster-layer="effects">
+      <div class="poster-noise"></div>
+    </div>
+  </div>
+
+  <div class="record-store-hero__intro">
+    <span class="record-store-eyebrow">Blooming Logs presents</span>
+    <p class="record-store-copy">
+      {siteConfig.description} Step into a poster-like city pop record shop where
+      every shelf opens into a different collection.
+    </p>
+
+    <div class="record-store-actions">
+      <Button href="#store-map">Enter the Store</Button>
+      {
+        randomPost && (
+          <Button href={withBase(`/logs/${randomPost.id}`)} variant="secondary">
+            Play Something Random
+          </Button>
+        )
+      }
+    </div>
+  </div>
+
+  <div class="record-store-map" id="store-map">
+    <div class="record-store-map__heading">
+      <span class="record-store-eyebrow">Inside the store</span>
+      <h2>Six corners, six ways in.</h2>
+      <p>
+        The poster is the front room. These objects keep the existing content
+        system intact while making the collections feel like places you can
+        walk toward.
+      </p>
+    </div>
+
+    <div class="record-store-map__grid">
+      {
+        homeHotspots.map((item) => {
+          const transitionNames = getCollectionTransitionNames(item.id);
+
+          return (
+            <a class={`store-object store-object--${item.id}`} href={withBase(item.href)}>
+              <span
+                class="store-object__kicker"
+                transition:name={transitionNames.eyebrow}
+              >
+                {item.objectLabel}
+              </span>
+              <strong transition:name={transitionNames.title}>{item.title}</strong>
+              <p>{item.detail}</p>
+            </a>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>

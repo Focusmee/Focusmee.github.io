@@ -2,7 +2,7 @@
 import BaseLayout from "../components/layout/BaseLayout.astro";
 import CollectionGrid from "../components/collections/CollectionGrid.astro";
 import RecentPosts from "../components/posts/RecentPosts.astro";
-import HeroScene from "../components/scene/HeroScene.astro";
+import RecordStoreHero from "../components/home/RecordStoreHero.astro";
 import { siteConfig } from "../data/site";
 import { getFeaturedLogs, getPublishedLogs } from "../utils/posts";
 
@@ -14,7 +14,7 @@ const recentPosts = (await getPublishedLogs())
 ---
 
 <BaseLayout title={siteConfig.name} description={siteConfig.description}>
-  <HeroScene />
+  <RecordStoreHero />
 
   <RecentPosts
     posts={featuredPosts}
