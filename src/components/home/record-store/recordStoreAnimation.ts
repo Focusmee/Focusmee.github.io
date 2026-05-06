@@ -1,6 +1,7 @@
 type Timeline = {
   addLabel: (label: string, position?: number | string) => Timeline;
   set: (...args: any[]) => Timeline;
+  scrollTrigger?: ScrollTriggerInstance;
   to: (...args: any[]) => Timeline;
 };
 
@@ -18,6 +19,11 @@ type ScrollTriggerApi = {
   refresh: () => void;
 };
 
+type ScrollTriggerInstance = {
+  end: number;
+  start: number;
+};
+
 type ScrollProgress = {
   progress: number;
 };
@@ -28,6 +34,7 @@ const INTERIOR_START_PROGRESS = 0.62;
 const INTERIOR_INTERACTION_PROGRESS = 0.78;
 const INTERIOR_HOLD_PROGRESS = 0.82;
 const NAV_SCENE_PROGRESS_PROPERTY = "--site-nav-scene-progress";
+const CLICK_ENTER_INTERIOR_PROGRESS = 0.8;
 
 function setPhaseFromProgress(root: HTMLElement, progress: number) {
   const isInterior = progress >= INTERIOR_INTERACTION_PROGRESS;
@@ -91,9 +98,9 @@ export function createRecordStoreScrollScene(
       "--rs-room-opacity": 0
     });
     gsap.set(pageTheme, { [NAV_SCENE_PROGRESS_PROPERTY]: 0 });
-    gsap.set(store, { transformOrigin: "50% 66%", xPercent: -50 });
+    gsap.set(store, { transformOrigin: "50% 62%", x: 0, xPercent: -50 });
     gsap.set(motionLayers, { force3D: true });
-    gsap.set(room, { scale: 1, transformOrigin: "50% 58%" });
+    gsap.set(room, { scale: 1, transformOrigin: "50% 50%", x: 0, y: 0 });
     gsap.set(interiorObjects, {
       filter: "brightness(0.82) saturate(0.82)",
       transformOrigin: "50% 50%"
@@ -149,8 +156,8 @@ export function createRecordStoreScrollScene(
       .to(seaDetails, { xPercent: -9, duration: 0.54 }, "parallax")
       .to(backlot, { scale: 1.08, xPercent: -7, yPercent: 5, duration: 0.54 }, "parallax")
       .to(road, { scale: 1.08, xPercent: 3, yPercent: 10, duration: 0.54 }, "parallax")
-      .to(store, { scale: 1.06, yPercent: 0.8, duration: 0.24 }, "parallax")
-      .to(store, { ease: "power1.inOut", scale: 1.82, xPercent: -50, yPercent: 0, duration: 0.3 }, "door")
+      .to(store, { scale: 1.06, x: 0, yPercent: 0.8, duration: 0.24 }, "parallax")
+      .to(store, { ease: "power1.inOut", scale: 1.82, x: 0, xPercent: -50, yPercent: 0, duration: 0.3 }, "door")
       .to(root, {
         "--rs-door-transparency": 0.58,
         "--rs-focus-vignette": 0.28,
@@ -166,7 +173,7 @@ export function createRecordStoreScrollScene(
         stagger: 0.025,
         duration: 0.3
       }, "door+=0.04")
-      .to(store, { ease: "power1.out", opacity: 0.0, scale: 2.18, xPercent: -50, yPercent: 0, duration: 0.2 }, "interior")
+      .to(store, { ease: "power1.out", opacity: 0.0, scale: 2.18, x: 0, xPercent: -50, yPercent: 0, duration: 0.2 }, "interior")
       .to(exteriorLayers, { opacity: 0.0, duration: 0.2 }, "interior")
       .to(effects, { opacity: 0.92, duration: 0.2 }, "interior")
       .to(room, { scale: 1.04, duration: 0.2 }, "interior")
@@ -192,6 +199,25 @@ export function createRecordStoreScrollScene(
     destroy() {
       context.revert();
       resetRecordStoreScrollState(root);
+    },
+    enterInterior() {
+      const scrollTrigger = timeline?.scrollTrigger;
+
+      if (!scrollTrigger) {
+        return false;
+      }
+
+      const targetScroll =
+        scrollTrigger.start +
+        (scrollTrigger.end - scrollTrigger.start) * CLICK_ENTER_INTERIOR_PROGRESS;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      window.scrollTo({
+        behavior: reducedMotion ? "auto" : "smooth",
+        top: Math.round(targetScroll)
+      });
+
+      return true;
     },
     refresh() {
       ScrollTrigger.refresh();

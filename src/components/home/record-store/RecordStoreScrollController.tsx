@@ -25,6 +25,9 @@ export default function RecordStoreScrollController({ rootId }: Props) {
 
     const desktop = window.matchMedia(DESKTOP_QUERY);
     const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY);
+    const doorTrigger = root.querySelector<HTMLButtonElement>(
+      "[data-record-store-door-trigger]"
+    );
     let scene: ReturnType<typeof createRecordStoreScrollScene> = null;
     let runId = 0;
     let isMounted = true;
@@ -77,6 +80,24 @@ export default function RecordStoreScrollController({ rootId }: Props) {
       destroyScene();
     };
 
+    const handleDoorEnter = () => {
+      const didEnterScene = scene?.enterInterior() ?? false;
+
+      if (didEnterScene) {
+        return;
+      }
+
+      if (desktop.matches && !reducedMotion.matches) {
+        return;
+      }
+
+      root.dataset.scrollPhase = "interior";
+      document.getElementById("store-map")?.scrollIntoView({
+        behavior: reducedMotion.matches ? "auto" : "smooth",
+        block: "start"
+      });
+    };
+
     const handleBeforeSwap = () => {
       destroyScene();
     };
@@ -85,6 +106,7 @@ export default function RecordStoreScrollController({ rootId }: Props) {
     reducedMotion.addEventListener("change", handleMediaChange);
     root.addEventListener(RECORD_STORE_ENTRY_OPEN_EVENT, handleEntryOpen);
     root.addEventListener(RECORD_STORE_ENTRY_CLOSE_EVENT, handleEntryClose);
+    doorTrigger?.addEventListener("click", handleDoorEnter);
     document.addEventListener("astro:before-swap", handleBeforeSwap);
 
     void setupScene();
@@ -96,6 +118,7 @@ export default function RecordStoreScrollController({ rootId }: Props) {
       reducedMotion.removeEventListener("change", handleMediaChange);
       root.removeEventListener(RECORD_STORE_ENTRY_OPEN_EVENT, handleEntryOpen);
       root.removeEventListener(RECORD_STORE_ENTRY_CLOSE_EVENT, handleEntryClose);
+      doorTrigger?.removeEventListener("click", handleDoorEnter);
       document.removeEventListener("astro:before-swap", handleBeforeSwap);
       destroyScene();
     };

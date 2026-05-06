@@ -6,7 +6,7 @@
   pointer-events: none;
   opacity: var(--rs-room-opacity);
   transform: scale(calc(1 + var(--rs-room-opacity) * 0.08));
-  transform-origin: 50% 58%;
+  transform-origin: 50% 50%;
 }
 
 .record-store-interior-scene-layer::before {

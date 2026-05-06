@@ -220,17 +220,14 @@
 }
 
 .retro-computer-html-layer {
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .retro-computer-html-screen {
-  position: absolute;
-  left: 47.4%;
-  top: 45.2%;
-  width: clamp(15rem, 29vw, 25.5rem);
+  position: relative;
+  width: 320px;
   backface-visibility: visible;
   pointer-events: auto;
-  transform: translate(-50%, -50%) perspective(900px) rotateX(1deg) rotateY(-0.5deg);
   transform-origin: center;
 }
 
@@ -251,12 +248,6 @@
   color: #fffdf8;
   cursor: pointer;
   transform: translateZ(0);
-}
-
-.retro-computer-html-screen .retro-screen-preview {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 320 / 214;
 }
 
 .retro-screen-preview__scanlines,
