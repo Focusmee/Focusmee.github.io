@@ -9,6 +9,8 @@ import RecordStoreDialog from "./record-store/RecordStoreDialog";
 import RecordStoreInteriorScene from "./record-store/RecordStoreInteriorScene.astro";
 import RecordStoreMap from "./record-store/RecordStoreMap.astro";
 import RecordStoreScrollController from "./record-store/RecordStoreScrollController";
+import RetroComputerEntrance from "./retro-computer/RetroComputerEntrance";
+import "../../styles/home-retro-computer.css";
 import "../../styles/home-record-store.css";
 import "../../styles/home-record-store-interior.css";
 
@@ -23,10 +25,13 @@ const dialogChoices = homeDialogChoices.map((choice) => ({
 <section
   id="record-store-hero"
   class="record-store-hero"
+  data-entry-state="intro"
   data-scroll-ready="false"
   data-scroll-phase="outside"
   aria-labelledby="record-store-title"
 >
+  <RetroComputerEntrance rootId="record-store-hero" client:only="react" />
+
   <div class="record-store-scroll-stage" data-record-store-stage>
   <div
     class="record-store-poster"

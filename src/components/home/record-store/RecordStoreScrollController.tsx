@@ -3,6 +3,10 @@ import {
   createRecordStoreScrollScene,
   resetRecordStoreScrollState
 } from "./recordStoreAnimation";
+import {
+  RECORD_STORE_ENTRY_CLOSE_EVENT,
+  RECORD_STORE_ENTRY_OPEN_EVENT
+} from "../retro-computer/retroComputerEvents";
 
 type Props = {
   rootId: string;
@@ -24,6 +28,8 @@ export default function RecordStoreScrollController({ rootId }: Props) {
     let scene: ReturnType<typeof createRecordStoreScrollScene> = null;
     let runId = 0;
     let isMounted = true;
+    const canUseScrollScene = () =>
+      !root.dataset.entryState || root.dataset.entryState === "open";
 
     const destroyScene = () => {
       scene?.destroy();
@@ -37,6 +43,10 @@ export default function RecordStoreScrollController({ rootId }: Props) {
       destroyScene();
 
       if (!desktop.matches || reducedMotion.matches) {
+        return;
+      }
+
+      if (!canUseScrollScene()) {
         return;
       }
 
@@ -57,12 +67,24 @@ export default function RecordStoreScrollController({ rootId }: Props) {
       void setupScene();
     };
 
+    const handleEntryOpen = () => {
+      window.requestAnimationFrame(() => {
+        void setupScene();
+      });
+    };
+
+    const handleEntryClose = () => {
+      destroyScene();
+    };
+
     const handleBeforeSwap = () => {
       destroyScene();
     };
 
     desktop.addEventListener("change", handleMediaChange);
     reducedMotion.addEventListener("change", handleMediaChange);
+    root.addEventListener(RECORD_STORE_ENTRY_OPEN_EVENT, handleEntryOpen);
+    root.addEventListener(RECORD_STORE_ENTRY_CLOSE_EVENT, handleEntryClose);
     document.addEventListener("astro:before-swap", handleBeforeSwap);
 
     void setupScene();
@@ -72,6 +94,8 @@ export default function RecordStoreScrollController({ rootId }: Props) {
       runId += 1;
       desktop.removeEventListener("change", handleMediaChange);
       reducedMotion.removeEventListener("change", handleMediaChange);
+      root.removeEventListener(RECORD_STORE_ENTRY_OPEN_EVENT, handleEntryOpen);
+      root.removeEventListener(RECORD_STORE_ENTRY_CLOSE_EVENT, handleEntryClose);
       document.removeEventListener("astro:before-swap", handleBeforeSwap);
       destroyScene();
     };
