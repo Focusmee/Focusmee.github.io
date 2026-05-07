@@ -1,0 +1,55 @@
+---
+import Button from "../ui/Button.astro";
+import { siteConfig } from "../../data/site";
+import { withBase } from "../../utils/links";
+import { pickRandomItem } from "../../utils/random";
+import { getPublishedLogs } from "../../utils/posts";
+import { homeDialogChoices } from "./homeDialogChoices";
+import RecordStoreMap from "./record-store/RecordStoreMap.astro";
+import RecordStorePoster from "./record-store/poster/RecordStorePoster.astro";
+import RetroComputerEntrance from "./retro-computer/RetroComputerEntrance";
+import "../../styles/home-retro-computer.css";
+import "../../styles/home-record-store.css";
+import "../../styles/home-record-store-interior.css";
+
+const rootId = "record-store-hero";
+const posts = await getPublishedLogs();
+const randomPost = pickRandomItem(posts);
+const dialogChoices = homeDialogChoices.map((choice) => ({
+  ...choice,
+  href: withBase(choice.href)
+}));
+---
+
+<section
+  id={rootId}
+  class="record-store-hero"
+  data-entry-state="intro"
+  data-scroll-ready="false"
+  data-scroll-phase="outside"
+  aria-labelledby="record-store-title"
+>
+  <RetroComputerEntrance rootId={rootId} client:only="react" />
+  <RecordStorePoster rootId={rootId} choices={dialogChoices} />
+
+  <div class="record-store-hero__intro">
+    <span class="record-store-eyebrow">Blooming Logs presents</span>
+    <p class="record-store-copy">
+      {siteConfig.description} Step into a poster-like city pop record shop where
+      every shelf opens into a different collection.
+    </p>
+
+    <div class="record-store-actions">
+      <Button href="#store-map">Enter the Store</Button>
+      {
+        randomPost && (
+          <Button href={withBase(`/logs/${randomPost.id}`)} variant="secondary">
+            Play Something Random
+          </Button>
+        )
+      }
+    </div>
+  </div>
+
+  <RecordStoreMap />
+</section>

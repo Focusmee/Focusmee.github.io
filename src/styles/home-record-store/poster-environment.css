@@ -1,0 +1,297 @@
+﻿.poster-sky {
+  inset: 0 0 43%;
+  background:
+    radial-gradient(circle at 78% 14%, rgba(32, 126, 255, 0.18), transparent 0 18rem),
+    linear-gradient(180deg, #00146d 0%, #0034ae 42%, #005bd6 74%, #008ddd 100%);
+}
+
+.poster-horizon-glow {
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  bottom: -0.1rem;
+  height: 6rem;
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(42, 200, 246, 0.2) 38%, rgba(167, 255, 236, 0.5) 100%);
+}
+
+.poster-sun {
+  position: absolute;
+  right: 18%;
+  top: 14%;
+  width: 6.5rem;
+  height: 6.5rem;
+  border-radius: 50%;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 0.55rem, rgba(255, 106, 141, 0.34) 0.55rem 0.78rem),
+    linear-gradient(180deg, #fff189 0%, #ffc35d 45%, #ff678f 100%);
+  box-shadow:
+    0 0 0 0.35rem rgba(255, 241, 137, 0.2),
+    0 0 3.5rem rgba(255, 199, 93, 0.42);
+  opacity: 0;
+}
+
+.poster-cloud {
+  position: absolute;
+  height: 0.72rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow:
+    1.1rem -0.28rem 0 0.24rem rgba(255, 255, 255, 0.76),
+    2.5rem 0.12rem 0 0 rgba(255, 255, 255, 0.62),
+    3.35rem -0.1rem 0 -0.12rem rgba(255, 255, 255, 0.48);
+  animation: poster-cloud-drift 20s ease-in-out infinite;
+  opacity: 0.46;
+}
+
+.poster-cloud--one {
+  left: 12%;
+  top: 18%;
+  width: 4rem;
+}
+
+.poster-cloud--two {
+  left: 42%;
+  top: 13%;
+  width: 3.2rem;
+  animation-delay: -8s;
+}
+
+.poster-cloud--three {
+  right: 22%;
+  top: 28%;
+  width: 3.6rem;
+  animation-delay: -14s;
+}
+
+.poster-cloud-bank {
+  position: absolute;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  opacity: 0.72;
+}
+
+.poster-cloud-bank::before,
+.poster-cloud-bank::after {
+  content: "";
+  position: absolute;
+  top: -0.38rem;
+  height: 0.35rem;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.44);
+}
+
+.poster-cloud-bank::before {
+  left: 18%;
+  width: 32%;
+}
+
+.poster-cloud-bank::after {
+  right: 8%;
+  width: 18%;
+}
+
+.poster-cloud-bank--low {
+  left: 29%;
+  bottom: 0.75rem;
+  width: 27rem;
+}
+
+.poster-cloud-bank--far {
+  left: 6%;
+  bottom: 2.4rem;
+  width: 15rem;
+  opacity: 0.42;
+}
+
+.poster-sea {
+  inset: 56% 0 12%;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0 0.2rem, transparent 0.21rem),
+    repeating-linear-gradient(180deg, transparent 0 1.2rem, rgba(255, 255, 255, 0.16) 1.2rem 1.42rem),
+    linear-gradient(180deg, #0095d8 0%, #09b6dd 34%, #20d2dc 68%, #67edd7 100%);
+}
+
+.poster-sea::before,
+.poster-sea::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.poster-sea::before {
+  top: 22%;
+}
+
+.poster-sea::after {
+  top: 64%;
+}
+
+.sea-horizon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0.45rem;
+  background:
+    linear-gradient(90deg, transparent 0 7%, rgba(255, 255, 255, 0.88) 7% 23%, transparent 23% 31%, rgba(255, 255, 255, 0.72) 31% 58%, transparent 58% 100%);
+  box-shadow:
+    0 0.35rem 0 rgba(126, 243, 208, 0.44),
+    0 1.1rem 0 rgba(255, 255, 255, 0.16),
+    0 2rem 0 rgba(0, 78, 180, 0.16);
+}
+
+.sea-stripe {
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  height: 0.62rem;
+  background: rgba(255, 255, 255, 0.22);
+  transform: rotate(-1deg);
+}
+
+.sea-stripe--one {
+  top: 18%;
+}
+
+.sea-stripe--two {
+  top: 34%;
+  height: 0.72rem;
+  background: rgba(0, 83, 195, 0.18);
+}
+
+.sea-stripe--three {
+  top: 52%;
+}
+
+.sea-stripe--four {
+  top: 76%;
+  height: 0.8rem;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.sea-line {
+  position: absolute;
+  height: 0.28rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow:
+    1.4rem 0.46rem 0 -0.08rem rgba(255, 255, 255, 0.54),
+    -1rem 0.9rem 0 -0.12rem rgba(255, 255, 255, 0.62);
+  animation: sea-shimmer 4.8s ease-in-out infinite;
+}
+
+.sea-line--one {
+  left: 8%;
+  top: 38%;
+  width: 16%;
+}
+
+.sea-line--two {
+  right: 11%;
+  top: 55%;
+  width: 20%;
+  animation-delay: -1.4s;
+}
+
+.sea-line--three {
+  left: 46%;
+  top: 28%;
+  width: 12%;
+  animation-delay: -2.6s;
+}
+
+.sea-line--four {
+  left: 30%;
+  top: 70%;
+  width: 15%;
+  animation-delay: -3.1s;
+}
+
+.sea-line--five {
+  right: 28%;
+  top: 16%;
+  width: 10%;
+  animation-delay: -0.9s;
+}
+
+.sea-sparkle {
+  position: absolute;
+  left: var(--spark-x);
+  top: var(--spark-y);
+  width: var(--spark-w);
+  height: 0.18rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 0 0.6rem rgba(255, 255, 255, 0.5);
+}
+
+.sailboat {
+  position: absolute;
+  z-index: 4;
+  width: 2.8rem;
+  height: 3.3rem;
+}
+
+.sailboat::before,
+.sailboat::after {
+  content: "";
+  position: absolute;
+  bottom: 0.45rem;
+  border-style: solid;
+}
+
+.sailboat::before {
+  left: 0.35rem;
+  border-width: 0 1rem 2.75rem 0;
+  border-color: transparent #fffdf8 transparent transparent;
+}
+
+.sailboat::after {
+  right: 0.25rem;
+  border-width: 2.75rem 0.85rem 0 0;
+  border-color: #d7f8ff transparent transparent transparent;
+}
+
+.sailboat span {
+  position: absolute;
+  left: 0.2rem;
+  right: 0.1rem;
+  bottom: 0.1rem;
+  height: 0.35rem;
+  border-radius: 0 0 999px 999px;
+  background: #ffffff;
+}
+
+.sailboat--left {
+  left: 12%;
+  top: 17%;
+}
+
+.sailboat--right {
+  right: 13%;
+  top: 24%;
+}
+
+.poster-backlot {
+  inset: 0;
+  z-index: 2;
+  overflow: visible;
+}
+
+.poster-backlot::before {
+  content: "";
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  bottom: 10.5%;
+  height: 5.5%;
+  background:
+    linear-gradient(90deg, rgba(0, 80, 62, 0.54), rgba(0, 130, 92, 0.44) 44%, rgba(0, 84, 74, 0.54));
+}
+

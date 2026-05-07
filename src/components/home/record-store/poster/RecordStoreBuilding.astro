@@ -1,0 +1,84 @@
+<div class="poster-layer record-store-building" data-poster-layer="store">
+  <div class="store-shadow"></div>
+  <div class="store-back-shadow"></div>
+  <div class="store-sign">
+    <span class="store-sign__micro">Summer archive</span>
+    <h1 id="record-store-title" class="store-sign__title">Seaside Records</h1>
+  </div>
+  <div class="store-trim store-trim--top"></div>
+  <div class="store-awning-shadow"></div>
+  <div class="store-awning"></div>
+  <div class="store-body">
+    <div class="store-wall-cut store-wall-cut--left"></div>
+    <div class="store-wall-cut store-wall-cut--right"></div>
+    <div class="store-column store-column--left"></div>
+    <div class="store-column store-column--center-left"></div>
+    <div class="store-column store-column--center-right"></div>
+    <div class="store-column store-column--right"></div>
+    <div class="store-glass store-glass--left">
+      <div class="glass-reflection glass-reflection--wide"></div>
+      <div class="window-ocean-view"></div>
+      <div class="mini-poster mini-poster--one"></div>
+      <div class="mini-poster mini-poster--two"></div>
+      <div class="mini-poster mini-poster--three"></div>
+      <div class="crt-workbench" data-interior-object="lab">
+        <span></span>
+      </div>
+      <div class="interior-shelf interior-shelf--left"></div>
+    </div>
+    <div class="store-doors">
+      <div class="door-reflection door-reflection--left"></div>
+      <div class="door-reflection door-reflection--right"></div>
+      <div class="door-panel"></div>
+      <div class="door-panel"></div>
+      <div class="door-handles"></div>
+      <div class="door-threshold"></div>
+    </div>
+    <button
+      class="record-store-door-trigger"
+      data-record-store-door-trigger
+      type="button"
+      aria-label="Enter Seaside Records interior"
+    >
+      <span aria-hidden="true"></span>
+    </button>
+    <div class="store-glass store-glass--right">
+      <div class="glass-reflection glass-reflection--thin"></div>
+      <div class="window-ocean-view window-ocean-view--small"></div>
+      <div class="hanging-light hanging-light--one"></div>
+      <div class="hanging-light hanging-light--two"></div>
+      <div class="hanging-light hanging-light--three"></div>
+      <div class="interior-plant" data-interior-object="garden"></div>
+      <div class="interior-shelf interior-shelf--right"></div>
+    </div>
+    <div class="wall-poster" data-interior-object="frames">
+      <span>City Pop</span>
+      <div class="poster-palm"></div>
+      <div class="poster-sunset"></div>
+      <div class="poster-wave"></div>
+    </div>
+    <div class="record-rack" data-interior-object="records">
+      {
+        Array.from({ length: 10 }).map((_, index) => (
+          <span
+            style={`--cover-a:${190 + index * 18};--cover-b:${330 + index * 10}`}
+          ></span>
+        ))
+      }
+    </div>
+    <div class="counter-notes" data-interior-object="notes">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="vinyl-bin-shadow"></div>
+    <div class="under-drawer" data-interior-object="drawer">
+      <span></span>
+    </div>
+  </div>
+  <div class="store-step">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>

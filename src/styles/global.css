@@ -12,9 +12,14 @@ html {
   scroll-behavior: smooth;
 }
 
+:root {
+  --site-nav-scene-progress: 0;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: clip;
   font-family: var(--font-body);
   color: var(--ink);
   background:
@@ -82,8 +87,8 @@ select {
   top: 0;
   z-index: 20;
   backdrop-filter: blur(18px);
-  background: rgba(255, 249, 240, 0.75);
-  border-bottom: 1px solid rgba(35, 35, 35, 0.06);
+  background: rgba(255, 249, 240, calc(0.75 - 0.69 * var(--site-nav-scene-progress)));
+  border-bottom: 1px solid rgba(255, 255, 255, calc(0.06 + 0.1 * var(--site-nav-scene-progress)));
 }
 
 .nav-inner {
@@ -107,10 +112,19 @@ select {
   font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: -0.03em;
+  color: rgb(
+    calc(35 + 220 * var(--site-nav-scene-progress))
+    calc(35 + 218 * var(--site-nav-scene-progress))
+    calc(35 + 213 * var(--site-nav-scene-progress))
+  );
 }
 
 .brand-note {
-  color: var(--muted);
+  color: rgb(
+    calc(92 + 163 * var(--site-nav-scene-progress))
+    calc(90 + 163 * var(--site-nav-scene-progress))
+    calc(87 + 161 * var(--site-nav-scene-progress))
+  );
   font-size: 0.85rem;
 }
 
@@ -125,7 +139,11 @@ select {
 .nav-link {
   padding: 0.6rem 0.95rem;
   border-radius: var(--radius-pill);
-  color: var(--muted);
+  color: rgb(
+    calc(92 + 163 * var(--site-nav-scene-progress))
+    calc(90 + 163 * var(--site-nav-scene-progress))
+    calc(87 + 161 * var(--site-nav-scene-progress))
+  );
   font-weight: 700;
   white-space: nowrap;
   transition:
@@ -136,8 +154,12 @@ select {
 
 .nav-link:hover,
 .nav-link.is-active {
-  color: var(--ink);
-  background: rgba(255, 255, 255, 0.88);
+  color: rgb(
+    calc(35 + 220 * var(--site-nav-scene-progress))
+    calc(35 + 218 * var(--site-nav-scene-progress))
+    calc(35 + 213 * var(--site-nav-scene-progress))
+  );
+  background: rgba(255, 255, 255, calc(0.88 - 0.74 * var(--site-nav-scene-progress)));
   transform: translateY(-1px);
 }
 
