@@ -214,9 +214,30 @@
 }
 
 @media (max-width: 980px) {
-  .record-store-interior-scene-layer,
-  .record-store-dialog-layer {
+  .record-store-hero:not([data-scroll-phase="interior"]) .record-store-interior-scene-layer,
+  .record-store-hero:not([data-scroll-phase="interior"]) .record-store-dialog-layer {
     display: none;
+  }
+
+  .record-store-hero[data-scroll-phase="interior"] .record-store-interior-scene-layer,
+  .record-store-hero[data-scroll-phase="interior"] .record-store-dialog-layer {
+    display: block;
+  }
+
+  .record-store-hero[data-scroll-phase="interior"] [data-poster-layer="sky"],
+  .record-store-hero[data-scroll-phase="interior"] [data-poster-layer="sea"],
+  .record-store-hero[data-scroll-phase="interior"] [data-poster-layer="backlot"],
+  .record-store-hero[data-scroll-phase="interior"] [data-poster-layer="store"],
+  .record-store-hero[data-scroll-phase="interior"] [data-poster-layer="road"] {
+    opacity: 0;
+  }
+
+  .record-store-hero[data-scroll-phase="interior"] [data-poster-layer="effects"] {
+    opacity: 0.92;
+  }
+
+  .record-store-hero[data-scroll-phase="interior"] .record-store-dialog-layer {
+    opacity: 1;
   }
 }
 
@@ -227,9 +248,30 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .record-store-interior-scene-layer,
-  .record-store-dialog-layer {
+  .record-store-hero:not([data-scroll-phase="interior"]) .record-store-interior-scene-layer,
+  .record-store-hero:not([data-scroll-phase="interior"]) .record-store-dialog-layer {
     display: none;
+  }
+
+  .record-store-hero[data-scroll-phase="interior"] .record-store-interior-scene-layer,
+  .record-store-hero[data-scroll-phase="interior"] .record-store-dialog-layer {
+    display: block;
+  }
+
+  .record-store-hero[data-scroll-phase="interior"] [data-poster-layer="sky"],
+  .record-store-hero[data-scroll-phase="interior"] [data-poster-layer="sea"],
+  .record-store-hero[data-scroll-phase="interior"] [data-poster-layer="backlot"],
+  .record-store-hero[data-scroll-phase="interior"] [data-poster-layer="store"],
+  .record-store-hero[data-scroll-phase="interior"] [data-poster-layer="road"] {
+    opacity: 0;
+  }
+
+  .record-store-hero[data-scroll-phase="interior"] [data-poster-layer="effects"] {
+    opacity: 0.92;
+  }
+
+  .record-store-hero[data-scroll-phase="interior"] .record-store-dialog-layer {
+    opacity: 1;
   }
 
   .record-store-dialog-choice {

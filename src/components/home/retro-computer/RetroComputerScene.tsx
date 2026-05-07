@@ -1,10 +1,14 @@
-import { Html } from "@react-three/drei";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Suspense, useCallback, useMemo, useState } from "react";
+import { Canvas, type ThreeEvent, useFrame, useThree } from "@react-three/fiber";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import RetroComputerModel from "./RetroComputerModel";
 import type { ScreenAnchor } from "./RetroComputerModel";
-import RetroComputerScreenPreview from "./RetroComputerScreenPreview";
+import {
+  RETRO_SCREEN_TEXTURE_HEIGHT,
+  RETRO_SCREEN_TEXTURE_WIDTH,
+  drawRetroComputerScreen,
+  isPressStartUvHit
+} from "./retroComputerScreenTexture";
 
 type Props = {
   isEntering: boolean;
@@ -19,14 +23,13 @@ const MODEL_ROTATION = MODEL_ROTATION_DEGREES.map((degree) =>
 ) as [number, number, number];
 const MODEL_EULER = new THREE.Euler(...MODEL_ROTATION);
 const MODEL_SCALE = 2.8;
-const SCREEN_FIT_RATIO = 0.94;
-const SCREEN_PIXEL_WIDTH = 320;
-const HTML_TRANSFORM_PIXEL_TO_WORLD = 0.025;
-const SCREEN_SURFACE_OFFSET = 0.014;
+const SCREEN_FIT_RATIO = 0.9;
+const SCREEN_GLOW_OFFSET = 0.018;
+const SCREEN_TEXTURE_OFFSET = 0.032;
 const FALLBACK_SCREEN_ANCHOR: ScreenAnchor = {
-  height: 0.215,
+  height: 0.221,
   normal: [1, 0, 0],
-  position: [0.088, 0.335, 0.032],
+  position: [0.083, 0.406, 0.042],
   rotation: [0, Math.PI / 2, 0],
   sourceName: "fallback",
   width: 0.3
@@ -87,19 +90,10 @@ function AnimatedCamera({
   return null;
 }
 
-function getFloatingScreenPosition(anchor: ScreenAnchor) {
+function getFloatingScreenPosition(anchor: ScreenAnchor, offset: number) {
   return anchor.position.map((value, index) =>
-    value + anchor.normal[index] * SCREEN_SURFACE_OFFSET
+    value + anchor.normal[index] * offset
   ) as [number, number, number];
-}
-
-function getScreenPixelHeight(anchor: ScreenAnchor) {
-  return Math.round(SCREEN_PIXEL_WIDTH * (anchor.height / anchor.width));
-}
-
-function getScreenHtmlScale(anchor: ScreenAnchor) {
-  return anchor.width * SCREEN_FIT_RATIO /
-    (SCREEN_PIXEL_WIDTH * HTML_TRANSFORM_PIXEL_TO_WORLD);
 }
 
 function ComputerScreenGlow({
@@ -107,7 +101,7 @@ function ComputerScreenGlow({
   isEntering
 }: Pick<Props, "isEntering"> & { anchor: ScreenAnchor }) {
   return (
-    <mesh position={getFloatingScreenPosition(anchor)} rotation={anchor.rotation}>
+    <mesh position={getFloatingScreenPosition(anchor, SCREEN_GLOW_OFFSET)} rotation={anchor.rotation}>
       <planeGeometry args={[anchor.width * SCREEN_FIT_RATIO, anchor.height * SCREEN_FIT_RATIO]} />
       <meshBasicMaterial
         color="#74f3ff"
@@ -119,32 +113,79 @@ function ComputerScreenGlow({
   );
 }
 
-function ComputerScreenHtml({
+function ComputerScreenTexture({
   anchor,
   isEntering,
   onEnter
 }: Pick<Props, "isEntering" | "onEnter"> & { anchor: ScreenAnchor }) {
+  const lastTextureUpdateRef = useRef(-1);
+  const screen = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = RETRO_SCREEN_TEXTURE_WIDTH;
+    canvas.height = RETRO_SCREEN_TEXTURE_HEIGHT;
+
+    drawRetroComputerScreen(canvas, { elapsed: 0, isEntering: false });
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.generateMipmaps = false;
+    texture.magFilter = THREE.LinearFilter;
+    texture.minFilter = THREE.LinearFilter;
+
+    return { canvas, texture };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      document.body.style.cursor = "";
+      screen.texture.dispose();
+    };
+  }, [screen]);
+
+  useFrame(({ clock }) => {
+    const elapsed = clock.getElapsedTime();
+
+    if (elapsed - lastTextureUpdateRef.current < 1 / 24) {
+      return;
+    }
+
+    lastTextureUpdateRef.current = elapsed;
+    drawRetroComputerScreen(screen.canvas, { elapsed, isEntering });
+    screen.texture.needsUpdate = true;
+  });
+
+  const handleScreenClick = (event: ThreeEvent<MouseEvent>) => {
+    event.stopPropagation();
+
+    if (isPressStartUvHit(event.uv)) {
+      onEnter();
+    }
+  };
+  const handleScreenPointerMove = (event: ThreeEvent<PointerEvent>) => {
+    document.body.style.cursor = isPressStartUvHit(event.uv) ? "pointer" : "";
+  };
+  const handleScreenPointerOut = () => {
+    document.body.style.cursor = "";
+  };
+
   return (
-    <Html
-      center
-      className="retro-computer-html-layer"
-      occlude={false}
-      position={getFloatingScreenPosition(anchor)}
+    <mesh
+      onClick={handleScreenClick}
+      onPointerMove={handleScreenPointerMove}
+      onPointerOut={handleScreenPointerOut}
+      position={getFloatingScreenPosition(anchor, SCREEN_TEXTURE_OFFSET)}
       rotation={anchor.rotation}
-      scale={getScreenHtmlScale(anchor)}
-      transform
-      zIndexRange={[30, 0]}
+      renderOrder={20}
     >
-      <div
-        className="retro-computer-html-screen"
-        style={{
-          height: `${getScreenPixelHeight(anchor)}px`,
-          width: `${SCREEN_PIXEL_WIDTH}px`
-        }}
-      >
-        <RetroComputerScreenPreview isEntering={isEntering} onEnter={onEnter} />
-      </div>
-    </Html>
+      <planeGeometry args={[anchor.width * SCREEN_FIT_RATIO, anchor.height * SCREEN_FIT_RATIO]} />
+      <meshBasicMaterial
+        map={screen.texture}
+        depthTest={false}
+        depthWrite={false}
+        side={THREE.DoubleSide}
+        toneMapped={false}
+      />
+    </mesh>
   );
 }
 
@@ -171,7 +212,7 @@ export default function RetroComputerScene({ isEntering, modelUrl, onEnter }: Pr
         <group position={MODEL_POSITION} rotation={MODEL_ROTATION} scale={MODEL_SCALE}>
           <RetroComputerModel modelUrl={modelUrl} onScreenAnchor={handleScreenAnchor} />
           <ComputerScreenGlow anchor={screenAnchor} isEntering={isEntering} />
-          <ComputerScreenHtml anchor={screenAnchor} isEntering={isEntering} onEnter={onEnter} />
+          <ComputerScreenTexture anchor={screenAnchor} isEntering={isEntering} onEnter={onEnter} />
         </group>
       </Suspense>
       <mesh position={[0, -1.72, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>

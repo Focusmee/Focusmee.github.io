@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import {
   createRecordStoreScrollScene,
-  resetRecordStoreScrollState
+  resetRecordStoreScrollState,
+  setRecordStoreInteriorFallbackState
 } from "./recordStoreAnimation";
 import {
   RECORD_STORE_ENTRY_CLOSE_EVENT,
@@ -28,6 +29,7 @@ export default function RecordStoreScrollController({ rootId }: Props) {
     const doorTrigger = root.querySelector<HTMLButtonElement>(
       "[data-record-store-door-trigger]"
     );
+    const appWindow = root.querySelector<HTMLElement>("[data-record-store-pin-target]");
     let scene: ReturnType<typeof createRecordStoreScrollScene> = null;
     let runId = 0;
     let isMounted = true;
@@ -93,10 +95,12 @@ export default function RecordStoreScrollController({ rootId }: Props) {
         return;
       }
 
-      root.dataset.scrollPhase = "interior";
-      document.getElementById("store-map")?.scrollIntoView({
-        behavior: reducedMotion.matches ? "auto" : "smooth",
-        block: "start"
+      setRecordStoreInteriorFallbackState(root);
+      window.requestAnimationFrame(() => {
+        (appWindow ?? root).scrollIntoView({
+          behavior: reducedMotion.matches ? "auto" : "smooth",
+          block: "start"
+        });
       });
     };
 
