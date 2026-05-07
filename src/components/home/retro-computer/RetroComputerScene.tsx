@@ -19,9 +19,10 @@ const MODEL_ROTATION = MODEL_ROTATION_DEGREES.map((degree) =>
 ) as [number, number, number];
 const MODEL_EULER = new THREE.Euler(...MODEL_ROTATION);
 const MODEL_SCALE = 2.8;
-const SCREEN_FIT_RATIO = 0.3;
-const SCREEN_HTML_SCALE = 0.03;
-const SCREEN_SURFACE_OFFSET = 0.012;
+const SCREEN_FIT_RATIO = 0.94;
+const SCREEN_PIXEL_WIDTH = 320;
+const HTML_TRANSFORM_PIXEL_TO_WORLD = 0.025;
+const SCREEN_SURFACE_OFFSET = 0.014;
 const FALLBACK_SCREEN_ANCHOR: ScreenAnchor = {
   height: 0.215,
   normal: [1, 0, 0],
@@ -92,8 +93,13 @@ function getFloatingScreenPosition(anchor: ScreenAnchor) {
   ) as [number, number, number];
 }
 
-function getHtmlScale() {
-  return SCREEN_HTML_SCALE;
+function getScreenPixelHeight(anchor: ScreenAnchor) {
+  return Math.round(SCREEN_PIXEL_WIDTH * (anchor.height / anchor.width));
+}
+
+function getScreenHtmlScale(anchor: ScreenAnchor) {
+  return anchor.width * SCREEN_FIT_RATIO /
+    (SCREEN_PIXEL_WIDTH * HTML_TRANSFORM_PIXEL_TO_WORLD);
 }
 
 function ComputerScreenGlow({
@@ -125,11 +131,17 @@ function ComputerScreenHtml({
       occlude={false}
       position={getFloatingScreenPosition(anchor)}
       rotation={anchor.rotation}
-      scale={getHtmlScale()}
+      scale={getScreenHtmlScale(anchor)}
       transform
       zIndexRange={[30, 0]}
     >
-      <div className="retro-computer-html-screen">
+      <div
+        className="retro-computer-html-screen"
+        style={{
+          height: `${getScreenPixelHeight(anchor)}px`,
+          width: `${SCREEN_PIXEL_WIDTH}px`
+        }}
+      >
         <RetroComputerScreenPreview isEntering={isEntering} onEnter={onEnter} />
       </div>
     </Html>

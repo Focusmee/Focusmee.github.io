@@ -72,7 +72,9 @@ export default function RecordStoreScrollController({ rootId }: Props) {
 
     const handleEntryOpen = () => {
       window.requestAnimationFrame(() => {
-        void setupScene();
+        window.requestAnimationFrame(() => {
+          void setupScene();
+        });
       });
     };
 

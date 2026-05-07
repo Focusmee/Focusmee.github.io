@@ -92,24 +92,25 @@ export default function RetroComputerEntrance({ rootId }: Props) {
     });
   }, [rootId]);
 
-  if (entryState === "open") {
-    return (
-      <div className="retro-program-chrome" aria-label="Seaside Records program controls">
-        <button
-          className="retro-program-chrome__back"
-          type="button"
-          aria-label="Return to Seaside OS desktop"
-          onClick={handleReturn}
-        >
-          <span aria-hidden="true">{"<"}</span>
-          Back
-        </button>
-        <div className="retro-program-chrome__title" aria-hidden="true">
-          <span />
-          <strong>Seaside Records.app</strong>
-        </div>
-      </div>
+  useEffect(() => {
+    const root = document.getElementById(rootId);
+    const closeTrigger = root?.querySelector<HTMLButtonElement>(
+      "[data-record-store-close-trigger]"
     );
+
+    if (!closeTrigger) {
+      return;
+    }
+
+    closeTrigger.addEventListener("click", handleReturn);
+
+    return () => {
+      closeTrigger.removeEventListener("click", handleReturn);
+    };
+  }, [handleReturn, rootId]);
+
+  if (entryState === "open") {
+    return null;
   }
 
   return (

@@ -1,5 +1,5 @@
-.record-store-hero[data-entry-state="intro"] .record-store-scroll-stage,
-.record-store-hero[data-entry-state="entering"] .record-store-scroll-stage,
+.record-store-hero[data-entry-state="intro"] .record-store-app-shell,
+.record-store-hero[data-entry-state="entering"] .record-store-app-shell,
 .record-store-hero[data-entry-state="intro"] .record-store-hero__intro,
 .record-store-hero[data-entry-state="entering"] .record-store-hero__intro,
 .record-store-hero[data-entry-state="intro"] .record-store-map,
@@ -7,29 +7,125 @@
   display: none;
 }
 
-.retro-program-chrome {
-  position: fixed;
-  left: 50%;
-  top: clamp(4.7rem, 8vw, 5.7rem);
-  z-index: 28;
-  display: flex;
-  width: min(calc(100vw - 1.5rem), 56rem);
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.52rem;
-  border: 1px solid rgba(255, 255, 255, 0.42);
-  border-radius: 8px;
-  background: rgba(6, 26, 84, 0.38);
-  box-shadow: 0 1.1rem 2.6rem rgba(0, 12, 52, 0.16);
-  backdrop-filter: blur(18px);
-  transform: translateX(-50%);
+.record-store-app-shell {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-height: calc(100svh - 4.5rem);
+  overflow: hidden;
+  padding: clamp(0.75rem, 1.8vw, 1.25rem);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 34%),
+    linear-gradient(180deg, #103e8f 0%, #42b6d6 48%, #f29cb5 48% 100%);
 }
 
-.retro-program-chrome__back {
+.record-store-app-shell::before,
+.record-store-app-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.record-store-app-shell::before {
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0 1px, transparent 1px 5.6rem),
+    repeating-linear-gradient(180deg, transparent 0 3.2rem, rgba(0, 24, 88, 0.13) 3.2rem 3.26rem);
+  mix-blend-mode: screen;
+  opacity: 0.34;
+}
+
+.record-store-app-shell::after {
+  background:
+    linear-gradient(180deg, transparent 0 58%, rgba(116, 50, 91, 0.22) 58% 100%),
+    radial-gradient(circle at 72% 18%, rgba(255, 217, 47, 0.24), transparent 0 11rem);
+}
+
+.record-store-app-window {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 118rem);
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  border-radius: 8px;
+  background: #071d5f;
+  box-shadow:
+    0 1.8rem 4rem rgba(0, 10, 48, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.record-store-app-titlebar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3.05rem;
+  padding: 0.46rem 0.58rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent),
+    rgba(5, 24, 82, 0.88);
+  color: #fffdf8;
+  backdrop-filter: blur(18px);
+}
+
+.record-store-app-titlebar__controls,
+.record-store-app-titlebar__title,
+.record-store-app-titlebar__back {
+  display: inline-flex;
+  align-items: center;
+}
+
+.record-store-app-titlebar__controls {
+  gap: 0.42rem;
+}
+
+.record-store-app-titlebar__controls span {
+  width: 0.72rem;
+  height: 0.72rem;
+  border-radius: 50%;
+  background: #ff5f8f;
+  box-shadow: 0 0 0.8rem rgba(255, 95, 143, 0.44);
+}
+
+.record-store-app-titlebar__controls span:nth-child(2) {
+  background: #ffd92f;
+  box-shadow: 0 0 0.8rem rgba(255, 217, 47, 0.42);
+}
+
+.record-store-app-titlebar__controls span:nth-child(3) {
+  background: #7ff3d0;
+  box-shadow: 0 0 0.8rem rgba(127, 243, 208, 0.42);
+}
+
+.record-store-app-titlebar__title {
+  min-width: 0;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.86rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.record-store-app-titlebar__title span {
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 50%;
+  background: #7ff3d0;
+  box-shadow: 0 0 0.85rem rgba(127, 243, 208, 0.78);
+}
+
+.record-store-app-titlebar__title strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.record-store-app-titlebar__back {
   display: inline-flex;
   min-height: 2.45rem;
-  align-items: center;
   justify-content: center;
   gap: 0.45rem;
   padding: 0.55rem 0.8rem;
@@ -45,47 +141,21 @@
     transform 180ms ease;
 }
 
-.retro-program-chrome__back:hover,
-.retro-program-chrome__back:focus-visible {
+.record-store-app-titlebar__back:hover,
+.record-store-app-titlebar__back:focus-visible {
   background: #063071;
   color: #fffdf8;
   transform: translateY(-1px);
 }
 
-.retro-program-chrome__back:focus-visible {
+.record-store-app-titlebar__back:focus-visible {
   outline: 3px solid rgba(255, 217, 47, 0.72);
   outline-offset: 0.2rem;
 }
 
-.retro-program-chrome__back span {
+.record-store-app-titlebar__back span {
   font-size: 1.05rem;
   line-height: 1;
-}
-
-.retro-program-chrome__title {
-  display: inline-flex;
-  min-width: 0;
-  align-items: center;
-  gap: 0.5rem;
-  color: rgba(255, 253, 248, 0.92);
-  font-size: 0.86rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.retro-program-chrome__title span {
-  width: 0.62rem;
-  height: 0.62rem;
-  border-radius: 50%;
-  background: #7ff3d0;
-  box-shadow: 0 0 0.85rem rgba(127, 243, 208, 0.78);
-}
-
-.retro-program-chrome__title strong {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .retro-computer-entry {
@@ -226,6 +296,7 @@
 .retro-computer-html-screen {
   position: relative;
   width: 320px;
+  height: 236px;
   backface-visibility: visible;
   pointer-events: auto;
   transform-origin: center;
@@ -234,12 +305,12 @@
 .retro-screen-preview {
   position: relative;
   display: block;
-  width: 320px;
-  height: 214px;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   padding: 0;
   border: 0;
-  border-radius: 18px;
+  border-radius: 12px;
   background: #004fc6;
   box-shadow:
     inset 0 0 0 6px rgba(2, 18, 72, 0.76),
@@ -451,20 +522,30 @@
     top: 0.8rem;
   }
 
-  .retro-program-chrome {
-    top: 4rem;
-    width: min(calc(100vw - 1rem), 32rem);
+  .record-store-app-shell {
+    min-height: calc(100svh - 3.2rem);
+    padding: 0.5rem;
   }
 
-  .retro-program-chrome__title {
+  .record-store-app-titlebar {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .record-store-app-titlebar__title {
+    justify-content: end;
     font-size: 0.72rem;
+  }
+
+  .record-store-app-titlebar__back {
+    grid-column: 1 / -1;
+    justify-self: stretch;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .retro-computer-entry--entering,
   .retro-screen-preview__prompt,
-  .retro-program-chrome__back {
+  .record-store-app-titlebar__back {
     animation: none;
     transition: none;
   }

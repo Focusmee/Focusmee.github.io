@@ -34,7 +34,7 @@ const INTERIOR_START_PROGRESS = 0.62;
 const INTERIOR_INTERACTION_PROGRESS = 0.78;
 const INTERIOR_HOLD_PROGRESS = 0.82;
 const NAV_SCENE_PROGRESS_PROPERTY = "--site-nav-scene-progress";
-const CLICK_ENTER_INTERIOR_PROGRESS = 0.8;
+const CLICK_ENTER_INTERIOR_PROGRESS = 0.86;
 
 function setPhaseFromProgress(root: HTMLElement, progress: number) {
   const isInterior = progress >= INTERIOR_INTERACTION_PROGRESS;
@@ -59,8 +59,10 @@ export function createRecordStoreScrollScene(
 ) {
   const stage = root.querySelector<HTMLElement>("[data-record-store-stage]");
   const poster = root.querySelector<HTMLElement>("[data-record-store-poster]");
+  const pinTarget =
+    root.querySelector<HTMLElement>("[data-record-store-pin-target]") ?? poster;
 
-  if (!stage || !poster) {
+  if (!stage || !poster || !pinTarget) {
     resetRecordStoreScrollState(root);
     return null;
   }
@@ -135,10 +137,10 @@ export function createRecordStoreScrollScene(
         onUpdate: (self: ScrollProgress) => {
           setPhaseFromProgress(root, self.progress);
         },
-        pin: poster,
+        pin: pinTarget,
         scrub: 0.72,
         start: "top top",
-        trigger: stage
+        trigger: pinTarget
       }
     });
 

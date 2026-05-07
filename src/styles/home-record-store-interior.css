@@ -27,6 +27,15 @@
   display: block;
 }
 
+.record-store-hero[data-scroll-phase="interior"] .record-store-poster {
+  background: #063caa;
+}
+
+.record-store-hero[data-scroll-phase="interior"] .record-store-interior-scene-layer {
+  opacity: 1;
+  transform: scale(1.04);
+}
+
 .record-store-dialog-layer {
   position: absolute;
   inset: 0;
