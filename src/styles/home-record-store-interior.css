@@ -111,7 +111,7 @@
   bottom: clamp(1rem, 4vw, 3rem);
   display: grid;
   gap: 0.7rem;
-  width: min(92vw, 60rem);
+  width: min(calc(100% - 2rem), 48rem);
   padding: 1rem;
   border: 2px solid rgba(255, 253, 248, 0.72);
   border-radius: 8px;

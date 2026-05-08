@@ -14,6 +14,7 @@ type Props = {
   isEntering: boolean;
   modelUrl: string;
   onEnter: () => void;
+  transitionDurationMs: number;
 };
 
 const MODEL_POSITION: [number, number, number] = [0, -0.3, 0];
@@ -35,6 +36,16 @@ const FALLBACK_SCREEN_ANCHOR: ScreenAnchor = {
   width: 0.3
 };
 
+function clamp01(value: number) {
+  return THREE.MathUtils.clamp(value, 0, 1);
+}
+
+function easeInOutCubic(value: number) {
+  return value < 0.5
+    ? 4 * value * value * value
+    : 1 - Math.pow(-2 * value + 2, 3) / 2;
+}
+
 function getModelWorldPosition(position: [number, number, number]) {
   return new THREE.Vector3(...position)
     .multiplyScalar(MODEL_SCALE)
@@ -48,11 +59,14 @@ function getModelWorldNormal(normal: [number, number, number]) {
 
 function AnimatedCamera({
   isEntering,
-  screenAnchor
-}: Pick<Props, "isEntering"> & { screenAnchor: ScreenAnchor }) {
+  screenAnchor,
+  transitionDurationMs
+}: Pick<Props, "isEntering" | "transitionDurationMs"> & { screenAnchor: ScreenAnchor }) {
   const { camera } = useThree();
+  const transitionStartRef = useRef<number | null>(null);
   const defaultPosition = useMemo(() => new THREE.Vector3(0, 0.64, 5.1), []);
   const defaultLookAtTarget = useMemo(() => new THREE.Vector3(-0.04, 0.26, 0.48), []);
+  const activeLookAtTarget = useMemo(() => new THREE.Vector3(), []);
   const screenCameraTarget = useMemo(() => {
     const target = getModelWorldPosition(screenAnchor.position);
     const normal = getModelWorldNormal(screenAnchor.normal);
@@ -66,25 +80,41 @@ function AnimatedCamera({
     };
   }, [screenAnchor]);
 
-  useFrame((_, delta) => {
-    const targetPosition = isEntering
-      ? screenCameraTarget.enteringPosition
-      : defaultPosition;
-    const lookAtTarget = isEntering
-      ? screenCameraTarget.target
-      : defaultLookAtTarget;
+  useFrame(({ clock }, delta) => {
     const perspectiveCamera = camera as THREE.PerspectiveCamera;
-    const ease = 1 - Math.exp(-delta * (isEntering ? 2.9 : 2.2));
 
-    camera.position.lerp(targetPosition, ease);
-    perspectiveCamera.fov = THREE.MathUtils.damp(
-      perspectiveCamera.fov,
-      isEntering ? 20 : 32,
-      2.8,
-      delta
-    );
+    if (isEntering) {
+      if (transitionStartRef.current === null) {
+        transitionStartRef.current = clock.getElapsedTime();
+      }
+
+      const progress = clamp01(
+        (clock.getElapsedTime() - transitionStartRef.current) /
+          (transitionDurationMs / 1000)
+      );
+      const easedProgress = easeInOutCubic(progress);
+
+      camera.position.lerpVectors(
+        defaultPosition,
+        screenCameraTarget.enteringPosition,
+        easedProgress
+      );
+      activeLookAtTarget.lerpVectors(
+        defaultLookAtTarget,
+        screenCameraTarget.target,
+        easedProgress
+      );
+      perspectiveCamera.fov = THREE.MathUtils.lerp(32, 16, easedProgress);
+      perspectiveCamera.updateProjectionMatrix();
+      camera.lookAt(activeLookAtTarget);
+      return;
+    }
+
+    transitionStartRef.current = null;
+    camera.position.lerp(defaultPosition, 1 - Math.exp(-delta * 2.2));
+    perspectiveCamera.fov = THREE.MathUtils.damp(perspectiveCamera.fov, 32, 2.8, delta);
     perspectiveCamera.updateProjectionMatrix();
-    camera.lookAt(lookAtTarget);
+    camera.lookAt(defaultLookAtTarget);
   });
 
   return null;
@@ -116,15 +146,21 @@ function ComputerScreenGlow({
 function ComputerScreenTexture({
   anchor,
   isEntering,
-  onEnter
-}: Pick<Props, "isEntering" | "onEnter"> & { anchor: ScreenAnchor }) {
+  onEnter,
+  transitionDurationMs
+}: Pick<Props, "isEntering" | "onEnter" | "transitionDurationMs"> & { anchor: ScreenAnchor }) {
   const lastTextureUpdateRef = useRef(-1);
+  const transitionStartRef = useRef<number | null>(null);
   const screen = useMemo(() => {
     const canvas = document.createElement("canvas");
     canvas.width = RETRO_SCREEN_TEXTURE_WIDTH;
     canvas.height = RETRO_SCREEN_TEXTURE_HEIGHT;
 
-    drawRetroComputerScreen(canvas, { elapsed: 0, isEntering: false });
+    drawRetroComputerScreen(canvas, {
+      elapsed: 0,
+      isEntering: false,
+      transitionProgress: 0
+    });
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.colorSpace = THREE.SRGBColorSpace;
@@ -149,20 +185,37 @@ function ComputerScreenTexture({
       return;
     }
 
+    if (isEntering && transitionStartRef.current === null) {
+      transitionStartRef.current = elapsed;
+    }
+
+    if (!isEntering) {
+      transitionStartRef.current = null;
+    }
+
+    const transitionProgress =
+      isEntering && transitionStartRef.current !== null
+        ? clamp01((elapsed - transitionStartRef.current) / (transitionDurationMs / 1000))
+        : 0;
+
     lastTextureUpdateRef.current = elapsed;
-    drawRetroComputerScreen(screen.canvas, { elapsed, isEntering });
+    drawRetroComputerScreen(screen.canvas, {
+      elapsed,
+      isEntering,
+      transitionProgress
+    });
     screen.texture.needsUpdate = true;
   });
 
   const handleScreenClick = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation();
 
-    if (isPressStartUvHit(event.uv)) {
+    if (!isEntering && isPressStartUvHit(event.uv)) {
       onEnter();
     }
   };
   const handleScreenPointerMove = (event: ThreeEvent<PointerEvent>) => {
-    document.body.style.cursor = isPressStartUvHit(event.uv) ? "pointer" : "";
+    document.body.style.cursor = !isEntering && isPressStartUvHit(event.uv) ? "pointer" : "";
   };
   const handleScreenPointerOut = () => {
     document.body.style.cursor = "";
@@ -189,7 +242,12 @@ function ComputerScreenTexture({
   );
 }
 
-export default function RetroComputerScene({ isEntering, modelUrl, onEnter }: Props) {
+export default function RetroComputerScene({
+  isEntering,
+  modelUrl,
+  onEnter,
+  transitionDurationMs
+}: Props) {
   const [screenAnchor, setScreenAnchor] = useState<ScreenAnchor>(FALLBACK_SCREEN_ANCHOR);
   const handleScreenAnchor = useCallback((anchor: ScreenAnchor | null) => {
     setScreenAnchor(anchor ?? FALLBACK_SCREEN_ANCHOR);
@@ -203,7 +261,11 @@ export default function RetroComputerScene({ isEntering, modelUrl, onEnter }: Pr
       gl={{ alpha: true, antialias: true }}
       shadows
     >
-      <AnimatedCamera isEntering={isEntering} screenAnchor={screenAnchor} />
+      <AnimatedCamera
+        isEntering={isEntering}
+        screenAnchor={screenAnchor}
+        transitionDurationMs={transitionDurationMs}
+      />
       <ambientLight intensity={0.82} />
       <directionalLight color="#fff1cf" intensity={1.2} position={[-3, 4, 4]} castShadow />
       <pointLight color="#77e9ff" intensity={1.6} position={[-0.45, 0.52, 1.1]} />
@@ -212,7 +274,12 @@ export default function RetroComputerScene({ isEntering, modelUrl, onEnter }: Pr
         <group position={MODEL_POSITION} rotation={MODEL_ROTATION} scale={MODEL_SCALE}>
           <RetroComputerModel modelUrl={modelUrl} onScreenAnchor={handleScreenAnchor} />
           <ComputerScreenGlow anchor={screenAnchor} isEntering={isEntering} />
-          <ComputerScreenTexture anchor={screenAnchor} isEntering={isEntering} onEnter={onEnter} />
+          <ComputerScreenTexture
+            anchor={screenAnchor}
+            isEntering={isEntering}
+            onEnter={onEnter}
+            transitionDurationMs={transitionDurationMs}
+          />
         </group>
       </Suspense>
       <mesh position={[0, -1.72, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>

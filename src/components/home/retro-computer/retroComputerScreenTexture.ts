@@ -4,6 +4,7 @@ export const RETRO_SCREEN_TEXTURE_HEIGHT = 472;
 type ScreenState = {
   elapsed: number;
   isEntering: boolean;
+  transitionProgress: number;
 };
 
 type UvPoint = {
@@ -79,6 +80,20 @@ function strokeRoundedRect(
   context.strokeStyle = strokeStyle;
   context.lineWidth = lineWidth;
   context.stroke();
+}
+
+function clamp01(value: number) {
+  return Math.max(0, Math.min(1, value));
+}
+
+function easeOutCubic(value: number) {
+  return 1 - Math.pow(1 - value, 3);
+}
+
+function noise(seed: number) {
+  const value = Math.sin(seed * 12.9898) * 43758.5453;
+
+  return value - Math.floor(value);
 }
 
 function drawSun(context: CanvasRenderingContext2D) {
@@ -173,6 +188,12 @@ function drawGlare(context: CanvasRenderingContext2D) {
 }
 
 function drawPrompt(context: CanvasRenderingContext2D, state: ScreenState) {
+  const promptOpacity = 1 - clamp01(state.transitionProgress * 1.7);
+
+  if (promptOpacity <= 0.02) {
+    return;
+  }
+
   const blinkOpacity = state.isEntering
     ? 0.92
     : Math.floor((state.elapsed % 1.1) / 0.55) === 0
@@ -180,7 +201,7 @@ function drawPrompt(context: CanvasRenderingContext2D, state: ScreenState) {
       : 0.58;
 
   context.save();
-  context.globalAlpha = blinkOpacity;
+  context.globalAlpha = blinkOpacity * promptOpacity;
   fillRoundedRect(
     context,
     PRESS_START_RECT.x,
@@ -211,6 +232,129 @@ function drawPrompt(context: CanvasRenderingContext2D, state: ScreenState) {
     PRESS_START_RECT.y + PRESS_START_RECT.height / 2 + 1
   );
   context.restore();
+}
+
+function drawGlitchTransition(context: CanvasRenderingContext2D, state: ScreenState) {
+  const progress = clamp01(state.transitionProgress);
+
+  if (progress <= 0) {
+    return;
+  }
+
+  const easedProgress = easeOutCubic(progress);
+  const shake = Math.sin(state.elapsed * 72) * (2 + easedProgress * 11);
+  const seed = Math.floor(state.elapsed * 24) + progress * 73;
+  const intensity = Math.min(1, 0.18 + easedProgress * 1.18);
+
+  context.save();
+  context.globalCompositeOperation = "screen";
+  context.globalAlpha = 0.12 + intensity * 0.18;
+  context.drawImage(context.canvas, -8 - shake, 0);
+  context.globalAlpha = 0.1 + intensity * 0.16;
+  context.drawImage(context.canvas, 7 + shake * 0.65, 0);
+  context.restore();
+
+  context.save();
+  context.globalCompositeOperation = "screen";
+  context.fillStyle = `rgba(255, 42, 109, ${0.12 + intensity * 0.28})`;
+  context.fillRect(0, 0, RETRO_SCREEN_TEXTURE_WIDTH, RETRO_SCREEN_TEXTURE_HEIGHT);
+  context.fillStyle = `rgba(0, 245, 255, ${0.1 + intensity * 0.24})`;
+  context.fillRect(
+    Math.sin(state.elapsed * 48) * 18,
+    0,
+    RETRO_SCREEN_TEXTURE_WIDTH,
+    RETRO_SCREEN_TEXTURE_HEIGHT
+  );
+  context.restore();
+
+  context.save();
+  context.globalAlpha = 0.24 + intensity * 0.48;
+
+  for (let index = 0; index < 18; index += 1) {
+    const sliceSeed = seed + index * 13;
+    const y = Math.floor(noise(sliceSeed) * RETRO_SCREEN_TEXTURE_HEIGHT);
+    const height = 2 + Math.floor(noise(sliceSeed + 7) * (5 + intensity * 24));
+    const shift = Math.round((noise(sliceSeed + 17) - 0.5) * (26 + intensity * 82));
+
+    context.drawImage(
+      context.canvas,
+      0,
+      y,
+      RETRO_SCREEN_TEXTURE_WIDTH,
+      height,
+      shift,
+      y,
+      RETRO_SCREEN_TEXTURE_WIDTH,
+      height
+    );
+
+    context.fillStyle = index % 2 === 0
+      ? `rgba(255, 42, 109, ${0.1 + intensity * 0.28})`
+      : `rgba(0, 245, 255, ${0.1 + intensity * 0.24})`;
+    context.fillRect(shift, y, RETRO_SCREEN_TEXTURE_WIDTH, Math.max(1, height - 1));
+  }
+
+  context.restore();
+
+  context.save();
+  context.globalCompositeOperation = "screen";
+  context.lineWidth = 2;
+
+  for (let index = 0; index < 8; index += 1) {
+    const y = Math.floor((index / 8) * RETRO_SCREEN_TEXTURE_HEIGHT + noise(seed + index) * 16);
+
+    context.strokeStyle = index % 2 === 0
+      ? `rgba(255, 253, 248, ${0.16 + intensity * 0.36})`
+      : `rgba(127, 243, 208, ${0.12 + intensity * 0.32})`;
+    context.beginPath();
+    context.moveTo(0, y);
+    context.lineTo(RETRO_SCREEN_TEXTURE_WIDTH, y + Math.sin(seed + index) * 5);
+    context.stroke();
+  }
+
+  context.restore();
+
+  context.save();
+  context.globalAlpha = 0.18 + intensity * 0.18;
+  context.fillStyle = "rgba(0, 6, 34, 0.62)";
+
+  for (let y = Math.floor(noise(seed) * 6); y < RETRO_SCREEN_TEXTURE_HEIGHT; y += 11) {
+    context.fillRect(0, y, RETRO_SCREEN_TEXTURE_WIDTH, 3);
+  }
+
+  context.restore();
+
+  context.save();
+  context.globalAlpha = Math.min(1, easedProgress * 1.2);
+  context.fillStyle = "#fffdf8";
+  context.font = "900 18px Arial, sans-serif";
+  context.textAlign = "left";
+  context.textBaseline = "middle";
+  context.fillText("SIGNAL // SEASIDE.REC", 32 + shake, 42);
+  context.fillStyle = "#ff2a6d";
+  context.fillText("SYNC", RETRO_SCREEN_TEXTURE_WIDTH - 104 - shake, 42);
+  context.restore();
+
+  if (progress > 0.68) {
+    const snapProgress = clamp01((progress - 0.68) / 0.32);
+    const snapPulse = Math.floor(state.elapsed * 32) % 2 === 0 ? 1 : 0.34;
+
+    context.save();
+    context.globalCompositeOperation = "screen";
+    context.globalAlpha = snapPulse * (0.16 + snapProgress * 0.56);
+    context.fillStyle = "#fffdf8";
+    context.fillRect(0, 0, RETRO_SCREEN_TEXTURE_WIDTH, RETRO_SCREEN_TEXTURE_HEIGHT);
+
+    context.globalAlpha = 0.22 + snapProgress * 0.42;
+    context.fillStyle = "#00f5ff";
+    context.fillRect(
+      0,
+      RETRO_SCREEN_TEXTURE_HEIGHT * (0.5 - snapProgress * 0.5),
+      RETRO_SCREEN_TEXTURE_WIDTH,
+      4 + snapProgress * RETRO_SCREEN_TEXTURE_HEIGHT
+    );
+    context.restore();
+  }
 }
 
 export function drawRetroComputerScreen(
@@ -259,6 +403,7 @@ export function drawRetroComputerScreen(
   context.shadowBlur = 0;
 
   drawPrompt(context, state);
+  drawGlitchTransition(context, state);
   drawGlare(context);
   drawScanlines(context);
 

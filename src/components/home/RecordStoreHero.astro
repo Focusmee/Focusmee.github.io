@@ -39,16 +39,15 @@ const dialogChoices = homeDialogChoices.map((choice) => ({
       every shelf opens into a different collection.
     </p>
 
-    <div class="record-store-actions">
-      <Button href="#store-map">Enter the Store</Button>
-      {
-        randomPost && (
+    {
+      randomPost && (
+        <div class="record-store-actions">
           <Button href={withBase(`/logs/${randomPost.id}`)} variant="secondary">
             Play Something Random
           </Button>
-        )
-      }
-    </div>
+        </div>
+      )
+    }
   </div>
 
   <RecordStoreMap />

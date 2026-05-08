@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import RetroComputerScene from "./RetroComputerScene";
 import {
   RECORD_STORE_ENTRY_CLOSE_EVENT,
@@ -10,7 +11,7 @@ type Props = {
   rootId: string;
 };
 
-const ENTER_TRANSITION_MS = 1350;
+const ENTER_TRANSITION_MS = 1500;
 
 function getAssetUrl(path: string) {
   const base = import.meta.env.BASE_URL || "/";
@@ -32,6 +33,7 @@ export default function RetroComputerEntrance({ rootId }: Props) {
     }
 
     root.dataset.entryState = entryState;
+    root.style.setProperty("--retro-entry-duration", `${ENTER_TRANSITION_MS}ms`);
 
     if (entryState === "open") {
       root.dispatchEvent(new CustomEvent(RECORD_STORE_ENTRY_OPEN_EVENT));
@@ -117,6 +119,7 @@ export default function RetroComputerEntrance({ rootId }: Props) {
     <section
       className={`retro-computer-entry retro-computer-entry--${entryState}`}
       aria-label="Seaside Records terminal"
+      style={{ "--retro-entry-duration": `${ENTER_TRANSITION_MS}ms` } as CSSProperties}
     >
       <div className="retro-computer-entry__panel" aria-hidden="true">
         <span>Seaside OS</span>
@@ -127,6 +130,7 @@ export default function RetroComputerEntrance({ rootId }: Props) {
           isEntering={isEntering}
           modelUrl={modelUrl}
           onEnter={handleEnter}
+          transitionDurationMs={ENTER_TRANSITION_MS}
         />
       </div>
       <button

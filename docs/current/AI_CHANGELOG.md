@@ -251,3 +251,161 @@ Validation:
 Risks:
 
 - Disabled depth testing means the screen texture is intentionally drawn above the nearby GLB screen surface; if future foreground geometry crosses the monitor face, this should be rechecked visually.
+
+### 2026-05-08 - Implemented Seamless WebGL Screen-To-Store Transition
+
+Mode: Fix Mode
+
+Files changed:
+
+- `src/components/home/retro-computer/RetroComputerEntrance.tsx`
+- `src/components/home/retro-computer/RetroComputerScene.tsx`
+- `src/components/home/retro-computer/retroComputerScreenTexture.ts`
+- `src/styles/home-retro-computer.css`
+- `src/styles/home-record-store/base.css`
+- `docs/current/PROJECT_STATE.md`
+- `docs/current/TASKS.md`
+- `docs/current/AI_CHANGELOG.md`
+
+Summary:
+
+- Moved `NX-006` into `Now` as `N-007` and completed it.
+- Extended the entry transition duration to a single 1500ms contract shared between React, R3F, CanvasTexture drawing, and CSS.
+- Replaced damped camera entry motion with deterministic transition progress toward the screen.
+- Added CanvasTexture transition progress so the screen draws a loading/light expansion effect during entry.
+- Pre-revealed the record-store app behind the retro computer during `data-entry-state="entering"` and stopped the `open` state from replaying a fresh opacity-zero reveal.
+- Preserved reduced-motion behavior by continuing to skip the animated `entering` state and go directly to `open`.
+
+Validation:
+
+- `npm run check` passed with 0 errors, 0 warnings, and 0 hints.
+- `npm run build` passed and generated 21 static pages.
+- `http://localhost:4321/` returned 200.
+
+Risks:
+
+- The final feel of the synchronized transition is visual and should be confirmed in the in-app browser on desktop and mobile widths.
+- The transition duration is now a shared contract; future changes should update React, R3F, texture drawing, and CSS together.
+
+### 2026-05-08 - Restyled Screen Transition As Glitch Art
+
+Mode: Fix Mode
+
+Files changed:
+
+- `src/components/home/retro-computer/retroComputerScreenTexture.ts`
+- `src/styles/home-retro-computer.css`
+- `docs/current/PROJECT_STATE.md`
+- `docs/current/TASKS.md`
+- `docs/current/AI_CHANGELOG.md`
+
+Summary:
+
+- Added and completed `N-008` as a focused visual restyle of the existing synchronized entry transition.
+- Replaced the soft portal/loading effect in the CanvasTexture with CRT-style glitch drawing: RGB offset, horizontal tearing, scanline bands, signal text, and snap flashes.
+- Replaced the record-store pre-reveal CSS timing with signal-lock steps, clipped bands, hue shifts, and a temporary glitch overlay.
+- Kept the existing entry states, WebGL texture contract, reduced-motion shortcut, and record-store interaction logic unchanged.
+
+Validation:
+
+- `npm run check` passed with 0 errors, 0 warnings, and 0 hints.
+- `npm run build` passed and generated 21 static pages.
+
+Risks:
+
+- Glitch art is intentionally more abrupt than the soft transition; final timing/intensity should be confirmed visually in the in-app browser.
+
+### 2026-05-08 - Bounded Record Store App Window And Stage
+
+Mode: Fix Mode
+
+Files changed:
+
+- `src/styles/home-record-store/base.css`
+- `src/styles/home-record-store/building.css`
+- `src/styles/home-record-store/responsive.css`
+- `src/styles/home-record-store-interior.css`
+- `src/styles/home-retro-computer.css`
+- `docs/current/PROJECT_STATE.md`
+- `docs/current/TASKS.md`
+- `docs/current/AI_CHANGELOG.md`
+
+Summary:
+
+- Added shared `--rs-window-max-width` and `--rs-stage-height` layout tokens for the record-store app window.
+- Reduced the desktop record-store window from near-full-width to a bounded app-window presentation.
+- Changed the exterior poster and interior scene to share the same fixed stage height instead of growing to fill nearly the full viewport.
+- Adjusted responsive stage heights for tablet/mobile.
+- Reduced app titlebar chrome, exterior building width/title scale, and dialog width so the UI feels coordinated with the smaller stage.
+- Preserved entry states, ScrollTrigger phase constants, door behavior, dialog behavior, links, and WebGL screen transition logic.
+
+Validation:
+
+- `npm run check` passed with 0 errors, 0 warnings, and 0 hints.
+- `npm run build` passed and generated 21 static pages.
+
+Risks:
+
+- The smaller stage changes visual composition and should be checked in the in-app browser for desktop and mobile widths, especially door hit target visibility and interior dialog placement.
+
+### 2026-05-08 - Reworked Record Store Visual Hierarchy
+
+Mode: Fix Mode
+
+Files changed:
+
+- `src/styles/global.css`
+- `src/styles/home-record-store/base.css`
+- `src/styles/home-record-store/responsive.css`
+- `src/styles/home-retro-computer.css`
+- `docs/current/PROJECT_STATE.md`
+- `docs/current/TASKS.md`
+- `docs/current/AI_CHANGELOG.md`
+
+Summary:
+
+- Added `N-012` and completed it.
+- Changed the record-store outer section from a saturated blue/pink stage into a softer Blooming Logs page background using warm cream, pale pink, and sea-mist tones.
+- Added a larger top clearance token so the embedded app window is not visually covered by the sticky navigation after entry scroll.
+- Kept the saturated city-pop palette primarily inside the app window.
+- Adjusted `--site-nav-scene-progress` styling so the sticky navigation stays light, legible, and theme-consistent instead of becoming a dark/transparent scene overlay.
+- Preserved record-store entry states, ScrollTrigger phase thresholds, door behavior, dialog behavior, links, and WebGL texture transition logic.
+
+Validation:
+
+- `npm run check` passed with 0 errors, 0 warnings, and 0 hints.
+- `npm run build` passed and generated 21 static pages.
+
+Risks:
+
+- Sticky/pinned ScrollTrigger behavior should still be visually checked in the browser at desktop and mobile widths because it depends on scroll position and viewport height.
+
+### 2026-05-08 - Centered Pinned App Window And Removed Duplicate Entry
+
+Mode: Fix Mode
+
+Files changed:
+
+- `src/components/home/RecordStoreHero.astro`
+- `src/components/home/record-store/recordStoreAnimation.ts`
+- `src/components/home/record-store/RecordStoreScrollController.tsx`
+- `docs/current/PROJECT_STATE.md`
+- `docs/current/TASKS.md`
+- `docs/current/AI_CHANGELOG.md`
+
+Summary:
+
+- Added and completed `N-013`.
+- Changed the desktop ScrollTrigger pin start from a fixed viewport-top pin to a dynamic nav-safe offset that keeps the record-store app window centered below the sticky navigation.
+- Changed the mobile/reduced-motion door fallback scroll to account for the sticky navigation instead of using `scrollIntoView({ block: "start" })`.
+- Removed the duplicate post-entry `Enter the Store` call to action while keeping `Play Something Random`.
+- Documented the nav-safe pinning and single-primary-entry contracts.
+
+Validation:
+
+- `npm run check` passed with 0 errors, 0 warnings, and 0 hints.
+- `npm run build` passed and generated 21 static pages.
+
+Risks:
+
+- The exact visual center depends on live viewport height and sticky navigation height, so final alignment should be confirmed in the in-app browser at desktop and mobile widths.

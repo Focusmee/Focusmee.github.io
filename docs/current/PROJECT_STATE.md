@@ -111,7 +111,8 @@ The homepage root is `#record-store-hero` in `src/components/home/RecordStoreHer
 
 Required behavior:
 
-- `intro` and `entering` keep the record-store app, intro copy, and map hidden while the R3F retro computer entry is visible.
+- `intro` keeps the record-store app, intro copy, and map hidden while the R3F retro computer entry is visible.
+- `entering` keeps the intro copy and map hidden, while the record-store app may be pre-revealed behind the R3F retro computer entry for the synchronized screen transition.
 - `open` reveals the record-store app and dispatches `record-store:entry-open` so the scroll scene can initialize.
 - Closing the app dispatches `record-store:entry-close`, destroys the scroll scene, and returns to `intro`.
 - `data-scroll-phase="interior"` is the only state where the interior dialog trigger may become interactive.
@@ -150,6 +151,20 @@ Animation output variables owned by `recordStoreAnimation.ts` and consumed by ho
 
 Palette variables under `.record-store-hero` are stable styling tokens, not animation state: `--rs-blue-950`, `--rs-blue-800`, `--rs-blue-600`, `--rs-cyan-500`, `--rs-mint-300`, `--rs-pink-500`, `--rs-pink-300`, `--rs-yellow-400`, `--rs-cream`, `--rs-ink-blue`.
 
+Stage sizing variables under `.record-store-hero` are stable layout tokens for the bounded app-window presentation:
+
+- `--rs-window-max-width`
+- `--rs-stage-height`
+- `--rs-section-clearance`
+
+The record-store exterior poster and interior scene must share the same `.record-store-scroll-stage` dimensions so visual scale, hit targets, and dialog placement stay coordinated across phases.
+
+The record-store app is visually an embedded retro app window inside the softer Blooming Logs page, not a full-page color-block stage. Keep the high-saturation city-pop blue/pink primarily inside `.record-store-app-window`; the outer `.record-store-app-shell` / `.record-store-hero` background should stay close to the site's warm cream, pale pink, and sea-mist tones. The sticky navigation should remain legible and lightly translucent when `--site-nav-scene-progress` changes, not become a dark or fully transparent scene overlay.
+
+The pinned desktop app window must remain visually centered in the viewport area below `.site-nav`. Do not use a fixed `start: "top top"` ScrollTrigger pin for the record-store app window; the pin start must account for current sticky navigation height, available viewport height, and a safe gap.
+
+There should be one primary entry path into the store scene: the retro computer screen texture and its bottom `Press Start` accessibility fallback. After the app opens, do not show another `Enter the Store` call to action that points to the same already-entered experience.
+
 ### ScrollTrigger Phases
 
 Desktop scroll interaction is active only for `(min-width: 981px)` and when reduced motion is not requested.
@@ -181,6 +196,7 @@ Stable model/screen responsibilities:
 - `retroComputerScreenTexture.ts` owns the CanvasTexture drawing size, visual screen drawing, and `PRESS START` UV hit region.
 - The screen content must remain a WebGL texture on a plane in the same 3D coordinate space as the model, not a Drei `<Html>` or DOM overlay.
 - The WebGL texture plane may use a small forward offset plus `renderOrder` / disabled depth testing to stay visible above the GLB's original screen surface while still remaining inside the 3D scene.
+- Screen-to-store entry uses a synchronized transition: the R3F camera moves toward the screen, the CanvasTexture receives transition progress for its CRT glitch effect, and the record-store app is pre-revealed behind the retro computer during `data-entry-state="entering"`.
 - The bottom DOM `Press Start` button in `RetroComputerEntrance.tsx` must remain as an accessibility and keyboard fallback.
 - If `SCREEN_FIT_RATIO`, screen offsets, texture dimensions, or the GLB screen mesh changes, verify desktop, mobile, browser zoom, and window resize behavior.
 

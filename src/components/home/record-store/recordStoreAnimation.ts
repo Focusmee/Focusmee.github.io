@@ -35,6 +35,7 @@ const INTERIOR_INTERACTION_PROGRESS = 0.78;
 const INTERIOR_HOLD_PROGRESS = 0.82;
 const NAV_SCENE_PROGRESS_PROPERTY = "--site-nav-scene-progress";
 const CLICK_ENTER_INTERIOR_PROGRESS = 0.86;
+const PIN_NAV_GAP = 32;
 const RESET_STATE_VARIABLES = {
   "--rs-dialog-progress": 0,
   "--rs-door-transparency": 0,
@@ -70,6 +71,17 @@ function setPhaseFromProgress(root: HTMLElement, progress: number) {
 
   root.dataset.scrollPhase =
     progress <= 0.02 ? "outside" : isInterior ? "interior" : "active";
+}
+
+function getPinnedAppWindowOffset(pinTarget: HTMLElement) {
+  const nav = document.querySelector<HTMLElement>(".site-nav");
+  const navHeight = nav?.getBoundingClientRect().height ?? 0;
+  const pinHeight = pinTarget.getBoundingClientRect().height;
+  const availableHeight = Math.max(window.innerHeight - navHeight, 0);
+  const centeredOffset =
+    navHeight + Math.max((availableHeight - pinHeight) / 2, PIN_NAV_GAP);
+
+  return Math.round(Math.max(navHeight + PIN_NAV_GAP, centeredOffset));
 }
 
 export function resetRecordStoreScrollState(root: HTMLElement) {
@@ -170,7 +182,7 @@ export function createRecordStoreScrollScene(
         },
         pin: pinTarget,
         scrub: 0.72,
-        start: "top top",
+        start: () => `top top+=${getPinnedAppWindowOffset(pinTarget)}`,
         trigger: pinTarget
       }
     });

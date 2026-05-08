@@ -2,7 +2,7 @@
   left: 50%;
   bottom: 6.6%;
   z-index: 4;
-  width: clamp(48rem, 68vw, 78rem);
+  width: clamp(40rem, 78%, 68rem);
   height: 71%;
   transform: translateX(-50%);
   transform-origin: 50% 62%;
@@ -71,7 +71,7 @@
 .store-sign__title {
   margin: 0;
   font-family: var(--font-body);
-  font-size: clamp(2.6rem, 4.15vw, 4.5rem);
+  font-size: clamp(2.35rem, 3vw, 3.65rem);
   font-style: italic;
   font-weight: 900;
   line-height: 1;

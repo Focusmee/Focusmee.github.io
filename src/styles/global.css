@@ -87,8 +87,9 @@ select {
   top: 0;
   z-index: 20;
   backdrop-filter: blur(18px);
-  background: rgba(255, 249, 240, calc(0.75 - 0.69 * var(--site-nav-scene-progress)));
-  border-bottom: 1px solid rgba(255, 255, 255, calc(0.06 + 0.1 * var(--site-nav-scene-progress)));
+  background: rgba(255, 249, 240, calc(0.86 - 0.18 * var(--site-nav-scene-progress)));
+  border-bottom: 1px solid rgba(255, 255, 255, calc(0.28 + 0.12 * var(--site-nav-scene-progress)));
+  box-shadow: 0 0.7rem 2.2rem rgba(31, 45, 91, calc(0.04 + 0.04 * var(--site-nav-scene-progress)));
 }
 
 .nav-inner {
@@ -113,17 +114,17 @@ select {
   font-weight: 700;
   letter-spacing: -0.03em;
   color: rgb(
-    calc(35 + 220 * var(--site-nav-scene-progress))
-    calc(35 + 218 * var(--site-nav-scene-progress))
-    calc(35 + 213 * var(--site-nav-scene-progress))
+    calc(35 + 12 * var(--site-nav-scene-progress))
+    calc(35 + 18 * var(--site-nav-scene-progress))
+    calc(35 + 28 * var(--site-nav-scene-progress))
   );
 }
 
 .brand-note {
   color: rgb(
-    calc(92 + 163 * var(--site-nav-scene-progress))
-    calc(90 + 163 * var(--site-nav-scene-progress))
-    calc(87 + 161 * var(--site-nav-scene-progress))
+    calc(92 - 8 * var(--site-nav-scene-progress))
+    calc(90 - 6 * var(--site-nav-scene-progress))
+    calc(87 - 2 * var(--site-nav-scene-progress))
   );
   font-size: 0.85rem;
 }
@@ -140,9 +141,9 @@ select {
   padding: 0.6rem 0.95rem;
   border-radius: var(--radius-pill);
   color: rgb(
-    calc(92 + 163 * var(--site-nav-scene-progress))
-    calc(90 + 163 * var(--site-nav-scene-progress))
-    calc(87 + 161 * var(--site-nav-scene-progress))
+    calc(92 - 8 * var(--site-nav-scene-progress))
+    calc(90 - 6 * var(--site-nav-scene-progress))
+    calc(87 - 2 * var(--site-nav-scene-progress))
   );
   font-weight: 700;
   white-space: nowrap;
@@ -155,11 +156,11 @@ select {
 .nav-link:hover,
 .nav-link.is-active {
   color: rgb(
-    calc(35 + 220 * var(--site-nav-scene-progress))
-    calc(35 + 218 * var(--site-nav-scene-progress))
-    calc(35 + 213 * var(--site-nav-scene-progress))
+    calc(35 + 12 * var(--site-nav-scene-progress))
+    calc(35 + 18 * var(--site-nav-scene-progress))
+    calc(35 + 28 * var(--site-nav-scene-progress))
   );
-  background: rgba(255, 255, 255, calc(0.88 - 0.74 * var(--site-nav-scene-progress)));
+  background: rgba(255, 255, 255, calc(0.9 - 0.14 * var(--site-nav-scene-progress)));
   transform: translateY(-1px);
 }
 

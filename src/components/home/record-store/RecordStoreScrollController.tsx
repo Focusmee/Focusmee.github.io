@@ -15,6 +15,19 @@ type Props = {
 
 const DESKTOP_QUERY = "(min-width: 981px)";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+const MOBILE_NAV_GAP = 24;
+
+function scrollElementBelowNav(element: HTMLElement, behavior: ScrollBehavior) {
+  const nav = document.querySelector<HTMLElement>(".site-nav");
+  const navHeight = nav?.getBoundingClientRect().height ?? 0;
+  const top =
+    element.getBoundingClientRect().top + window.scrollY - navHeight - MOBILE_NAV_GAP;
+
+  window.scrollTo({
+    behavior,
+    top: Math.max(0, Math.round(top))
+  });
+}
 
 export default function RecordStoreScrollController({ rootId }: Props) {
   useEffect(() => {
@@ -97,10 +110,10 @@ export default function RecordStoreScrollController({ rootId }: Props) {
 
       setRecordStoreInteriorFallbackState(root);
       window.requestAnimationFrame(() => {
-        (appWindow ?? root).scrollIntoView({
-          behavior: reducedMotion.matches ? "auto" : "smooth",
-          block: "start"
-        });
+        scrollElementBelowNav(
+          appWindow ?? root,
+          reducedMotion.matches ? "auto" : "smooth"
+        );
       });
     };
 

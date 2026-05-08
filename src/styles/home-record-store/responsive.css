@@ -1,15 +1,16 @@
 ﻿@media (max-width: 980px) {
+  .record-store-hero {
+    --rs-section-clearance: clamp(5.25rem, 11svh, 6.75rem);
+    --rs-stage-height: clamp(28rem, 64svh, 38rem);
+    --rs-window-max-width: calc(100vw - 1rem);
+  }
+
   .record-store-title {
     font-size: 3.5rem;
   }
 
-  .record-store-poster {
-    min-height: 40rem;
-    height: auto;
-  }
-
   .record-store-building {
-    width: min(94vw, 62rem);
+    width: min(92%, 54rem);
     height: 66%;
     bottom: 7.5%;
   }
@@ -33,22 +34,20 @@
 
 @media (max-width: 720px) {
   .record-store-hero {
-    padding-top: 1.5rem;
+    --rs-section-clearance: clamp(5rem, 12svh, 6.25rem);
+    --rs-stage-height: clamp(28rem, 62svh, 35rem);
+    --rs-window-max-width: calc(100vw - 1rem);
+    padding-top: 0;
   }
 
   .record-store-title {
     font-size: 2.75rem;
   }
 
-  .record-store-poster {
-    min-height: 42rem;
-    aspect-ratio: auto;
-  }
-
   .record-store-building {
     bottom: 11%;
-    width: 46rem;
-    max-width: 122vw;
+    width: min(42rem, 116vw);
+    max-width: 116vw;
     height: 56%;
   }
 
