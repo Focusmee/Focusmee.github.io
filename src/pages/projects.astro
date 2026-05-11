@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../components/layout/BaseLayout.astro";
 import { manualProjects } from "../data/projects";
+import { getUiText } from "../i18n/ui";
 import { getGitHubProjects } from "../utils/github";
 import { formatDate } from "../utils/format";
 
@@ -13,10 +14,14 @@ const githubProjects = await getGitHubProjects();
 >
   <section class="section-shell">
     <div class="section-heading">
-      <span class="eyebrow">Projects</span>
-      <h1 class="headline">Public builds, selected systems, ongoing work.</h1>
-      <p class="lede">
-        这里放的不是一份按时间排序的简历，而是我愿意继续照料的一些项目和系统。它们有的已经公开在 GitHub 上，有的更适合由我自己补充背景，因为真正重要的部分并不总能从仓库结构里直接看出来。
+      <span class="eyebrow" data-i18n="projects.eyebrow">
+        {getUiText("projects.eyebrow")}
+      </span>
+      <h1 class="headline" data-i18n="projects.title">
+        {getUiText("projects.title")}
+      </h1>
+      <p class="lede" data-i18n="projects.lede">
+        {getUiText("projects.lede")}
       </p>
     </div>
   </section>
@@ -24,22 +29,34 @@ const githubProjects = await getGitHubProjects();
   <section class="section-shell split-grid">
     <div class="intro-slab">
       <div class="section-heading">
-        <span class="eyebrow">From GitHub</span>
-        <h2 class="headline">Public repositories, synced at build time.</h2>
+        <span class="eyebrow" data-i18n="projects.github.eyebrow">
+          {getUiText("projects.github.eyebrow")}
+        </span>
+        <h2 class="headline" data-i18n="projects.github.title">
+          {getUiText("projects.github.title")}
+        </h2>
       </div>
-      <p class="lede">
-        这部分是已经公开的项目。它们更像工作台上已经摆出来的东西：可以被看到、被打开、被继续迭代。页面会在构建时拉取公开仓库信息，并和我自己写的说明拼在一起。
+      <p class="lede" data-i18n="projects.github.lede">
+        {getUiText("projects.github.lede")}
       </p>
     </div>
 
     <div class="detail-list">
       <div class="detail-item">
-        <div class="detail-kicker">What gets synced</div>
-        <strong>Repo links, stars, language, last updated time</strong>
+        <div class="detail-kicker" data-i18n="projects.github.syncKicker">
+          {getUiText("projects.github.syncKicker")}
+        </div>
+        <strong data-i18n="projects.github.syncText">
+          {getUiText("projects.github.syncText")}
+        </strong>
       </div>
       <div class="detail-item">
-        <div class="detail-kicker">What stays hand-written</div>
-        <strong>为什么做、为什么重要、它在我的工作线上代表什么</strong>
+        <div class="detail-kicker" data-i18n="projects.github.manualKicker">
+          {getUiText("projects.github.manualKicker")}
+        </div>
+        <strong data-i18n="projects.github.manualText">
+          {getUiText("projects.github.manualText")}
+        </strong>
       </div>
     </div>
   </section>
@@ -50,21 +67,54 @@ const githubProjects = await getGitHubProjects();
         githubProjects.map((project) => (
           <article class="post-card project-card" style={`--accent: var(--${project.accent});`}>
             <div class="meta-row">
-              <span class="tag tag--accent">{project.status}</span>
+              <span class="tag tag--accent" data-i18n={`${project.i18nKey}.status`}>
+                {getUiText(`${project.i18nKey}.status`)}
+              </span>
               <span>{project.stack}</span>
             </div>
-            <h2 class="card-title">{project.title}</h2>
-            <p class="card-copy">{project.description}</p>
+            <h2 class="card-title" data-i18n={`${project.i18nKey}.title`}>
+              {getUiText(`${project.i18nKey}.title`)}
+            </h2>
+            <p class="card-copy" data-i18n={`${project.i18nKey}.description`}>
+              {getUiText(`${project.i18nKey}.description`)}
+            </p>
             <div class="meta-row">
-              {project.language && <span>Primary language: {project.language}</span>}
-              {project.stargazersCount > 0 && <span>{project.stargazersCount} stars</span>}
+              {project.language && (
+                <span
+                  data-i18n="projects.primaryLanguage"
+                  data-i18n-var-language={project.language}
+                >
+                  {getUiText("projects.primaryLanguage").replace(
+                    "{language}",
+                    project.language
+                  )}
+                </span>
+              )}
+              {project.stargazersCount > 0 && (
+                <span
+                  data-i18n="projects.stars"
+                  data-i18n-var-count={String(project.stargazersCount)}
+                >
+                  {getUiText("projects.stars").replace(
+                    "{count}",
+                    String(project.stargazersCount)
+                  )}
+                </span>
+              )}
               {project.updatedAt && (
-                <span>Updated {formatDate(new Date(project.updatedAt))}</span>
+                <span>
+                  <span data-i18n="projects.updatedPrefix">
+                    {getUiText("projects.updatedPrefix")}
+                  </span>{" "}
+                  <time datetime={project.updatedAt} data-i18n-date>
+                    {formatDate(new Date(project.updatedAt))}
+                  </time>
+                </span>
               )}
             </div>
             <div class="project-links">
               <a class="button button-secondary" href={project.url} target="_blank" rel="noreferrer">
-                View Repo
+                <span data-i18n="projects.viewRepo">{getUiText("projects.viewRepo")}</span>
               </a>
               {project.homepage && (
                 <a
@@ -73,7 +123,7 @@ const githubProjects = await getGitHubProjects();
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Open Site
+                  <span data-i18n="projects.openSite">{getUiText("projects.openSite")}</span>
                 </a>
               )}
             </div>
@@ -86,22 +136,34 @@ const githubProjects = await getGitHubProjects();
   <section class="section-shell split-grid">
     <div class="intro-slab">
       <div class="section-heading">
-        <span class="eyebrow">Selected Work</span>
-        <h2 class="headline">Systems that need more than a repo link.</h2>
+        <span class="eyebrow" data-i18n="projects.manual.eyebrow">
+          {getUiText("projects.manual.eyebrow")}
+        </span>
+        <h2 class="headline" data-i18n="projects.manual.title">
+          {getUiText("projects.manual.title")}
+        </h2>
       </div>
-      <p class="lede">
-        这部分保留给那些不能只靠 GitHub 链接来理解的项目。对我来说，项目真正有意思的地方往往不是“用了什么技术”，而是它试图解决什么问题、系统是如何被组织起来的、以及它为什么值得继续被记住。
+      <p class="lede" data-i18n="projects.manual.lede">
+        {getUiText("projects.manual.lede")}
       </p>
     </div>
 
     <div class="detail-list">
       <div class="detail-item">
-        <div class="detail-kicker">Why these stay manual</div>
-        <strong>研究背景、执行机制和系统判断，比仓库入口更重要。</strong>
+        <div class="detail-kicker" data-i18n="projects.manual.reasonKicker">
+          {getUiText("projects.manual.reasonKicker")}
+        </div>
+        <strong data-i18n="projects.manual.reasonText">
+          {getUiText("projects.manual.reasonText")}
+        </strong>
       </div>
       <div class="detail-item">
-        <div class="detail-kicker">What this section holds</div>
-        <strong>Agent 执行系统、实时交互链路、脑机接口与复杂系统协作经验</strong>
+        <div class="detail-kicker" data-i18n="projects.manual.holdsKicker">
+          {getUiText("projects.manual.holdsKicker")}
+        </div>
+        <strong data-i18n="projects.manual.holdsText">
+          {getUiText("projects.manual.holdsText")}
+        </strong>
       </div>
     </div>
   </section>
@@ -112,15 +174,27 @@ const githubProjects = await getGitHubProjects();
         manualProjects.map((project) => (
           <article class="post-card project-card" style={`--accent: var(--${project.accent});`}>
             <div class="meta-row">
-              <span class="tag tag--accent">{project.status}</span>
+              <span class="tag tag--accent" data-i18n={`${project.i18nKey}.status`}>
+                {getUiText(`${project.i18nKey}.status`)}
+              </span>
               <span>{project.period}</span>
             </div>
-            <h2 class="card-title">{project.title}</h2>
-            <p class="card-copy">{project.description}</p>
-            <div class="detail-kicker">Stack</div>
+            <h2 class="card-title" data-i18n={`${project.i18nKey}.title`}>
+              {getUiText(`${project.i18nKey}.title`)}
+            </h2>
+            <p class="card-copy" data-i18n={`${project.i18nKey}.description`}>
+              {getUiText(`${project.i18nKey}.description`)}
+            </p>
+            <div class="detail-kicker" data-i18n="projects.stack">
+              {getUiText("projects.stack")}
+            </div>
             <strong>{project.stack}</strong>
             <ul class="project-points">
-              {project.highlights.map((item) => <li>{item}</li>)}
+              {project.highlights.map((_item, index) => (
+                <li data-i18n={`${project.i18nKey}.highlight${index + 1}`}>
+                  {getUiText(`${project.i18nKey}.highlight${index + 1}`)}
+                </li>
+              ))}
             </ul>
           </article>
         ))

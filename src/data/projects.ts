@@ -1,5 +1,6 @@
 export type GitHubProjectConfig = {
   repo: string;
+  i18nKey: string;
   title: string;
   status: string;
   description: string;
@@ -8,6 +9,7 @@ export type GitHubProjectConfig = {
 };
 
 export type ManualProject = {
+  i18nKey: string;
   title: string;
   status: string;
   period: string;
@@ -20,6 +22,7 @@ export type ManualProject = {
 export const githubProjects: GitHubProjectConfig[] = [
   {
     repo: "Focusmee.github.io",
+    i18nKey: "projects.item.bloomingLogs",
     title: "Blooming Logs",
     status: "living project",
     description:
@@ -29,6 +32,7 @@ export const githubProjects: GitHubProjectConfig[] = [
   },
   {
     repo: "iot-vehicle-management",
+    i18nKey: "projects.item.bikeSystem",
     title: "方正共享单车系统",
     status: "competition build",
     description:
@@ -38,6 +42,7 @@ export const githubProjects: GitHubProjectConfig[] = [
   },
   {
     repo: "Farming-Game",
+    i18nKey: "projects.item.farmingGame",
     title: "模拟经营农场游戏",
     status: "graduation project",
     description:
@@ -49,6 +54,7 @@ export const githubProjects: GitHubProjectConfig[] = [
 
 export const manualProjects: ManualProject[] = [
   {
+    i18nKey: "projects.item.agentWorkflow",
     title: "AI Agent 工作流编排平台",
     status: "selected work",
     period: "2026.02 - 2026.03",
@@ -63,6 +69,7 @@ export const manualProjects: ManualProject[] = [
     ]
   },
   {
+    i18nKey: "projects.item.bciVehicle",
     title: "基于 SSVEP 脑机接口的自动驾驶小车控制系统",
     status: "award-winning system",
     period: "2023.11 - 2023.12",

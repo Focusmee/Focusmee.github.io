@@ -35,6 +35,36 @@ const INTERIOR_INTERACTION_PROGRESS = 0.78;
 const INTERIOR_HOLD_PROGRESS = 0.82;
 const NAV_SCENE_PROGRESS_PROPERTY = "--site-nav-scene-progress";
 const CLICK_ENTER_INTERIOR_PROGRESS = 0.86;
+const PIN_NAV_GAP = 32;
+const RESET_STATE_VARIABLES = {
+  "--rs-dialog-progress": 0,
+  "--rs-door-transparency": 0,
+  "--rs-exterior-fade": 0,
+  "--rs-focus-vignette": 0,
+  "--rs-glass-sweep-opacity": 0,
+  "--rs-glass-sweep-x": "-190%",
+  "--rs-interior-clarity": 0,
+  "--rs-room-opacity": 0
+} as const;
+const INTERIOR_STATE_VARIABLES = {
+  "--rs-dialog-progress": 1,
+  "--rs-door-transparency": 1,
+  "--rs-exterior-fade": 0.58,
+  "--rs-focus-vignette": 0.52,
+  "--rs-glass-sweep-opacity": 0,
+  "--rs-glass-sweep-x": "430%",
+  "--rs-interior-clarity": 1,
+  "--rs-room-opacity": 1
+} as const;
+
+function setRecordStoreCssVariables(
+  root: HTMLElement,
+  variables: Record<string, number | string>
+) {
+  for (const [name, value] of Object.entries(variables)) {
+    root.style.setProperty(name, String(value));
+  }
+}
 
 function setPhaseFromProgress(root: HTMLElement, progress: number) {
   const isInterior = progress >= INTERIOR_INTERACTION_PROGRESS;
@@ -43,12 +73,34 @@ function setPhaseFromProgress(root: HTMLElement, progress: number) {
     progress <= 0.02 ? "outside" : isInterior ? "interior" : "active";
 }
 
+function getPinnedAppWindowOffset(pinTarget: HTMLElement) {
+  const nav = document.querySelector<HTMLElement>(".site-nav");
+  const navHeight = nav?.getBoundingClientRect().height ?? 0;
+  const pinHeight = pinTarget.getBoundingClientRect().height;
+  const availableHeight = Math.max(window.innerHeight - navHeight, 0);
+  const centeredOffset =
+    navHeight + Math.max((availableHeight - pinHeight) / 2, PIN_NAV_GAP);
+
+  return Math.round(Math.max(navHeight + PIN_NAV_GAP, centeredOffset));
+}
+
 export function resetRecordStoreScrollState(root: HTMLElement) {
   root.dataset.scrollReady = "false";
   root.dataset.scrollPhase = "outside";
+  setRecordStoreCssVariables(root, RESET_STATE_VARIABLES);
 
   if (typeof document !== "undefined") {
     document.documentElement.style.removeProperty(NAV_SCENE_PROGRESS_PROPERTY);
+  }
+}
+
+export function setRecordStoreInteriorFallbackState(root: HTMLElement) {
+  root.dataset.scrollReady = "false";
+  root.dataset.scrollPhase = "interior";
+  setRecordStoreCssVariables(root, INTERIOR_STATE_VARIABLES);
+
+  if (typeof document !== "undefined") {
+    document.documentElement.style.setProperty(NAV_SCENE_PROGRESS_PROPERTY, "0");
   }
 }
 
@@ -89,16 +141,7 @@ export function createRecordStoreScrollScene(
     root.dataset.scrollReady = "true";
     root.dataset.scrollPhase = "outside";
 
-    gsap.set(root, {
-      "--rs-dialog-progress": 0,
-      "--rs-door-transparency": 0,
-      "--rs-exterior-fade": 0,
-      "--rs-focus-vignette": 0,
-      "--rs-glass-sweep-opacity": 0,
-      "--rs-glass-sweep-x": "-190%",
-      "--rs-interior-clarity": 0,
-      "--rs-room-opacity": 0
-    });
+    gsap.set(root, RESET_STATE_VARIABLES);
     gsap.set(pageTheme, { [NAV_SCENE_PROGRESS_PROPERTY]: 0 });
     gsap.set(store, { transformOrigin: "50% 62%", x: 0, xPercent: -50 });
     gsap.set(motionLayers, { force3D: true });
@@ -139,7 +182,7 @@ export function createRecordStoreScrollScene(
         },
         pin: pinTarget,
         scrub: 0.72,
-        start: "top top",
+        start: () => `top top+=${getPinnedAppWindowOffset(pinTarget)}`,
         trigger: pinTarget
       }
     });
@@ -179,17 +222,7 @@ export function createRecordStoreScrollScene(
       .to(exteriorLayers, { opacity: 0.0, duration: 0.2 }, "interior")
       .to(effects, { opacity: 0.92, duration: 0.2 }, "interior")
       .to(room, { scale: 1.04, duration: 0.2 }, "interior")
-      .to(root, {
-        "--rs-dialog-progress": 1,
-        "--rs-door-transparency": 1,
-        "--rs-exterior-fade": 0.58,
-        "--rs-focus-vignette": 0.52,
-        "--rs-glass-sweep-opacity": 0,
-        "--rs-glass-sweep-x": "430%",
-        "--rs-interior-clarity": 1,
-        "--rs-room-opacity": 1,
-        duration: 0.2
-      }, "interior")
+      .to(root, { ...INTERIOR_STATE_VARIABLES, duration: 0.2 }, "interior")
       .to(dialogLayer, { autoAlpha: 1, ease: "power1.out", y: 0, duration: 0.12 }, "interior+=0.08")
       .set(root, { "--rs-dialog-progress": 1 }, "interiorHold")
       .set(root, { "--rs-dialog-progress": 1 }, 1);

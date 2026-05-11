@@ -4,6 +4,7 @@ import CollectionGrid from "../components/collections/CollectionGrid.astro";
 import RecentPosts from "../components/posts/RecentPosts.astro";
 import RecordStoreHero from "../components/home/RecordStoreHero.astro";
 import { siteConfig } from "../data/site";
+import { getUiText } from "../i18n/ui";
 import { getFeaturedLogs, getPublishedLogs } from "../utils/posts";
 
 const featuredPosts = await getFeaturedLogs(3);
@@ -18,24 +19,28 @@ const recentPosts = (await getPublishedLogs())
 
   <RecentPosts
     posts={featuredPosts}
-    eyebrow="Curated for the front room"
-    title="Featured on the Shelf"
-    lede="首页精选固定保留三篇：一篇入口文、一篇代表作、一篇带气味的文章。它们不是最新的三篇，而是最适合把人带进 Blooming Logs 的三篇。"
+    eyebrowKey="home.featured.eyebrow"
+    titleKey="home.featured.title"
+    ledeKey="home.featured.lede"
   />
 
   <RecentPosts
     posts={recentPosts}
-    eyebrow="Recently picked from the shelf"
-    title="What's Blooming"
-    lede="最近更新继续保留在后面，让首页既有策展感，也有持续生长的更新流。"
+    eyebrowKey="home.recent.eyebrow"
+    titleKey="home.recent.title"
+    ledeKey="home.recent.lede"
   />
 
   <section class="section-shell">
     <div class="section-heading">
-      <span class="eyebrow">Collections map</span>
-      <h2 class="headline">Six shelves, six ways in.</h2>
-      <p class="lede">
-        内容栏目先稳定下来，后面再把它们替换成更完整的空间物件和热区互动。
+      <span class="eyebrow" data-i18n="home.collections.eyebrow">
+        {getUiText("home.collections.eyebrow")}
+      </span>
+      <h2 class="headline" data-i18n="home.collections.title">
+        {getUiText("home.collections.title")}
+      </h2>
+      <p class="lede" data-i18n="home.collections.lede">
+        {getUiText("home.collections.lede")}
       </p>
     </div>
 
@@ -45,23 +50,30 @@ const recentPosts = (await getPublishedLogs())
   <section class="section-shell split-grid">
     <div class="intro-slab">
       <div class="section-heading">
-        <span class="eyebrow">Phase 1</span>
-        <h2 class="headline">先博客，后装置。</h2>
+        <span class="eyebrow" data-i18n="home.about.eyebrow">
+          {getUiText("home.about.eyebrow")}
+        </span>
+        <h2 class="headline" data-i18n="home.about.title">
+          {getUiText("home.about.title")}
+        </h2>
       </div>
-      <p class="lede">
-        你现在已经有了内容系统、首页骨架、栏目页、文章页、About、Projects、Archive 和 RSS
-        入口。下一步可以直接开始写文章，也可以继续做视觉深化。
+      <p class="lede" data-i18n="home.about.lede">
+        {getUiText("home.about.lede")}
       </p>
     </div>
 
     <div class="detail-list">
       <div class="detail-item">
-        <div class="detail-kicker">Ready now</div>
-        <strong>MDX 写作、精选策展、栏目导航、GitHub Pages 静态构建</strong>
+        <div class="detail-kicker" data-i18n="home.about.readyKicker">
+          {getUiText("home.about.readyKicker")}
+        </div>
+        <strong data-i18n="home.about.ready">{getUiText("home.about.ready")}</strong>
       </div>
       <div class="detail-item">
-        <div class="detail-kicker">Later</div>
-        <strong>3D 场景、镜头推进、声音、Pagefind、更多首页微交互</strong>
+        <div class="detail-kicker" data-i18n="home.about.nextKicker">
+          {getUiText("home.about.nextKicker")}
+        </div>
+        <strong data-i18n="home.about.next">{getUiText("home.about.next")}</strong>
       </div>
     </div>
   </section>

@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=LXGW+WenKai&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;800&family=Noto+Serif+SC:wght@600;700;900&display=swap");
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.6.0/style.css");
 @import "./tokens.css";
 @import "./prose.css";
 
@@ -87,8 +88,9 @@ select {
   top: 0;
   z-index: 20;
   backdrop-filter: blur(18px);
-  background: rgba(255, 249, 240, calc(0.75 - 0.69 * var(--site-nav-scene-progress)));
-  border-bottom: 1px solid rgba(255, 255, 255, calc(0.06 + 0.1 * var(--site-nav-scene-progress)));
+  background: rgba(255, 249, 240, calc(0.86 - 0.18 * var(--site-nav-scene-progress)));
+  border-bottom: 1px solid rgba(255, 255, 255, calc(0.28 + 0.12 * var(--site-nav-scene-progress)));
+  box-shadow: 0 0.7rem 2.2rem rgba(31, 45, 91, calc(0.04 + 0.04 * var(--site-nav-scene-progress)));
 }
 
 .nav-inner {
@@ -111,21 +113,29 @@ select {
   font-family: var(--font-display);
   font-size: 1.2rem;
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
   color: rgb(
-    calc(35 + 220 * var(--site-nav-scene-progress))
-    calc(35 + 218 * var(--site-nav-scene-progress))
-    calc(35 + 213 * var(--site-nav-scene-progress))
+    calc(35 + 12 * var(--site-nav-scene-progress))
+    calc(35 + 18 * var(--site-nav-scene-progress))
+    calc(35 + 28 * var(--site-nav-scene-progress))
   );
 }
 
 .brand-note {
   color: rgb(
-    calc(92 + 163 * var(--site-nav-scene-progress))
-    calc(90 + 163 * var(--site-nav-scene-progress))
-    calc(87 + 161 * var(--site-nav-scene-progress))
+    calc(92 - 8 * var(--site-nav-scene-progress))
+    calc(90 - 6 * var(--site-nav-scene-progress))
+    calc(87 - 2 * var(--site-nav-scene-progress))
   );
   font-size: 0.85rem;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  min-width: 0;
 }
 
 .nav-links {
@@ -136,13 +146,54 @@ select {
   max-width: 100%;
 }
 
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 0.2rem;
+  padding: 0.22rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, calc(0.82 - 0.08 * var(--site-nav-scene-progress)));
+  border: 1px solid rgba(35, 35, 35, 0.08);
+  box-shadow: 0 0.35rem 1.2rem rgba(31, 45, 91, 0.05);
+}
+
+.language-switcher__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.15rem;
+  min-height: 2.05rem;
+  padding: 0 0.55rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.language-switcher__button:hover {
+  transform: translateY(-1px);
+}
+
+.language-switcher__button.is-active {
+  background: var(--ink);
+  color: #fffaf0;
+}
+
 .nav-link {
   padding: 0.6rem 0.95rem;
   border-radius: var(--radius-pill);
   color: rgb(
-    calc(92 + 163 * var(--site-nav-scene-progress))
-    calc(90 + 163 * var(--site-nav-scene-progress))
-    calc(87 + 161 * var(--site-nav-scene-progress))
+    calc(92 - 8 * var(--site-nav-scene-progress))
+    calc(90 - 6 * var(--site-nav-scene-progress))
+    calc(87 - 2 * var(--site-nav-scene-progress))
   );
   font-weight: 700;
   white-space: nowrap;
@@ -155,11 +206,11 @@ select {
 .nav-link:hover,
 .nav-link.is-active {
   color: rgb(
-    calc(35 + 220 * var(--site-nav-scene-progress))
-    calc(35 + 218 * var(--site-nav-scene-progress))
-    calc(35 + 213 * var(--site-nav-scene-progress))
+    calc(35 + 12 * var(--site-nav-scene-progress))
+    calc(35 + 18 * var(--site-nav-scene-progress))
+    calc(35 + 28 * var(--site-nav-scene-progress))
   );
-  background: rgba(255, 255, 255, calc(0.88 - 0.74 * var(--site-nav-scene-progress)));
+  background: rgba(255, 255, 255, calc(0.9 - 0.14 * var(--site-nav-scene-progress)));
   transform: translateY(-1px);
 }
 
@@ -176,15 +227,24 @@ select {
 .eyebrow {
   font-family: var(--font-accent);
   font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.1;
   color: var(--orange);
+}
+
+html[data-language="zh"] .eyebrow {
+  font-family: var(--font-accent-zh);
+  font-size: 1.42rem;
+  letter-spacing: 0.02em;
 }
 
 .headline {
   margin: 0;
   font-family: var(--font-display);
+  font-weight: 700;
   font-size: clamp(2rem, 5vw, 3.6rem);
   line-height: 0.98;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
 }
 
 .lede {
@@ -260,7 +320,7 @@ select {
   font-family: var(--font-display);
   font-size: clamp(3.4rem, 10vw, 6.5rem);
   line-height: 0.88;
-  letter-spacing: -0.06em;
+  letter-spacing: 0;
 }
 
 .hero-subtitle {
@@ -592,7 +652,7 @@ select {
   font-family: var(--font-display);
   font-size: 1.55rem;
   line-height: 1.08;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
 }
 
 .card-copy {
@@ -641,6 +701,10 @@ select {
   font-family: var(--font-accent);
   font-size: 1.5rem;
   color: var(--muted);
+}
+
+html[data-language="zh"] .collection-count {
+  font-family: var(--font-accent-zh);
 }
 
 .intro-slab,
@@ -698,7 +762,7 @@ select {
   font-family: var(--font-display);
   font-size: clamp(2.4rem, 6vw, 4.4rem);
   line-height: 0.96;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
 }
 
 .post-summary {
@@ -743,7 +807,7 @@ select {
   margin: 0 0 0.85rem;
   font-family: var(--font-display);
   font-size: clamp(1.7rem, 4vw, 2.4rem);
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
 }
 
 .archive-list {
@@ -821,6 +885,10 @@ select {
     width: min(100vw - 1rem, 1120px);
   }
 
+  .nav-actions {
+    max-width: 100%;
+  }
+
   .site-main {
     width: min(100vw - 1rem, 1120px);
   }
@@ -860,6 +928,13 @@ select {
     justify-content: flex-start;
     padding-bottom: 0.2rem;
     scrollbar-width: none;
+  }
+
+  .nav-actions {
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.55rem;
   }
 
   .nav-links::-webkit-scrollbar {

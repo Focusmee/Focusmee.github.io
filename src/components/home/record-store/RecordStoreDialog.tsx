@@ -74,6 +74,7 @@ export default function RecordStoreDialog({ rootId, choices }: Props) {
         type="button"
         disabled={!canInteract}
         aria-label="Talk to the Seaside Records guide"
+        data-i18n-aria-label="store.dialog.trigger"
         aria-expanded={isOpen}
         aria-controls="record-store-dialog-panel"
         onClick={() => setIsOpen((current) => !current)}
@@ -87,22 +88,34 @@ export default function RecordStoreDialog({ rootId, choices }: Props) {
           id="record-store-dialog-panel"
           role="dialog"
           aria-label="Seaside Records guide"
+          data-i18n-aria-label="store.dialog.label"
         >
           <div className="record-store-dialog__speaker">Seaside Records</div>
-          <p className="record-store-dialog__line">
+          <p className="record-store-dialog__line" data-i18n="store.dialog.line">
             Welcome in. Which shelf should I open for you?
           </p>
           <div className="record-store-dialog__choices">
-            {choices.map((choice) => (
-              <a
-                className={`record-store-dialog-choice record-store-dialog-choice--${choice.id}`}
-                href={choice.href}
-                key={choice.id}
-              >
-                <strong>{choice.title}</strong>
-                <span>{choice.detail}</span>
-              </a>
-            ))}
+            {choices.map((choice) => {
+              const titleKey =
+                choice.id === "about"
+                  ? "store.dialog.aboutTitle"
+                  : `collections.${choice.id}.title`;
+              const detailKey =
+                choice.id === "about"
+                  ? "store.dialog.aboutDetail"
+                  : `collections.${choice.id}.blurb`;
+
+              return (
+                <a
+                  className={`record-store-dialog-choice record-store-dialog-choice--${choice.id}`}
+                  href={choice.href}
+                  key={choice.id}
+                >
+                  <strong data-i18n={titleKey}>{choice.title}</strong>
+                  <span data-i18n={detailKey}>{choice.detail}</span>
+                </a>
+              );
+            })}
           </div>
         </div>
       )}

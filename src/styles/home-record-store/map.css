@@ -68,6 +68,14 @@
   text-transform: uppercase;
 }
 
+html[data-language="zh"] .store-object__kicker {
+  font-family: var(--font-accent-zh);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
 .store-object strong {
   font-family: var(--font-display);
   font-size: 1.45rem;

@@ -1,7 +1,11 @@
 ---
+import { getUiText } from "../../i18n/ui";
+
 interface Props {
   title?: string;
+  titleKey?: string;
   description?: string;
+  descriptionKey?: string;
   mapping?: "pathname" | "url" | "title" | "og:title" | "specific" | "number";
   term?: string;
   strict?: "0" | "1";
@@ -10,7 +14,9 @@ interface Props {
 
 const {
   title = "Comments",
+  titleKey,
   description = "GitHub Discussions powered by Giscus.",
+  descriptionKey,
   mapping = "pathname",
   term,
   strict = "0",
@@ -39,9 +45,11 @@ const isConfigured = Boolean(
   (isConfigured || showSetupHint) && (
     <section class="comments-shell">
       <div class="section-heading comments-heading">
-        <span class="eyebrow">Giscus</span>
-        <h2 class="headline comments-title">{title}</h2>
-        <p class="lede">{description}</p>
+        <span class="eyebrow" data-i18n="comments.eyebrow">
+          {getUiText("comments.eyebrow")}
+        </span>
+        <h2 class="headline comments-title" data-i18n={titleKey}>{title}</h2>
+        <p class="lede" data-i18n={descriptionKey}>{description}</p>
       </div>
 
       {isConfigured ? (
@@ -69,25 +77,12 @@ const isConfigured = Boolean(
         </div>
       ) : (
         <div class="placeholder-panel">
-          <strong>Giscus is ready, but not configured yet.</strong>
-          <p class="note-line">
-            先在 GitHub 仓库里开启 Discussions，然后把 Giscus 生成的公开参数填进环境变量。
+          <strong data-i18n="comments.placeholderTitle">
+            {getUiText("comments.placeholderTitle")}
+          </strong>
+          <p class="note-line" data-i18n="comments.placeholderCopy">
+            {getUiText("comments.placeholderCopy")}
           </p>
-          <div class="detail-list" style="margin-top: 1rem;">
-            <div class="detail-item">
-              <div class="detail-kicker">Required env</div>
-              <strong>
-                PUBLIC_GISCUS_REPO / REPO_ID / CATEGORY / CATEGORY_ID
-              </strong>
-            </div>
-            <div class="detail-item">
-              <div class="detail-kicker">Recommended</div>
-              <strong>
-                PUBLIC_GISCUS_THEME=preferred_color_scheme,
-                PUBLIC_GISCUS_LANG=zh-CN
-              </strong>
-            </div>
-          </div>
         </div>
       )}
     </section>

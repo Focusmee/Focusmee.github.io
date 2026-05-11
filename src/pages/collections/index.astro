@@ -2,6 +2,7 @@
 import BaseLayout from "../../components/layout/BaseLayout.astro";
 import CollectionGrid from "../../components/collections/CollectionGrid.astro";
 import Tag from "../../components/ui/Tag.astro";
+import { getUiText } from "../../i18n/ui";
 import { withBase } from "../../utils/links";
 ---
 
@@ -11,14 +12,22 @@ import { withBase } from "../../utils/links";
 >
   <section class="section-shell">
     <div class="section-heading">
-      <span class="eyebrow">Collections</span>
-      <h1 class="headline">A small map of the house.</h1>
-      <p class="lede">
-        These six shelves are content collections, not the house-wide time
-        index. If you want everything by date, open Archive.
+      <span class="eyebrow" data-i18n="collections.page.eyebrow">
+        {getUiText("collections.page.eyebrow")}
+      </span>
+      <h1 class="headline" data-i18n="collections.page.title">
+        {getUiText("collections.page.title")}
+      </h1>
+      <p class="lede" data-i18n="collections.page.lede">
+        {getUiText("collections.page.lede")}
       </p>
       <div class="tag-row" style="margin-top: 1rem;">
-        <Tag label="Open Archive timeline" href={withBase("/archive")} accent />
+        <Tag
+          label={getUiText("collections.page.archive")}
+          i18nKey="collections.page.archive"
+          href={withBase("/archive")}
+          accent
+        />
       </div>
     </div>
 

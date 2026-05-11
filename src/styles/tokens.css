@@ -16,9 +16,12 @@
   --mud: #8c5a3c;
   --leaf: #6faf5d;
 
-  --font-display: "Fraunces", Georgia, serif;
-  --font-body: "Manrope", "Segoe UI", sans-serif;
-  --font-accent: "Caveat", cursive;
+  --font-display: "Fraunces", "Noto Serif SC", "Source Han Serif SC", "Songti SC",
+    "STSong", Georgia, serif;
+  --font-body: "Manrope", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei",
+    "Segoe UI", sans-serif;
+  --font-accent: "Caveat", "LXGW WenKai",   cursive;
+  --font-accent-zh: "LXGW WenKai",  cursive;
 
   --shadow-soft: 0 12px 32px rgba(35, 35, 35, 0.08);
   --shadow-card: 0 24px 48px rgba(35, 35, 35, 0.12);

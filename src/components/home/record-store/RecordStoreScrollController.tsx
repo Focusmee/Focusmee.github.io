@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import {
   createRecordStoreScrollScene,
-  resetRecordStoreScrollState
+  resetRecordStoreScrollState,
+  setRecordStoreInteriorFallbackState
 } from "./recordStoreAnimation";
 import {
   RECORD_STORE_ENTRY_CLOSE_EVENT,
@@ -14,6 +15,19 @@ type Props = {
 
 const DESKTOP_QUERY = "(min-width: 981px)";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+const MOBILE_NAV_GAP = 24;
+
+function scrollElementBelowNav(element: HTMLElement, behavior: ScrollBehavior) {
+  const nav = document.querySelector<HTMLElement>(".site-nav");
+  const navHeight = nav?.getBoundingClientRect().height ?? 0;
+  const top =
+    element.getBoundingClientRect().top + window.scrollY - navHeight - MOBILE_NAV_GAP;
+
+  window.scrollTo({
+    behavior,
+    top: Math.max(0, Math.round(top))
+  });
+}
 
 export default function RecordStoreScrollController({ rootId }: Props) {
   useEffect(() => {
@@ -28,6 +42,7 @@ export default function RecordStoreScrollController({ rootId }: Props) {
     const doorTrigger = root.querySelector<HTMLButtonElement>(
       "[data-record-store-door-trigger]"
     );
+    const appWindow = root.querySelector<HTMLElement>("[data-record-store-pin-target]");
     let scene: ReturnType<typeof createRecordStoreScrollScene> = null;
     let runId = 0;
     let isMounted = true;
@@ -93,10 +108,12 @@ export default function RecordStoreScrollController({ rootId }: Props) {
         return;
       }
 
-      root.dataset.scrollPhase = "interior";
-      document.getElementById("store-map")?.scrollIntoView({
-        behavior: reducedMotion.matches ? "auto" : "smooth",
-        block: "start"
+      setRecordStoreInteriorFallbackState(root);
+      window.requestAnimationFrame(() => {
+        scrollElementBelowNav(
+          appWindow ?? root,
+          reducedMotion.matches ? "auto" : "smooth"
+        );
       });
     };
 

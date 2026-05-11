@@ -1,5 +1,5 @@
 import { useGLTF } from "@react-three/drei";
-import { useEffect, useMemo } from "react";
+import { useLayoutEffect, useMemo } from "react";
 import { Box3, Vector3 } from "three";
 import type { Mesh, Object3D } from "three";
 
@@ -33,7 +33,7 @@ function prepareComputerModel(scene: Object3D) {
 }
 
 function findScreenMesh(scene: Object3D) {
-  let exactMatch: Mesh | null = null;
+  const exactMatches = new Map<string, Mesh>();
   let fuzzyMatch: Mesh | null = null;
 
   scene.traverse((object) => {
@@ -46,7 +46,7 @@ function findScreenMesh(scene: Object3D) {
     const name = mesh.name.toLowerCase();
 
     if (SCREEN_NODE_NAMES.some((screenName) => screenName.toLowerCase() === name)) {
-      exactMatch = mesh;
+      exactMatches.set(name, mesh);
       return;
     }
 
@@ -55,7 +55,15 @@ function findScreenMesh(scene: Object3D) {
     }
   });
 
-  return exactMatch ?? fuzzyMatch;
+  for (const screenName of SCREEN_NODE_NAMES) {
+    const match = exactMatches.get(screenName.toLowerCase());
+
+    if (match) {
+      return match;
+    }
+  }
+
+  return fuzzyMatch;
 }
 
 function getAnchorFromScreenMesh(mesh: Mesh): ScreenAnchor {
@@ -122,7 +130,7 @@ export default function RetroComputerModel({ modelUrl, onScreenAnchor }: Props) 
     };
   }, [scene]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     onScreenAnchor?.(screenAnchor);
   }, [onScreenAnchor, screenAnchor]);
 
