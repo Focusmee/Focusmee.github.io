@@ -409,3 +409,162 @@ Validation:
 Risks:
 
 - The exact visual center depends on live viewport height and sticky navigation height, so final alignment should be confirmed in the in-app browser at desktop and mobile widths.
+
+### 2026-05-10 - Reworked Retro Computer Entry As Desktop Diorama
+
+Mode: Fix Mode
+
+Files changed:
+
+- `src/components/home/retro-computer/RetroComputerScene.tsx`
+- `src/components/home/retro-computer/RetroComputerEntrance.tsx`
+- `src/styles/home-retro-computer.css`
+- `docs/current/PROJECT_STATE.md`
+- `docs/current/TASKS.md`
+- `docs/current/AI_CHANGELOG.md`
+
+Summary:
+
+- Added and completed `N-014`.
+- Replaced the visible 3D floor rectangle under the retro computer with Drei `ContactShadows` so the computer keeps a softer grounded shadow without a hard rectangular plane.
+- Added noninteractive HTML/CSS desktop props: record, sleeve, floppy, cassette, sticky note, and light Seaside OS labels.
+- Softened the retro computer entry background so the wall-to-desk transition is less like a hard color block.
+- Preserved the WebGL screen texture, UV click target, bottom `Press Start` fallback, glitch transition, and record-store entry behavior.
+
+Validation:
+
+- `npm run check` passed with 0 errors, 0 warnings, and 0 hints.
+- `npm run build` passed and generated 21 static pages.
+- Local dev server returned 200 at `http://127.0.0.1:4321/`.
+- Headless Chrome screenshot confirmed the hard rectangular floor plane is no longer visible and the added CSS/HTML props render around the computer.
+
+Risks:
+
+- The new decorative props are visual only and need browser inspection to ensure they do not feel too busy or distract from the computer/screen.
+
+### 2026-05-10 - Simplified Retro Entry And Added Floating Rotation
+
+Mode: Fix Mode
+
+Files changed:
+
+- `src/components/home/retro-computer/RetroComputerScene.tsx`
+- `src/components/home/retro-computer/RetroComputerEntrance.tsx`
+- `src/styles/home-retro-computer.css`
+- `docs/current/PROJECT_STATE.md`
+- `docs/current/TASKS.md`
+- `docs/current/AI_CHANGELOG.md`
+
+Summary:
+
+- Added and completed `N-015`.
+- Removed the previously added noninteractive CSS/HTML props and OS chips: record, sleeve, floppy, cassette, sticky note, and secondary label chips.
+- Kept the entry scene visually minimal with only the original Seaside OS panel, the 3D computer, and the bottom `Press Start` fallback.
+- Added a `FloatingComputerGroup` so the 3D computer subtly floats and smoothly rotates in response to pointer movement.
+- Made the floating rotation ease back to the base model transform during `entering` so the WebGL screen-to-store transition remains stable.
+- Softened the entry background and contact shadow to make the computer feel more suspended.
+
+Validation:
+
+- `npm run check` passed with 0 errors, 0 warnings, and 0 hints.
+- `npm run build` passed and generated 21 static pages.
+- Local dev server returned 200 at `http://127.0.0.1:4321/`.
+- Source search confirmed the removed `desktop-props`, `retro-desktop-prop`, and `os-chips` classes are no longer present.
+- Headless Chrome screenshot confirmed the surrounding CSS/HTML props and secondary OS chips are gone.
+
+Risks:
+
+- The pointer-responsive rotation is visual and should be checked in the browser to confirm it feels smooth without making the `PRESS START` screen hit target annoying to click.
+
+### 2026-05-11 - Cleaned Public UI Copy And Added Language Switching
+
+Mode: Feature Mode
+
+Files changed:
+
+- `src/i18n/ui.ts`
+- `src/components/layout/BaseLayout.astro`
+- `src/components/ui/SiteNav.astro`
+- `src/components/ui/SiteFooter.astro`
+- `src/components/ui/Tag.astro`
+- `src/components/comments/GiscusComments.astro`
+- `src/components/collections/CollectionCard.astro`
+- `src/components/posts/RecentPosts.astro`
+- `src/components/posts/PostCard.astro`
+- `src/components/layout/PostLayout.astro`
+- `src/components/home/RecordStoreHero.astro`
+- `src/components/home/record-store/RecordStoreMap.astro`
+- `src/components/home/record-store/RecordStoreDialog.tsx`
+- `src/components/home/record-store/poster/RecordStoreBuilding.astro`
+- `src/components/home/retro-computer/RetroComputerEntrance.tsx`
+- `src/pages/index.astro`
+- `src/pages/logs/index.astro`
+- `src/pages/archive.astro`
+- `src/pages/collections/index.astro`
+- `src/pages/collections/[collection].astro`
+- `src/pages/projects.astro`
+- `src/pages/about.astro`
+- `src/pages/guestbook.astro`
+- `src/data/navigation.ts`
+- `src/data/projects.ts`
+- `src/styles/global.css`
+- `docs/current/PROJECT_STATE.md`
+- `docs/current/TASKS.md`
+- `docs/current/AI_CHANGELOG.md`
+
+Summary:
+
+- Added and completed `N-016`.
+- Rewrote visible public UI copy that read like development/setup explanation, including homepage lower sections, collection pages, project explanatory blocks, and guestbook/Giscus placeholder text.
+- Added a lightweight route-preserving Chinese/English UI switch using `src/i18n/ui.ts`, `data-i18n` attributes, localStorage, and a shared client script in `BaseLayout.astro`.
+- Localized shared navigation/footer labels, collection labels, post metadata labels, project card text, About page UI copy, guestbook copy, and homepage record-store labels.
+- Kept example article content in `src/content/logs/*` unchanged as requested.
+- Did not add dependencies, change routes, change database/auth/deploy behavior, or alter homepage animation contracts.
+
+Validation:
+
+- `npm run check` passed with 0 errors, 0 warnings, and 0 hints.
+- `npm run build` passed and generated 21 static pages.
+- `http://localhost:4321/` returned 200.
+- Local HTML checks confirmed the language switch script renders and old setup/phase strings are no longer present in source UI files.
+
+Risks:
+
+- The language switch is client-side only; metadata and Markdown article bodies are not fully localized.
+- The i18n dictionary is currently inlined per page, which is simple and dependency-free but adds repeated HTML payload.
+- The in-app browser automation connection timed out during visual verification, so final click-through of the language toggle should be checked manually in the open browser.
+
+### 2026-05-11 - Adjusted Chinese Typography Hierarchy
+
+Mode: Fix Mode
+
+Files changed:
+
+- `src/styles/tokens.css`
+- `src/styles/global.css`
+- `src/styles/prose.css`
+- `src/styles/home-record-store/base.css`
+- `src/styles/home-record-store/map.css`
+- `docs/current/PROJECT_STATE.md`
+- `docs/current/TASKS.md`
+- `docs/current/AI_CHANGELOG.md`
+
+Summary:
+
+- Added and completed `N-017`.
+- Added LXGW WenKai to the font stack for Chinese eyebrow/small-label accents.
+- Added Noto Serif SC to the display heading stack so Chinese large headings no longer fall back to generic system fonts.
+- Added Noto Sans SC to the body/UI stack for clearer Chinese reading.
+- Scoped handwriting treatment to `.eyebrow`, Chinese `.record-store-eyebrow`, Chinese store-object kickers, and Chinese collection counts.
+- Removed negative letter spacing from display-heading CSS rules so Chinese headings render with more natural spacing.
+- Did not modify page copy, routes, article content, dependencies, or homepage interaction contracts.
+
+Validation:
+
+- `npm.cmd run check` passed with 0 errors, 0 warnings, and 0 hints.
+- `npm.cmd run build` passed and generated 21 static pages.
+
+Risks:
+
+- Google Fonts loading for Chinese fonts can increase first paint font payload and may vary by network environment.
+- Final visual judgment should still be checked in the browser at desktop and mobile widths, especially eyebrow labels and large Chinese headings.

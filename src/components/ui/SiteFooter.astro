@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from "../../data/site";
+import { getUiText } from "../../i18n/ui";
 import { withBase } from "../../utils/links";
 
 const year = new Date().getFullYear();
@@ -8,13 +9,19 @@ const year = new Date().getFullYear();
 <footer class="site-footer" transition:animate="none">
   <div>
     <strong>{siteConfig.name}</strong>
-    <div>{siteConfig.tagline}</div>
+    <div data-i18n="site.tagline">{getUiText("site.tagline")}</div>
   </div>
 
   <div class="footer-links">
-    <a href={withBase("/logs")}>Logs</a>
-    <a href={withBase("/collections")}>Collections</a>
-    <a href={withBase("/about")}>About</a>
+    <a href={withBase("/logs")} data-i18n="footer.logs">
+      {getUiText("footer.logs")}
+    </a>
+    <a href={withBase("/collections")} data-i18n="footer.collections">
+      {getUiText("footer.collections")}
+    </a>
+    <a href={withBase("/about")} data-i18n="footer.about">
+      {getUiText("footer.about")}
+    </a>
     <a href={withBase("/rss.xml")}>RSS</a>
   </div>
 

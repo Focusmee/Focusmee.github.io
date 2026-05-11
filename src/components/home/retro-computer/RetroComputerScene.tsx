@@ -1,5 +1,7 @@
 import { Canvas, type ThreeEvent, useFrame, useThree } from "@react-three/fiber";
+import { ContactShadows } from "@react-three/drei";
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import * as THREE from "three";
 import RetroComputerModel from "./RetroComputerModel";
 import type { ScreenAnchor } from "./RetroComputerModel";
@@ -24,6 +26,13 @@ const MODEL_ROTATION = MODEL_ROTATION_DEGREES.map((degree) =>
 ) as [number, number, number];
 const MODEL_EULER = new THREE.Euler(...MODEL_ROTATION);
 const MODEL_SCALE = 2.8;
+const FLOAT_AMPLITUDE = 0.045;
+const FLOAT_SPEED = 1.18;
+const POINTER_POSITION_X = 0.025;
+const POINTER_POSITION_Y = 0.018;
+const POINTER_ROTATION_X = THREE.MathUtils.degToRad(2.4);
+const POINTER_ROTATION_Y = THREE.MathUtils.degToRad(7.2);
+const POINTER_ROTATION_Z = THREE.MathUtils.degToRad(1.4);
 const SCREEN_FIT_RATIO = 0.9;
 const SCREEN_GLOW_OFFSET = 0.018;
 const SCREEN_TEXTURE_OFFSET = 0.032;
@@ -55,6 +64,75 @@ function getModelWorldPosition(position: [number, number, number]) {
 
 function getModelWorldNormal(normal: [number, number, number]) {
   return new THREE.Vector3(...normal).applyEuler(MODEL_EULER).normalize();
+}
+
+function FloatingComputerGroup({
+  children,
+  isEntering
+}: {
+  children: ReactNode;
+  isEntering: boolean;
+}) {
+  const groupRef = useRef<THREE.Group>(null);
+  const { pointer } = useThree();
+
+  useFrame(({ clock }, delta) => {
+    const group = groupRef.current;
+
+    if (!group) {
+      return;
+    }
+
+    const pointerX = isEntering ? 0 : THREE.MathUtils.clamp(pointer.x, -1, 1);
+    const pointerY = isEntering ? 0 : THREE.MathUtils.clamp(pointer.y, -1, 1);
+    const floatingY = isEntering
+      ? 0
+      : Math.sin(clock.getElapsedTime() * FLOAT_SPEED) * FLOAT_AMPLITUDE;
+    const damping = isEntering ? 10 : 4.6;
+
+    group.position.x = THREE.MathUtils.damp(
+      group.position.x,
+      MODEL_POSITION[0] + pointerX * POINTER_POSITION_X,
+      damping,
+      delta
+    );
+    group.position.y = THREE.MathUtils.damp(
+      group.position.y,
+      MODEL_POSITION[1] + floatingY + Math.abs(pointerX) * POINTER_POSITION_Y,
+      damping,
+      delta
+    );
+    group.position.z = THREE.MathUtils.damp(
+      group.position.z,
+      MODEL_POSITION[2],
+      damping,
+      delta
+    );
+    group.rotation.x = THREE.MathUtils.damp(
+      group.rotation.x,
+      MODEL_ROTATION[0] - pointerY * POINTER_ROTATION_X,
+      damping,
+      delta
+    );
+    group.rotation.y = THREE.MathUtils.damp(
+      group.rotation.y,
+      MODEL_ROTATION[1] + pointerX * POINTER_ROTATION_Y,
+      damping,
+      delta
+    );
+    group.rotation.z = THREE.MathUtils.damp(
+      group.rotation.z,
+      MODEL_ROTATION[2] - pointerX * POINTER_ROTATION_Z,
+      damping,
+      delta
+    );
+  });
+
+  return (
+    <group ref={groupRef} position={MODEL_POSITION} rotation={MODEL_ROTATION} scale={MODEL_SCALE}>
+      {children}
+    </group>
+  );
 }
 
 function AnimatedCamera({
@@ -271,7 +349,7 @@ export default function RetroComputerScene({
       <pointLight color="#77e9ff" intensity={1.6} position={[-0.45, 0.52, 1.1]} />
       <pointLight color="#ff8fb6" intensity={0.72} position={[2.5, 0.9, 2.8]} />
       <Suspense fallback={null}>
-        <group position={MODEL_POSITION} rotation={MODEL_ROTATION} scale={MODEL_SCALE}>
+        <FloatingComputerGroup isEntering={isEntering}>
           <RetroComputerModel modelUrl={modelUrl} onScreenAnchor={handleScreenAnchor} />
           <ComputerScreenGlow anchor={screenAnchor} isEntering={isEntering} />
           <ComputerScreenTexture
@@ -280,12 +358,17 @@ export default function RetroComputerScene({
             onEnter={onEnter}
             transitionDurationMs={transitionDurationMs}
           />
-        </group>
+        </FloatingComputerGroup>
       </Suspense>
-      <mesh position={[0, -1.72, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[8.5, 5.8]} />
-        <meshStandardMaterial color="#f2a4b6" roughness={0.78} metalness={0.02} />
-      </mesh>
+      <ContactShadows
+        position={[0, -1.86, 0]}
+        opacity={0.18}
+        scale={5.8}
+        blur={4.4}
+        far={2.4}
+        resolution={512}
+        color="#5d2548"
+      />
     </Canvas>
   );
 }

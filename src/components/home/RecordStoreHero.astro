@@ -1,6 +1,6 @@
 ---
 import Button from "../ui/Button.astro";
-import { siteConfig } from "../../data/site";
+import { getUiText } from "../../i18n/ui";
 import { withBase } from "../../utils/links";
 import { pickRandomItem } from "../../utils/random";
 import { getPublishedLogs } from "../../utils/posts";
@@ -33,17 +33,18 @@ const dialogChoices = homeDialogChoices.map((choice) => ({
   <RecordStorePoster rootId={rootId} choices={dialogChoices} />
 
   <div class="record-store-hero__intro">
-    <span class="record-store-eyebrow">Blooming Logs presents</span>
-    <p class="record-store-copy">
-      {siteConfig.description} Step into a poster-like city pop record shop where
-      every shelf opens into a different collection.
+    <span class="record-store-eyebrow" data-i18n="home.hero.eyebrow">
+      {getUiText("home.hero.eyebrow")}
+    </span>
+    <p class="record-store-copy" data-i18n="home.hero.copy">
+      {getUiText("home.hero.copy")}
     </p>
 
     {
       randomPost && (
         <div class="record-store-actions">
           <Button href={withBase(`/logs/${randomPost.id}`)} variant="secondary">
-            Play Something Random
+            <span data-i18n="home.hero.random">{getUiText("home.hero.random")}</span>
           </Button>
         </div>
       )

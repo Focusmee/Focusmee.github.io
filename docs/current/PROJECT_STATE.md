@@ -17,6 +17,7 @@ The live product is:
 - A blog system backed by Markdown and MDX files.
 - Six editorial collections: `notes`, `lab`, `records`, `frames`, `garden`, `drawer`.
 - Pages for logs, collections, archive, projects, about, guestbook, RSS, and sitemap.
+- Client-side Chinese/English UI switching for shared chrome and main public UI copy.
 - GitHub Discussions comments through Giscus when public environment variables are configured.
 - Static deployment to GitHub Pages.
 
@@ -67,7 +68,7 @@ Do not treat these as current product requirements:
 
 | Module | Responsibility | Main Files | Status |
 |---|---|---|---|
-| App shell | Shared HTML layout, metadata, navigation, footer, page transitions | `src/components/layout/BaseLayout.astro`, `src/components/ui/SiteNav.astro`, `src/components/ui/SiteFooter.astro`, `src/styles/global.css` | Active |
+| App shell | Shared HTML layout, metadata, navigation, footer, page transitions, client-side UI language switching | `src/components/layout/BaseLayout.astro`, `src/components/ui/SiteNav.astro`, `src/components/ui/SiteFooter.astro`, `src/i18n/ui.ts`, `src/styles/global.css` | Active |
 | Content model | Defines log schema and allowed categories/moods | `src/content.config.ts`, `src/content/logs/*`, `src/data/collections.ts` | Active |
 | Blog/log pages | Lists and renders published Markdown/MDX logs | `src/pages/logs/index.astro`, `src/pages/logs/[slug].astro`, `src/components/layout/PostLayout.astro`, `src/utils/posts.ts` | Active |
 | Collections/archive | Editorial shelves and time archive | `src/pages/collections/*`, `src/pages/archive.astro`, `src/components/collections/*` | Active |
@@ -93,6 +94,10 @@ Status values used here:
 - Homepage animation code relies on stable `data-*` attributes and CSS variables. Treat these as integration contracts.
 - React islands should remain narrowly scoped to interaction-heavy areas.
 - Build-time external fetches must have fallbacks because GitHub Pages builds can run with network variance.
+- Shared UI translations live in `src/i18n/ui.ts` and are applied through stable `data-i18n` / `data-i18n-*` attributes. Do not rename those attributes casually because React islands and Astro pages both rely on them for language switching.
+- The current language switch is client-side and route-preserving. Do not introduce locale-prefixed routes, SSR, or a separate i18n framework without explicit approval.
+- Example article content in `src/content/logs/*` is not part of the UI translation layer unless a future content task explicitly says to localize it.
+- Typography rules: display headings use `--font-display` with Fraunces for Latin and Noto Serif SC / source-han-style serif fallbacks for Chinese; body/UI uses `--font-body` with Manrope and Noto Sans SC; small eyebrow/label accents may use `--font-accent` / `--font-accent-zh`, with LXGW WenKai reserved for Chinese small labels. Do not apply the handwriting font to body copy, navigation, or button text by default.
 - Do not add dependencies unless a `TASKS.md > Now` item explicitly approves it.
 
 ## Homepage Interaction Contract
@@ -194,8 +199,12 @@ Stable model/screen responsibilities:
 - `ScreenAnchor` is the contract between the GLB mesh and the WebGL screen plane: `position`, `normal`, `rotation`, `width`, `height`, `sourceName`.
 - `RetroComputerScene.tsx` owns model transform constants, camera target math, screen glow plane, WebGL texture plane placement, and UV click handling.
 - `retroComputerScreenTexture.ts` owns the CanvasTexture drawing size, visual screen drawing, and `PRESS START` UV hit region.
+- `RetroComputerEntrance.tsx` owns the minimal entry chrome and bottom `Press Start` fallback. Avoid adding extra decorative props or secondary labels unless explicitly approved.
 - The screen content must remain a WebGL texture on a plane in the same 3D coordinate space as the model, not a Drei `<Html>` or DOM overlay.
 - The WebGL texture plane may use a small forward offset plus `renderOrder` / disabled depth testing to stay visible above the GLB's original screen surface while still remaining inside the 3D scene.
+- The 3D computer should remain the only 3D model in the entry scene. Use soft contact shadows, subtle floating motion, and pointer-responsive rotation rather than adding or downloading more models.
+- Pointer-responsive rotation must ease back to the base model transform during `entering` so the screen-to-store camera transition remains stable.
+- Do not add OrbitControls or a free-roam camera to the entry scene unless explicitly approved.
 - Screen-to-store entry uses a synchronized transition: the R3F camera moves toward the screen, the CanvasTexture receives transition progress for its CRT glitch effect, and the record-store app is pre-revealed behind the retro computer during `data-entry-state="entering"`.
 - The bottom DOM `Press Start` button in `RetroComputerEntrance.tsx` must remain as an accessibility and keyboard fallback.
 - If `SCREEN_FIT_RATIO`, screen offsets, texture dimensions, or the GLB screen mesh changes, verify desktop, mobile, browser zoom, and window resize behavior.
@@ -243,11 +252,12 @@ For mobile widths below `981px`, ScrollTrigger is not used. Door click behavior 
 
 | Item | Current Observation | Risk |
 |---|---|---|
-| Encoding/mojibake | PowerShell `Get-Content` output can render false-positive mojibake in this environment, but `src/pages/index.astro` now has confirmed user-facing mojibake in lower homepage section copy. | Restore/rewrite affected copy as Chinese in a dedicated task; do not mix it into homepage interaction fixes. |
+| Encoding/mojibake | PowerShell `Get-Content` without explicit UTF-8 can render false-positive mojibake in this environment. Confirmed public UI mojibake was rewritten during D-016. | Use UTF-8 reads/writes and verify in browser/build output before treating terminal mojibake as file corruption. |
 | Documentation location | Human approved `docs/current` as the active control document location. Older docs appear moved/deleted in git status and reappear under `docs/archive/`; human will remove old docs manually. | Repository still needs a clean tracked documentation baseline. |
 | Archived plans | `docs/archive/*` contains broad product/design plans and checklists, some now inconsistent with implementation. | Agents may accidentally treat old plans as active requirements. |
 | Homepage interaction | Human verification confirmed the core path works: Press Start can enter, the record-store scene is centered after entry, the interior scene can be entered, and interior dialog/records/links are interactive. The homepage interaction contract is now documented. The mobile door fallback now reveals the interior in-place instead of scrolling to the map. The retro computer screen content now uses a WebGL CanvasTexture plane instead of a Drei `<Html>` overlay. | High regression risk from casual refactors; use the homepage interaction contract before further fixes/refactors. |
 | Projects page network fetch | Human approved keeping build-time GitHub API enrichment with fallback. | Build output can vary depending on network/API availability. |
+| UI language switching | The Chinese/English switch is client-side and does not create separate localized routes or translate article Markdown bodies. | SEO metadata and article content are not fully localized; future full i18n would need a separate product decision. |
 | Public contact data | Human confirmed email and phone may remain public on About. | Privacy risk accepted by project owner. |
 | Untracked temp/test file | `.tmp-home-interaction.spec.ts` exists at repo root. | It may be useful, stale, or accidental; do not act without human decision. |
 

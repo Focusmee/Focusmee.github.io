@@ -207,6 +207,7 @@
 .retro-computer-entry {
   position: relative;
   display: grid;
+  isolation: isolate;
   width: 100%;
   max-width: 100vw;
   min-height: calc(100svh - 4.5rem);
@@ -214,33 +215,36 @@
   place-items: center;
   padding: clamp(1.2rem, 3vw, 2.6rem);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.34), transparent 34%),
-    linear-gradient(180deg, #fff8ed 0 48%, #ffd1df 48% 49%, #e66d96 49% 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.42), transparent 42%),
+    linear-gradient(180deg, #fff8ed 0%, #fff3ef 56%, #ef9fba 100%);
 }
 
 .retro-computer-entry::before {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 30%;
+  left: 50%;
+  bottom: clamp(5.5rem, 11svh, 8.5rem);
+  z-index: 0;
+  width: min(48rem, 72vw);
+  height: clamp(5rem, 13svh, 9rem);
+  transform: translateX(-50%);
   background:
-    linear-gradient(90deg, transparent 0 24%, rgba(255, 255, 255, 0.3) 24% 24.12%, transparent 24.12% 52%, rgba(255, 255, 255, 0.22) 52% 52.1%, transparent 52.1%),
-    linear-gradient(180deg, #f48aa9, #c84d7f);
-  box-shadow: inset 0 0.4rem 0 rgba(255, 255, 255, 0.34);
+    linear-gradient(90deg, transparent, rgba(123, 62, 107, 0.16), transparent);
+  filter: blur(18px);
+  opacity: 0.66;
 }
 
 .retro-computer-entry::after {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
   background:
-    repeating-linear-gradient(90deg, rgba(0, 78, 180, 0.06) 0 1px, transparent 1px 7rem),
-    repeating-linear-gradient(180deg, transparent 0 4.4rem, rgba(255, 95, 143, 0.1) 4.4rem 4.48rem);
+    repeating-linear-gradient(90deg, rgba(0, 78, 180, 0.048) 0 1px, transparent 1px 7rem),
+    repeating-linear-gradient(180deg, transparent 0 4.4rem, rgba(255, 95, 143, 0.07) 4.4rem 4.48rem);
   mix-blend-mode: multiply;
-  opacity: 0.56;
+  opacity: 0.38;
 }
 
 .retro-computer-entry--entering {
@@ -250,7 +254,7 @@
 
 .retro-computer-entry__scene {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   width: min(100%, 84rem);
   height: clamp(30rem, 72svh, 48rem);
 }
@@ -270,7 +274,7 @@
   position: absolute;
   left: clamp(1rem, 5vw, 5rem);
   top: clamp(1rem, 6vw, 4rem);
-  z-index: 2;
+  z-index: 3;
   display: grid;
   gap: 0.2rem;
   padding: 0.72rem 0.95rem;
@@ -300,7 +304,7 @@
   position: absolute;
   left: 50%;
   bottom: clamp(1.25rem, 4vw, 3rem);
-  z-index: 2;
+  z-index: 4;
   min-width: 10.5rem;
   min-height: 3rem;
   padding: 0.7rem 1.2rem;

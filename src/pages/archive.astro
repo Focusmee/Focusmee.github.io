@@ -4,6 +4,7 @@ import Tag from "../components/ui/Tag.astro";
 import { formatDate } from "../utils/format";
 import { groupPostsByYear, getPublishedLogs } from "../utils/posts";
 import { getCollectionMeta } from "../data/collections";
+import { getUiText } from "../i18n/ui";
 import { withBase } from "../utils/links";
 
 const posts = await getPublishedLogs();
@@ -17,11 +18,14 @@ const years = Object.keys(grouped).sort((left, right) => Number(right) - Number(
 >
   <section class="section-shell">
     <div class="section-heading">
-      <span class="eyebrow">Archive</span>
-      <h1 class="headline">The whole house, by time.</h1>
-      <p class="lede">
-        This page is the house-wide time index. Drawer stays a separate
-        collection for revisits, old papers, and rescued drafts.
+      <span class="eyebrow" data-i18n="archive.eyebrow">
+        {getUiText("archive.eyebrow")}
+      </span>
+      <h1 class="headline" data-i18n="archive.title">
+        {getUiText("archive.title")}
+      </h1>
+      <p class="lede" data-i18n="archive.lede">
+        {getUiText("archive.lede")}
       </p>
     </div>
 
@@ -43,8 +47,18 @@ const years = Object.keys(grouped).sort((left, right) => Number(right) - Number(
                   </div>
 
                   <div class="tag-row">
-                    <Tag label={collection?.title ?? entry.data.category} accent />
-                    <span class="detail-kicker">{formatDate(entry.data.pubDate)}</span>
+                    <Tag
+                      label={collection?.title ?? entry.data.category}
+                      i18nKey={collection ? `collections.${collection.id}.title` : undefined}
+                      accent
+                    />
+                    <time
+                      class="detail-kicker"
+                      datetime={entry.data.pubDate.toISOString()}
+                      data-i18n-date
+                    >
+                      {formatDate(entry.data.pubDate)}
+                    </time>
                   </div>
                 </article>
               );

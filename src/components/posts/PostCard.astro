@@ -19,12 +19,21 @@ const readingMinutes = getReadingMinutes(entry.body ?? "");
   style={`--accent: var(--${collection?.color ?? "sunflower"});`}
 >
   <div class="meta-row">
-    <Tag label={collection?.title ?? entry.data.category} accent />
-    <time datetime={entry.data.pubDate.toISOString()}>
+    <Tag
+      label={collection?.title ?? entry.data.category}
+      i18nKey={collection ? `collections.${collection.id}.title` : undefined}
+      accent
+    />
+    <time datetime={entry.data.pubDate.toISOString()} data-i18n-date>
       {formatDate(entry.data.pubDate)}
     </time>
     <span aria-hidden="true">·</span>
-    <span>{readingMinutes} min read</span>
+    <span
+      data-i18n="post.minRead"
+      data-i18n-var-minutes={String(readingMinutes)}
+    >
+      {readingMinutes} 分钟阅读
+    </span>
   </div>
 
   <h3 class="card-title">
@@ -34,7 +43,11 @@ const readingMinutes = getReadingMinutes(entry.body ?? "");
   <p class="card-copy">{entry.data.description}</p>
 
   {entry.data.tags.length > 0 && (
-    <div class="tag-row post-card-tags" aria-label="Tags">
+    <div
+      class="tag-row post-card-tags"
+      aria-label="标签"
+      data-i18n-aria-label="post.tags"
+    >
       {entry.data.tags.slice(0, 2).map((tag) => <Tag label={tag} />)}
     </div>
   )}

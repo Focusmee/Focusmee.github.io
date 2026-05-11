@@ -119,6 +119,7 @@ export default function RetroComputerEntrance({ rootId }: Props) {
     <section
       className={`retro-computer-entry retro-computer-entry--${entryState}`}
       aria-label="Seaside Records terminal"
+      data-i18n-aria-label="retro.terminal"
       style={{ "--retro-entry-duration": `${ENTER_TRANSITION_MS}ms` } as CSSProperties}
     >
       <div className="retro-computer-entry__panel" aria-hidden="true">
@@ -138,8 +139,9 @@ export default function RetroComputerEntrance({ rootId }: Props) {
         type="button"
         onClick={handleEnter}
         disabled={isEntering}
+        data-i18n={isEntering ? "retro.loading" : "retro.pressStart"}
       >
-        {isEntering ? "Loading" : "Press Start"}
+        {isEntering ? "加载中" : "PRESS START"}
       </button>
     </section>
   );

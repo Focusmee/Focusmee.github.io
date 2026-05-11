@@ -1,5 +1,6 @@
 ---
 import type { CollectionMeta } from "../../data/collections";
+import { getUiText } from "../../i18n/ui";
 import { withBase } from "../../utils/links";
 
 interface Props {
@@ -9,6 +10,11 @@ interface Props {
 }
 
 const { collection, count, latestTitle } = Astro.props as Props;
+const titleKey = `collections.${collection.id}.title`;
+const descriptionKey = `collections.${collection.id}.description`;
+const objectKey = `collections.${collection.id}.object`;
+const blurbKey = `collections.${collection.id}.blurb`;
+const countKey = count > 0 ? "collections.count" : "collections.emptyCount";
 ---
 
 <article
@@ -17,27 +23,40 @@ const { collection, count, latestTitle } = Astro.props as Props;
 >
   <div class="collection-art">
     <div>
-      <div class="detail-kicker">{collection.object}</div>
-      <h3 class="card-title">{collection.title}</h3>
+      <div class="detail-kicker" data-i18n={objectKey}>
+        {getUiText(objectKey)}
+      </div>
+      <h3 class="card-title" data-i18n={titleKey}>{getUiText(titleKey)}</h3>
     </div>
-    <div class="collection-count">
-      {count > 0 ? `${count} logs` : "seedling"}
+    <div
+      class="collection-count"
+      data-i18n={countKey}
+      data-i18n-var-count={String(count)}
+    >
+      {count > 0 ? getUiText(countKey).replace("{count}", String(count)) : getUiText(countKey)}
     </div>
   </div>
 
-  <p class="card-copy">{collection.description}</p>
-  <p class="note-line">{collection.blurb}</p>
+  <p class="card-copy" data-i18n={descriptionKey}>{getUiText(descriptionKey)}</p>
+  <p class="note-line" data-i18n={blurbKey}>{getUiText(blurbKey)}</p>
 
   {latestTitle && (
     <div class="meta-row">
-      <span class="detail-kicker">Latest</span>
+      <span class="detail-kicker" data-i18n="collections.latest">
+        {getUiText("collections.latest")}
+      </span>
       <span>{latestTitle}</span>
     </div>
   )}
 
   <div class="card-footer">
-    <a class="subtle-link" href={withBase(collection.href)}>
-      Enter {collection.title} →
+    <a
+      class="subtle-link"
+      href={withBase(collection.href)}
+      data-i18n="collections.enter"
+      data-i18n-var-title-key={titleKey}
+    >
+      {getUiText("collections.enter").replace("{title}", getUiText(titleKey))}
     </a>
   </div>
 </article>

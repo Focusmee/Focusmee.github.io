@@ -22,7 +22,6 @@ Important, but not allowed until moved to `Now`.
 | NX-002 | Update README to match current project state | Docs | Waiting | Only after `PROJECT_STATE.md` is approved. |
 | NX-003 | Convert homepage contract checklist into an automated or semi-automated regression test | Homepage | Waiting | Should cover key `data-*` contracts, interaction phases, and reduced-motion behavior. |
 | NX-004 | Optional: delete unused legacy `HeroScene.astro` | Homepage | Waiting | It is not imported by active source code; delete only in an explicit cleanup task. |
-| NX-005 | Restore/rewrite confirmed homepage mojibake as Chinese | Content/UI | Waiting | `src/pages/index.astro` contains confirmed mojibake in lower homepage section copy. Keep this as a focused content task, separate from interaction fixes. |
 
 ## Later
 
@@ -48,7 +47,7 @@ Problems discovered during audit. Do not fix automatically unless moved to `Now`
 
 | ID | Issue | Module | Severity | Notes |
 |---|---|---|---|---|
-| F-001 | Confirmed mojibake exists in lower homepage copy | Content/UI | High | `src/pages/index.astro` contains user-facing mojibake strings. Human already approved restoring/replacing with Chinese; move NX-005 into `Now` before fixing. |
+| F-001 | Confirmed mojibake existed in lower homepage copy | Content/UI | Resolved | Addressed by D-016 while cleaning public UI copy. Example articles in `src/content/logs/*` were intentionally not modified. |
 | F-002 | Current docs directories are untracked while old docs show as deleted | Docs/Git | High | Source-of-truth documents are not yet part of a clean git baseline. |
 | F-003 | Archived design docs contain stale requirements and file paths | Docs | Medium | Agents must not use them as active requirements. |
 | F-004 | Homepage interaction is high-coupling and high-regression-risk | Homepage | Medium | R3F, GSAP, ScrollTrigger, CSS variables, and `data-*` state are tightly linked. |
@@ -76,3 +75,7 @@ Problems discovered during audit. Do not fix automatically unless moved to `Now`
 | D-011 | Bounded the record-store exterior/interior scene to a coordinated app window size | 2026-05-08 | Added shared app-window/stage sizing tokens, reduced desktop window width and stage height, adjusted responsive stage heights, and scaled the exterior building/dialog chrome to match the smaller window. |
 | D-012 | Reworked record-store visual hierarchy into an embedded app-window section | 2026-05-08 | Added navigation clearance, softened the outer record-store section background, kept saturated city-pop color inside the app window, and made scene-progress navigation styling remain light and legible. |
 | D-013 | Centered pinned app window and removed duplicate entry CTA | 2026-05-08 | Adjusted desktop ScrollTrigger pinning to keep the record-store app window centered below the sticky navigation, made mobile fallback scrolling nav-safe, and removed the post-entry `Enter the Store` duplicate call to action. |
+| D-014 | Reworked retro computer entry into a desktop diorama | 2026-05-10 | Replaced the visible 3D floor rectangle with soft contact shadows and added noninteractive CSS/HTML desktop props plus lightweight Seaside OS labels while preserving Press Start and record-store entry behavior. |
+| D-015 | Simplified retro computer entry and added floating pointer rotation | 2026-05-10 | Removed the added CSS/HTML props and OS chips, kept the entry visually minimal, softened the background/shadow, and added eased mouse-responsive 3D computer rotation that returns to base during entry. |
+| D-016 | Cleaned public UI copy and added Chinese/English switching | 2026-05-11 | Rewrote deployment-unfriendly UI copy, added a lightweight client-side `data-i18n` language switcher, localized shared UI/project/collection labels, and left example articles unchanged. |
+| D-017 | Adjusted Chinese typography hierarchy | 2026-05-11 | Added LXGW WenKai for Chinese eyebrow/small labels, Noto Serif SC for Chinese display headings, and Noto Sans SC for Chinese body/UI fallback without changing content or homepage interactions. |

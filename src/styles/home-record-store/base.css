@@ -49,6 +49,15 @@
   text-transform: uppercase;
 }
 
+html[data-language="zh"] .record-store-eyebrow {
+  font-family: var(--font-accent-zh);
+  font-size: 1.18rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+  text-transform: none;
+}
+
 .record-store-title {
   margin: 0;
   color: #0647b6;

@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../components/layout/BaseLayout.astro";
 import { siteConfig } from "../data/site";
+import { getUiText } from "../i18n/ui";
 
-const focusAreasLabel = "Agent / 移动安全";
 const technicalKeywords = [
   "Java",
   "Spring Boot",
@@ -16,10 +16,10 @@ const technicalKeywords = [
   "AI-assisted Development"
 ];
 const selectedHonors = [
-  "第20届全国大学生信息安全与对抗技术竞赛决赛 BCI 脑机接口应用赛道二等奖（国家级）",
-  "第20届全国大学生信息安全与对抗技术竞赛决赛 自动驾驶任务赛道三等奖（国家级）",
-  "第七届湖南省大学生物联网应用创新设计竞赛二等奖",
-  "湘潭市优秀毕业生，以及多项奖学金与学生骨干荣誉"
+  "about.honor1",
+  "about.honor2",
+  "about.honor3",
+  "about.honor4"
 ];
 ---
 
@@ -30,64 +30,88 @@ const selectedHonors = [
   <section class="section-shell split-grid">
     <div class="intro-slab">
       <div class="section-heading">
-        <span class="eyebrow">Who lives here?</span>
-        <h1 class="headline">
-          A builder between agents, systems, and soft observations.
+        <span class="eyebrow" data-i18n="about.eyebrow">
+          {getUiText("about.eyebrow")}
+        </span>
+        <h1 class="headline" data-i18n="about.title">
+          {getUiText("about.title")}
         </h1>
       </div>
-      <p class="lede">
-        我目前在广州大学攻读硕士学位，正在持续学习和研究两个方向：
-        <strong>{focusAreasLabel}</strong>。
+      <p class="lede" data-i18n="about.p1">
+        {getUiText("about.p1")}
       </p>
-      <p class="lede">
-        Blooming Logs 对我来说，不只是一个存放文章的博客，也不只是一个展示项目的页面。它更像一个长期使用的个人工作台。我会在这里记录自己对 Agent 系统、工作流执行、语音与多模态交互、系统状态管理、并发与上下文传递这些问题的理解，也会保留一些关于季节、声音、照片、窗口、海风和日常观察的内容。
+      <p class="lede" data-i18n="about.p2">
+        {getUiText("about.p2")}
       </p>
-      <p class="lede">
-        本科阶段，我主要围绕 Java 后端开发、系统设计和工程实践积累经验，熟悉 Java、Spring、Spring Boot、MySQL、Redis、Git、Docker、Postman 等工具与技术，也持续使用 GPT、Cursor 等 AI 工具辅助开发与学习。我更在意的不是“会不会某个框架”，而是一个系统能不能真正稳定地跑起来：执行链如何组织，状态如何维护，异步场景中的上下文如何传递，交互反馈如何被设计成可理解、可持续的体验。
+      <p class="lede" data-i18n="about.p3">
+        {getUiText("about.p3")}
       </p>
-      <p class="lede">
-        我参与过物联网通信系统、脑机接口应用、自动驾驶控制、模拟经营游戏、AI Agent 工作流编排平台等不同方向的项目与竞赛。它们表面上分布在不同领域，但背后其实都在回答相似的问题：复杂系统如何更稳定地执行，人与系统之间如何更自然地协作，以及技术如何真正落到可用的体验上。
+      <p class="lede" data-i18n="about.p4">
+        {getUiText("about.p4")}
       </p>
-      <p class="lede">
-        在这些经历之外，我也一直在意写作本身。Blooming Logs 的存在，不只是为了记录“我做过什么”，也是为了保留“我为什么会不断回到这些问题”。所以这里既会有 Lab 里的系统与实验，也会有 Notes 里的想法、Garden 里的缓慢观察、Frames 里的视觉片段。它们一起构成了这个站真正的作者状态。
+      <p class="lede" data-i18n="about.p5">
+        {getUiText("about.p5")}
+      </p>
+      <p class="lede" data-i18n="about.p6">
+        {getUiText("about.p6")}
       </p>
     </div>
 
     <div class="detail-list">
       <div class="detail-item">
-        <div class="detail-kicker">Current Focus</div>
-        <strong>广州大学硕士在读</strong>
-        <p class="note-line">研究方向：Agent / 移动安全</p>
+        <div class="detail-kicker" data-i18n="about.currentFocus">
+          {getUiText("about.currentFocus")}
+        </div>
+        <strong data-i18n="about.currentFocusValue">
+          {getUiText("about.currentFocusValue")}
+        </strong>
+        <p class="note-line" data-i18n="about.focusLine">
+          {getUiText("about.focusLine")}
+        </p>
       </div>
 
       <div class="detail-item">
-        <div class="detail-kicker">Technical Keywords</div>
+        <div class="detail-kicker" data-i18n="about.technicalKeywords">
+          {getUiText("about.technicalKeywords")}
+        </div>
         <div class="tag-row">
           {technicalKeywords.map((item) => <span class="tag">{item}</span>)}
         </div>
       </div>
 
       <div class="detail-item">
-        <div class="detail-kicker">Selected Honors</div>
+        <div class="detail-kicker" data-i18n="about.selectedHonors">
+          {getUiText("about.selectedHonors")}
+        </div>
         <ul class="profile-list">
-          {selectedHonors.map((item) => <li>{item}</li>)}
+          {selectedHonors.map((item) => <li data-i18n={item}>{getUiText(item)}</li>)}
         </ul>
       </div>
 
       <div class="detail-item">
-        <div class="detail-kicker">What This Site Holds</div>
+        <div class="detail-kicker" data-i18n="about.siteHolds">
+          {getUiText("about.siteHolds")}
+        </div>
         <strong>{siteConfig.name}</strong>
-        <p class="note-line">{siteConfig.tagline}</p>
-        <p class="note-line">
-          Agent、系统、写作、声音、照片、缓慢观察，以及一个人长期在意的问题。
+        <p class="note-line" data-i18n="site.tagline">{getUiText("site.tagline")}</p>
+        <p class="note-line" data-i18n="about.siteHoldsLine">
+          {getUiText("about.siteHoldsLine")}
         </p>
       </div>
 
       <div class="detail-item">
-        <div class="detail-kicker">Contact</div>
-        <p class="note-line">GitHub: {siteConfig.social.github}</p>
-        <p class="note-line">Email: {siteConfig.email}</p>
-        <p class="note-line">Email: {siteConfig.phone}</p>
+        <div class="detail-kicker" data-i18n="about.contact">
+          {getUiText("about.contact")}
+        </div>
+        <p class="note-line">
+          <span data-i18n="about.github">{getUiText("about.github")}</span>: {siteConfig.social.github}
+        </p>
+        <p class="note-line">
+          <span data-i18n="about.email">{getUiText("about.email")}</span>: {siteConfig.email}
+        </p>
+        <p class="note-line">
+          <span data-i18n="about.phone">{getUiText("about.phone")}</span>: {siteConfig.phone}
+        </p>
       </div>
     </div>
   </section>
