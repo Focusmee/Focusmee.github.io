@@ -7,90 +7,58 @@ export const COLLECTION_IDS = [
   "drawer"
 ] as const;
 
-export const MOOD_IDS = [
-  "sunny",
-  "weird",
-  "soft",
-  "noisy",
-  "blue",
-  "muddy",
-  "bright"
-] as const;
-
 export type CollectionId = (typeof COLLECTION_IDS)[number];
-export type MoodId = (typeof MOOD_IDS)[number];
 
 export type CollectionMeta = {
   id: CollectionId;
   title: string;
   description: string;
-  object: string;
   href: string;
-  color: string;
-  blurb: string;
 };
 
 export const collections: CollectionMeta[] = [
   {
-    id: "records",
-    title: "Records",
-    description: "music, albums, playlists, and sound notes",
-    object: "record shelf",
-    href: "/collections/records",
-    color: "orange",
-    blurb: "notes that sound like summer"
+    id: "notes",
+    title: "随笔",
+    description: "个人记录、想法和暂时没有归类的文字。",
+    href: "/collections/notes"
   },
   {
     id: "lab",
-    title: "Lab",
-    description: "code, AI, experiments, and broken ideas",
-    object: "CRT computer",
-    href: "/collections/lab",
-    color: "sky",
-    blurb: "where ideas break and bloom"
+    title: "技术",
+    description: "代码、Agent、系统设计与工程实践。",
+    href: "/collections/lab"
   },
   {
-    id: "garden",
-    title: "Garden",
-    description: "sunflowers, seasons, soft observations",
-    object: "sunflower vase",
-    href: "/collections/garden",
-    color: "sunflower",
-    blurb: "soft things I noticed"
-  },
-  {
-    id: "notes",
-    title: "Notes",
-    description: "personal logs, fragments, and daily thoughts",
-    object: "desk notes",
-    href: "/collections/notes",
-    color: "pink",
-    blurb: "small scraps that still matter"
+    id: "records",
+    title: "声音",
+    description: "音乐、专辑、歌单和声音相关的记录。",
+    href: "/collections/records"
   },
   {
     id: "frames",
-    title: "Frames",
-    description: "film, photos, and visual fragments",
-    object: "photo wall",
-    href: "/collections/frames",
-    color: "sea",
-    blurb: "film, fragments, frozen light"
+    title: "影像",
+    description: "电影、照片和视觉相关的旧文章。",
+    href: "/collections/frames"
+  },
+  {
+    id: "garden",
+    title: "日常",
+    description: "季节、生活与缓慢发生的事情。",
+    href: "/collections/garden"
   },
   {
     id: "drawer",
-    title: "Drawer",
-    description: "revisits, old papers, and rescued drafts",
-    object: "drawer",
-    href: "/collections/drawer",
-    color: "mud",
-    blurb: "old paper, brought back out"
+    title: "旧稿",
+    description: "重新整理的旧纸页和历史草稿。",
+    href: "/collections/drawer"
   }
 ];
 
-export const collectionMap = new Map(
+const collectionMap = new Map(
   collections.map((collection) => [collection.id, collection])
 );
 
-export function getCollectionMeta(id: CollectionId) {
-  return collectionMap.get(id);
+export function getCollectionMeta(id?: CollectionId) {
+  return id ? collectionMap.get(id) : undefined;
 }

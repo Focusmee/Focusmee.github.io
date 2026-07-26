@@ -1,36 +1,21 @@
 ---
 import BaseLayout from "../../components/layout/BaseLayout.astro";
 import CollectionGrid from "../../components/collections/CollectionGrid.astro";
-import Tag from "../../components/ui/Tag.astro";
-import { getUiText } from "../../i18n/ui";
 import { withBase } from "../../utils/links";
 ---
 
 <BaseLayout
-  title="Collections"
-  description="Browse the six editorial shelves of Blooming Logs."
+  title="旧栏目"
+  description="按旧版栏目浏览 Focusmee 的历史文章。"
 >
-  <section class="section-shell">
-    <div class="section-heading">
-      <span class="eyebrow" data-i18n="collections.page.eyebrow">
-        {getUiText("collections.page.eyebrow")}
-      </span>
-      <h1 class="headline" data-i18n="collections.page.title">
-        {getUiText("collections.page.title")}
-      </h1>
-      <p class="lede" data-i18n="collections.page.lede">
-        {getUiText("collections.page.lede")}
-      </p>
-      <div class="tag-row" style="margin-top: 1rem;">
-        <Tag
-          label={getUiText("collections.page.archive")}
-          i18nKey="collections.page.archive"
-          href={withBase("/archive")}
-          accent
-        />
-      </div>
-    </div>
+  <header class="page-header">
+    <span class="section-label">Legacy collections</span>
+    <h1>旧栏目</h1>
+    <p>
+      这些栏目为旧文章保留。新文章只使用标签，不再要求选择固定栏目。
+      <a class="inline-link" href={withBase("/archive")}>也可以按时间查看归档</a>。
+    </p>
+  </header>
 
-    <CollectionGrid />
-  </section>
+  <CollectionGrid />
 </BaseLayout>

@@ -1,44 +1,32 @@
 ---
 import PostList from "./PostList.astro";
-import { getUiText } from "../../i18n/ui";
 import type { LogEntry } from "../../utils/posts";
 
 interface Props {
   posts: LogEntry[];
   title?: string;
-  eyebrow?: string;
-  lede?: string;
-  titleKey?: string;
-  eyebrowKey?: string;
-  ledeKey?: string;
+  label?: string;
+  description?: string;
 }
 
 const {
   posts,
-  title = "What's Blooming",
-  eyebrow = "Recently picked from the shelf",
-  lede = "先用最近更新把内容系统跑起来。这里会慢慢长成真正能持续写作的主战场。",
-  titleKey,
-  eyebrowKey,
-  ledeKey
+  title = "最近更新",
+  label = "Writing",
+  description
 } = Astro.props as Props;
-
-const resolvedEyebrow = eyebrowKey ? getUiText(eyebrowKey) : eyebrow;
-const resolvedTitle = titleKey ? getUiText(titleKey) : title;
-const resolvedLede = ledeKey ? getUiText(ledeKey) : lede;
 ---
 
 {
   posts.length > 0 && (
-    <section class="section-shell">
-      <div class="section-heading">
-        <span class="eyebrow" data-i18n={eyebrowKey}>
-          {resolvedEyebrow}
-        </span>
-        <h2 class="headline" data-i18n={titleKey}>{resolvedTitle}</h2>
-        <p class="lede" data-i18n={ledeKey}>{resolvedLede}</p>
-      </div>
-
+    <section class="content-section">
+      <header class="section-heading section-heading--row">
+        <div>
+          <span class="section-label">{label}</span>
+          <h2>{title}</h2>
+        </div>
+        {description && <p>{description}</p>}
+      </header>
       <PostList posts={posts} />
     </section>
   )

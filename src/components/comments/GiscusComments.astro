@@ -1,11 +1,7 @@
 ---
-import { getUiText } from "../../i18n/ui";
-
 interface Props {
   title?: string;
-  titleKey?: string;
   description?: string;
-  descriptionKey?: string;
   mapping?: "pathname" | "url" | "title" | "og:title" | "specific" | "number";
   term?: string;
   strict?: "0" | "1";
@@ -13,10 +9,8 @@ interface Props {
 }
 
 const {
-  title = "Comments",
-  titleKey,
-  description = "GitHub Discussions powered by Giscus.",
-  descriptionKey,
+  title = "讨论",
+  description = "评论会同步到 GitHub Discussions。",
   mapping = "pathname",
   term,
   strict = "0",
@@ -31,7 +25,7 @@ const config = {
   reactionsEnabled: import.meta.env.PUBLIC_GISCUS_REACTIONS_ENABLED || "1",
   emitMetadata: import.meta.env.PUBLIC_GISCUS_EMIT_METADATA || "0",
   inputPosition: import.meta.env.PUBLIC_GISCUS_INPUT_POSITION || "bottom",
-  theme: import.meta.env.PUBLIC_GISCUS_THEME || "preferred_color_scheme",
+  theme: import.meta.env.PUBLIC_GISCUS_THEME || "light",
   lang: import.meta.env.PUBLIC_GISCUS_LANG || "zh-CN",
   loading: import.meta.env.PUBLIC_GISCUS_LOADING || "lazy"
 };
@@ -45,11 +39,9 @@ const isConfigured = Boolean(
   (isConfigured || showSetupHint) && (
     <section class="comments-shell">
       <div class="section-heading comments-heading">
-        <span class="eyebrow" data-i18n="comments.eyebrow">
-          {getUiText("comments.eyebrow")}
-        </span>
-        <h2 class="headline comments-title" data-i18n={titleKey}>{title}</h2>
-        <p class="lede" data-i18n={descriptionKey}>{description}</p>
+        <span class="section-label">Comments</span>
+        <h2>{title}</h2>
+        <p>{description}</p>
       </div>
 
       {isConfigured ? (
@@ -57,7 +49,6 @@ const isConfigured = Boolean(
           <script
             is:inline
             src="https://giscus.app/client.js"
-            data-astro-rerun
             data-repo={config.repo}
             data-repo-id={config.repoId}
             data-category={config.category}
@@ -76,13 +67,9 @@ const isConfigured = Boolean(
           ></script>
         </div>
       ) : (
-        <div class="placeholder-panel">
-          <strong data-i18n="comments.placeholderTitle">
-            {getUiText("comments.placeholderTitle")}
-          </strong>
-          <p class="note-line" data-i18n="comments.placeholderCopy">
-            {getUiText("comments.placeholderCopy")}
-          </p>
+        <div class="empty-state">
+          <strong>评论暂未启用</strong>
+          <p>配置 Giscus 环境变量后，这里会显示评论入口。</p>
         </div>
       )}
     </section>

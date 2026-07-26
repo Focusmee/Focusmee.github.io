@@ -1,7 +1,6 @@
 ---
 import Tag from "../ui/Tag.astro";
 import { formatDate, getReadingMinutes } from "../../utils/format";
-import { getCollectionMeta } from "../../data/collections";
 import { withBase } from "../../utils/links";
 import type { LogEntry } from "../../utils/posts";
 
@@ -10,45 +9,35 @@ interface Props {
 }
 
 const { entry } = Astro.props as Props;
-const collection = getCollectionMeta(entry.data.category);
 const readingMinutes = getReadingMinutes(entry.body ?? "");
 ---
 
-<article
-  class="post-card"
-  style={`--accent: var(--${collection?.color ?? "sunflower"});`}
->
-  <div class="meta-row">
-    <Tag
-      label={collection?.title ?? entry.data.category}
-      i18nKey={collection ? `collections.${collection.id}.title` : undefined}
-      accent
-    />
-    <time datetime={entry.data.pubDate.toISOString()} data-i18n-date>
+<article class="post-item">
+  <div class="post-item__meta">
+    <time datetime={entry.data.pubDate.toISOString()}>
       {formatDate(entry.data.pubDate)}
     </time>
     <span aria-hidden="true">·</span>
-    <span
-      data-i18n="post.minRead"
-      data-i18n-var-minutes={String(readingMinutes)}
-    >
-      {readingMinutes} 分钟阅读
-    </span>
+    <span>{readingMinutes} 分钟阅读</span>
   </div>
 
-  <h3 class="card-title">
-    <a href={withBase(`/logs/${entry.id}`)}>{entry.data.title}</a>
-  </h3>
+  <div class="post-item__content">
+    <h3>
+      <a href={withBase(`/logs/${entry.id}`)}>{entry.data.title}</a>
+    </h3>
+    <p>{entry.data.description}</p>
+    {entry.data.tags.length > 0 && (
+      <div class="tag-row" aria-label="标签">
+        {entry.data.tags.slice(0, 3).map((tag) => <Tag label={tag} />)}
+      </div>
+    )}
+  </div>
 
-  <p class="card-copy">{entry.data.description}</p>
-
-  {entry.data.tags.length > 0 && (
-    <div
-      class="tag-row post-card-tags"
-      aria-label="标签"
-      data-i18n-aria-label="post.tags"
-    >
-      {entry.data.tags.slice(0, 2).map((tag) => <Tag label={tag} />)}
-    </div>
-  )}
+  <a
+    class="post-item__arrow"
+    href={withBase(`/logs/${entry.id}`)}
+    aria-label={`阅读《${entry.data.title}》`}
+  >
+    ↗
+  </a>
 </article>

@@ -2,9 +2,7 @@
 import BaseLayout from "../../components/layout/BaseLayout.astro";
 import PostList from "../../components/posts/PostList.astro";
 import { collections, type CollectionMeta } from "../../data/collections";
-import { getUiText } from "../../i18n/ui";
 import { getPostsByCategory } from "../../utils/posts";
-import { getCollectionTransitionNames } from "../../utils/transitions";
 
 export async function getStaticPaths() {
   return collections.map((collection) => ({
@@ -19,45 +17,23 @@ interface Props {
 
 const { collection } = Astro.props as Props;
 const posts = await getPostsByCategory(collection.id);
-const transitionNames = getCollectionTransitionNames(collection.id);
-const titleKey = `collections.${collection.id}.title`;
-const descriptionKey = `collections.${collection.id}.description`;
-const objectKey = `collections.${collection.id}.object`;
 ---
 
-<BaseLayout title={getUiText(titleKey)} description={getUiText(descriptionKey)}>
-  <section class="section-shell">
-    <div class="section-heading">
-      <span
-        class="eyebrow"
-        transition:name={transitionNames.eyebrow}
-        data-i18n={objectKey}
-      >
-        {getUiText(objectKey)}
-      </span>
-      <h1
-        class="headline"
-        transition:name={transitionNames.title}
-        data-i18n={titleKey}
-      >
-        {getUiText(titleKey)}
-      </h1>
-      <p class="lede" data-i18n={descriptionKey}>
-        {getUiText(descriptionKey)}
-      </p>
-    </div>
+<BaseLayout title={collection.title} description={collection.description}>
+  <header class="page-header">
+    <span class="section-label">Legacy collection / {posts.length}</span>
+    <h1>{collection.title}</h1>
+    <p>{collection.description}</p>
+  </header>
 
-    {posts.length > 0 ? (
+  {
+    posts.length > 0 ? (
       <PostList posts={posts} />
     ) : (
-      <div class="placeholder-panel">
-        <strong data-i18n="collection.empty.title">
-          {getUiText("collection.empty.title")}
-        </strong>
-        <p class="note-line" data-i18n="collection.empty.copy">
-          {getUiText("collection.empty.copy")}
-        </p>
+      <div class="empty-state">
+        <strong>这个旧栏目还没有文章</strong>
+        <p>新文章不再强制选择固定栏目，可以从博客主页浏览全部内容。</p>
       </div>
-    )}
-  </section>
+    )
+  }
 </BaseLayout>

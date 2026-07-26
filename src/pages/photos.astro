@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../components/layout/BaseLayout.astro";
+import PhotoCard from "../components/media/PhotoCard.astro";
+import { getPublishedPhotos } from "../utils/media";
+
+const photos = await getPublishedPhotos();
+---
+
+<BaseLayout title="图片" description="Focusmee 拍下和保存的日常影像。">
+  <header class="page-header">
+    <span class="section-label">Photographs / {photos.length} frames</span>
+    <h1>图片</h1>
+    <p>横图、竖图和方图使用同一套版式规则。点击图片可以打开原图。</p>
+  </header>
+
+  {
+    photos.length > 0 ? (
+      <div class="photo-grid photo-grid--page">
+        {photos.map((entry, index) => (
+          <PhotoCard entry={entry} eager={index < 4} />
+        ))}
+      </div>
+    ) : (
+      <div class="empty-state">
+        <strong>图片还没有放进来</strong>
+        <p>添加真实图片和对应内容文件后，画廊会自动生成。</p>
+      </div>
+    )
+  }
+</BaseLayout>

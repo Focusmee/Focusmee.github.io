@@ -1,47 +1,26 @@
 ---
 import BaseLayout from "../../components/layout/BaseLayout.astro";
 import PostList from "../../components/posts/PostList.astro";
-import Tag from "../../components/ui/Tag.astro";
-import { collections } from "../../data/collections";
-import { getUiText } from "../../i18n/ui";
-import { withBase } from "../../utils/links";
 import { getPublishedLogs } from "../../utils/posts";
 
 const posts = await getPublishedLogs();
 ---
 
-<BaseLayout
-  title="Logs"
-  description="Browse every published log across shelves and timeline."
->
-  <section class="section-shell">
-    <div class="section-heading">
-      <span class="eyebrow" data-i18n="logs.eyebrow">
-        {getUiText("logs.eyebrow")}
-      </span>
-      <h1 class="headline" data-i18n="logs.title">{getUiText("logs.title")}</h1>
-      <p class="lede" data-i18n="logs.lede">
-        {getUiText("logs.lede")}
-      </p>
-    </div>
+<BaseLayout title="博客" description="Focusmee 发布的全部文章。">
+  <header class="page-header">
+    <span class="section-label">Writing / {posts.length} posts</span>
+    <h1>博客</h1>
+    <p>记录技术、系统设计和日常思考。最新发布的文章排在最前面。</p>
+  </header>
 
-    <div class="tag-row" style="margin-bottom: 1.5rem;">
-      {collections.map((collection) => (
-        <Tag
-          label={collection.title}
-          i18nKey={`collections.${collection.id}.title`}
-          href={withBase(collection.href)}
-          accent
-        />
-      ))}
-      <Tag
-        label={getUiText("logs.archiveTag")}
-        i18nKey="logs.archiveTag"
-        href={withBase("/archive")}
-        accent
-      />
-    </div>
-
-    <PostList posts={posts} />
-  </section>
+  {
+    posts.length > 0 ? (
+      <PostList posts={posts} />
+    ) : (
+      <div class="empty-state">
+        <strong>还没有公开文章</strong>
+        <p>将 Markdown 文件放入内容目录后，文章会自动出现在这里。</p>
+      </div>
+    )
+  }
 </BaseLayout>

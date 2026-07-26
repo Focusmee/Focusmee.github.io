@@ -1,29 +1,18 @@
 ---
 import BaseLayout from "../components/layout/BaseLayout.astro";
 import GiscusComments from "../components/comments/GiscusComments.astro";
-import { getUiText } from "../i18n/ui";
 ---
 
-<BaseLayout title="Guestbook" description="整站留言板与互动页。">
-  <section class="section-shell">
-    <div class="section-heading">
-      <span class="eyebrow" data-i18n="guestbook.eyebrow">
-        {getUiText("guestbook.eyebrow")}
-      </span>
-      <h1 class="headline" data-i18n="guestbook.title">
-        {getUiText("guestbook.title")}
-      </h1>
-      <p class="lede" data-i18n="guestbook.lede">
-        {getUiText("guestbook.lede")}
-      </p>
-    </div>
+<BaseLayout title="留言" description="通过 GitHub Discussions 给 Focusmee 留言。">
+  <header class="page-header">
+    <span class="section-label">Guestbook</span>
+    <h1>留言</h1>
+    <p>如果你也在研究相似的问题，或者只是想打个招呼，可以在这里写下。</p>
+  </header>
 
-    <GiscusComments
-      title={getUiText("guestbook.commentsTitle")}
-      titleKey="guestbook.commentsTitle"
-      description={getUiText("guestbook.commentsDescription")}
-      descriptionKey="guestbook.commentsDescription"
-      showSetupHint={true}
-    />
-  </section>
+  <GiscusComments
+    title="写一条留言"
+    description="留言由 GitHub Discussions 提供，需要 GitHub 账号。"
+    showSetupHint
+  />
 </BaseLayout>

@@ -1,87 +1,64 @@
-# Blooming Logs
+# Focusmee
 
-Blooming Logs 是一个基于 Astro 的个人博客骨架，主题设定为“海边白色唱片屋”。
+Focusmee 是一个使用 Astro 构建的中文个人站，用来发布博客、电影短笺和个人图片。站点完全静态生成，部署到 GitHub Pages。
 
-## 当前技术栈
+## 技术栈
 
 - Astro 6
-- MDX
-- React
-- RSS
-- Sitemap
-- GitHub Pages 友好静态输出
-- Node 24 LTS 本地开发
+- Markdown / MDX Content Collections
+- RSS 与 Sitemap
+- Giscus 评论
+- 原生 Astro 组件与 CSS，无 React 或动画运行时
 
-## 本地启动
+## 本地开发
 
 ```bash
 npm install
 npm run dev
 ```
 
-## 构建与检查
+项目要求 Node `>=22.12.0`，推荐使用仓库 `.nvmrc` 指定的版本。
+
+## 检查与构建
 
 ```bash
-npm run build
 npm run check
+npm run build
 ```
 
-## Node 版本
-
-项目已经升级到当前 Astro 6 维护线，运行时要求至少为 `Node 22.12.0`。
-
-仓库内提供了 `.nvmrc`，当前建议本地使用：
+非根路径部署可以设置：
 
 ```bash
-24.15.0
+SITE_URL=https://example.github.io
+BASE_PATH=/repository-name
+npm run build
 ```
 
-## 部署变量
+所有站内链接和媒体地址都兼容 Astro `base`。
 
-这个骨架支持通过环境变量兼容两种 GitHub Pages 场景：
+## 内容更新
 
-- `SITE_URL`: 你的站点域名，例如 `https://yourname.github.io`
-- `BASE_PATH`: 你的子路径，例如 `/blooming-logs`
+- 博客：`src/content/logs`
+- 电影：`src/content/movies`
+- 图片：`src/content/photos`
+- 电影海报：`public/media/movies`
+- 个人图片：`public/media/photos`
 
-如果你用的是用户主页仓库 `username.github.io`，通常保持 `BASE_PATH=/` 即可。
+完整字段、排序规则和可复制模板见 [docs/content-guide.md](docs/content-guide.md)。
 
-## Giscus 评论与留言
+## 路由
 
-项目已经内置了 Giscus 组件，接在：
+- `/`：首页
+- `/logs`：博客
+- `/movies`：电影
+- `/photos`：图片
+- `/about`：关于
+- `/projects`：项目
+- `/archive`：文章归档
+- `/guestbook`：Giscus 留言
 
-- `/guestbook`
-- 每篇文章页底部
+旧版 `/collections` 路由仍为历史文章保留。
 
-启用方式：
+## Giscus
 
-1. 在 GitHub 仓库里开启 Discussions
-2. 去 `giscus.app` 生成仓库配置
-3. 把这些公开变量填进环境中：
-
-```bash
-PUBLIC_GISCUS_REPO=yourname/your-repo
-PUBLIC_GISCUS_REPO_ID=...
-PUBLIC_GISCUS_CATEGORY=General
-PUBLIC_GISCUS_CATEGORY_ID=...
-PUBLIC_GISCUS_THEME=preferred_color_scheme
-PUBLIC_GISCUS_LANG=zh-CN
-```
-
-仓库里已经提供了 `.env.example` 作为模板。
-
-## 目录说明
-
-- `src/pages`: 页面路由
-- `src/content`: 博客文章内容
-- `src/components`: 布局、UI、首页模块
-- `src/data`: 站点和栏目元数据
-- `src/utils`: 内容查询、格式化、链接工具
-- `public`: 静态资源
-
-## 下一步建议
-
-1. 修改 `src/data/site.ts` 里的作者、邮箱和社交链接
-2. 替换示例文章为你自己的第一批内容
-3. 决定 GitHub Pages 是根域名部署还是项目子路径部署
-4. 在仓库变量里填入 `SITE_URL` 和 `BASE_PATH`
-5. 后续再接 `Giscus`、`Pagefind` 和更完整的首页交互
+文章页和留言页读取 `.env.example` 中列出的 `PUBLIC_GISCUS_*` 变量。它们属于公开构建配置，不应存放其他秘密信息。

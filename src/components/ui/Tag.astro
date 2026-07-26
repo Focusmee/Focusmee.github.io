@@ -1,24 +1,18 @@
 ---
-import { getUiText } from "../../i18n/ui";
-
 interface Props {
   label: string;
   href?: string;
   accent?: boolean;
-  i18nKey?: string;
 }
 
-const { label, href, accent = false, i18nKey } = Astro.props as Props;
+const { label, href, accent = false } = Astro.props as Props;
 const className = accent ? "tag tag--accent" : "tag";
-const resolvedLabel = i18nKey ? getUiText(i18nKey) : label;
 ---
 
 {
   href ? (
-    <a class={className} href={href} data-i18n={i18nKey}>
-      {resolvedLabel}
-    </a>
+    <a class={className} href={href}>{label}</a>
   ) : (
-    <span class={className} data-i18n={i18nKey}>{resolvedLabel}</span>
+    <span class={className}>{label}</span>
   )
 }

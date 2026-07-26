@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../components/layout/BaseLayout.astro";
+import MovieCard from "../components/media/MovieCard.astro";
+import { getPublishedMovies } from "../utils/media";
+
+const movies = await getPublishedMovies();
+---
+
+<BaseLayout title="电影" description="Focusmee 喜欢的电影与简短观影笔记。">
+  <header class="page-header">
+    <span class="section-label">Cinema / {movies.length} films</span>
+    <h1>喜欢的电影</h1>
+    <p>不做评分，只留下片名、年份，以及我为什么愿意记住它。</p>
+  </header>
+
+  {
+    movies.length > 0 ? (
+      <div class="movie-grid movie-grid--page">
+        {movies.map((entry, index) => (
+          <MovieCard entry={entry} eager={index < 4} />
+        ))}
+      </div>
+    ) : (
+      <div class="empty-state">
+        <strong>电影清单正在整理</strong>
+        <p>加入真实的电影条目和本地海报后，这里会自动生成海报墙。</p>
+      </div>
+    )
+  }
+</BaseLayout>

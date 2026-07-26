@@ -1,0 +1,35 @@
+---
+import type { PhotoEntry } from "../../utils/media";
+import { formatDate } from "../../utils/format";
+import MediaFrame from "./MediaFrame.astro";
+
+interface Props {
+  entry: PhotoEntry;
+  eager?: boolean;
+}
+
+const { entry, eager = false } = Astro.props as Props;
+const { image, alt, shape, caption, date, location } = entry.data;
+---
+
+<article class:list={["photo-card", `photo-card--${shape}`]}>
+  <MediaFrame
+    src={image}
+    alt={alt}
+    shape={shape}
+    href={image}
+    eager={eager}
+  />
+  {(caption || date || location) && (
+    <div class="photo-card__caption">
+      {caption && <p>{caption}</p>}
+      {(date || location) && (
+        <div class="media-meta">
+          {date && <time datetime={date.toISOString()}>{formatDate(date)}</time>}
+          {date && location && <span aria-hidden="true">/</span>}
+          {location && <span>{location}</span>}
+        </div>
+      )}
+    </div>
+  )}
+</article>
