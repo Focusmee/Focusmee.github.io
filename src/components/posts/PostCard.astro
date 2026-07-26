@@ -1,18 +1,22 @@
 ---
-import Tag from "../ui/Tag.astro";
 import { formatDate, getReadingMinutes } from "../../utils/format";
 import { withBase } from "../../utils/links";
 import type { LogEntry } from "../../utils/posts";
 
 interface Props {
   entry: LogEntry;
+  index?: number;
 }
 
-const { entry } = Astro.props as Props;
+const { entry, index = 1 } = Astro.props as Props;
 const readingMinutes = getReadingMinutes(entry.body ?? "");
 ---
 
 <article class="post-item">
+  <span class="post-item__index" aria-hidden="true">
+    {String(index).padStart(2, "0")}
+  </span>
+
   <div class="post-item__meta">
     <time datetime={entry.data.pubDate.toISOString()}>
       {formatDate(entry.data.pubDate)}
@@ -27,9 +31,9 @@ const readingMinutes = getReadingMinutes(entry.body ?? "");
     </h3>
     <p>{entry.data.description}</p>
     {entry.data.tags.length > 0 && (
-      <div class="tag-row" aria-label="标签">
-        {entry.data.tags.slice(0, 3).map((tag) => <Tag label={tag} />)}
-      </div>
+      <p class="post-item__tags" aria-label="标签">
+        {entry.data.tags.slice(0, 3).join(" / ")}
+      </p>
     )}
   </div>
 

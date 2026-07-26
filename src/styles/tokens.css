@@ -1,24 +1,25 @@
 :root {
   color-scheme: light;
 
-  --paper: #f3eee5;
-  --paper-raised: #faf7f1;
-  --paper-deep: #e8e0d5;
-  --ink: #1f1d1a;
-  --muted: #6d675f;
-  --faint: #938b80;
-  --brick: #9f4030;
-  --brick-dark: #793125;
-  --line: rgba(31, 29, 26, 0.18);
-  --line-strong: rgba(31, 29, 26, 0.42);
+  --paper: #f4f0e8;
+  --paper-raised: #faf8f3;
+  --paper-deep: #e8e1d7;
+  --ink: #181714;
+  --muted: #625e57;
+  --faint: #898279;
+  --brick: #a7412f;
+  --brick-dark: #7f3023;
+  --line: rgba(24, 23, 20, 0.15);
+  --line-strong: rgba(24, 23, 20, 0.4);
 
-  --font-display: "Newsreader", "Noto Serif SC", "Source Han Serif SC",
-    "Songti SC", Georgia, serif;
-  --font-body: "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei",
-    sans-serif;
+  --font-display: "Noto Serif SC", "Source Han Serif SC", "Songti SC",
+    "Instrument Serif", Georgia, serif;
+  --font-body: "Manrope", "Noto Sans SC", "Source Han Sans SC",
+    "Microsoft YaHei", sans-serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
 
-  --page-width: min(1180px, calc(100vw - 3rem));
-  --reading-width: min(760px, calc(100vw - 3rem));
-  --section-space: clamp(5rem, 9vw, 9rem);
+  --page-width: min(1440px, calc(100vw - clamp(3rem, 7vw, 8rem)));
+  --reading-width: min(780px, calc(100vw - 3rem));
+  --section-space: clamp(5rem, 8vw, 8rem);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }

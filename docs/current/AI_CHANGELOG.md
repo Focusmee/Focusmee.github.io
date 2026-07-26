@@ -8,6 +8,42 @@ Small code changes may be covered by git history, but source-of-truth, architect
 
 ## Entries
 
+### 2026-07-26 - Refined Focusmee Editorial Typography and Removed Placeholder Posts
+
+Mode: Feature Mode
+
+Files changed:
+
+- Homepage and blog index copy/structure
+- Shared navigation branding, post list components, type tokens, global layout CSS, and prose rhythm
+- Current project state and task control documents
+
+Files removed:
+
+- `src/content/logs/first-garden-note.mdx`
+- `src/content/logs/focusmee-first-note.md`
+- `src/content/logs/welcome-to-blooming-logs.mdx`
+
+Summary:
+
+- Removed the three human-identified introductory posts and their generated article routes.
+- Replaced the oversized, loosely spaced presentation with a wider 12-column editorial grid, controlled two-line homepage heading, numbered article index, compact metadata, and unboxed list tags.
+- Updated the font system to pair a Chinese serif display face with Manrope/Noto Sans SC body text and monospaced editorial labels.
+- Kept the warm paper palette and brick-red accent while refining rules, navigation, hover feedback, reading rhythm, and responsive breakpoints.
+- Used current Awwwards/CSS Design Awards patterns as directional reference only; no site was copied and no animation or graphics runtime was added.
+
+Validation:
+
+- `npm.cmd run check`: 0 errors, 0 warnings, 0 hints.
+- Root and `/focusmee-preview` base-path builds passed; 20 static pages generated.
+- Browser inspection passed at 360px, 768px, and 1440px with five published posts and no horizontal overflow.
+- Homepage, blog index, and article reading page were visually checked; browser console inspection found no errors or warnings.
+
+Risks:
+
+- Movie and photo collections remain intentionally empty until the human supplies real media, so Astro continues to log empty-collection notices.
+- Display and body fonts are loaded from Google Fonts and fall back to local Chinese system fonts when unavailable.
+
 ### 2026-07-26 - Implemented Focusmee Minimal Editorial Site
 
 Mode: Feature Mode
