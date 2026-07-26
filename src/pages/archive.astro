@@ -1,71 +1,43 @@
 ---
 import BaseLayout from "../components/layout/BaseLayout.astro";
-import Tag from "../components/ui/Tag.astro";
 import { formatDate } from "../utils/format";
-import { groupPostsByYear, getPublishedLogs } from "../utils/posts";
-import { getCollectionMeta } from "../data/collections";
-import { getUiText } from "../i18n/ui";
 import { withBase } from "../utils/links";
+import { groupPostsByYear, getPublishedLogs } from "../utils/posts";
 
 const posts = await getPublishedLogs();
 const grouped = groupPostsByYear(posts);
-const years = Object.keys(grouped).sort((left, right) => Number(right) - Number(left));
+const years = Object.keys(grouped).sort(
+  (left, right) => Number(right) - Number(left)
+);
 ---
 
-<BaseLayout
-  title="Archive"
-  description="Browse the full timeline across every shelf."
->
-  <section class="section-shell">
-    <div class="section-heading">
-      <span class="eyebrow" data-i18n="archive.eyebrow">
-        {getUiText("archive.eyebrow")}
-      </span>
-      <h1 class="headline" data-i18n="archive.title">
-        {getUiText("archive.title")}
-      </h1>
-      <p class="lede" data-i18n="archive.lede">
-        {getUiText("archive.lede")}
-      </p>
-    </div>
+<BaseLayout title="归档" description="按年份浏览 Focusmee 的全部公开文章。">
+  <header class="page-header">
+    <span class="section-label">Archive / {posts.length} posts</span>
+    <h1>文章归档</h1>
+    <p>按发布日期整理的完整时间线。</p>
+  </header>
 
+  <div class="archive">
     {
       years.map((year) => (
-        <section class="section-shell" style="margin-top: 2rem;">
-          <h2 class="archive-year">{year}</h2>
+        <section class="archive-group">
+          <h2>{year}</h2>
           <div class="archive-list">
-            {grouped[year]?.map((entry) => {
-              const collection = getCollectionMeta(entry.data.category);
-
-              return (
-                <article class="archive-item">
-                  <div>
-                    <a class="subtle-link" href={withBase(`/logs/${entry.id}`)}>
-                      {entry.data.title}
-                    </a>
-                    <div class="note-line">{entry.data.description}</div>
-                  </div>
-
-                  <div class="tag-row">
-                    <Tag
-                      label={collection?.title ?? entry.data.category}
-                      i18nKey={collection ? `collections.${collection.id}.title` : undefined}
-                      accent
-                    />
-                    <time
-                      class="detail-kicker"
-                      datetime={entry.data.pubDate.toISOString()}
-                      data-i18n-date
-                    >
-                      {formatDate(entry.data.pubDate)}
-                    </time>
-                  </div>
-                </article>
-              );
-            })}
+            {grouped[year]?.map((entry) => (
+              <article class="archive-item">
+                <time datetime={entry.data.pubDate.toISOString()}>
+                  {formatDate(entry.data.pubDate)}
+                </time>
+                <h3>
+                  <a href={withBase(`/logs/${entry.id}`)}>{entry.data.title}</a>
+                </h3>
+                <span aria-hidden="true">↗</span>
+              </article>
+            ))}
           </div>
         </section>
       ))
     }
-  </section>
+  </div>
 </BaseLayout>

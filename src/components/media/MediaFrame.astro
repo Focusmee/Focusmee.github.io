@@ -1,0 +1,46 @@
+---
+import { withBase } from "../../utils/links";
+
+type MediaShape = "landscape" | "portrait" | "square" | "poster";
+
+interface Props {
+  src: string;
+  alt: string;
+  shape: MediaShape;
+  href?: string;
+  eager?: boolean;
+}
+
+const { src, alt, shape, href, eager = false } = Astro.props as Props;
+const resolveUrl = (value: string) =>
+  value.startsWith("/") ? withBase(value) : value;
+const resolvedHref = href ? resolveUrl(href) : undefined;
+const external = Boolean(resolvedHref && /^https?:\/\//.test(resolvedHref));
+---
+
+<figure class:list={["media-frame", `media-frame--${shape}`]}>
+  {
+    resolvedHref ? (
+      <a
+        class="media-frame__link"
+        href={resolvedHref}
+        target="_blank"
+        rel={external ? "noopener noreferrer" : "noopener"}
+      >
+        <img
+          src={resolveUrl(src)}
+          alt={alt}
+          loading={eager ? "eager" : "lazy"}
+          decoding="async"
+        />
+      </a>
+    ) : (
+      <img
+        src={resolveUrl(src)}
+        alt={alt}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+      />
+    )
+  }
+</figure>

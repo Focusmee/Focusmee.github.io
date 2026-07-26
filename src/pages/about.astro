@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../components/layout/BaseLayout.astro";
 import { siteConfig } from "../data/site";
-import { getUiText } from "../i18n/ui";
 
 const technicalKeywords = [
   "Java",
@@ -9,119 +8,92 @@ const technicalKeywords = [
   "MySQL",
   "Redis",
   "Docker",
-  "Git",
   "Workflow Execution",
   "SSE",
   "Concurrent Systems",
   "AI-assisted Development"
 ];
+
 const selectedHonors = [
-  "about.honor1",
-  "about.honor2",
-  "about.honor3",
-  "about.honor4"
+  "第20届全国大学生信息安全与对抗技术竞赛决赛 BCI 脑机接口应用赛道二等奖（国家级）",
+  "第20届全国大学生信息安全与对抗技术竞赛决赛 自动驾驶任务赛道三等奖（国家级）",
+  "第七届湖南省大学生物联网应用创新设计竞赛二等奖",
+  "湘潭市优秀毕业生，以及多项奖学金与学生骨干荣誉"
 ];
 ---
 
 <BaseLayout
-  title="About"
-  description="关于我、我正在研究的方向，以及为什么会把 Agent、移动安全、系统设计和日常观察一起放进这个站里。"
+  title="关于"
+  description="关于 Focusmee、正在研究的方向和这个个人网站。"
 >
-  <section class="section-shell split-grid">
-    <div class="intro-slab">
-      <div class="section-heading">
-        <span class="eyebrow" data-i18n="about.eyebrow">
-          {getUiText("about.eyebrow")}
-        </span>
-        <h1 class="headline" data-i18n="about.title">
-          {getUiText("about.title")}
-        </h1>
-      </div>
-      <p class="lede" data-i18n="about.p1">
-        {getUiText("about.p1")}
+  <header class="page-header page-header--about">
+    <span class="section-label">About</span>
+    <h1>我在系统、Agent 和日常观察之间持续学习与构建。</h1>
+  </header>
+
+  <div class="about-layout">
+    <div class="about-copy prose">
+      <p>
+        我目前在广州大学攻读硕士学位，持续学习和研究 Agent 与移动安全。
+        本科阶段主要围绕 Java 后端开发、系统设计和工程实践积累经验。
       </p>
-      <p class="lede" data-i18n="about.p2">
-        {getUiText("about.p2")}
+      <p>
+        我参与过物联网通信系统、脑机接口应用、自动驾驶控制、模拟经营游戏
+        和 AI Agent 工作流编排平台等项目。相比功能堆叠，我更在意一个系统
+        能否稳定执行，以及人与系统能否自然协作。
       </p>
-      <p class="lede" data-i18n="about.p3">
-        {getUiText("about.p3")}
-      </p>
-      <p class="lede" data-i18n="about.p4">
-        {getUiText("about.p4")}
-      </p>
-      <p class="lede" data-i18n="about.p5">
-        {getUiText("about.p5")}
-      </p>
-      <p class="lede" data-i18n="about.p6">
-        {getUiText("about.p6")}
+      <p>
+        Focusmee 是我的长期记录空间。这里既有关于 Agent、工作流、并发与
+        上下文传递的文章，也会留下电影和日常图片。
       </p>
     </div>
 
-    <div class="detail-list">
-      <div class="detail-item">
-        <div class="detail-kicker" data-i18n="about.currentFocus">
-          {getUiText("about.currentFocus")}
-        </div>
-        <strong data-i18n="about.currentFocusValue">
-          {getUiText("about.currentFocusValue")}
-        </strong>
-        <p class="note-line" data-i18n="about.focusLine">
-          {getUiText("about.focusLine")}
-        </p>
-      </div>
+    <aside class="about-facts">
+      <section>
+        <span class="section-label">Current</span>
+        <h2>广州大学硕士在读</h2>
+        <p>研究方向：Agent / 移动安全</p>
+      </section>
 
-      <div class="detail-item">
-        <div class="detail-kicker" data-i18n="about.technicalKeywords">
-          {getUiText("about.technicalKeywords")}
-        </div>
+      <section>
+        <span class="section-label">Stack</span>
         <div class="tag-row">
           {technicalKeywords.map((item) => <span class="tag">{item}</span>)}
         </div>
-      </div>
+      </section>
 
-      <div class="detail-item">
-        <div class="detail-kicker" data-i18n="about.selectedHonors">
-          {getUiText("about.selectedHonors")}
-        </div>
-        <ul class="profile-list">
-          {selectedHonors.map((item) => <li data-i18n={item}>{getUiText(item)}</li>)}
+      <section>
+        <span class="section-label">Selected honors</span>
+        <ul>
+          {selectedHonors.map((item) => <li>{item}</li>)}
         </ul>
-      </div>
+      </section>
 
-      <div class="detail-item">
-        <div class="detail-kicker" data-i18n="about.siteHolds">
-          {getUiText("about.siteHolds")}
-        </div>
-        <strong>{siteConfig.name}</strong>
-        <p class="note-line" data-i18n="site.tagline">{getUiText("site.tagline")}</p>
-        <p class="note-line" data-i18n="about.siteHoldsLine">
-          {getUiText("about.siteHoldsLine")}
-        </p>
-      </div>
-
-      <div class="detail-item">
-        <div class="detail-kicker" data-i18n="about.contact">
-          {getUiText("about.contact")}
-        </div>
-        <p class="note-line">
-          <span data-i18n="about.github">{getUiText("about.github")}</span>: {siteConfig.social.github}
-        </p>
-        <p class="note-line">
-          <span data-i18n="about.email">{getUiText("about.email")}</span>: {siteConfig.email}
-        </p>
-        <p class="note-line">
-          <span data-i18n="about.phone">{getUiText("about.phone")}</span>: {siteConfig.phone}
-        </p>
-      </div>
-    </div>
-  </section>
+      <section>
+        <span class="section-label">Contact</span>
+        <dl class="contact-list">
+          <div>
+            <dt>GitHub</dt>
+            <dd>
+              <a
+                href={siteConfig.social.github}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Focusmee
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt>Email</dt>
+            <dd><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></dd>
+          </div>
+          <div>
+            <dt>Phone</dt>
+            <dd><a href={`tel:${siteConfig.phone}`}>{siteConfig.phone}</a></dd>
+          </div>
+        </dl>
+      </section>
+    </aside>
+  </div>
 </BaseLayout>
-
-<style>
-  .profile-list {
-    margin: 0;
-    padding-left: 1.1rem;
-    color: var(--muted);
-    line-height: 1.7;
-  }
-</style>

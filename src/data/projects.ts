@@ -1,6 +1,5 @@
 export type GitHubProjectConfig = {
   repo: string;
-  i18nKey: string;
   title: string;
   status: string;
   description: string;
@@ -9,7 +8,6 @@ export type GitHubProjectConfig = {
 };
 
 export type ManualProject = {
-  i18nKey: string;
   title: string;
   status: string;
   period: string;
@@ -22,19 +20,17 @@ export type ManualProject = {
 export const githubProjects: GitHubProjectConfig[] = [
   {
     repo: "Focusmee.github.io",
-    i18nKey: "projects.item.bloomingLogs",
-    title: "Blooming Logs",
-    status: "living project",
+    title: "Focusmee",
+    status: "持续维护",
     description:
-      "我的个人博客与长期写作空间。它既是内容系统，也是我整理 Agent、写作、观察与实验节奏的方式。",
-    stack: "Astro, MDX, React",
-    accent: "pink"
+      "我的个人博客与长期写作空间，用来整理技术文章、电影短笺和日常影像。",
+    stack: "Astro, MDX, CSS",
+    accent: "brick"
   },
   {
     repo: "iot-vehicle-management",
-    i18nKey: "projects.item.bikeSystem",
     title: "方正共享单车系统",
-    status: "competition build",
+    status: "竞赛项目",
     description:
       "面向用户端、管理员端与设备端的数据互通系统，重点在设备通信、状态识别、消息补发与实时数据可视化。",
     stack: "Java, Spring Boot, MQTT, MySQL, uCharts",
@@ -42,9 +38,8 @@ export const githubProjects: GitHubProjectConfig[] = [
   },
   {
     repo: "Farming-Game",
-    i18nKey: "projects.item.farmingGame",
     title: "模拟经营农场游戏",
-    status: "graduation project",
+    status: "毕业设计",
     description:
       "基于 Unity 与 C# 的 2D 模拟经营游戏，围绕角色控制、种植、交易、NPC 行为与系统扩展性展开。",
     stack: "Unity, C#, A*, FSM, ScriptableObject",
@@ -54,9 +49,8 @@ export const githubProjects: GitHubProjectConfig[] = [
 
 export const manualProjects: ManualProject[] = [
   {
-    i18nKey: "projects.item.agentWorkflow",
     title: "AI Agent 工作流编排平台",
-    status: "selected work",
+    status: "代表项目",
     period: "2026.02 - 2026.03",
     accent: "sky",
     stack: "Spring Boot, SSE, Thread Pool, Workflow Engine",
@@ -69,9 +63,8 @@ export const manualProjects: ManualProject[] = [
     ]
   },
   {
-    i18nKey: "projects.item.bciVehicle",
     title: "基于 SSVEP 脑机接口的自动驾驶小车控制系统",
-    status: "award-winning system",
+    status: "获奖项目",
     period: "2023.11 - 2023.12",
     accent: "orange",
     stack: "EEG, MQTT, WebSocket, State Machine",

@@ -1,9 +1,8 @@
 export const siteConfig = {
-  name: "Blooming Logs",
-  shortName: "Blooming",
-  description:
-    "A white vinyl house by the sea, growing notes, noise, and sunflowers.",
-  tagline: "一座靠海的白色唱片屋，生长着日志、噪音和向日葵。",
+  name: "Focusmee",
+  shortName: "Focusmee",
+  description: "Focusmee 的个人博客，记录技术、电影与日常影像。",
+  tagline: "写下思考，也保存看过与拍下的片段。",
   locale: "zh-CN",
   author: "Focusmee",
   email: "JinjuSeason@gmail.com",

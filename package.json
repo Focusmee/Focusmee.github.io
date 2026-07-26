@@ -1,9 +1,9 @@
 {
-  "name": "blooming-logs",
+  "name": "focusmee-site",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Blooming Logs - a white vinyl house by the sea, growing notes, noise, and sunflowers.",
+  "description": "Focusmee - a minimal personal blog for writing, movies, and photographs.",
   "packageManager": "npm@11.12.1",
   "engines": {
     "node": ">=22.12.0"
@@ -17,23 +17,12 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.4",
-    "@astrojs/react": "^5.0.4",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.1",
-    "@react-three/postprocessing": "^3.0.4",
-    "astro": "^6.2.1",
-    "gsap": "^3.15.0",
-    "postprocessing": "^6.39.1",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
-    "three": "^0.184.0"
+    "astro": "^6.2.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
     "typescript": "^6.0.3"
   }
 }

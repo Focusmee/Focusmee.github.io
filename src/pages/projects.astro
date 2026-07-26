@@ -1,129 +1,65 @@
 ---
 import BaseLayout from "../components/layout/BaseLayout.astro";
 import { manualProjects } from "../data/projects";
-import { getUiText } from "../i18n/ui";
-import { getGitHubProjects } from "../utils/github";
 import { formatDate } from "../utils/format";
+import { getGitHubProjects } from "../utils/github";
 
 const githubProjects = await getGitHubProjects();
 ---
 
 <BaseLayout
-  title="Projects"
-  description="公开项目、正在关心的系统、以及比仓库链接更重要的工作说明。"
+  title="项目"
+  description="Focusmee 的公开项目、系统实践与代表作品。"
 >
-  <section class="section-shell">
-    <div class="section-heading">
-      <span class="eyebrow" data-i18n="projects.eyebrow">
-        {getUiText("projects.eyebrow")}
-      </span>
-      <h1 class="headline" data-i18n="projects.title">
-        {getUiText("projects.title")}
-      </h1>
-      <p class="lede" data-i18n="projects.lede">
-        {getUiText("projects.lede")}
-      </p>
-    </div>
-  </section>
+  <header class="page-header">
+    <span class="section-label">Projects</span>
+    <h1>项目</h1>
+    <p>一些公开构建、系统实践，以及比仓库链接更重要的工作说明。</p>
+  </header>
 
-  <section class="section-shell split-grid">
-    <div class="intro-slab">
-      <div class="section-heading">
-        <span class="eyebrow" data-i18n="projects.github.eyebrow">
-          {getUiText("projects.github.eyebrow")}
-        </span>
-        <h2 class="headline" data-i18n="projects.github.title">
-          {getUiText("projects.github.title")}
-        </h2>
+  <section class="project-section">
+    <header class="section-heading section-heading--row">
+      <div>
+        <span class="section-label">Open source</span>
+        <h2>GitHub 项目</h2>
       </div>
-      <p class="lede" data-i18n="projects.github.lede">
-        {getUiText("projects.github.lede")}
-      </p>
-    </div>
+      <p>构建时读取公开仓库信息；网络不可用时使用本地资料。</p>
+    </header>
 
-    <div class="detail-list">
-      <div class="detail-item">
-        <div class="detail-kicker" data-i18n="projects.github.syncKicker">
-          {getUiText("projects.github.syncKicker")}
-        </div>
-        <strong data-i18n="projects.github.syncText">
-          {getUiText("projects.github.syncText")}
-        </strong>
-      </div>
-      <div class="detail-item">
-        <div class="detail-kicker" data-i18n="projects.github.manualKicker">
-          {getUiText("projects.github.manualKicker")}
-        </div>
-        <strong data-i18n="projects.github.manualText">
-          {getUiText("projects.github.manualText")}
-        </strong>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-shell">
     <div class="project-grid">
       {
         githubProjects.map((project) => (
-          <article class="post-card project-card" style={`--accent: var(--${project.accent});`}>
-            <div class="meta-row">
-              <span class="tag tag--accent" data-i18n={`${project.i18nKey}.status`}>
-                {getUiText(`${project.i18nKey}.status`)}
-              </span>
-              <span>{project.stack}</span>
+          <article class="project-card">
+            <div class="project-card__meta">
+              <span>{project.status}</span>
+              {project.language && <span>{project.language}</span>}
             </div>
-            <h2 class="card-title" data-i18n={`${project.i18nKey}.title`}>
-              {getUiText(`${project.i18nKey}.title`)}
-            </h2>
-            <p class="card-copy" data-i18n={`${project.i18nKey}.description`}>
-              {getUiText(`${project.i18nKey}.description`)}
-            </p>
-            <div class="meta-row">
-              {project.language && (
-                <span
-                  data-i18n="projects.primaryLanguage"
-                  data-i18n-var-language={project.language}
-                >
-                  {getUiText("projects.primaryLanguage").replace(
-                    "{language}",
-                    project.language
-                  )}
-                </span>
-              )}
-              {project.stargazersCount > 0 && (
-                <span
-                  data-i18n="projects.stars"
-                  data-i18n-var-count={String(project.stargazersCount)}
-                >
-                  {getUiText("projects.stars").replace(
-                    "{count}",
-                    String(project.stargazersCount)
-                  )}
-                </span>
-              )}
+            <h3>{project.title}</h3>
+            <p>{project.description}</p>
+            <div class="tag-row">
+              {project.stack.split(",").map((item) => (
+                <span class="tag">{item.trim()}</span>
+              ))}
+            </div>
+            <div class="project-card__details">
+              {project.stargazersCount > 0 && <span>★ {project.stargazersCount}</span>}
               {project.updatedAt && (
-                <span>
-                  <span data-i18n="projects.updatedPrefix">
-                    {getUiText("projects.updatedPrefix")}
-                  </span>{" "}
-                  <time datetime={project.updatedAt} data-i18n-date>
-                    {formatDate(new Date(project.updatedAt))}
-                  </time>
-                </span>
+                <time datetime={project.updatedAt}>
+                  更新于 {formatDate(new Date(project.updatedAt))}
+                </time>
               )}
             </div>
-            <div class="project-links">
-              <a class="button button-secondary" href={project.url} target="_blank" rel="noreferrer">
-                <span data-i18n="projects.viewRepo">{getUiText("projects.viewRepo")}</span>
+            <div class="project-card__links">
+              <a href={project.url} target="_blank" rel="noopener noreferrer">
+                查看仓库 ↗
               </a>
               {project.homepage && (
                 <a
-                  class="button button-secondary"
                   href={project.homepage}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
-                  <span data-i18n="projects.openSite">{getUiText("projects.openSite")}</span>
+                  打开站点 ↗
                 </a>
               )}
             </div>
@@ -133,68 +69,28 @@ const githubProjects = await getGitHubProjects();
     </div>
   </section>
 
-  <section class="section-shell split-grid">
-    <div class="intro-slab">
-      <div class="section-heading">
-        <span class="eyebrow" data-i18n="projects.manual.eyebrow">
-          {getUiText("projects.manual.eyebrow")}
-        </span>
-        <h2 class="headline" data-i18n="projects.manual.title">
-          {getUiText("projects.manual.title")}
-        </h2>
+  <section class="project-section">
+    <header class="section-heading section-heading--row">
+      <div>
+        <span class="section-label">Selected work</span>
+        <h2>代表项目</h2>
       </div>
-      <p class="lede" data-i18n="projects.manual.lede">
-        {getUiText("projects.manual.lede")}
-      </p>
-    </div>
+      <p>没有独立公开仓库，但值得保留的项目经历。</p>
+    </header>
 
-    <div class="detail-list">
-      <div class="detail-item">
-        <div class="detail-kicker" data-i18n="projects.manual.reasonKicker">
-          {getUiText("projects.manual.reasonKicker")}
-        </div>
-        <strong data-i18n="projects.manual.reasonText">
-          {getUiText("projects.manual.reasonText")}
-        </strong>
-      </div>
-      <div class="detail-item">
-        <div class="detail-kicker" data-i18n="projects.manual.holdsKicker">
-          {getUiText("projects.manual.holdsKicker")}
-        </div>
-        <strong data-i18n="projects.manual.holdsText">
-          {getUiText("projects.manual.holdsText")}
-        </strong>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-shell">
-    <div class="project-stack">
+    <div class="project-list">
       {
         manualProjects.map((project) => (
-          <article class="post-card project-card" style={`--accent: var(--${project.accent});`}>
-            <div class="meta-row">
-              <span class="tag tag--accent" data-i18n={`${project.i18nKey}.status`}>
-                {getUiText(`${project.i18nKey}.status`)}
-              </span>
+          <article class="project-card project-card--wide">
+            <div class="project-card__meta">
+              <span>{project.status}</span>
               <span>{project.period}</span>
             </div>
-            <h2 class="card-title" data-i18n={`${project.i18nKey}.title`}>
-              {getUiText(`${project.i18nKey}.title`)}
-            </h2>
-            <p class="card-copy" data-i18n={`${project.i18nKey}.description`}>
-              {getUiText(`${project.i18nKey}.description`)}
-            </p>
-            <div class="detail-kicker" data-i18n="projects.stack">
-              {getUiText("projects.stack")}
-            </div>
+            <h3>{project.title}</h3>
+            <p>{project.description}</p>
             <strong>{project.stack}</strong>
-            <ul class="project-points">
-              {project.highlights.map((_item, index) => (
-                <li data-i18n={`${project.i18nKey}.highlight${index + 1}`}>
-                  {getUiText(`${project.i18nKey}.highlight${index + 1}`)}
-                </li>
-              ))}
+            <ul>
+              {project.highlights.map((item) => <li>{item}</li>)}
             </ul>
           </article>
         ))
@@ -202,44 +98,3 @@ const githubProjects = await getGitHubProjects();
     </div>
   </section>
 </BaseLayout>
-
-<style>
-  .profile-list,
-  .project-points {
-    margin: 0;
-    padding-left: 1.1rem;
-    color: var(--muted);
-    line-height: 1.7;
-  }
-
-  .project-grid,
-  .project-stack {
-    display: grid;
-    gap: 1rem;
-  }
-
-  .project-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .project-stack {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .project-card {
-    gap: 1rem;
-  }
-
-  .project-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.7rem;
-  }
-
-  @media (max-width: 900px) {
-    .project-grid,
-    .project-stack {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>

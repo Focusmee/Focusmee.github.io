@@ -9,6 +9,6 @@ interface Props {
 const { posts } = Astro.props as Props;
 ---
 
-<div class="post-grid">
+<div class="post-list">
   {posts.map((entry) => <PostCard entry={entry} />)}
 </div>

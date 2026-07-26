@@ -1,34 +1,24 @@
 :root {
   color-scheme: light;
 
-  --cream: #f8f5ef;
-  --warm-white: #fff9f0;
-  --paper: #fffdf9;
-  --ink: #232323;
-  --muted: #5c5a57;
-  --line: rgba(35, 35, 35, 0.12);
+  --paper: #f3eee5;
+  --paper-raised: #faf7f1;
+  --paper-deep: #e8e0d5;
+  --ink: #1f1d1a;
+  --muted: #6d675f;
+  --faint: #938b80;
+  --brick: #9f4030;
+  --brick-dark: #793125;
+  --line: rgba(31, 29, 26, 0.18);
+  --line-strong: rgba(31, 29, 26, 0.42);
 
-  --sunflower: #f5c400;
-  --orange: #f28c28;
-  --sky: #73c7f3;
-  --sea: #3fa7d6;
-  --pink: #f5a3c7;
-  --mud: #8c5a3c;
-  --leaf: #6faf5d;
+  --font-display: "Newsreader", "Noto Serif SC", "Source Han Serif SC",
+    "Songti SC", Georgia, serif;
+  --font-body: "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei",
+    sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
 
-  --font-display: "Fraunces", "Noto Serif SC", "Source Han Serif SC", "Songti SC",
-    "STSong", Georgia, serif;
-  --font-body: "Manrope", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei",
-    "Segoe UI", sans-serif;
-  --font-accent: "Caveat", "LXGW WenKai",   cursive;
-  --font-accent-zh: "LXGW WenKai",  cursive;
-
-  --shadow-soft: 0 12px 32px rgba(35, 35, 35, 0.08);
-  --shadow-card: 0 24px 48px rgba(35, 35, 35, 0.12);
-  --radius-card: 28px;
-  --radius-pill: 999px;
-
-  --page-width: min(1120px, calc(100vw - 2rem));
-  --content-width: min(760px, calc(100vw - 2rem));
-  --section-gap: clamp(4rem, 8vw, 7rem);
+  --page-width: min(1180px, calc(100vw - 3rem));
+  --reading-width: min(760px, calc(100vw - 3rem));
+  --section-space: clamp(5rem, 9vw, 9rem);
 }

@@ -1,29 +1,24 @@
 ---
 import { siteConfig } from "../../data/site";
-import { getUiText } from "../../i18n/ui";
 import { withBase } from "../../utils/links";
 
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer" transition:animate="none">
-  <div>
+<footer class="site-footer">
+  <div class="footer-identity">
     <strong>{siteConfig.name}</strong>
-    <div data-i18n="site.tagline">{getUiText("site.tagline")}</div>
+    <p>{siteConfig.tagline}</p>
   </div>
 
-  <div class="footer-links">
-    <a href={withBase("/logs")} data-i18n="footer.logs">
-      {getUiText("footer.logs")}
-    </a>
-    <a href={withBase("/collections")} data-i18n="footer.collections">
-      {getUiText("footer.collections")}
-    </a>
-    <a href={withBase("/about")} data-i18n="footer.about">
-      {getUiText("footer.about")}
-    </a>
+  <nav class="footer-links" aria-label="页脚导航">
+    <a href={withBase("/projects")}>项目</a>
+    <a href={withBase("/archive")}>归档</a>
     <a href={withBase("/rss.xml")}>RSS</a>
-  </div>
+    <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer">
+      GitHub
+    </a>
+  </nav>
 
-  <div>© {year} {siteConfig.shortName}</div>
+  <small>© {year} {siteConfig.shortName}</small>
 </footer>

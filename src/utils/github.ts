@@ -36,7 +36,7 @@ async function fetchGitHubProject(
       {
         headers: {
           Accept: "application/vnd.github+json",
-          "User-Agent": "Blooming-Logs"
+          "User-Agent": "Focusmee-Site"
         }
       }
     );
@@ -63,4 +63,3 @@ async function fetchGitHubProject(
 export async function getGitHubProjects() {
   return Promise.all(githubProjects.map((project) => fetchGitHubProject(project)));
 }
-

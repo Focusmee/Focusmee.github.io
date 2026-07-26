@@ -2,47 +2,53 @@
 
 ## Purpose
 
-This is the current project source of truth.
-
-Archived documents, old TODO files, and previous AI plans are historical unless their contents are repeated here or explicitly approved by the human.
+This is the current product and architecture source of truth. Current human instructions override archived plans and historical implementation notes.
 
 ## Current Product
 
-Blooming Logs is a static personal blog and project showcase built with Astro.
+Focusmee is a Chinese-first static personal site built with Astro.
 
-The live product is:
+The active product is:
 
-- A content-driven personal site.
-- A stylized homepage with a retro computer entry and an interactive Seaside Records / record-store scene.
-- A blog system backed by Markdown and MDX files.
-- Six editorial collections: `notes`, `lab`, `records`, `frames`, `garden`, `drawer`.
-- Pages for logs, collections, archive, projects, about, guestbook, RSS, and sitemap.
-- Client-side Chinese/English UI switching for shared chrome and main public UI copy.
-- GitHub Discussions comments through Giscus when public environment variables are configured.
+- A restrained editorial homepage centered on recent writing.
+- Markdown and MDX blog posts under `/logs`.
+- Curated movie notes under `/movies`.
+- A personal photo collection under `/photos`.
+- Supporting pages for About, Projects, Archive, legacy Collections, Guestbook, RSS, and sitemap.
+- GitHub Discussions comments through Giscus on article pages and the guestbook.
 - Static deployment to GitHub Pages.
+
+The former Blooming Logs record-store narrative, retro computer entry, Three.js scene, GSAP scroll interactions, and client-side language switch are no longer active product requirements.
 
 ## Current Version Goal
 
-The current version should prioritize stabilization and controllability:
+1. Keep publishing a new article as simple as copying one validated Markdown template.
+2. Present writing, movies, and photos directly without an interactive narrative layer.
+3. Use one reusable CSS media system for poster, landscape, portrait, and square imagery.
+4. Keep the output static, accessible, fast, and compatible with a configured Astro `base`.
 
-1. Keep the static blog deployable and readable.
-2. Keep the homepage interaction functional without expanding scope.
-3. Preserve the existing content model and routes.
-4. Rebuild a small stable documentation/control layer for future AI-assisted work.
+## Approved Information Architecture
 
-## Currently Not Doing
+Primary navigation:
 
-Do not treat these as current product requirements:
+- `/` — 首页
+- `/logs` — 博客
+- `/movies` — 电影
+- `/photos` — 图片
+- `/about` — 关于
 
-- Backend application server.
-- User accounts or login.
-- Database-backed content.
-- Runtime file uploads.
-- CMS editing UI.
-- AI chat or runtime AI generation.
-- Payment, private dashboards, or role-based permissions.
-- Full 3D free-roam experience.
-- New product directions from archived planning docs.
+Secondary footer links:
+
+- `/projects`
+- `/archive`
+- `/rss.xml`
+- GitHub
+
+Compatibility routes remain generated but are not primary navigation:
+
+- `/collections`
+- `/collections/[collection]`
+- `/guestbook`
 
 ## Tech Stack
 
@@ -50,242 +56,93 @@ Do not treat these as current product requirements:
 |---|---|
 | Framework | Astro 6, static output |
 | Content | Astro Content Collections, Markdown, MDX |
-| UI | Astro components, React islands |
-| 3D / visual interaction | Three.js, React Three Fiber, Drei, postprocessing |
-| Animation | GSAP and ScrollTrigger |
-| Comments | Giscus via public environment variables |
+| UI | Astro components |
+| Styling | Global editorial CSS and shared media shape classes |
+| Comments | Giscus when public environment variables are configured |
 | RSS / sitemap | `@astrojs/rss`, `@astrojs/sitemap` |
-| Styling | Global CSS plus homepage-specific CSS partials |
-| Deployment | GitHub Pages via `.github/workflows/deploy.yml` |
+| Deployment | GitHub Pages |
 | Runtime | Node `>=22.12.0`; workflow uses Node 24 |
-| Testing / validation | `astro check`, `astro build`, local preview/browser inspection when needed |
-| Database | None |
-| Authentication | None |
-| Storage/uploads | Static files in repo/public only |
-| AI provider | None in runtime code |
+| Validation | `astro check`, `astro build`, browser inspection |
+| Database / authentication | None |
 
-## Core Modules
+## Content Contracts
 
-| Module | Responsibility | Main Files | Status |
-|---|---|---|---|
-| App shell | Shared HTML layout, metadata, navigation, footer, page transitions, client-side UI language switching | `src/components/layout/BaseLayout.astro`, `src/components/ui/SiteNav.astro`, `src/components/ui/SiteFooter.astro`, `src/i18n/ui.ts`, `src/styles/global.css` | Active |
-| Content model | Defines log schema and allowed categories/moods | `src/content.config.ts`, `src/content/logs/*`, `src/data/collections.ts` | Active |
-| Blog/log pages | Lists and renders published Markdown/MDX logs | `src/pages/logs/index.astro`, `src/pages/logs/[slug].astro`, `src/components/layout/PostLayout.astro`, `src/utils/posts.ts` | Active |
-| Collections/archive | Editorial shelves and time archive | `src/pages/collections/*`, `src/pages/archive.astro`, `src/components/collections/*` | Active |
-| Homepage entry | Retro computer Press Start entry and 3D computer model | `src/components/home/retro-computer/*`, `public/models/retro_computer.glb`, `src/styles/home-retro-computer.css` | Active, complex |
-| Homepage record store | Seaside Records app shell, poster layers, scroll scene, interior dialog, collection map | `src/components/home/RecordStoreHero.astro`, `src/components/home/record-store/*`, `src/components/home/record-store/poster/*`, `src/styles/home-record-store*` | Active, complex |
-| Projects page | Combines manual project data with build-time GitHub repo fetch fallback | `src/pages/projects.astro`, `src/data/projects.ts`, `src/utils/github.ts` | Active, external-network dependent |
-| Comments/guestbook | Optional Giscus comments for articles and guestbook | `src/components/comments/GiscusComments.astro`, `src/pages/guestbook.astro`, `.env.example`, deploy workflow env | Active if configured |
-| RSS/sitemap/deploy | Static feed, sitemap, GitHub Pages workflow | `src/pages/rss.xml.ts`, `astro.config.mjs`, `.github/workflows/deploy.yml` | Active |
-| Legacy/unused scene | Older hero scene component not currently imported by homepage | `src/components/scene/HeroScene.astro` | Possibly deprecated |
+### Logs
 
-Status values used here:
+Required frontmatter:
 
-- Active: used by current product.
-- Active, complex: used and high-risk due to interaction/animation coupling.
-- Possibly deprecated: present but not confirmed as needed.
+- `title`
+- `description`
+- `pubDate`
+
+Optional or defaulted frontmatter:
+
+- `updatedDate`
+- `tags` defaults to `[]`
+- `cover`
+- `coverAlt`
+- `coverShape`: `landscape`, `portrait`, or `square`
+- `draft` defaults to `false`
+- `category` remains optional only for legacy collection pages
+
+Old `mood`, `season`, and `featured` values may remain in historical files but are not active UI or publishing contracts.
+
+### Movies
+
+Each entry lives in `src/content/movies` and contains `title`, `year`, `director`, `poster`, and `note`. `originalTitle`, `externalUrl`, `order`, and `draft` are optional/defaulted.
+
+### Photos
+
+Each entry lives in `src/content/photos` and contains `image`, `alt`, and `shape`. `caption`, `date`, `location`, `order`, and `draft` are optional/defaulted.
+
+Movie and photo entries are ordered by ascending `order`, then stable fallback fields. Draft entries are excluded. Empty homepage media sections are not rendered.
 
 ## Architecture Rules
 
 - The site must remain statically deployable.
-- Do not add SSR, API routes, server sessions, runtime writes, or database dependencies without explicit human approval.
-- Routes and asset links must remain compatible with Astro `base`; use `withBase` or framework-supported asset paths where appropriate.
-- Content categories must stay aligned with `COLLECTION_IDS` in `src/data/collections.ts` and the schema in `src/content.config.ts`.
-- Homepage animation code relies on stable `data-*` attributes and CSS variables. Treat these as integration contracts.
-- React islands should remain narrowly scoped to interaction-heavy areas.
-- Build-time external fetches must have fallbacks because GitHub Pages builds can run with network variance.
-- Shared UI translations live in `src/i18n/ui.ts` and are applied through stable `data-i18n` / `data-i18n-*` attributes. Do not rename those attributes casually because React islands and Astro pages both rely on them for language switching.
-- The current language switch is client-side and route-preserving. Do not introduce locale-prefixed routes, SSR, or a separate i18n framework without explicit approval.
-- Example article content in `src/content/logs/*` is not part of the UI translation layer unless a future content task explicitly says to localize it.
-- Typography rules: display headings use `--font-display` with Fraunces for Latin and Noto Serif SC / source-han-style serif fallbacks for Chinese; body/UI uses `--font-body` with Manrope and Noto Sans SC; small eyebrow/label accents may use `--font-accent` / `--font-accent-zh`, with LXGW WenKai reserved for Chinese small labels. Do not apply the handwriting font to body copy, navigation, or button text by default.
-- Do not add dependencies unless a `TASKS.md > Now` item explicitly approves it.
+- Do not add SSR, API routes, sessions, databases, runtime uploads, a CMS, or runtime AI.
+- Use `withBase` for internal routes and public media paths.
+- User-supplied media belongs under `public/media/movies` or `public/media/photos`; do not hotlink media.
+- The public interface is Chinese-first with `<html lang="zh-CN">`; article bodies may use any language.
+- Keep external project enrichment build-time only and preserve its local fallback.
+- Giscus configuration uses public build variables and must not introduce secrets.
+- Do not add new dependencies unless an active task explicitly requires them.
 
-## Homepage Interaction Contract
+## Visual Direction
 
-This section defines the stable contracts for the current homepage. Do not rename, remove, or repurpose these without updating the related code, CSS, and regression checks together.
+- Warm paper background, near-black text, brick-red accent, fine rules, and generous reading space.
+- Editorial hierarchy using restrained serif display type and clear Chinese body type.
+- Minimal hover and focus feedback only; no scroll narrative, lightbox, dark mode, or entry animation.
+- Movie posters use a fixed 2:3 frame.
+- Shared image shapes are `landscape`, `portrait`, and `square`, rendered with consistent cropping, border, spacing, and captions.
+- Markdown body images use a consistent full-width reading treatment.
 
-### Root State
+## Auth, Data, and Storage
 
-The homepage root is `#record-store-hero` in `src/components/home/RecordStoreHero.astro`.
+- There is no site-owned authentication or database.
+- All output is public static content.
+- Giscus uses GitHub identity externally.
+- Blog, movie, photo, and project data are repository files.
+- Static assets are committed under `public`.
 
-| Attribute | Stable Values | Owner | Consumers |
-|---|---|---|---|
-| `data-entry-state` | `intro`, `entering`, `open` | `RetroComputerEntrance.tsx` | `home-retro-computer.css`, `RecordStoreScrollController.tsx` |
-| `data-scroll-ready` | `false`, `true` | `recordStoreAnimation.ts` / `RecordStoreScrollController.tsx` | `home-record-store/base.css`, `home-record-store/building.css` |
-| `data-scroll-phase` | `outside`, `active`, `interior` | `recordStoreAnimation.ts` / mobile fallback in `RecordStoreScrollController.tsx` | `RecordStoreDialog.tsx`, `home-record-store-interior.css`, `home-record-store/building.css` |
+## Current Risks
 
-Required behavior:
-
-- `intro` keeps the record-store app, intro copy, and map hidden while the R3F retro computer entry is visible.
-- `entering` keeps the intro copy and map hidden, while the record-store app may be pre-revealed behind the R3F retro computer entry for the synchronized screen transition.
-- `open` reveals the record-store app and dispatches `record-store:entry-open` so the scroll scene can initialize.
-- Closing the app dispatches `record-store:entry-close`, destroys the scroll scene, and returns to `intro`.
-- `data-scroll-phase="interior"` is the only state where the interior dialog trigger may become interactive.
-
-### DOM Anchors
-
-Stable `data-*` anchors:
-
-| Anchor | Responsibility |
+| Item | Risk / Handling |
 |---|---|
-| `data-record-store-app` | Outer app shell shown after entry opens. |
-| `data-record-store-pin-target` | ScrollTrigger pin target and app window boundary. |
-| `data-record-store-close-trigger` | Returns from app window to retro computer entry. |
-| `data-record-store-stage` | Scroll scene stage wrapper. |
-| `data-record-store-poster` | Layered poster scene and primary animation surface. |
-| `data-record-store-door-trigger` | Door click target for entering the interior. |
-| `data-record-store-interior` | Full interior scene layer. |
-| `data-record-store-dialog-layer` | Dialog overlay layer. |
-| `data-record-store-dialog-trigger` | Interior dialog button, enabled only in `interior` phase. |
-| `data-poster-layer` | Required poster layer ids: `sky`, `sea`, `backlot`, `store`, `road`, `effects`. |
-| `data-interior-object` | Interior preview object ids used for staggered reveal: `lab`, `garden`, `frames`, `records`, `notes`, `drawer`. |
-
-### CSS Variables
-
-Animation output variables owned by `recordStoreAnimation.ts` and consumed by homepage CSS:
-
-- `--rs-dialog-progress`
-- `--rs-door-transparency`
-- `--rs-exterior-fade`
-- `--rs-focus-vignette`
-- `--rs-glass-sweep-opacity`
-- `--rs-glass-sweep-x`
-- `--rs-interior-clarity`
-- `--rs-room-opacity`
-- `--site-nav-scene-progress`
-
-Palette variables under `.record-store-hero` are stable styling tokens, not animation state: `--rs-blue-950`, `--rs-blue-800`, `--rs-blue-600`, `--rs-cyan-500`, `--rs-mint-300`, `--rs-pink-500`, `--rs-pink-300`, `--rs-yellow-400`, `--rs-cream`, `--rs-ink-blue`.
-
-Stage sizing variables under `.record-store-hero` are stable layout tokens for the bounded app-window presentation:
-
-- `--rs-window-max-width`
-- `--rs-stage-height`
-- `--rs-section-clearance`
-
-The record-store exterior poster and interior scene must share the same `.record-store-scroll-stage` dimensions so visual scale, hit targets, and dialog placement stay coordinated across phases.
-
-The record-store app is visually an embedded retro app window inside the softer Blooming Logs page, not a full-page color-block stage. Keep the high-saturation city-pop blue/pink primarily inside `.record-store-app-window`; the outer `.record-store-app-shell` / `.record-store-hero` background should stay close to the site's warm cream, pale pink, and sea-mist tones. The sticky navigation should remain legible and lightly translucent when `--site-nav-scene-progress` changes, not become a dark or fully transparent scene overlay.
-
-The pinned desktop app window must remain visually centered in the viewport area below `.site-nav`. Do not use a fixed `start: "top top"` ScrollTrigger pin for the record-store app window; the pin start must account for current sticky navigation height, available viewport height, and a safe gap.
-
-There should be one primary entry path into the store scene: the retro computer screen texture and its bottom `Press Start` accessibility fallback. After the app opens, do not show another `Enter the Store` call to action that points to the same already-entered experience.
-
-### ScrollTrigger Phases
-
-Desktop scroll interaction is active only for `(min-width: 981px)` and when reduced motion is not requested.
-
-Stable progress thresholds:
-
-| Name | Value | Meaning |
-|---|---:|---|
-| `INTERIOR_START_PROGRESS` | `0.62` | Interior animation begins. |
-| `INTERIOR_INTERACTION_PROGRESS` | `0.78` | Root phase becomes `interior`; dialog may interact. |
-| `INTERIOR_HOLD_PROGRESS` | `0.82` | Interior/dialog hold is stabilized. |
-| `CLICK_ENTER_INTERIOR_PROGRESS` | `0.86` | Door click scroll target on desktop. |
-
-The expected phase mapping is:
-
-- `progress <= 0.02`: `outside`
-- `0.02 < progress < 0.78`: `active`
-- `progress >= 0.78`: `interior`
-
-### R3F Screen Contract
-
-The retro computer screen content is controlled by `RetroComputerScene.tsx`, `RetroComputerModel.tsx`, and `retroComputerScreenTexture.ts`.
-
-Stable model/screen responsibilities:
-
-- `RetroComputerModel.tsx` discovers the GLB screen mesh by exact names `monitor_screen_0` or `Cube_screen_0`, then by fuzzy names containing `screen` or `display`.
-- `ScreenAnchor` is the contract between the GLB mesh and the WebGL screen plane: `position`, `normal`, `rotation`, `width`, `height`, `sourceName`.
-- `RetroComputerScene.tsx` owns model transform constants, camera target math, screen glow plane, WebGL texture plane placement, and UV click handling.
-- `retroComputerScreenTexture.ts` owns the CanvasTexture drawing size, visual screen drawing, and `PRESS START` UV hit region.
-- `RetroComputerEntrance.tsx` owns the minimal entry chrome and bottom `Press Start` fallback. Avoid adding extra decorative props or secondary labels unless explicitly approved.
-- The screen content must remain a WebGL texture on a plane in the same 3D coordinate space as the model, not a Drei `<Html>` or DOM overlay.
-- The WebGL texture plane may use a small forward offset plus `renderOrder` / disabled depth testing to stay visible above the GLB's original screen surface while still remaining inside the 3D scene.
-- The 3D computer should remain the only 3D model in the entry scene. Use soft contact shadows, subtle floating motion, and pointer-responsive rotation rather than adding or downloading more models.
-- Pointer-responsive rotation must ease back to the base model transform during `entering` so the screen-to-store camera transition remains stable.
-- Do not add OrbitControls or a free-roam camera to the entry scene unless explicitly approved.
-- Screen-to-store entry uses a synchronized transition: the R3F camera moves toward the screen, the CanvasTexture receives transition progress for its CRT glitch effect, and the record-store app is pre-revealed behind the retro computer during `data-entry-state="entering"`.
-- The bottom DOM `Press Start` button in `RetroComputerEntrance.tsx` must remain as an accessibility and keyboard fallback.
-- If `SCREEN_FIT_RATIO`, screen offsets, texture dimensions, or the GLB screen mesh changes, verify desktop, mobile, browser zoom, and window resize behavior.
-
-### Mobile Door Behavior
-
-For mobile widths below `981px`, ScrollTrigger is not used. Door click behavior must:
-
-- Set `data-scroll-phase="interior"`.
-- Keep or reveal the interior scene visibly in the record-store app window.
-- Enable the dialog layer/trigger when the interior phase is active.
-- Avoid relying on a desktop pinned scroll timeline.
-- Avoid scrolling directly past the app window to `#store-map` before the interior is visible.
-
-## Auth and Permission Rules
-
-- There is no site-owned authentication system.
-- All generated pages are public static pages.
-- Giscus uses GitHub identity and GitHub Discussions externally; this project does not manage those users or permissions.
-- Environment variables with the `PUBLIC_` prefix are public client/build configuration, not secrets.
-- Do not add secrets to tracked files.
-
-## Database Rules
-
-- There is no database.
-- There is no schema migration system.
-- Blog content is file-based in `src/content/logs`.
-- Project metadata is file-based in `src/data/projects.ts`, with optional build-time GitHub API enrichment.
-- Do not introduce a database or schema changes without human approval.
-
-## AI Usage Rules
-
-- There are no runtime AI API calls in the current code.
-- References to AI/Agent/LLM are content topics or project descriptions, not active integrations.
-- Do not add OpenAI, Anthropic, local model, embedding, or agent runtime calls unless explicitly approved in `TASKS.md > Now`.
-- Do not add AI-related secrets or provider configuration unless a human approves the integration.
-
-## File Upload / Storage Rules
-
-- There is no upload flow.
-- Static assets should live in `public/` or be imported through the build pipeline.
-- Do not add upload handling, user storage, or runtime file writes without human approval.
-
-## Known Conflicts / Risky Current State
-
-| Item | Current Observation | Risk |
-|---|---|---|
-| Encoding/mojibake | PowerShell `Get-Content` without explicit UTF-8 can render false-positive mojibake in this environment. Confirmed public UI mojibake was rewritten during D-016. | Use UTF-8 reads/writes and verify in browser/build output before treating terminal mojibake as file corruption. |
-| Documentation location | Human approved `docs/current` as the active control document location. Older docs appear moved/deleted in git status and reappear under `docs/archive/`; human will remove old docs manually. | Repository still needs a clean tracked documentation baseline. |
-| Archived plans | `docs/archive/*` contains broad product/design plans and checklists, some now inconsistent with implementation. | Agents may accidentally treat old plans as active requirements. |
-| Homepage interaction | Human verification confirmed the core path works: Press Start can enter, the record-store scene is centered after entry, the interior scene can be entered, and interior dialog/records/links are interactive. The homepage interaction contract is now documented. The mobile door fallback now reveals the interior in-place instead of scrolling to the map. The retro computer screen content now uses a WebGL CanvasTexture plane instead of a Drei `<Html>` overlay. | High regression risk from casual refactors; use the homepage interaction contract before further fixes/refactors. |
-| Projects page network fetch | Human approved keeping build-time GitHub API enrichment with fallback. | Build output can vary depending on network/API availability. |
-| UI language switching | The Chinese/English switch is client-side and does not create separate localized routes or translate article Markdown bodies. | SEO metadata and article content are not fully localized; future full i18n would need a separate product decision. |
-| Public contact data | Human confirmed email and phone may remain public on About. | Privacy risk accepted by project owner. |
-| Untracked temp/test file | `.tmp-home-interaction.spec.ts` exists at repo root. | It may be useful, stale, or accidental; do not act without human decision. |
-
-## Deprecated / Ignored Documents or Decisions
-
-| Item | Reason |
-|---|---|
-| `docs/archive/Blooming Logs.md` | Historical concept/design document. Useful background, not current requirements. |
-| `docs/archive/blooming-logs-content-strategy.md` | Contains useful category/tag thinking, but also notes a past `archive` to `drawer` migration that current code already resolved. |
-| `docs/archive/home-interaction-redesign-checklist.md` | Historical implementation checklist. Several file names/tasks no longer match the current modular homepage. |
-| Root `TODO.md` | Large phase checklist with mojibake and stale completion state. Use `docs/current/TASKS.md` instead. |
-| `README.md` | Basic setup info is still useful, but text has mojibake and may not reflect current homepage/module structure. |
-| `src/components/scene/HeroScene.astro` | Old hero component appears unused by current homepage. It is safe as a deletion candidate after a dedicated cleanup task, but do not delete in Audit Mode. |
+| Historical article mojibake | Do not rewrite article bodies as part of UI work; verify UTF-8 reads before diagnosing corruption. |
+| Legacy category routes | New posts may omit `category`; legacy pages must handle uncategorized posts safely. |
+| Project GitHub fetch | Build-time output can vary; retain the existing local fallback. |
+| User media availability | Do not invent favorites or placeholder content; media sections must handle empty collections. |
+| Archived docs | `docs/archive` is historical and must not be treated as current requirements. |
 
 ## Human Decisions Recorded
 
 | Date | Decision |
 |---|---|
-| 2026-05-07 | `docs/current` is the official active control document location. |
-| 2026-05-07 | The human will manually remove old documents; agents must not delete or move them automatically. |
-| 2026-05-07 | If real mojibake is found in visible content, restore/rewrite it as Chinese. |
-| 2026-05-07 | About page email and phone may remain public. |
-| 2026-05-07 | Keep build-time GitHub API enrichment for Projects, with fallback behavior. |
-| 2026-05-07 | `src/components/scene/HeroScene.astro` is an unused legacy hero candidate; it can be deleted in a future explicit cleanup task if desired. |
-
-## Open Decisions
-
-| Decision Needed | Options | Current Recommendation |
-|---|---|---|
-| Homepage complexity budget | Keep current R3F/GSAP interaction; simplify; add tests before further work | Stabilize and test before adding visual features. |
-| Temp homepage spec | Keep `.tmp-home-interaction.spec.ts`, move it into tests, or remove it | Human decision required before touching it. |
+| 2026-07-26 | Rename the public site to Focusmee and remove the record-store narrative. |
+| 2026-07-26 | Use Chinese-only shared UI and remove the client-side language switch. |
+| 2026-07-26 | Use separate movie and photo pages backed by one Markdown file per item. |
+| 2026-07-26 | Use tags rather than required editorial categories for new blog posts. |
+| 2026-07-26 | Fully remove the old 3D/GSAP homepage code and dependencies. |
+| 2026-07-26 | Keep Giscus comments on article pages. |
+| 2026-07-26 | Do not add sample favorite movies or placeholder personal photos. |

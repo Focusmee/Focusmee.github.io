@@ -1,0 +1,43 @@
+---
+import type { MovieEntry } from "../../utils/media";
+import MediaFrame from "./MediaFrame.astro";
+
+interface Props {
+  entry: MovieEntry;
+  eager?: boolean;
+}
+
+const { entry, eager = false } = Astro.props as Props;
+const { title, originalTitle, year, director, poster, note, externalUrl } =
+  entry.data;
+---
+
+<article class="movie-card">
+  <MediaFrame
+    src={poster}
+    alt={`《${title}》电影海报`}
+    shape="poster"
+    href={externalUrl}
+    eager={eager}
+  />
+  <div class="movie-card__body">
+    <div class="media-meta">
+      <span>{year}</span>
+      <span aria-hidden="true">/</span>
+      <span>{director}</span>
+    </div>
+    <h3>
+      {
+        externalUrl ? (
+          <a href={externalUrl} target="_blank" rel="noopener noreferrer">
+            {title}
+          </a>
+        ) : (
+          title
+        )
+      }
+    </h3>
+    {originalTitle && <p class="movie-card__original">{originalTitle}</p>}
+    <p class="movie-card__note">{note}</p>
+  </div>
+</article>

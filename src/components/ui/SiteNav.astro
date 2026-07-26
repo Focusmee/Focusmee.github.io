@@ -1,75 +1,40 @@
 ---
 import { navigation } from "../../data/navigation";
 import { siteConfig } from "../../data/site";
-import { getUiText } from "../../i18n/ui";
 import { stripBase, withBase } from "../../utils/links";
 
 const currentPath = stripBase(Astro.url.pathname);
 ---
 
-<a class="skip-link" href="#content" data-i18n="skip.content">跳到正文</a>
+<a class="skip-link" href="#content">跳到正文</a>
 
-<header class="site-nav" transition:animate="none">
+<header class="site-nav">
   <div class="nav-inner">
-    <a class="brand" href={withBase("/")}>
+    <a class="brand" href={withBase("/")} aria-label={`${siteConfig.name} 首页`}>
       <span class="brand-mark">{siteConfig.name}</span>
-      <span class="brand-note" data-i18n="brand.note">
-        {getUiText("brand.note")}
-      </span>
+      <span class="brand-dot" aria-hidden="true"></span>
     </a>
 
-    <div class="nav-actions">
-      <nav
-        class="nav-links"
-        aria-label={getUiText("nav.primary")}
-        data-i18n-aria-label="nav.primary"
-      >
-        {
-          navigation.map((item) => {
-            const active =
-              item.href === "/"
-                ? currentPath === "/"
-                : currentPath === item.href ||
-                  currentPath.startsWith(`${item.href}/`);
+    <nav class="nav-links" aria-label="主导航">
+      {
+        navigation.map((item) => {
+          const active =
+            item.href === "/"
+              ? currentPath === "/"
+              : currentPath === item.href ||
+                currentPath.startsWith(`${item.href}/`);
 
-            return (
-              <a
-                class:list={["nav-link", active && "is-active"]}
-                href={withBase(item.href)}
-                aria-current={active ? "page" : undefined}
-                data-i18n={item.i18nKey}
-              >
-                {getUiText(item.i18nKey)}
-              </a>
-            );
-          })
-        }
-      </nav>
-
-      <div
-        class="language-switcher"
-        aria-label={getUiText("language.switcherLabel")}
-        data-i18n-aria-label="language.switcherLabel"
-      >
-        <button
-          class="language-switcher__button is-active"
-          type="button"
-          aria-pressed="true"
-          data-language-toggle="zh"
-          data-i18n="language.zh"
-        >
-          {getUiText("language.zh")}
-        </button>
-        <button
-          class="language-switcher__button"
-          type="button"
-          aria-pressed="false"
-          data-language-toggle="en"
-          data-i18n="language.en"
-        >
-          {getUiText("language.en")}
-        </button>
-      </div>
-    </div>
+          return (
+            <a
+              class:list={["nav-link", active && "is-active"]}
+              href={withBase(item.href)}
+              aria-current={active ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
   </div>
 </header>

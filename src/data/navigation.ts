@@ -1,8 +1,7 @@
 export const navigation = [
-  { label: "Home", href: "/", i18nKey: "nav.home" },
-  { label: "Logs", href: "/logs", i18nKey: "nav.logs" },
-  { label: "Collections", href: "/collections", i18nKey: "nav.collections" },
-  { label: "Projects", href: "/projects", i18nKey: "nav.projects" },
-  { label: "About", href: "/about", i18nKey: "nav.about" },
-  { label: "Guestbook", href: "/guestbook", i18nKey: "nav.guestbook" }
+  { label: "首页", href: "/" },
+  { label: "博客", href: "/logs" },
+  { label: "电影", href: "/movies" },
+  { label: "图片", href: "/photos" },
+  { label: "关于", href: "/about" }
 ] as const;

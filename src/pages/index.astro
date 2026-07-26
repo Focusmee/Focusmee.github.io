@@ -1,80 +1,85 @@
 ---
 import BaseLayout from "../components/layout/BaseLayout.astro";
-import CollectionGrid from "../components/collections/CollectionGrid.astro";
+import MovieCard from "../components/media/MovieCard.astro";
+import PhotoCard from "../components/media/PhotoCard.astro";
 import RecentPosts from "../components/posts/RecentPosts.astro";
-import RecordStoreHero from "../components/home/RecordStoreHero.astro";
 import { siteConfig } from "../data/site";
-import { getUiText } from "../i18n/ui";
-import { getFeaturedLogs, getPublishedLogs } from "../utils/posts";
+import { withBase } from "../utils/links";
+import { getPublishedMovies, getPublishedPhotos } from "../utils/media";
+import { getRecentLogs } from "../utils/posts";
 
-const featuredPosts = await getFeaturedLogs(3);
-const featuredIds = new Set(featuredPosts.map((entry) => entry.id));
-const recentPosts = (await getPublishedLogs())
-  .filter((entry) => !featuredIds.has(entry.id))
-  .slice(0, 3);
+const [recentPosts, movies, photos] = await Promise.all([
+  getRecentLogs(5),
+  getPublishedMovies(4),
+  getPublishedPhotos(6)
+]);
 ---
 
 <BaseLayout title={siteConfig.name} description={siteConfig.description}>
-  <RecordStoreHero />
-
-  <RecentPosts
-    posts={featuredPosts}
-    eyebrowKey="home.featured.eyebrow"
-    titleKey="home.featured.title"
-    ledeKey="home.featured.lede"
-  />
+  <section class="home-intro">
+    <div class="home-intro__edition" aria-hidden="true">
+      <span>个人记录</span>
+      <span>2026 — 至今</span>
+    </div>
+    <div class="home-intro__copy">
+      <p class="home-intro__name">Focusmee</p>
+      <h1>把写过的、看过的、拍下的，放在一起。</h1>
+      <p>
+        这里收录我的技术文章、电影短笺和日常影像。没有复杂入口，
+        从最近更新开始就好。
+      </p>
+      <div class="home-intro__actions">
+        <a class="text-link" href={withBase("/logs")}>阅读博客 <span>↗</span></a>
+        <a class="text-link text-link--muted" href={withBase("/about")}>
+          关于我 <span>↗</span>
+        </a>
+      </div>
+    </div>
+    <div class="home-intro__mark" aria-hidden="true">F.</div>
+  </section>
 
   <RecentPosts
     posts={recentPosts}
-    eyebrowKey="home.recent.eyebrow"
-    titleKey="home.recent.title"
-    ledeKey="home.recent.lede"
+    label="01 / Writing"
+    title="最近更新"
+    description="技术、系统与日常思考，按发布时间排列。"
   />
 
-  <section class="section-shell">
-    <div class="section-heading">
-      <span class="eyebrow" data-i18n="home.collections.eyebrow">
-        {getUiText("home.collections.eyebrow")}
-      </span>
-      <h2 class="headline" data-i18n="home.collections.title">
-        {getUiText("home.collections.title")}
-      </h2>
-      <p class="lede" data-i18n="home.collections.lede">
-        {getUiText("home.collections.lede")}
-      </p>
-    </div>
-
-    <CollectionGrid />
-  </section>
-
-  <section class="section-shell split-grid">
-    <div class="intro-slab">
-      <div class="section-heading">
-        <span class="eyebrow" data-i18n="home.about.eyebrow">
-          {getUiText("home.about.eyebrow")}
-        </span>
-        <h2 class="headline" data-i18n="home.about.title">
-          {getUiText("home.about.title")}
-        </h2>
-      </div>
-      <p class="lede" data-i18n="home.about.lede">
-        {getUiText("home.about.lede")}
-      </p>
-    </div>
-
-    <div class="detail-list">
-      <div class="detail-item">
-        <div class="detail-kicker" data-i18n="home.about.readyKicker">
-          {getUiText("home.about.readyKicker")}
+  {
+    movies.length > 0 && (
+      <section class="content-section">
+        <header class="section-heading section-heading--row">
+          <div>
+            <span class="section-label">02 / Cinema</span>
+            <h2>喜欢的电影</h2>
+          </div>
+          <a class="section-link" href={withBase("/movies")}>查看全部 ↗</a>
+        </header>
+        <div class="movie-grid">
+          {movies.map((entry, index) => (
+            <MovieCard entry={entry} eager={index < 2} />
+          ))}
         </div>
-        <strong data-i18n="home.about.ready">{getUiText("home.about.ready")}</strong>
-      </div>
-      <div class="detail-item">
-        <div class="detail-kicker" data-i18n="home.about.nextKicker">
-          {getUiText("home.about.nextKicker")}
+      </section>
+    )
+  }
+
+  {
+    photos.length > 0 && (
+      <section class="content-section">
+        <header class="section-heading section-heading--row">
+          <div>
+            <span class="section-label">03 / Photographs</span>
+            <h2>最近的图片</h2>
+          </div>
+          <a class="section-link" href={withBase("/photos")}>查看全部 ↗</a>
+        </header>
+        <div class="photo-grid">
+          {photos.map((entry, index) => (
+            <PhotoCard entry={entry} eager={index < 2} />
+          ))}
         </div>
-        <strong data-i18n="home.about.next">{getUiText("home.about.next")}</strong>
-      </div>
-    </div>
-  </section>
+      </section>
+    )
+  }
 </BaseLayout>

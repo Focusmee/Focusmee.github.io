@@ -8,6 +8,78 @@ Small code changes may be covered by git history, but source-of-truth, architect
 
 ## Entries
 
+### 2026-07-26 - Implemented Focusmee Minimal Editorial Site
+
+Mode: Feature Mode
+
+Files changed:
+
+- Content schemas, publishing queries, media components, and page routes
+- Shared layout, navigation, footer, article layout, and editorial CSS
+- Site/project metadata, dependency manifests, favicon, README, and content guide
+- Current control documents
+
+Files removed:
+
+- Record-store and retro-computer components
+- Three.js model and homepage-specific scene styles
+- Client-side i18n dictionary and legacy transition/random helpers
+- React, React Three Fiber, Three.js, GSAP, and postprocessing dependencies
+
+Summary:
+
+- Renamed the public product to Focusmee and replaced the interactive narrative homepage with a direct writing-first editorial homepage.
+- Added `/movies` and `/photos` backed by validated Markdown collections, stable ordering, draft filtering, local media paths, and empty-state handling.
+- Simplified blog publishing to tags plus optional cover fields while retaining optional legacy categories for compatibility routes.
+- Added consistent poster, landscape, portrait, and square media frames and made photos open their local originals.
+- Rebuilt all shared public UI as Chinese-first static Astro components and kept article/guestbook Giscus support.
+- Added a copy-ready content guide and removed all obsolete visual runtime packages and assets.
+
+Validation:
+
+- `npm.cmd run check`: 0 errors, 0 warnings, 0 hints.
+- Root `npm.cmd run build`: passed; 23 static pages generated.
+- `BASE_PATH=/focusmee-preview npm.cmd run build`: passed; generated links include the configured base prefix.
+- `npm.cmd ls --depth=0`: only Astro, MDX, RSS, sitemap, check, and TypeScript remain.
+- Source and lockfile searches found no removed runtime or legacy homepage references.
+- Browser inspection passed at 360px, 768px, and 1440px with no horizontal overflow.
+- Browser route checks passed for homepage, blog, movies, photos, about, projects, archive, collections, and guestbook.
+- Article reading width, navigation, pagination, empty states, and Giscus mount were verified.
+
+Risks:
+
+- Movie and photo collections are intentionally empty until the human supplies real content. Astro logs empty-glob notices during sync/build; the check result itself remains clean.
+- Giscus logs its expected “discussion not found” notice until a first comment creates the discussion.
+
+### 2026-07-26 - Approved Focusmee Minimal Editorial Rebuild
+
+Mode: Feature Mode
+
+Planned source areas:
+
+- Content collections and publishing helpers
+- Shared layout, navigation, pages, and editorial styling
+- Movie and photo presentation components
+- Legacy homepage source, model, styles, and dependencies
+- Content authoring documentation
+
+Summary:
+
+- Added `N-018` to `TASKS.md > Now` from the human-approved implementation plan.
+- Replaced the active Blooming Logs record-store product direction with the Focusmee Chinese-first editorial site direction.
+- Approved separate Markdown-backed movie and photo collections, tag-first blog publishing, and full removal of the old React/Three.js/GSAP homepage.
+- Kept legacy routes, static deployment, RSS, project fallbacks, and article Giscus comments in scope.
+
+Validation target:
+
+- Astro check and root/base-path builds.
+- Browser inspection at mobile, tablet, and desktop widths.
+- Source verification that removed runtime dependencies and old homepage contracts are no longer referenced.
+
+Risks:
+
+- Real movie posters and personal photos are not yet present; the UI must render cleanly with empty media collections.
+
 ### 2026-05-07 - Rebuilt Project Context Control Files
 
 Mode: Audit Mode
