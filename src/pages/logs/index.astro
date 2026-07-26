@@ -8,9 +8,12 @@ const posts = await getPublishedLogs();
 
 <BaseLayout title="博客" description="Focusmee 发布的全部文章。">
   <header class="page-header">
-    <span class="section-label">Writing / {posts.length} posts</span>
-    <h1>博客</h1>
-    <p>记录技术、系统设计和日常思考。最新发布的文章排在最前面。</p>
+    <span class="section-label">Index / {String(posts.length).padStart(2, "0")} posts</span>
+    <h1>文章索引</h1>
+    <div class="page-header__intro">
+      <span aria-hidden="true">↳</span>
+      <p>记录技术、系统设计和日常思考。最新发布的文章排在最前面。</p>
+    </div>
   </header>
 
   {

@@ -18,31 +18,37 @@ const [recentPosts, movies, photos] = await Promise.all([
 <BaseLayout title={siteConfig.name} description={siteConfig.description}>
   <section class="home-intro">
     <div class="home-intro__edition" aria-hidden="true">
-      <span>个人记录</span>
-      <span>2026 — 至今</span>
+      <span>个人记录 · 第 01 辑</span>
+      <span>新加坡 / 2026 — 至今</span>
     </div>
     <div class="home-intro__copy">
-      <p class="home-intro__name">Focusmee</p>
-      <h1>把写过的、看过的、拍下的，放在一起。</h1>
+      <p class="home-intro__name">Focusmee / Notes &amp; Observations</p>
+      <h1>
+        <span>写下思考，</span>
+        <span>收存目光。</span>
+      </h1>
       <p>
-        这里收录我的技术文章、电影短笺和日常影像。没有复杂入口，
-        从最近更新开始就好。
+        一个关于技术、电影与日常影像的个人索引。
+        内容按时间整理，从最近更新开始阅读。
       </p>
       <div class="home-intro__actions">
-        <a class="text-link" href={withBase("/logs")}>阅读博客 <span>↗</span></a>
+        <a class="text-link" href={withBase("/logs")}>浏览全部文章 <span>↗</span></a>
         <a class="text-link text-link--muted" href={withBase("/about")}>
-          关于我 <span>↗</span>
+          了解更多 <span>↗</span>
         </a>
       </div>
     </div>
-    <div class="home-intro__mark" aria-hidden="true">F.</div>
+    <div class="home-intro__mark" aria-hidden="true">
+      <span>F</span>
+      <small>01</small>
+    </div>
   </section>
 
   <RecentPosts
     posts={recentPosts}
-    label="01 / Writing"
-    title="最近更新"
-    description="技术、系统与日常思考，按发布时间排列。"
+    label="01 / Latest writing"
+    title="近期文章"
+    description="技术、系统与日常思考。五篇最新记录，按发布时间排列。"
   />
 
   {

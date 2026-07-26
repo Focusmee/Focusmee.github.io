@@ -111,7 +111,9 @@ Movie and photo entries are ordered by ascending `order`, then stable fallback f
 ## Visual Direction
 
 - Warm paper background, near-black text, brick-red accent, fine rules, and generous reading space.
-- Editorial hierarchy using restrained serif display type and clear Chinese body type.
+- Contemporary editorial hierarchy using an expressive serif display face, a highly legible Chinese sans-serif body face, and compact monospaced metadata.
+- Use a wide, disciplined page grid, purposeful line breaks, and a tighter vertical rhythm; large type must remain controlled and readable rather than filling the viewport by default.
+- Article lists should prioritize title, date, reading time, and summary without card-like containers or boxed tags.
 - Minimal hover and focus feedback only; no scroll narrative, lightbox, dark mode, or entry animation.
 - Movie posters use a fixed 2:3 frame.
 - Shared image shapes are `landscape`, `portrait`, and `square`, rendered with consistent cropping, border, spacing, and captions.
@@ -146,3 +148,4 @@ Movie and photo entries are ordered by ascending `order`, then stable fallback f
 | 2026-07-26 | Fully remove the old 3D/GSAP homepage code and dependencies. |
 | 2026-07-26 | Keep Giscus comments on article pages. |
 | 2026-07-26 | Do not add sample favorite movies or placeholder personal photos. |
+| 2026-07-26 | Remove the three introductory placeholder posts shown in the human review and use a tighter contemporary editorial grid with controlled display type. |
